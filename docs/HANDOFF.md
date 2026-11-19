@@ -1,6 +1,7 @@
 # Handoff: Synes Online
 
 ## รอบที่ 1 · 2026-11-19
+**commit ล่าสุด:** ดู `git log --oneline` บน `main` (merge `art/blender-kit` ที่ f07a730)
 **สายงานที่ทำในรอบนี้:** gameplay/engine, UI/UX, web perf/QA (เซสชันหลัก บน `main`) และ art/Blender (agent แยก บน worktree `art/blender-kit` แล้ว merge เข้า `main`)
 
 ### สิ่งที่ทำเสร็จ
@@ -15,9 +16,12 @@
 - ลิงก์ทดลองเล่น (claude.ai Artifact เป็นส่วนตัว ต้องกด Share ก่อนส่งให้คนอื่น):
   - เกม: https://claude.ai/artifact/5jsDtTKaLN22JGykznhNnA (โหมดออฟไลน์ เพราะโฮสต์แบบ static ไม่มี server)
   - เทียบเอนจิน: https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8
+  - แกลเลอรีโทนภาพ 10 แบบ: https://claude.ai/artifact/B512M87CqpnicvUrNCrCvT
+  - โฮสต์ Artifact ไม่รับ `.glb` build สำหรับ Artifact จึงใช้โมเดลแบบ glTF JSON ฝังข้อมูล (`synes_kit.json` 699 KB) แทน
 
 ### ผลทดสอบ
-- `npm test` ผ่าน 13/13 รายการ และ `node tools/qa/lifecycle.mjs` ผ่าน 20/20 รายการ (รายละเอียดใน `docs/qa/round-1.md`)
+- `npm test` ผ่าน 16/16 รายการ และ `node tools/qa/lifecycle.mjs` ผ่าน 20/20 รายการทั้งก่อนและหลัง merge โมเดล (รายละเอียดใน `docs/qa/round-1.md`)
+- โมเดล Blender: รัน `verify_kit.py` ซ้ำเองแล้ว ผ่าน 293 ข้อ, 15,232 tris, 537.6 KB และ hash ตรงกับรายงานของ agent
 - **ยังไม่ได้ทดสอบบน Android, iPhone หรือเบราว์เซอร์ในแอปแชตของจริง** ตัวเลขทั้งหมดมาจาก Chromium จำลองที่ใช้ GPU แบบซอฟต์แวร์
 - ยังไม่ได้เปิดลิงก์ Artifact ใน viewer ของ claude.ai เพื่อยืนยันว่าเกมรันได้ เพราะ container เปิดหน้า claude.ai ที่ต้องล็อกอินไม่ได้
   ส่วนรูปแบบไฟล์ทดสอบแล้วในเบราว์เซอร์ local
@@ -26,7 +30,8 @@
 1. **ไม่มี remote git:** ถ้า container ถูกเก็บคืน งานจะหายทั้งหมด เจ้าของต้องสร้าง GitHub repo (เช่น `synes-online`) แล้วเปิดสิทธิ์ให้ Claude ก่อน จึงจะ push ได้
 2. **ลิงก์สาธารณะที่มี server ตรวจผล:** ต้องมีโฮสต์ (static CDN + Node server) ซึ่งต้องใช้บัญชีของเจ้าของ
 3. ความยากปรับจากบอทเท่านั้น ต้องให้คนเล่นจริง
-4. draw calls 56–65 (เป้าต่ำกว่า 40) และงบ triangle ของโมเดลชุดใหม่ต้องเฝ้าดู
+4. draw calls ~81 (เป้าต่ำกว่า 40) เพราะตัวละครแยกชิ้นเพื่อทำแอนิเมชัน ส่วน triangle ในฉากอยู่ที่ 30k (tier low) ถึง 49k (tier medium)
+   ขนาดดาวน์โหลดขึ้นกับว่าโฮสต์บีบอัด GLB ให้หรือไม่ (192 KB ถ้าบีบอัด, 538 KB ถ้าไม่) และ meshopt คืองานรอบถัดไป
 5. ยังไม่มี "ร่วมมือ" (co-op) และ "พัฒนาตัวละคร" (EXP/อุปกรณ์ถาวร) ในวงจรเล่น
 6. iOS Safari: fullscreen และการล็อกแนวจอใช้ไม่ได้ จึงใช้ข้อความให้หมุนจอแทน ต้องตรวจบนเครื่องจริง
 

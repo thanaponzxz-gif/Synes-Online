@@ -51,7 +51,7 @@ let portraitOk = false;
   $('#chip-q').textContent = `กราฟิก: ${tierLabel(tierName)}${pref === 'auto' ? ' (อัตโนมัติ)' : ''}`;
   const [mode] = await Promise.all([
     net.detect(),
-    Q.has('nokit') ? Promise.resolve(false) : loadKit('./assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`)).then((ok) => (perf.kit = ok)),
+    Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`)).then((ok) => (perf.kit = ok)),
   ]);
   bar.style.width = '100%';
   $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: server ตรวจผล' : 'ออฟไลน์: ผลไม่ถูกบันทึก';
