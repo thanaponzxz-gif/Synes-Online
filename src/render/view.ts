@@ -42,7 +42,7 @@ export class View {
   private pillars: Object3D[] = [];
   private springGem: Object3D | null = null;
   private flames: Object3D[] = [];
-  private env = new Group();
+  env = new Group();
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
   time = 0;
   pixelRatio = 1;

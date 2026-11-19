@@ -1,0 +1,107 @@
+<title>Synes Tone Studies</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+/* Layout: a contact sheet — one column of tone "plates" at phone width, two columns on wide screens; each plate pairs the render with three verdict rows. */
+:root {
+  --bg: #f3f1fa; --surface: #ffffff; --fg: #1f2140; --muted: #5d5f80; --line: #dcd8ec;
+  --lumen: #0f9e94; --violet: #6d4fd8; --gold: #b07a00;
+  --good: #1f8a4c; --mid: #a86b00; --hard: #c23a4c;
+  --display: "Prompt", "Noto Sans Thai", system-ui, sans-serif;
+  --body: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #141630; --surface: #1d2042; --fg: #eef0ff; --muted: #a6a9cf; --line: #30345f;
+  --lumen: #5cf2e6; --violet: #b9a4ff; --gold: #ffc857; --good: #6ee07a; --mid: #ffc857; --hard: #ff7a8a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #141630; --surface: #1d2042; --fg: #eef0ff; --muted: #a6a9cf; --line: #30345f;
+  --lumen: #5cf2e6; --violet: #b9a4ff; --gold: #ffc857; --good: #6ee07a; --mid: #ffc857; --hard: #ff7a8a; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: grid; gap: 10px; margin-bottom: 26px; }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--violet); }
+h1 { font: 700 clamp(28px, 5vw, 44px)/1.15 var(--display); margin: 0; text-wrap: balance; }
+h1 span { color: var(--lumen); }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.fact { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+.play { display: inline-flex; align-items: center; gap: 8px; font: 600 15px var(--display); color: var(--fg); background: var(--surface); border: 1.5px solid var(--lumen); border-radius: 12px; padding: 10px 16px; text-decoration: none; width: fit-content; }
+.play:focus-visible, .play:hover { outline: 2px solid var(--violet); outline-offset: 2px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); margin: 6px 0 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 22px; }
+.plate { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.plate figure { margin: 0; position: relative; aspect-ratio: 16 / 9; background: #20234a; max-width: 100%; }
+.plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tag { position: absolute; left: 10px; top: 10px; font: 600 12px var(--body); background: rgba(16, 18, 40, 0.78); color: #fff; padding: 3px 10px; border-radius: 999px; }
+.meta { padding: 14px 16px 16px; display: grid; gap: 10px; min-width: 0; }
+.name { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.name b { font: 700 20px/1.2 var(--display); }
+.name i { font-style: normal; color: var(--muted); font-size: 13px; letter-spacing: 0.04em; }
+.num { font: 600 13px var(--display); color: var(--violet); font-variant-numeric: tabular-nums; }
+dl { margin: 0; display: grid; grid-template-columns: 9.5em 1fr; gap: 6px 12px; font-size: 14px; }
+dt { color: var(--muted); }
+dd { margin: 0; min-width: 0; }
+.pill { display: inline-block; font: 600 12px var(--body); padding: 1px 9px; border-radius: 999px; margin-right: 6px; border: 1.5px solid currentColor; }
+.pill.good { color: var(--good); } .pill.mid { color: var(--mid); } .pill.hard { color: var(--hard); }
+.note { margin-top: 30px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); font-size: 14px; max-width: 80ch; display: grid; gap: 8px; }
+.note b { color: var(--fg); }
+@media (max-width: 480px) { dl { grid-template-columns: 1fr; gap: 2px; } dt { margin-top: 6px; } }
+@media (prefers-reduced-motion: no-preference) { .plate img { transition: transform 0.4s; } .plate:hover img { transform: scale(1.02); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Synes Online · ทิศทางภาพ รอบที่ 1</div>
+    <h1>10 โทนภาพ <span>เรนเดอร์จากเอนจินจริง</span></h1>
+    <p class="lede">ทุกภาพเรนเดอร์ด้วยเอนจินของเกม (Three.js) จากมุมกล้องเดียวกับที่ผู้เล่นเห็นขณะเล่น และมีปุ่มกับ HUD จริงซ้อนอยู่ ภาพจึงแสดงสิ่งที่มือถือวาดได้ในวันนี้ ไม่ใช่ภาพวาดคอนเซปต์ที่เกมอาจทำตามไม่ได้ โมเดลทั้งหมดเป็นงานต้นแบบ low-poly ที่ทีมสร้างด้วยสคริปต์ Blender ภาพชุดนี้มีไว้ให้เลือกทิศทางสีและแสงก่อนลงรายละเอียดศิลป์</p>
+    <div class="facts">
+      <span class="fact">ฉาก: เมือง · ร้านค้า · เส้นทางสำรวจ · พื้นที่ลึกลับ · การต่อสู้</span>
+      <span class="fact">กล้องเกมจริง (มุมก้มราว 48°)</span>
+      <span class="fact">ภาพ 1280×720 @2x</span>
+    </div>
+    <a class="play" id="play-link" href="#" target="_blank" rel="noopener">▶ เปิดเดโมที่เล่นได้</a>
+  </header>
+  <div class="legend">
+    <span><span class="pill good">ชัด / ง่าย</span>ใช้ได้ทันที</span>
+    <span><span class="pill mid">ปานกลาง</span>ต้องปรับเพิ่ม</span>
+    <span><span class="pill hard">ยาก / เสี่ยง</span>ต้องใช้เทคนิคที่แพงบนมือถือ</span>
+  </div>
+  <main class="grid" id="grid"></main>
+  <section class="note">
+    <p><b>วิธีอ่าน “ความชัดขณะเล่น”:</b> ดูว่าวงเตือนการโจมตี (ส้ม = ท่าปกติ, แดง = ท่าหนัก), ตัวละคร และทางเดิน ยังแยกจากฉากได้ทันทีบนจอเล็กหรือไม่ เราสงวนสีส้มและแดงไว้ใช้กับวงเตือนเท่านั้น</p>
+    <p><b>วิธีอ่าน “ความยากบนมือถือ”:</b> คือต้นทุนของการทำให้โทนนั้นสวยเต็มที่บนมือถือระดับกลาง เช่น bloom/glow, เงาจริง และฉากที่มีวัตถุหนาแน่น ภาพที่เห็นคือระดับ "ทำได้วันนี้" โดยยังไม่มีเทคนิคเหล่านั้น</p>
+    <p><b>ข้อเสนอของทีม:</b> ใช้ <b>01 น้ำค้างยามเช้า</b> เป็นโทนหลักของพื้นที่สำรวจ, <b>08 ลานแก้วพายุ</b> สำหรับลานบอส (วงเตือนชัดที่สุด), <b>03 ตลาดอำพัน</b> สำหรับเมืองและร้านค้า และ <b>07 ซากหุบหมอก</b> สำหรับพื้นที่ลึกลับ (หมอกแทบไม่มีต้นทุน) ส่วนการตัดสินใจสุดท้ายเป็นของเจ้าของ</p>
+  </section>
+</div>
+
+<script>
+const T = [
+  ['01','dewlight','trail','น้ำค้างยามเช้า','Dewlight Morning','เส้นทางสำรวจ','หญ้าเขียวสด ทางทรายอุ่น คริสตัลฟ้านำทางไปข้างหน้า','good','วงส้ม/แดงตัดกับพื้นเขียวและทรายชัดมาก','good','ต่ำ เพราะเป็นโทนที่เดโมใช้อยู่แล้ว'],
+  ['02','blossom','town','กลีบบุปผาล่องลม','Blossom Drift','เมือง','ลานหินชมพู ต้นไม้ดอกชมพู ซุ้มร้านและน้ำพุคริสตัล','mid','พื้นชมพูใกล้สีวงเตือน จึงเหมาะกับเมืองที่ไม่มีการต่อสู้ ถ้าจะใช้ในสนามรบต้องเพิ่มขอบขาวให้วงเตือน','good','ต่ำ ส่วนกลีบดอกปลิวต้องเพิ่ม particle ซึ่งมีต้นทุนเล็กน้อย'],
+  ['03','amber','shop','ตลาดอำพัน','Amber Market','ร้านค้า','แสงทองอุ่น พื้นไม้ พรมแดงนำไปที่เคาน์เตอร์','mid','เป็นพื้นที่ปลอดภัยจึงไม่มีวงเตือน และป้ายร้านอ่านง่าย','mid','กลาง: แสงตะเกียงหลายดวงแบบเรียลไทม์แพง ต้องใช้แสงอบ (baked) และวัสดุเรืองแสงแทน'],
+  ['04','prism','town','เที่ยงปริซึม','Prism Noon','เมือง','อิ่มสีสูงสุด แดดจ้า คริสตัลกลางลานเด่น','mid','ทุกอย่างสีจัดจึงแย่งสายตากันเอง ต้องลดสีของฉากรองลง','good','ต่ำ'],
+  ['05','dusk','trail','สนธยาลมกระซิบ','Hushwind Dusk','เส้นทางสำรวจ','ฟ้าส้มอมม่วง แสงเฉียง ให้อารมณ์เดินทางกลับบ้าน','mid','วงส้มกลืนกับแสงส้มของฉาก ต้องเพิ่มขอบหรือเปลี่ยนวงเตือนเป็นสีเย็นในโทนนี้','mid','กลาง: เงายาวต้องใช้ shadow map ซึ่งเปิดได้เฉพาะเครื่องแรง'],
+  ['06','moonpetal','mystery','ราตรีกลีบจันทร์','Moonpetal Night','พื้นที่ลึกลับ','กลางคืนสีน้ำเงิน เห็ดและคริสตัลเรืองแสงนำทาง','mid','วงเตือนสว่างเด่นบนพื้นมืด แต่ทางเดินและตัวละครอ่านยากขึ้น','hard','สูง: ความงามแบบภาพคอนเซปต์ต้องใช้ bloom/glow ซึ่งแพงบนมือถือระดับล่าง'],
+  ['07','mistvale','mystery','ซากหุบหมอก','Mistvale Ruins','พื้นที่ลึกลับ','หมอกเขียวอมฟ้า ซุ้มหินโบราณ อักขระเรืองแสง','good','หมอกช่วยดึงสายตาไปที่บริเวณใกล้ตัว และซ่อนฉากไกล','good','ต่ำ เพราะหมอกแทบไม่มีต้นทุน และยังช่วยลดระยะการวาดได้ด้วย'],
+  ['08','stormglass','combat','ลานแก้วพายุ','Stormglass Arena','การต่อสู้ (บอส)','พื้นหินเทาม่วงเข้ม แสงเย็น เสาคริสตัลรอบลาน','good','วงเตือนสีแดงเด่นที่สุดในทั้ง 10 โทน','good','ต่ำ'],
+  ['09','frostchime','shop','ทุ่งระฆังน้ำแข็ง','Frostchime Glade','ร้านค้า (ตลาดหิมะ)','หิมะขาวอมฟ้า คริสตัลซีด แสงสะอาด','hard','พื้นสว่างมากจนตัวละครกลืน ต้องเพิ่มเส้นขอบตัวละครก่อนใช้','mid','กลาง: การเพิ่มเส้นขอบเพิ่ม draw call ของตัวละครเป็นสองเท่า'],
+  ['10','verdant','clearing','ป่าลึกมรกต','Verdant Deep','การต่อสู้ (กลุ่มศัตรู)','ป่าทึบเขียวเข้ม พร้อมวงเตือนหลายวงพร้อมกัน','good','วงส้มตัดกับเขียวเข้มดี และอ่านแถบพุ่งชนได้','mid','กลาง: ป่าทึบมีวัตถุมาก ต้องใช้ instancing + LOD เพื่อคุม draw call'],
+];
+const L = { good: 'ชัด', mid: 'ปานกลาง', hard: 'เสี่ยง' }, D = { good: 'ง่าย', mid: 'ปานกลาง', hard: 'ยาก' };
+document.getElementById('grid').innerHTML = T.map(([n, id, scene, th, en, sceneTh, hi, cl, clTxt, df, dfTxt]) => `
+  <article class="plate">
+    <figure><img src="tones/${n}-${id}-${scene}.jpg" alt="โทน ${th} ฉาก${sceneTh} เรนเดอร์จากเกม" loading="lazy" width="1600" height="900"><span class="tag">${sceneTh}</span></figure>
+    <div class="meta">
+      <div class="name"><span class="num">${n}</span><b>${th}</b><i>${en}</i></div>
+      <dl>
+        <dt>จุดเด่น</dt><dd>${hi}</dd>
+        <dt>ความชัดขณะเล่น</dt><dd><span class="pill ${cl}">${L[cl]}</span>${clTxt}</dd>
+        <dt>ความยากบนมือถือ</dt><dd><span class="pill ${df}">${D[df]}</span>${dfTxt}</dd>
+      </dl>
+    </div>
+  </article>`).join('');
+const link = document.getElementById('play-link');
+if (link.getAttribute('href') === '#') link.hidden = true;
+</script>

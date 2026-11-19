@@ -14,7 +14,9 @@ import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
 import { Bot } from '../tests/bot.ts';
 
+// flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 const Q = new URLSearchParams(location.search);
+for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
 const canvas = $<HTMLCanvasElement>('#game');
 const perf = { bootMs: performance.now(), readyMs: 0, firstPlayFrameMs: 0, kit: false };
@@ -55,6 +57,12 @@ let portraitOk = false;
   const btn = $<HTMLButtonElement>('#btn-start');
   btn.disabled = false; btn.textContent = 'แตะเพื่อเริ่มผจญภัย';
   perf.readyMs = performance.now();
+  if (Q.has('study')) {
+    $('#start').classList.add('hidden'); $('#hud').classList.remove('hidden');
+    const { runStudy } = await import('./study.ts');
+    await runStudy(view, hud, Q.get('study')!, toneById(Q.get('tone')));
+    return;
+  }
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();
 
