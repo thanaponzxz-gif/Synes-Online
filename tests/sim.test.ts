@@ -89,3 +89,25 @@ describe('server authority', () => {
     expect(rewardFor({ ...r, victory: false }, 0.99).drop).toBeNull();
   });
 });
+
+describe('telegraph hit shapes match what is drawn', () => {
+  const w = new World(1);
+  const base = { id: 1, owner: 0, enemyTh: '', x: 0, z: 0, t: 1, total: 1, area: true } as const;
+  const atk = ENEMIES.prismback.attacks;
+  it('circle: inside/outside radius', () => {
+    const t = { ...base, atk: atk.slam, shape: 'circle' as const, dx: 0, dz: 1, r: 4.6, w: 0, cos: 0 };
+    expect(w.insideTele(t, 4.5, 0, 0)).toBe(true);
+    expect(w.insideTele(t, 4.8, 0, 0)).toBe(false);
+  });
+  it('cone: front hits, behind is safe', () => {
+    const t = { ...base, atk: atk.sweep, shape: 'cone' as const, dx: 0, dz: 1, r: 5.2, w: 0, cos: 0.5 };
+    expect(w.insideTele(t, 0, 4, 0)).toBe(true);
+    expect(w.insideTele(t, 0, -3, 0)).toBe(false);
+    expect(w.insideTele(t, 4, 0.5, 0)).toBe(false); // ~83° off-axis: outside the 60° half-angle
+  });
+  it('line: side-step escapes, backing up along the line does not', () => {
+    const t = { ...base, atk: atk.charge, shape: 'line' as const, dx: 0, dz: 1, r: 18, w: 3, cos: 0 };
+    expect(w.insideTele(t, 0, 10, 0)).toBe(true);
+    expect(w.insideTele(t, 2, 10, 0)).toBe(false);
+  });
+});

@@ -15,6 +15,7 @@ import { Net } from './net.ts';
 import { Bot } from '../tests/bot.ts';
 
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
+declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
@@ -216,6 +217,7 @@ function checkOrientation() {
 $('#btn-portrait').addEventListener('click', () => { portraitOk = true; checkOrientation(); });
 addEventListener('resize', () => { view.resize(); checkOrientation(); });
 
+document.querySelectorAll('.build-id').forEach((el) => (el.textContent = __BUILD__));
 function tierLabel(t: string) { return t === 'low' ? 'ต่ำ' : t === 'medium' ? 'กลาง' : 'สูง'; }
 (window as any).__synesPerf = perf;
 (window as any).__synesKit = kitLoaded;
