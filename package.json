@@ -1,15 +1,23 @@
 {
   "name": "synes-online",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Synes Online — bright-fantasy 3D web game for mobile browsers (vertical slice)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "npm run build && npm run server",
+    "server": "node --experimental-strip-types --no-warnings server/index.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "spike:build": "vite build -c vite.spike.config.ts",
+    "qa:bench": "node tools/qa/bench.mjs",
+    "qa:spike": "node tools/qa/spike-bench.mjs"
   },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/three": "^0.187.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.6",
     "vitest": "^3.2.7"
@@ -17,5 +25,7 @@
   "dependencies": {
     "playcanvas": "^2.24.2",
     "three": "^0.187.0"
-  }
+  },
+  "private": true,
+  "type": "module"
 }

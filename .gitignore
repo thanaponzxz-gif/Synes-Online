@@ -5,3 +5,4 @@ tools/blender/.venv/
 *.log
 .DS_Store
 tools/qa/out/
+.claude/
