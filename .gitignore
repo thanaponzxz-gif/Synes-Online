@@ -1,0 +1,7 @@
+node_modules/
+dist/
+dist-spike/
+tools/blender/.venv/
+*.log
+.DS_Store
+tools/qa/out/
