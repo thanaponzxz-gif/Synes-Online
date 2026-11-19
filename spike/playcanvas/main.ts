@@ -21,7 +21,7 @@ app.setCanvasResolution(pc.RESOLUTION_AUTO);
 window.addEventListener('resize', () => app.resizeCanvas());
 app.scene.ambientLight = new pc.Color(0.55, 0.6, 0.7);
 const Q = new URLSearchParams(location.search);
-const SHADOWS = Q.get('shadows') !== '0';
+const SHADOWS = Q.get('shadows') !== '0' && !location.hash.includes('noshadow');
 if (Q.get('clustered') !== '1') app.scene.clusteredLightingEnabled = false; // single directional light: clustered off is the fair/mobile setting
 
 const mat = (r: number, g: number, b: number) => { const m = new pc.StandardMaterial(); m.diffuse = new pc.Color(r, g, b); m.gloss = 0.1; m.useMetalness = true; m.metalness = 0; m.update(); return m; };

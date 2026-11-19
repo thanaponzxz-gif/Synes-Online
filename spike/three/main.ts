@@ -10,7 +10,7 @@ const logic = new SpikeLogic();
 
 const r = new WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
 r.setPixelRatio(Math.min(window.devicePixelRatio, 2)); r.setSize(innerWidth, innerHeight, false);
-const SHADOWS = new URLSearchParams(location.search).get('shadows') !== '0';
+const SHADOWS = (new URLSearchParams(location.search).get('shadows') !== '0' && !location.hash.includes('noshadow'));
 r.shadowMap.enabled = SHADOWS; r.shadowMap.type = PCFShadowMap;
 const scene = new Scene(); scene.background = new Color(0.62, 0.83, 0.94);
 const cam = new PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 120);

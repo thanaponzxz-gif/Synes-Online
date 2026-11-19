@@ -10,7 +10,11 @@ FPS บน GPU ซอฟต์แวร์สูงกว่า 1.25–2× แ�
 (GLTFLoader, ตัวอย่าง, ไลบรารี) ช่วยให้พัฒนาต่อได้ง่าย
 **ลดความเสี่ยง:** ตรรกะเกม (`shared/`), input และ UI ไม่ import เอนจิน เอนจินอยู่เฉพาะใน `src/render/`
 หากผลบนเครื่องจริงกลับด้าน ให้เปลี่ยนเฉพาะชั้นนี้
-**ต้องทำต่อ:** เปิด `/spike/playcanvas/` กับ `/spike/three/` บน Android และ iPhone จริง แล้วจดค่า FPS ลงไฟล์นี้
+**ต้องทำต่อ:** เปิดหน้า "Synes Engine Spike" (Artifact https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8) บน Android และ iPhone จริง
+กดสลับ 4 ปุ่ม (Three / PlayCanvas / แต่ละตัวแบบไม่มีเงา) แล้วจดค่า FPS ลงไฟล์นี้
+| อุปกรณ์ | Three | PlayCanvas | Three ไม่มีเงา | PC ไม่มีเงา |
+|---|---|---|---|---|
+| (รอเจ้าของทดสอบ) | | | | |
 
 ## ADR-002: กฎที่ server ตัดสินผ่าน deterministic simulation + input replay · 2026-11-19
 - `shared/sim/` เป็น simulation แบบ fixed tick 30 Hz ไม่มีการ import เอนจิน DOM หรือ `Math.random`
