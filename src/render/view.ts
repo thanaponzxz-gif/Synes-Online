@@ -7,7 +7,7 @@ import {
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
 import { LEVEL, type Shape } from '../../shared/data/level.ts';
 import { PLAYER } from '../../shared/data/tuning.ts';
-import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenProp, PAL } from './models.ts';
+import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenPropMerged, PAL } from './models.ts';
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
@@ -150,7 +150,7 @@ export class View {
     }
     const faded = new Map<Material, Material>();
     for (const [name, mats] of Object.entries(place)) {
-      for (const part of flattenProp(name)) {
+      for (const part of flattenPropMerged(name)) {
         let mat = faded.get(part.material);
         if (!mat) { mat = nearFade(part.material, this.nearFadeU); faded.set(part.material, mat); }
         const im = new InstancedMesh(part.geometry, mat, mats.length);

@@ -5,6 +5,8 @@ import {
   IcosahedronGeometry, OctahedronGeometry, TorusGeometry, CapsuleGeometry, DodecahedronGeometry, Color, type Material, BufferGeometry,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { Matrix4 } from 'three';
 
 export const PAL = {
   lumen: 0x5cf2e6, violet: 0xa78bfa, blossom: 0xff9ec7, gold: 0xffc857, leaf: 0x7ccb5e, leafDark: 0x3f8f4a,
@@ -189,5 +191,25 @@ export function flattenProp(name: string): { geometry: BufferGeometry; material:
   root.updateMatrixWorld(true);
   const out: { geometry: BufferGeometry; material: Material; matrix: import('three').Matrix4 }[] = [];
   root.traverse((o) => { const m = o as Mesh; if (m.isMesh) out.push({ geometry: m.geometry, material: m.material as Material, matrix: m.matrixWorld.clone() }); });
+  return out;
+}
+
+/** Same as flattenProp but merges all parts that share a material into one geometry → one draw call per material per prop type. */
+export function flattenPropMerged(name: string): { geometry: BufferGeometry; material: Material; matrix: Matrix4 }[] {
+  const byMat = new Map<Material, BufferGeometry[]>();
+  for (const p of flattenProp(name)) {
+    let g = p.geometry.clone(); g.applyMatrix4(p.matrix);
+    if (g.index) g = g.toNonIndexed();
+    for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal') g.deleteAttribute(k);
+    g.morphAttributes = {};
+    if (!byMat.has(p.material)) byMat.set(p.material, []);
+    byMat.get(p.material)!.push(g);
+  }
+  const out: { geometry: BufferGeometry; material: Material; matrix: Matrix4 }[] = [];
+  for (const [material, gs] of byMat) {
+    const merged = gs.length === 1 ? gs[0] : mergeGeometries(gs, false);
+    if (merged) out.push({ geometry: merged, material, matrix: new Matrix4() });
+    else for (const g of gs) out.push({ geometry: g, material, matrix: new Matrix4() }); // attribute mismatch fallback
+  }
   return out;
 }
