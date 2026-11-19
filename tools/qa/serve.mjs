@@ -9,7 +9,7 @@ http.createServer((req, res) => {
   const ext = path.extname(f); const type = types[ext] || 'application/octet-stream';
   const gz = /gzip/.test(req.headers['accept-encoding'] || '') && !/\.(png|webp|glb|ogg|mp3)$/.test(ext);
   let body = fs.readFileSync(f);
-  if (gz) { if (!cache.has(f)) cache.set(f, zlib.gzipSync(body, { level: 9 })); body = cache.get(f); }
+  if (gz) { const k = f + fs.statSync(f).mtimeMs; if (!cache.has(k)) cache.set(k, zlib.gzipSync(body, { level: 9 })); body = cache.get(k); }
   res.writeHead(200, { 'content-type': type, 'cache-control': 'no-cache', ...(gz ? { 'content-encoding': 'gzip' } : {}) });
   res.end(body);
 }).listen(port, () => console.log(`serving ${root} on :${port}`));
