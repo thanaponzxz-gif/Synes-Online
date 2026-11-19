@@ -43,7 +43,7 @@ function serveStatic(req: http.IncomingMessage, res: http.ServerResponse) {
   if (p.endsWith('/')) p += 'index.html';
   const f = path.join(ROOT, p);
   if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end('not found'); return; }
-  const ext = path.extname(f), compress = /gzip/.test(String(req.headers['accept-encoding'])) && !['.png', '.webp', '.glb'].includes(ext);
+  const ext = path.extname(f), compress = /gzip/.test(String(req.headers['accept-encoding'])) && !['.png', '.webp'].includes(ext);
   let body: Buffer = fs.readFileSync(f);
   if (compress) { const key = `${f}:${fs.statSync(f).mtimeMs}`; if (!gzCache.has(key)) gzCache.set(key, zlib.gzipSync(body, { level: 9 }) as Buffer); body = gzCache.get(key)!; }
   const immutable = p.includes('/assets/') && /-[A-Za-z0-9_-]{8}\./.test(p);

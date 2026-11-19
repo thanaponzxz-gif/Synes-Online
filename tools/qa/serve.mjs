@@ -7,7 +7,7 @@ http.createServer((req, res) => {
   let p = decodeURIComponent(new URL(req.url, 'http://x').pathname); if (p.endsWith('/')) p += 'index.html';
   const f = path.join(root, p); if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end('404'); }
   const ext = path.extname(f); const type = types[ext] || 'application/octet-stream';
-  const gz = /gzip/.test(req.headers['accept-encoding'] || '') && !/\.(png|webp|glb|ogg|mp3)$/.test(ext);
+  const gz = /gzip/.test(req.headers['accept-encoding'] || '') && !/\.(png|webp|ogg|mp3)$/.test(ext);
   let body = fs.readFileSync(f);
   if (gz) { const k = f + fs.statSync(f).mtimeMs; if (!cache.has(k)) cache.set(k, zlib.gzipSync(body, { level: 9 })); body = cache.get(k); }
   res.writeHead(200, { 'content-type': type, 'cache-control': 'no-cache', ...(gz ? { 'content-encoding': 'gzip' } : {}) });

@@ -162,7 +162,7 @@ export class View {
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
     put('tent', -3.6, -1.2, 0.4); const fire = put('campfire', 1.6, 1.2);
-    this.flames = ['flame', 'flame2'].map((n) => fire.getObjectByName(n)).filter(Boolean) as Object3D[];
+    this.flames = ['flame', 'flame2', 'campfire_flame'].map((n) => fire.getObjectByName(n)).filter(Boolean) as Object3D[];
     put('signpost', 2.6, -4.2, -0.5); put('lantern_post', -2.4, -6); put('lantern_post', 2.8, -10);
     put('fence', -4.5, 3.5, 0.3); put('fence', 4.8, 3.2, -0.4);
     put('lantern_post', 6.5, -44); put('lantern_post', -0.4, -46);

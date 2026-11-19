@@ -7,7 +7,7 @@
 | three.js r187 | node_modules/three | three.js authors | npm `three` | MIT | ใส่ license ใน build (มี) | gameplay · 2026-11-19 |
 | playcanvas 2.24.2 (ใช้ใน spike เท่านั้น ไม่อยู่ในเกม) | node_modules/playcanvas | PlayCanvas Ltd | npm `playcanvas` | MIT | ไม่อยู่ใน build เกม | gameplay · 2026-11-19 |
 | Blender 5.3 (bpy) เป็นเครื่องมือ ไม่ได้แจกจ่าย | tools/blender/.venv | Blender Foundation | PyPI `bpy` | GPL-3.0 (ตัวเครื่องมือ) | ผลงานที่สร้างด้วย Blender เป็นของผู้สร้าง ไม่ติด GPL | gameplay · 2026-11-19 |
-| โมเดล synes_kit.glb | public/assets/models/ | ทีม Synes (สคริปต์) | `tools/blender/build_kit.py` | เป็นของโปรเจกต์ | ไม่ต้อง | art · (รอ) |
+| โมเดล synes_kit.glb (30 asset, 15,232 tris, 537.6 KB) | public/assets/models/ | ทีม Synes (สคริปต์ ไม่ใช้ asset ภายนอก) | `tools/blender/build_kit.py` (build ซ้ำได้ไฟล์เดิมทุกไบต์) | เป็นของโปรเจกต์ | ไม่ต้อง | art · 2026-11-19, ตรวจซ้ำโดย gameplay ด้วย `verify_kit.py` (ผ่าน 293 ข้อ) |
 | เสียง SFX | src/audio.ts | ทีม Synes (สังเคราะห์) | โค้ด | เป็นของโปรเจกต์ | ไม่ต้อง | gameplay · 2026-11-19 |
 | ฟอนต์ | ใช้ system-ui (ไม่ฝังฟอนต์) | n/a | n/a | n/a | n/a | gameplay · 2026-11-19 |
 
