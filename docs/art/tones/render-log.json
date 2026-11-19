@@ -1,0 +1,122 @@
+[
+  {
+    "n": "01",
+    "tone": "dewlight",
+    "scene": "trail",
+    "file": "docs/art/tones/01-dewlight-trail.png",
+    "kind": "trail",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 133,
+    "tris": 113305,
+    "errors": []
+  },
+  {
+    "n": "02",
+    "tone": "blossom",
+    "scene": "town",
+    "file": "docs/art/tones/02-blossom-town.png",
+    "kind": "town",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 294,
+    "tris": 27210,
+    "errors": []
+  },
+  {
+    "n": "03",
+    "tone": "amber",
+    "scene": "shop",
+    "file": "docs/art/tones/03-amber-shop.png",
+    "kind": "shop",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 285,
+    "tris": 24737,
+    "errors": []
+  },
+  {
+    "n": "04",
+    "tone": "prism",
+    "scene": "town",
+    "file": "docs/art/tones/04-prism-town.png",
+    "kind": "town",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 301,
+    "tris": 27574,
+    "errors": []
+  },
+  {
+    "n": "05",
+    "tone": "dusk",
+    "scene": "trail",
+    "file": "docs/art/tones/05-dusk-trail.png",
+    "kind": "trail",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 127,
+    "tris": 92497,
+    "errors": []
+  },
+  {
+    "n": "06",
+    "tone": "moonpetal",
+    "scene": "mystery",
+    "file": "docs/art/tones/06-moonpetal-mystery.png",
+    "kind": "mystery",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 286,
+    "tris": 18204,
+    "errors": []
+  },
+  {
+    "n": "07",
+    "tone": "mistvale",
+    "scene": "mystery",
+    "file": "docs/art/tones/07-mistvale-mystery.png",
+    "kind": "mystery",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 295,
+    "tris": 19184,
+    "errors": []
+  },
+  {
+    "n": "08",
+    "tone": "stormglass",
+    "scene": "combat",
+    "file": "docs/art/tones/08-stormglass-combat.png",
+    "kind": "combat",
+    "steps": 206,
+    "telegraphs": 1,
+    "calls": 149,
+    "tris": 67989,
+    "errors": []
+  },
+  {
+    "n": "09",
+    "tone": "frostchime",
+    "scene": "shop",
+    "file": "docs/art/tones/09-frostchime-shop.png",
+    "kind": "shop",
+    "steps": 0,
+    "telegraphs": 0,
+    "calls": 287,
+    "tris": 24785,
+    "errors": []
+  },
+  {
+    "n": "10",
+    "tone": "verdant",
+    "scene": "clearing",
+    "file": "docs/art/tones/10-verdant-clearing.png",
+    "kind": "clearing",
+    "steps": 44,
+    "telegraphs": 2,
+    "calls": 167,
+    "tris": 94781,
+    "errors": []
+  }
+]
