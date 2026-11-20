@@ -31,10 +31,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---------- HUD ---------- */
 #hud { position: fixed; inset: 0; pointer-events: none; }
 #stick-zone { position: absolute; left: 0; top: 22%; bottom: 0; width: 46%; pointer-events: auto; touch-action: none; }
+/* DES-002 step 2: stick wears ui_stick_base_v01 / ui_stick_knob_v01. Base rim outer = 292/324 of the image width, so the image is drawn 324/292 = 110.96% of the
+   124px base (rim == old size, soft glow overflows); the box, position and opacity behaviour are unchanged. */
 #stick-base { position: absolute; left: calc(90px + var(--sl)); top: calc(100% - 110px); width: 124px; height: 124px; margin: -62px 0 0 -62px; border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.08); opacity: 0.45; transition: opacity 0.15s; }
+  opacity: 0.45; transition: opacity 0.15s; }
+#stick-base::before { content: ''; position: absolute; left: 50%; top: 50%; width: 110.96%; height: calc(110.96% * 323 / 324); transform: translate(-50%, -50%);
+  background: url('/assets/ui/ui_stick_base_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
 #stick-base.on { opacity: 1; }
-#stick-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: rgba(255, 255, 255, 0.82); transform: translate(-50%, -50%); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+#stick-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: url('/assets/ui/ui_stick_knob_v01.png') center / 100% 100% no-repeat; transform: translate(-50%, -50%); }
 #top-left { position: absolute; left: calc(12px + var(--sl)); top: calc(10px + var(--st)); width: min(34vw, 260px); }
 .who { font-weight: 700; font-size: 14px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; }
 #potions { display: inline-flex; gap: 3px; align-items: center; }
