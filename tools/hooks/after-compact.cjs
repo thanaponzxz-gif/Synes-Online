@@ -11,7 +11,7 @@ const dirty = sh('git status --porcelain').split('\n').filter(Boolean).length;
 const text = [
   'Project Synes — context was just compacted (auto-compact window 450k tokens).',
   'Rule (CLAUDE.md §5): finish only the current small step, then roll over with skill synes-pm section D:',
-  'update docs/PROJECT_SYNES.md + docs/HANDOFF.md → commit + push → create the next "🟢 MAIN · Synes Online · รอบ N" session (tag project-synes) → send the owner the link.',
+  'update docs/PROJECT_SYNES.md + docs/HANDOFF.md → commit + push → create the next "🟡 MAIN · Synes Online · รอบ N" session yourself without asking (tag project-synes; if create_session is missing, use a one-shot create_trigger with run_once_at) → send the owner the link.',
   'The new session closes this one (rename ⚪ OLD + archive) only after it verifies the push. Never touch sessions without the project-synes tag.',
   `Repo now: HEAD ${head} · uncommitted files: ${dirty} · git remote: ${remote}.`,
   remote === 'NO REMOTE' ? 'Rollover is BLOCKED without a GitHub remote: tell the owner in your next message and keep working in this session.' : '',

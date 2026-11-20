@@ -38,9 +38,9 @@ PM ทำได้แค่เขียนใบขอออกแบบ (`docs/
 เงื่อนไขอยู่ใน CLAUDE.md ข้อ 5 ขั้นตอนมีดังนี้
 1. อัปเดต PROJECT_SYNES.md (สถานะ, backlog, เพิ่มบรรทัดในบันทึกเซสชัน) และเพิ่ม handoff ใน `docs/HANDOFF.md`
 2. `npm test` → commit → `git push` (ถ้า push ไม่ได้ให้หยุดและแจ้งเจ้าของ)
-3. `create_session` ด้วยค่า:
+3. ทำเองทันทีโดยไม่ต้องถามเจ้าของ (CLAUDE.md ข้อ 5) · `create_session` ด้วยค่า:
    - `source_url`: URL ของ GitHub repo
-   - `title`: `🟢 MAIN · Synes Online · รอบ <N>`
+   - `title`: `🟡 MAIN · Synes Online · รอบ <N>` (🟡 = สีของ Synes, 🟢 เป็นของ TERRAVIA)
    - `tags`: `["project-synes"]`
    - `prompt`: prompt มาตรฐานด้านล่าง (ใส่ id ของเซสชันเดิมด้วย)
 4. แจ้งเจ้าของด้วยลิงก์เซสชันใหม่ 1 บรรทัด
