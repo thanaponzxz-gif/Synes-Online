@@ -82,7 +82,12 @@ async function handle(route, body) {
   if (route === '/act') { await act(body); return shot(); }
   if (route === '/ui') { const c = await center(UI[body.target]); if (!c) return { error: 'not visible: ' + body.target }; await unfreeze(); await page.touchscreen.tap(c.x, c.y); await sleep(400); await freeze(); return shot(); }
   if (route === '/screen') return shot();
-  if (route === '/log') return page.evaluate(() => ({ log: window.__synesQA.log, summary: window.__synes?.world.summary(), net: document.querySelector('#net-chip')?.textContent, reward: document.querySelector('#victory .reward')?.textContent }));
+  if (route === '/log') {
+    // also keep seed + full input log so any bug seen in the run can be replayed exactly (replayRun(seed, inputLog))
+    const run = await page.evaluate(() => ({ seed: window.__synes?.world.seed, inputLog: window.__synes?.log.data, qaLog: window.__synesQA.log }));
+    fs.writeFileSync(path.join(outDir, 'run.json'), JSON.stringify(run));
+    return page.evaluate(() => ({ log: window.__synesQA.log, summary: window.__synes?.world.summary(), net: document.querySelector('#net-chip')?.textContent, reward: document.querySelector('#victory .reward')?.textContent }));
+  }
   return { error: 'unknown route' };
 }
 

@@ -17,6 +17,6 @@
 | ไอคอนขวดยา (SVG ในโค้ด) | `src/ui/hud.ts` `POTION_SVG` | `docs/handoff/ui_potion_v01.md` | brief DRAFT |
 | ดาวเสียหลัก (ShapeGeometry 5 แฉก) | `src/render/view.ts` `starGeo()` | ยังไม่มี brief (backlog art) | placeholder |
 | ขอบลานบอส (วาง `rock_a`/`crystal_cluster` จากชุดเดิม) | `src/render/view.ts` | ใช้โมเดลชุดเดิม | placeholder |
-| โมเดลทั้งชุด `synes_kit.glb` | `public/assets/models/` | รอเจ้าของตัดสินข้อ ข-2 ใน ASSET_PIPELINE.md | ใช้งานอยู่ |
+| โมเดลทั้งชุด `synes_kit.glb` | `public/assets/models/` | โมเดลใหม่ทำตามมติ ข-2 (ใบสั่งงาน + ภาพเทียบในเกม) | placeholder ที่ใช้งานอยู่ (มติ ข-2) |
 
 ยังไม่มีการดาวน์โหลด asset หรือ plugin จากภายนอก จึงยังไม่มี plugin ที่ต้องตรวจโค้ด
