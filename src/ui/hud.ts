@@ -2,6 +2,7 @@
 import type { World, SimEvent, DefeatCause } from '../../shared/sim/world.ts';
 import { PLAYER, ENEMIES } from '../../shared/data/tuning.ts';
 import { rankFor, RANK_RULES } from '../../shared/rules/reward.ts';
+import { dodgeCdSeconds } from '../../shared/sim/variant.ts';
 
 /** Hint copy. `when` = only show while the thing it talks about is on screen (round-1 playtest: hints arrived before/after the event). */
 export const HINTS: Record<string, { icon: string; text: string; when?: (w: World) => boolean; urgent?: boolean }> = {
@@ -48,7 +49,7 @@ export class Hud {
     this.potionBtn.classList.toggle('empty', ps.potions <= 0);
     this.potionBtn.querySelector('.count')!.textContent = String(ps.potions);
     cd(this.skillBtn, Math.max(0, ps.skillCd) / PLAYER.skill.cooldown);
-    cd(this.dodgeBtn, Math.max(0, ps.dodgeCd) / w.variant.dodgeCd);
+    cd(this.dodgeBtn, Math.max(0, ps.dodgeCd) / dodgeCdSeconds(w.variant));
     this.skillBtn.classList.toggle('empowered', ps.empowered);
     $('#btn-attack').classList.toggle('empowered', ps.empowered);
     this.timer.textContent = fmt(w.tick / 30);
