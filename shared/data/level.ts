@@ -36,5 +36,12 @@ export const LEVEL = {
     { x: -8.2, z: -70.5, r: 0.85 }, { x: 4.2, z: -70.5, r: 0.85 },
     { x: -8.2, z: -81.5, r: 0.85 }, { x: 4.2, z: -81.5, r: 0.85 },
   ],
+  /** Auto attack zones (DES-001 §4 "ทั้งโถง"): groups of walkable shape ids before the boss. The boss approach ('arenaEntry') and the
+   *  arena belong to no zone, so Auto is off there. Two zones may overlap near their junction; a point can be in more than one. */
+  autoZones: [
+    { id: 'path', nameTh: 'ค่ายและทางเดิน', shapes: ['camp', 'trailA'] },
+    { id: 'clearing', nameTh: 'ลานกลาง', shapes: ['clearing'] },
+    { id: 'exit', nameTh: 'ทางไปลานบอส', shapes: ['trailC'] },
+  ] as { id: string; nameTh: string; shapes: string[] }[],
   // decoration scatter is client-only (render), never affects the sim
 };

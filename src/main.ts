@@ -15,6 +15,9 @@ import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
 import { Bot } from '../tests/bot.ts';
+import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
+import { AUTO_KINDS, autoAllowedHere, defaultAuto, packAuto, type AutoSettings } from '../shared/sim/auto.ts';
+import { dist } from '../shared/sim/math.ts';
 
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
@@ -38,6 +41,17 @@ input.bindButton($('#btn-skill3'), 'skill3');
 // ult is locked in this step: UI-only message, no sim input (DES-001 §3, Q6)
 $('#btn-ult').addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); hud.showBanner('อัลติจะปลดล็อกในอัปเดตถัดไป', 1.8); });
 input.bindButton($('#btn-potion'), 'potion');
+
+// ---- Auto attack (DES-001 §4). autoSet = the UI's copy of the settings; every change goes through Input.queueAuto so it rides on the next
+// TickInput and ends up in the input log (the server replays the same Auto). Only `enabled` is mirrored back from the sim (boss area / death turn it off).
+let autoSet: AutoSettings = defaultAuto();
+const sendAuto = (next: AutoSettings) => { autoSet = next; input.queueAuto(packAuto(next)); };
+const autoBar = new AutoBar($('#auto-bar'), $('#btn-auto'));
+const nearKinds = () => { let m = 0; if (world) for (const e of world.actors) { const i = (AUTO_KINDS as readonly string[]).indexOf(e.kind); if (i >= 0 && e.alive && dist(e.x, e.z, world.player.x, world.player.z) < 30) m |= 1 << i; } return m; };
+const autoPanel = new AutoPanel($('#auto-panel'), () => autoSet, sendAuto, nearKinds);
+$('#btn-auto').addEventListener('click', () => { if (state !== 'playing' || !world) return; sfx.tap(); sendAuto({ ...autoSet, enabled: !autoSet.enabled }); });
+$('#btn-auto-set').addEventListener('click', () => { if (state !== 'playing' || !world) return; sfx.tap(); autoPanel.render(); pause('auto'); });
+$('#btn-auto-close').addEventListener('click', () => { sfx.tap(); resume(); });
 
 let pref: QualityPref = loadPref();
 let tierName = pref === 'auto' ? guessTier() : pref;
@@ -105,6 +119,7 @@ async function newRun() {
   const seed = ticket?.seed ?? (Q.has('seed') ? +Q.get('seed')! : (Math.random() * 2 ** 32) >>> 0);
   world = new World(seed, variant);
   log = new InputLog();
+  input.autoPending = null; autoSet.enabled = false;
   view.buildLevel(world, 7);
   hud.netChip.textContent = ticket ? 'ออนไลน์' : 'ออฟไลน์';
   hud.netChip.title = ticket ? 'ผลและรางวัลจะถูกบันทึก' : 'โหมดออฟไลน์: ผลไม่ถูกบันทึก';
@@ -145,6 +160,8 @@ function frame(now: number) {
   }
   // frozen (QA): draw the exact end state of the last tick and let no wall-clock time pass in the effects
   renderFrame(state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : 1, state === 'paused' || qaFrozen ? 0 : dt);
+  if (!input.autoPending) autoSet.enabled = world.auto.s.enabled; // the sim may have switched it off (boss area, defeat)
+  autoBar.update(autoSet.enabled, autoAllowedHere(world));
   hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out));
   if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
@@ -209,13 +226,13 @@ async function onVictory() {
 }
 
 // ------------------------------------------------------------------ menus & lifecycle
-function pause(reason: 'menu' | 'hidden') {
+function pause(reason: 'menu' | 'hidden' | 'auto') {
   if (state !== 'playing') return;
   state = 'paused'; input.releaseAll(); sfx.suspend();
-  $(reason === 'menu' ? '#paused' : '#resume-tap').classList.add('show');
+  $(reason === 'menu' ? '#paused' : reason === 'auto' ? '#auto-panel' : '#resume-tap').classList.add('show');
 }
 function resume() {
-  for (const s of ['#paused', '#resume-tap', '#howto', '#credits']) $(s).classList.remove('show');
+  for (const s of ['#paused', '#resume-tap', '#howto', '#credits', '#auto-panel']) $(s).classList.remove('show');
   if (state === 'paused') { state = 'playing'; last = performance.now(); acc = 0; sfx.resume(); }
 }
 $('#btn-pause').addEventListener('click', () => { sfx.tap(); pause('menu'); });

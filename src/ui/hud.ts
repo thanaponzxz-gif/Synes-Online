@@ -95,6 +95,7 @@ export class Hud {
       else if (e.t === 'stun' && e.long) this.showBanner('💥 บอสชนเสา! มึนงง — โจมตีเลย!', 2.2);
       else if (e.t === 'stun') { project(e.id, 3.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'เสียหลัก', 'perfect'); }
       else if (e.t === 'gate' && e.open && e.id === 'clearingExit') this.showBanner('ประตูคริสตัลเปิดแล้ว เดินต่อตามทางข้างหน้า', 2.5);
+      else if (e.t === 'auto-off') this.showBanner(e.reason === 'boss' ? 'เข้าลานบอส · ปิดตีอัตโนมัติแล้ว' : 'ปิดตีอัตโนมัติแล้ว', 2.2);
       else if (e.t === 'checkpoint') this.showBanner('💧 บันทึกจุดเกิดใหม่แล้ว', 1.8);
       else if (e.t === 'boss-start') this.showBanner(`⚔ ${ENEMIES.prismback.nameTh}`, 2.4, true);
       else if (e.t === 'boss-phase') this.showBanner('⚠ ปริซึมแบ็กเกรี้ยวกราด!', 2, true);

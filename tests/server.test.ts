@@ -3,6 +3,7 @@ import type { AddressInfo } from 'node:net';
 import { server } from '../server/index.ts';
 import { World } from '../shared/sim/world.ts';
 import { InputLog } from '../shared/sim/input.ts';
+import { packAuto, defaultAuto } from '../shared/sim/auto.ts';
 import { Bot } from './bot.ts';
 
 let base = '';
@@ -29,5 +30,19 @@ describe('server API', () => {
     expect(fin.body.reward.gold).toBe(0);
     const again = await post('/api/run/finish', { runId: start.runId, log: [30, 0, 0, 0] });
     expect(again.status).toBe(409);
+  });
+  it('accepts a v2 log (Auto settings commands) and replays it; rejects malformed commands', async () => {
+    const { body: start } = await post('/api/run/start', {});
+    const log = new InputLog();
+    for (let i = 0; i < 60; i++) log.push(i === 0 ? { mx: 0, mz: 0, b: 0, auto: packAuto({ ...defaultAuto(), enabled: true, hall: true, skills: [true, true, true] }) } : { mx: 0, mz: 0, b: 0 });
+    expect(log.data.slice(0, 4)).toEqual([0, 0, 2, 0]);
+    const ok = await post('/api/run/finish', { runId: start.runId, log: log.data });
+    expect(ok.status).toBe(200);
+    expect(ok.body.verified).toBe(true);
+    expect(ok.body.summary.ticks).toBe(60);
+    const { body: start2 } = await post('/api/run/start', {});
+    const bad = await post('/api/run/finish', { runId: start2.runId, log: [0, 0, 2, 0, 0, 1, 1, 3 << 8, 30, 0, 0, 0] }); // radius 3 is out of range
+    expect(bad.status).toBe(422);
+    expect(bad.body.error).toBe('bad-auto-cmd');
   });
 });
