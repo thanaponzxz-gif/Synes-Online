@@ -5,3 +5,6 @@
 | asset | สถานะ | หมายเหตุ |
 |---|---|---|
 | `ui_potion_v01` | DRAFT (นำร่อง) | แทนไอคอนขวดยาชั่วคราวที่เป็น SVG ในโค้ด |
+| `char_kit_outline_v01` | DRAFT (รอบ 2-B) | เส้นขอบตัวละครแบบอบลง mesh (Blender) |
+| `fx_boss_defeat_v01` | DRAFT (รอบ 2-B) | ฉากบอสล้ม (เศษคริสตัลจาก Blender + โค้ด) |
+| `fx_dodge_trail_v01` | DRAFT (รอบ 2-B) | ร่องแสงตอนหลบ (โค้ด) |
