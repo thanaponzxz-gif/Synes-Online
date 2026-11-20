@@ -1,0 +1,181 @@
+{
+ "note": "real time, bot input, Chromium headless + SwiftShader",
+ "runs": {
+  "from-camp": {
+   "query": "",
+   "samples": 94,
+   "moveHintLastSeen": {
+    "wall": 2.26,
+    "simS": 2.5,
+    "z": -11.3
+   },
+   "bossStarted": {
+    "wall": 23,
+    "simS": 23.2
+   },
+   "moveHintDuringBoss": false,
+   "hintsDuringBoss": [
+    "💧บ่อแสงฟื้นพลังและเติมยา ถ้",
+    "💎ยืนหน้าเสาคริสตัลเพื่อล่อบ"
+   ],
+   "timeline": [
+    {
+     "fromWall": 0.1,
+     "fromSimS": 0.3,
+     "toWall": 2.26,
+     "toSimS": 2.5,
+     "show": true,
+     "boss": false,
+     "text": "🕹ลากนิ้วที่ครึ่งจอซ้ายเพื่อ"
+    },
+    {
+     "fromWall": 2.6,
+     "fromSimS": 2.7,
+     "toWall": 3.61,
+     "toSimS": 3.7,
+     "show": true,
+     "boss": false,
+     "text": "↯วงสีส้มคือจุดที่จะโดนโจมตี "
+    },
+    {
+     "fromWall": 3.95,
+     "fromSimS": 4.2,
+     "toWall": 3.95,
+     "toSimS": 4.2,
+     "show": false,
+     "boss": false,
+     "text": "↯วงสีส้มคือจุดที่จะโดนโจมตี "
+    },
+    {
+     "fromWall": 4.26,
+     "fromSimS": 4.5,
+     "toWall": 4.9,
+     "toSimS": 5.1,
+     "show": true,
+     "boss": false,
+     "text": "⚔แตะ ⚔ เพื่อฟัน แตะต่อเนื่อง"
+    },
+    {
+     "fromWall": 5.16,
+     "fromSimS": 5.4,
+     "toWall": 6.91,
+     "toSimS": 7.1,
+     "show": false,
+     "boss": false,
+     "text": "⚔แตะ ⚔ เพื่อฟัน แตะต่อเนื่อง"
+    },
+    {
+     "fromWall": 7.2,
+     "fromSimS": 7.4,
+     "toWall": 11.06,
+     "toSimS": 11.3,
+     "show": true,
+     "boss": false,
+     "text": "✦ศัตรูที่มีดาว ✦ หมุนบนหัวกำ"
+    },
+    {
+     "fromWall": 11.39,
+     "fromSimS": 11.6,
+     "toWall": 15.59,
+     "toSimS": 15.7,
+     "show": true,
+     "boss": false,
+     "text": "➤แถบยาวคือแนวพุ่งชน ก้าวออกด"
+    },
+    {
+     "fromWall": 15.93,
+     "fromSimS": 16.1,
+     "toWall": 19.72,
+     "toSimS": 19.9,
+     "show": false,
+     "boss": false,
+     "text": "➤แถบยาวคือแนวพุ่งชน ก้าวออกด"
+    },
+    {
+     "fromWall": 20,
+     "fromSimS": 20.2,
+     "toWall": 24.17,
+     "toSimS": 24.4,
+     "show": true,
+     "boss": false,
+     "text": "💧บ่อแสงฟื้นพลังและเติมยา ถ้"
+    },
+    {
+     "fromWall": 24.48,
+     "fromSimS": 24.7,
+     "toWall": 24.76,
+     "toSimS": 24.9,
+     "show": false,
+     "boss": true,
+     "text": "💧บ่อแสงฟื้นพลังและเติมยา ถ้"
+    },
+    {
+     "fromWall": 25.05,
+     "fromSimS": 25.2,
+     "toWall": 28.13,
+     "toSimS": 28.3,
+     "show": true,
+     "boss": true,
+     "text": "💎ยืนหน้าเสาคริสตัลเพื่อล่อบ"
+    }
+   ]
+  },
+  "start-boss": {
+   "query": "start=boss",
+   "samples": 27,
+   "moveHintLastSeen": {
+    "wall": 4.63,
+    "simS": 4.8,
+    "z": -75.6
+   },
+   "bossStarted": {
+    "wall": 2.85,
+    "simS": 3
+   },
+   "moveHintDuringBoss": true,
+   "hintsDuringBoss": [
+    "🕹ลากนิ้วที่ครึ่งจอซ้ายเพื่อ",
+    "↯วงสีส้มคือจุดที่จะโดนโจมตี ",
+    "💎ยืนหน้าเสาคริสตัลเพื่อล่อบ"
+   ],
+   "timeline": [
+    {
+     "fromWall": 0.13,
+     "fromSimS": 0.3,
+     "toWall": 4.63,
+     "toSimS": 4.8,
+     "show": true,
+     "boss": false,
+     "text": "🕹ลากนิ้วที่ครึ่งจอซ้ายเพื่อ"
+    },
+    {
+     "fromWall": 4.92,
+     "fromSimS": 5.2,
+     "toWall": 6.16,
+     "toSimS": 6.4,
+     "show": true,
+     "boss": true,
+     "text": "↯วงสีส้มคือจุดที่จะโดนโจมตี "
+    },
+    {
+     "fromWall": 6.46,
+     "fromSimS": 6.7,
+     "toWall": 6.74,
+     "toSimS": 7,
+     "show": false,
+     "boss": true,
+     "text": "↯วงสีส้มคือจุดที่จะโดนโจมตี "
+    },
+    {
+     "fromWall": 7.07,
+     "fromSimS": 7.3,
+     "toWall": 8.11,
+     "toSimS": 8.3,
+     "show": true,
+     "boss": true,
+     "text": "💎ยืนหน้าเสาคริสตัลเพื่อล่อบ"
+    }
+   ]
+  }
+ }
+}
