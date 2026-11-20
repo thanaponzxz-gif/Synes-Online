@@ -4,9 +4,10 @@
 |---|---|---|
 | gameplay / engine | `main` | `shared/**`, `src/**` ยกเว้น `src/ui/**`, `server/**`, `tests/**` |
 | UI/UX | `main` (เซสชันเดียวกับ gameplay ในรอบนี้) | `src/ui/**` |
-| art / Blender | `art/blender-kit` (worktree) | `tools/blender/**`, `public/assets/models/**`, `docs/art/**` |
+| art / Blender | `lane/art` (ก่อนหน้าใช้ `art/blender-kit`, merge แล้ว) | `tools/blender/**`, `public/assets/models/**`, `docs/art/**` |
 | web perf / QA | `main` | `tools/qa/**`, `docs/qa/**` |
 | spike | `main` (ปิดงานแล้ว) | `spike/**`, `vite.spike.config.ts` |
+| ผู้จัดการโปรเจค Synes (PM) | `main` | `CLAUDE.md`, `docs/PROJECT_SYNES.md`, `docs/HANDOFF.md`, `docs/team/**`, `.claude/agents/**`, `.claude/skills/**` และเป็นคนเดียวที่ merge เข้า `main` |
 
 ไฟล์ที่ใช้ร่วมกัน (`docs/ASSETS.md`, `docs/HANDOFF.md`, `package.json`) ให้แก้เฉพาะส่วนของตัวเอง แล้ว merge เข้า `main` ทีละสายงาน
 ทุกเซสชันต้องเริ่มด้วย `git fetch && git status && git log --oneline -5` และจบด้วย handoff ใน `docs/HANDOFF.md`

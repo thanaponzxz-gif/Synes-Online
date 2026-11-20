@@ -5,4 +5,5 @@ tools/blender/.venv/
 *.log
 .DS_Store
 tools/qa/out/
-.claude/
+.claude/worktrees/
+.claude/settings.local.json
