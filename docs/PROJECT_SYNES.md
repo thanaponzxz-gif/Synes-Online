@@ -51,6 +51,7 @@
   ลำดับ: (1) ต้นแบบสู้บอส 3 สกิล (Chime Burst, Crescent Cut, Crystal Break) + อัลติล็อก + คูลดาวน์หลบ 17 vs 26 tick → (2) iPhone เวลาจริง + FPS → (3) Auto โถงมอน (หลังสกิลผ่านตรวจ) · ฟาร์มออฟไลน์รอบหลัง
   **ขั้น 1 เสร็จ (รอทีม A ตรวจ):** 3 สกิล + อัลติล็อก + ท่า/VFX (+3 draw calls) + คลิปสู้บอส + ผลเทียบคูลดาวน์หลบ (`928f12e`, `77f4e18`) · คำถาม Q1–Q34 ใน `DES-001-teamB.md` · คำตอบ REQ-002: ปุ่มโปร่งผ่าน, วงในกรวยผ่าน, ไอคอนยา/ร่องแสงหลบ แก้บรีฟ, เส้นขอบ ยกเลิก, บอสล้ม พัก
   เครื่องมือแล้ว: `?start=boss`, `?dodgecd=17|26`, `?offline&seed=N`, ตัวเทียบ `docs/qa/dodge-cd-compare.md`, baseline ภาพ/perf `docs/qa/baseline-2b.md`
+- **REQ-003 ด่านใหญ่ 15 มอน (2026-11-21, branch `claude/intelligent-dijkstra-83xra2`):** ใบขอถึงทีม A + ร่างทดลองจาก agent ADR-009 (`docs/design/drafts/`) ผลวิเคราะห์: สร้างได้แต่รวม XL และเกินงบ GLB/draw calls, `shrinecourt` reads 5 ไม่ผ่าน · รอทีม A (ห้ามสร้างจากร่าง)
 - **iPhone: เล่นได้แล้วผ่าน GitHub Pages** (เจ้าของยืนยัน 2026-11-20) FPS ยังไม่ทราบ · หน้า Artifact ของ claude.ai เปิดบน iPhone เครื่องนี้ไม่ได้ (ต้องอัปเดต iOS)
 - GitHub: https://github.com/thanaponzxz-gif/Synes-Online (**Public** ห้าม commit ข้อมูลส่วนตัว อีเมล หรือ key) · branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
 - **GitHub Pages (สาธารณะ):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` = `260d107` (บิลด์จาก `main` `4fdc1b3`: สกิล DES-001 + HUD DES-002 + ลานปริซึม DES-003/004 ขั้น 1) โหมดออฟไลน์ · เจ้าของขอลิงก์เล่นเวอร์ชันใหม่ 2026-11-21 · บิลด์ก่อนหน้า `b142dfa` (V4) · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
@@ -78,6 +79,7 @@
 | ADR-008: ใช้ asset สำเร็จรูป (CC0) ในเกมได้แค่ไหน (ตอนนี้ขัดข้อ 1 เรื่องต้นฉบับ) | รอ |
 | ADR-008: นำร่องภาพ → 3D 1 ชิ้น (EXP-102) ต้องสมัคร Tripo แบบเสียเงิน หรือบอกรุ่น GPU เครื่องเจ้าของสำหรับ Hunyuan3D | รอ |
 | ADR-008: ลดขนาด CLAUDE.md/PROJECT_SYNES.md ที่โหลดทุกเซสชัน (EXP-101) และติดตั้ง meshopt (EXP-103) | รอ |
+| ส่ง REQ-003 (ด่านใหญ่ 15 มอน) + ร่าง `docs/design/drafts/DRAFT-REQ003-*.md` ให้ทีม A และตอบคำถาม REQ-003 ข้อ 5 (นับ 15 แบบอย่างไร, ด่านใหม่หรือขยาย, เอกสารหรือต้นแบบ, ลำดับเทียบงานค้าง) | รอ |
 
 ## 6. Backlog (เรียงตามลำดับความสำคัญ เจ้าของงานระบุไว้ในวงเล็บ)
 1. ~~(gameplay/engine) วงเตือนทับทุกวัตถุ + วัตถุที่บังจางลง~~ · ~~(gameplay) phase 2 ใหม่ + สอน perfect dodge + เกณฑ์อันดับ~~ · ~~(ui) ย้ายคำแนะนำ ไอคอนยา ศัพท์ dev ตัวเลขดาเมจ~~ (เสร็จรอบ 2-A)
@@ -92,6 +94,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
+| 2026-11-21 | 🟡 SUB · Synes · ด่านใหญ่ 15 มอน (REQ-003) `session_01A1roa4aoJpo6BW8Q6rKvWy` | REQ-003, agent `synes-game-designer` + `synes-complexity`, ADR-009, ร่างด่าน + วิเคราะห์ความซับซ้อน, L-020/021 | `claude/intelligent-dijkstra-83xra2` (ยังไม่ merge) |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002 (merge `b5d20dc`), ตรวจรับ + merge `lane/prismatic-graphics` (`4fdc1b3`) หลังเจ้าของอนุมัติโมเดลใหม่, ขึ้น Pages `260d107` | `e9a50de`, `b5d20dc`, `4fdc1b3`, gh-pages `260d107` |
 | 2026-11-21 | แชตโปรเจค Synes `session_01A1roa5V1LencXdcrbPpfsW` | ADR-008 ระบบเรียนรู้ต่อเนื่อง: `docs/knowledge/` 4 ไฟล์, `AGENTS.md`, CLAUDE.md ข้อ 7 (ตรวจ license/ราคาเครื่องมือจากแหล่งทางการ) | `main` (ดู git log) |
 | 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 2-B) `session_01A1roa3XQQ2CGqTkeyLjTgy` | ปิดแชตเก่า, เพลย์เทสต์รอบ 3, แก้ 3 เรื่อง, Artifact V4, GitHub Pages (iPhone เล่นได้), **กฎเหล็ก ADR-007**, REQ-001/002, รับ DES-001, ต้นแบบ 3 สกิล + อัลติล็อก + VFX + คลิป, เทียบคูลดาวน์หลบ, baseline ภาพ/perf | `3389f98`, `b142dfa` (gh-pages), `25faaad`, `d8de018`, `928f12e`, `77f4e18` |
