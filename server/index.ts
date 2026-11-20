@@ -9,12 +9,13 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { replayRun } from '../shared/rules/validate.ts';
 import { parseVariant, type RunVariant } from '../shared/sim/variant.ts';
+import { parseRuleset, tuningHash, type Ruleset } from '../shared/sim/ruleset.ts';
 import { rewardFor } from '../shared/rules/reward.ts';
 
 const PORT = +(process.env.PORT || 8080);
 const SECRET = process.env.SYNES_SECRET || crypto.randomBytes(32).toString('hex');
 const ROOT = path.resolve(process.env.SYNES_STATIC || 'dist');
-const runs = new Map<string, { seed: number; startedAt: number; done: boolean; ip: string; variant: RunVariant }>();
+const runs = new Map<string, { seed: number; startedAt: number; done: boolean; ip: string; variant: RunVariant; ruleset: Ruleset; tuning: string }>();
 const hits = new Map<string, { n: number; t: number }>();
 
 function rateLimited(ip: string, max = 30) {
@@ -63,9 +64,14 @@ export const server = http.createServer(async (req, res) => {
       const body = await readBody(req, 10_000);
       const variant = parseVariant(body?.variant); // missing (old client) -> default; anything off-whitelist -> reject
       if (!variant) return json(res, 422, { error: 'bad-variant' });
+      // run envelope (DES-006 §1): rulesetVersion is separate from the input-log format version; missing = combat-1, unknown = reject
+      const ruleset = parseRuleset(body?.rulesetVersion);
+      if (!ruleset) return json(res, 422, { error: 'bad-ruleset' });
+      const tuning = tuningHash(ruleset);
+      if (body?.tuningHash !== undefined && body.tuningHash !== tuning) return json(res, 422, { error: 'tuning-mismatch' });
       const runId = crypto.randomUUID(), seed = crypto.randomBytes(4).readUInt32BE(0);
-      runs.set(runId, { seed, startedAt: Date.now(), done: false, ip, variant });
-      return json(res, 200, { runId, seed, variant });
+      runs.set(runId, { seed, startedAt: Date.now(), done: false, ip, variant, ruleset, tuning });
+      return json(res, 200, { runId, seed, variant, rulesetVersion: ruleset, tuningHash: tuning });
     }
     if (url.pathname === '/api/run/finish' && req.method === 'POST') {
       if (rateLimited(ip)) return json(res, 429, { error: 'rate-limited' });
@@ -73,13 +79,14 @@ export const server = http.createServer(async (req, res) => {
       const run = runs.get(String(body.runId));
       if (!run) return json(res, 404, { error: 'unknown-run' });
       if (run.done) return json(res, 409, { error: 'already-finished' });
-      const verdict = replayRun(run.seed, body.log, Date.now() - run.startedAt, run.variant);
+      if (body.rulesetVersion !== undefined && body.rulesetVersion !== run.ruleset) return json(res, 422, { error: 'ruleset-mismatch' });
+      const verdict = replayRun(run.seed, body.log, Date.now() - run.startedAt, run.variant, run.ruleset); // always the ruleset recorded at start
       if (!verdict.ok) return json(res, 422, { error: verdict.reason });
       run.done = true;
       const s = verdict.summary!;
       const reward = rewardFor({ victory: s.victory, seconds: s.seconds, damageTaken: s.damageTaken, deaths: s.deaths, perfect: s.perfect }, roll(String(body.runId)));
       // NOTE: no persistence yet (vertical slice). Next step: account/guest id + DB write here.
-      return json(res, 200, { verified: true, summary: s, reward });
+      return json(res, 200, { verified: true, summary: s, reward, rulesetVersion: run.ruleset, tuningHash: run.tuning });
     }
     if (url.pathname.startsWith('/api/')) return json(res, 404, { error: 'not-found' });
     serveStatic(req, res);

@@ -63,3 +63,16 @@ export const ENEMIES = {
 } as const;
 
 export type EnemyKind = keyof typeof ENEMIES;
+
+/** Combo rulesets (DES-006 §1, REQ-003). `combat-1` = the shipped combo above (seconds, 62% chain window). The `combo-*` rulesets
+ *  use INTEGER ticks at 30 Hz. dur = ticks per swing; hit = tick (counted from the swing's start tick = 0) at which the hit resolves.
+ *  Damage, range and angle stay PLAYER.combo[step].dmg/range/arcCos. A swing can only be chained once it has ended (dur ticks). */
+export const COMBO_TICKS = {
+  bufferTicks: 8,   // attack input buffer (replaces 0.25 s)
+  resetTicks: 18,   // idle ticks after the END of a swing before the combo resets (replaces 0.6 s)
+  sets: {
+    A: { dur: [12, 12, 18], hit: [5, 5, 8] },
+    B: { dur: [13, 13, 20], hit: [6, 6, 9] },
+    C: { dur: [15, 15, 22], hit: [6, 6, 10] },
+  },
+} as const;

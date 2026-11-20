@@ -1,0 +1,178 @@
+{
+ "bot-s1-k0.7": {
+  "digest": "da4dc73a",
+  "summary": {
+   "victory": true,
+   "ticks": 1677,
+   "seconds": 55.9,
+   "damageTaken": 12,
+   "perfect": 1,
+   "deaths": 0,
+   "dodges": 18,
+   "potionsUsed": 0,
+   "hitsLanded": 84,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s1-k1": {
+  "digest": "49b6d3a9",
+  "summary": {
+   "victory": true,
+   "ticks": 1616,
+   "seconds": 53.86666666666667,
+   "damageTaken": 0,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 15,
+   "potionsUsed": 0,
+   "hitsLanded": 79,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s2-k0.7": {
+  "digest": "6cc67114",
+  "summary": {
+   "victory": true,
+   "ticks": 1689,
+   "seconds": 56.3,
+   "damageTaken": 0,
+   "perfect": 1,
+   "deaths": 0,
+   "dodges": 18,
+   "potionsUsed": 0,
+   "hitsLanded": 85,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s2-k1": {
+  "digest": "3f49c7",
+  "summary": {
+   "victory": true,
+   "ticks": 1543,
+   "seconds": 51.43333333333333,
+   "damageTaken": 12,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 15,
+   "potionsUsed": 0,
+   "hitsLanded": 78,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s3-k0.7": {
+  "digest": "b41c2e52",
+  "summary": {
+   "victory": true,
+   "ticks": 1693,
+   "seconds": 56.43333333333333,
+   "damageTaken": 0,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 17,
+   "potionsUsed": 0,
+   "hitsLanded": 84,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s3-k1": {
+  "digest": "ff0c96f3",
+  "summary": {
+   "victory": true,
+   "ticks": 1618,
+   "seconds": 53.93333333333333,
+   "damageTaken": 0,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 14,
+   "potionsUsed": 0,
+   "hitsLanded": 82,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s5-k0.7": {
+  "digest": "e84692e1",
+  "summary": {
+   "victory": true,
+   "ticks": 1653,
+   "seconds": 55.1,
+   "damageTaken": 0,
+   "perfect": 1,
+   "deaths": 0,
+   "dodges": 16,
+   "potionsUsed": 0,
+   "hitsLanded": 85,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-s5-k1": {
+  "digest": "42560067",
+  "summary": {
+   "victory": true,
+   "ticks": 1627,
+   "seconds": 54.233333333333334,
+   "damageTaken": 12,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 14,
+   "potionsUsed": 0,
+   "hitsLanded": 82,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-skills-s1": {
+  "digest": "d8f5bbfe",
+  "summary": {
+   "victory": true,
+   "ticks": 1474,
+   "seconds": 49.13333333333333,
+   "damageTaken": 12,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 9,
+   "potionsUsed": 0,
+   "hitsLanded": 68,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "bot-boss-dodge26-s4": {
+  "digest": "b9e7139b",
+  "summary": {
+   "victory": true,
+   "ticks": 972,
+   "seconds": 32.4,
+   "damageTaken": 0,
+   "perfect": 0,
+   "deaths": 0,
+   "dodges": 9,
+   "potionsUsed": 0,
+   "hitsLanded": 62,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ },
+ "fixture-r3": {
+  "digest": "80c6518b",
+  "summary": {
+   "victory": true,
+   "ticks": 2199,
+   "seconds": 73.3,
+   "damageTaken": 98,
+   "perfect": 2,
+   "deaths": 0,
+   "dodges": 16,
+   "potionsUsed": 1,
+   "hitsLanded": 70,
+   "bossHpLeft": 0,
+   "phase": 2
+  }
+ }
+}

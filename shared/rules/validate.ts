@@ -3,6 +3,7 @@ import { World } from '../sim/world.ts';
 import { InputLog, isV2Log, LOG_OP } from '../sim/input.ts';
 import { unpackAuto } from '../sim/auto.ts';
 import { type RunVariant, DEFAULT_VARIANT } from '../sim/variant.ts';
+import { type Ruleset, DEFAULT_RULESET } from '../sim/ruleset.ts';
 import { TICK } from '../data/tuning.ts';
 
 export const MAX_RUN_TICKS = Math.round(20 * 60 / TICK); // 20 minutes
@@ -26,13 +27,13 @@ export function checkLog(log: unknown): { ok: true; version: 1 | 2; ticks: numbe
   return { ok: true, version: v2 ? 2 : 1, ticks: total };
 }
 
-export function replayRun(seed: number, log: unknown, realElapsedMs?: number, variant: RunVariant = DEFAULT_VARIANT): ReplayVerdict {
+export function replayRun(seed: number, log: unknown, realElapsedMs?: number, variant: RunVariant = DEFAULT_VARIANT, ruleset: Ruleset = DEFAULT_RULESET): ReplayVerdict {
   const shape = checkLog(log);
   if (!shape.ok) return { ok: false, reason: shape.reason };
   const total = shape.ticks;
   if (total > MAX_RUN_TICKS) return { ok: false, reason: 'too-long' };
   if (realElapsedMs !== undefined && realElapsedMs + 3000 < total * TICK * 1000 * 0.95) return { ok: false, reason: 'faster-than-real-time' };
-  const w = new World(seed, variant);
+  const w = new World(seed, variant, ruleset);
   for (const inp of InputLog.iterate(log as number[])) { w.step(inp); if (w.finished) break; }
   return { ok: true, summary: w.summary() };
 }
