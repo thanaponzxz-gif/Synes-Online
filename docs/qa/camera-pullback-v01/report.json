@@ -1,0 +1,3890 @@
+{
+ "generatedAt": "2026-11-20T23:12:11.856Z",
+ "seed": 1,
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "cases": [
+  {
+   "id": "boss-front-slam",
+   "kind": "boss",
+   "atk": "slam",
+   "pos": "front",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-front-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 58,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-front-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 58,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-front-slam.jpg"
+  },
+  {
+   "id": "boss-front-sweep",
+   "kind": "boss",
+   "atk": "sweep",
+   "pos": "front",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-front-sweep",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-sweep-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-sweep-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 56,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-front-sweep",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-sweep-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-sweep-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 56,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-front-sweep.jpg"
+  },
+  {
+   "id": "boss-front-charge",
+   "kind": "boss",
+   "atk": "charge",
+   "pos": "front",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-front-charge",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-charge-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 56,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-charge-medium-nopull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 55,
+     "pull": 0
+    },
+    "maxCalls": 56,
+    "maxPull": 0,
+    "tFirstPass": 1.33,
+    "failTicksWhileTele": 39,
+    "failTicksAfterMid": 20,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-front-charge",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 56,
+     "pull": 0.17,
+     "cy": 5.24,
+     "cz": -68.71,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-charge-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.599,
+     "cy": 7.11,
+     "cz": -64.21,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-charge-medium-pull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0.6
+    },
+    "maxCalls": 58,
+    "maxPull": 0.6,
+    "tFirstPass": 0.1,
+    "failTicksWhileTele": 2,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-front-charge.jpg"
+  },
+  {
+   "id": "boss-front-shard",
+   "kind": "boss",
+   "atk": "shard",
+   "pos": "front",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-front-shard",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -81.84
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 9,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 9,
+     "pass": false,
+     "calls": 60,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-shard-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 9,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 9,
+     "pass": false,
+     "calls": 60,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -70.5,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-shard-medium-nopull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0
+    },
+    "maxCalls": 63,
+    "maxPull": 0,
+    "tFirstPass": 1.2,
+    "failTicksWhileTele": 35,
+    "failTicksAfterMid": 24,
+    "hpLost": 12
+   },
+   "pull": {
+    "id": "boss-front-shard",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -81.84
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.057,
+     "cy": 4.75,
+     "cz": -69.9,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-shard-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.197,
+     "cy": 5.36,
+     "cz": -68.43,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-shard-medium-pull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.2
+    },
+    "maxCalls": 63,
+    "maxPull": 0.2,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "montage": "boss-front-shard.jpg"
+  },
+  {
+   "id": "boss-behind-slam",
+   "kind": "boss",
+   "atk": "slam",
+   "pos": "behind",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-behind-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 7,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 8,
+     "pass": false,
+     "calls": 56,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 7,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 8,
+     "pass": false,
+     "calls": 59,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 59,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 36,
+    "failTicksAfterMid": 19,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-behind-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 3,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 3,
+     "pass": false,
+     "calls": 61,
+     "pull": 0.413,
+     "cy": 10.45,
+     "cz": -57.86,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0.699,
+     "cy": 12.54,
+     "cz": -53.95,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 63,
+     "pull": 0.7
+    },
+    "maxCalls": 63,
+    "maxPull": 0.7,
+    "tFirstPass": 0.03,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-behind-slam.jpg",
+   "clip": "boss-behind-slam.webm"
+  },
+  {
+   "id": "boss-behind-sweep",
+   "kind": "boss",
+   "atk": "sweep",
+   "pos": "behind",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-behind-sweep",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 59,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-sweep-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 59,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-sweep-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 59,
+     "pull": 0
+    },
+    "maxCalls": 59,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 14,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-behind-sweep",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-sweep-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-sweep-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.3
+    },
+    "maxCalls": 59,
+    "maxPull": 0.3,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-behind-sweep.jpg"
+  },
+  {
+   "id": "boss-behind-charge",
+   "kind": "boss",
+   "atk": "charge",
+   "pos": "behind",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-behind-charge",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 59,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-charge-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 59,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-charge-medium-nopull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 59,
+    "maxPull": 0,
+    "tFirstPass": 1.47,
+    "failTicksWhileTele": 39,
+    "failTicksAfterMid": 20,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-behind-charge",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -70.13
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-charge-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-charge-medium-pull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.3
+    },
+    "maxCalls": 59,
+    "maxPull": 0.3,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-behind-charge.jpg"
+  },
+  {
+   "id": "boss-behind-shard",
+   "kind": "boss",
+   "atk": "shard",
+   "pos": "behind",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-behind-shard",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -70.16
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 60,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-shard-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 60,
+     "pull": 0,
+     "cy": 7.44,
+     "cz": -63.5,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-shard-medium-nopull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 1,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 60,
+     "pull": 0
+    },
+    "maxCalls": 63,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 46,
+    "failTicksAfterMid": 35,
+    "hpLost": 12
+   },
+   "pull": {
+    "id": "boss-behind-shard",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -2,
+     "z": -70.16
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 63,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-shard-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 63,
+     "pull": 0.3,
+     "cy": 9.63,
+     "cz": -59.41,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-behind-shard-medium-pull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 63,
+     "pull": 0.3
+    },
+    "maxCalls": 66,
+    "maxPull": 0.3,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "montage": "boss-behind-shard.jpg"
+  },
+  {
+   "id": "boss-left-slam",
+   "kind": "boss",
+   "atk": "slam",
+   "pos": "left",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-left-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 3,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 3,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 3,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 3,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0
+    },
+    "maxCalls": 59,
+    "maxPull": 0,
+    "tFirstPass": 1.23,
+    "failTicksWhileTele": 36,
+    "failTicksAfterMid": 19,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-left-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0.057,
+     "cy": 6.28,
+     "cz": -66.36,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.2,
+     "cy": 7.1,
+     "cz": -64.66,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.2
+    },
+    "maxCalls": 60,
+    "maxPull": 0.2,
+    "tFirstPass": 0.03,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-left-slam.jpg"
+  },
+  {
+   "id": "boss-left-sweep",
+   "kind": "boss",
+   "atk": "sweep",
+   "pos": "left",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-left-sweep",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-sweep-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-sweep-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0.93,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 14,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-left-sweep",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0.057,
+     "cy": 6.28,
+     "cz": -66.36,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-sweep-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.199,
+     "cy": 7.09,
+     "cz": -64.67,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-sweep-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.2
+    },
+    "maxCalls": 58,
+    "maxPull": 0.2,
+    "tFirstPass": 0.03,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-left-sweep.jpg"
+  },
+  {
+   "id": "boss-left-charge",
+   "kind": "boss",
+   "atk": "charge",
+   "pos": "left",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-left-charge",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-charge-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-charge-medium-nopull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-left-charge",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": -7.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-charge-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-charge-medium-pull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-left-charge.jpg",
+   "clip": "boss-left-charge.webm"
+  },
+  {
+   "id": "boss-left-shard",
+   "kind": "boss",
+   "atk": "shard",
+   "pos": "left",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-left-shard",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -7.84,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.05,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-shard-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.08,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-shard-medium-nopull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 64,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "pull": {
+    "id": "boss-left-shard",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": -7.84,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.05,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-shard-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.08,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-left-shard-medium-pull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 64,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "montage": "boss-left-shard.jpg"
+  },
+  {
+   "id": "boss-right-slam",
+   "kind": "boss",
+   "atk": "slam",
+   "pos": "right",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-right-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 3,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 3,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 3,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 3,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0
+    },
+    "maxCalls": 59,
+    "maxPull": 0,
+    "tFirstPass": 1.23,
+    "failTicksWhileTele": 36,
+    "failTicksAfterMid": 19,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-right-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0.057,
+     "cy": 6.28,
+     "cz": -66.36,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.2,
+     "cy": 7.1,
+     "cz": -64.66,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.2
+    },
+    "maxCalls": 60,
+    "maxPull": 0.2,
+    "tFirstPass": 0.03,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-right-slam.jpg"
+  },
+  {
+   "id": "boss-right-sweep",
+   "kind": "boss",
+   "atk": "sweep",
+   "pos": "right",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-right-sweep",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-sweep-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-sweep-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0.93,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 14,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-right-sweep",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 1,
+     "pass": false,
+     "calls": 58,
+     "pull": 0.057,
+     "cy": 6.28,
+     "cz": -66.36,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-sweep-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.199,
+     "cy": 7.09,
+     "cz": -64.67,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-sweep-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0.2
+    },
+    "maxCalls": 58,
+    "maxPull": 0.2,
+    "tFirstPass": 0.03,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-right-sweep.jpg"
+  },
+  {
+   "id": "boss-right-charge",
+   "kind": "boss",
+   "atk": "charge",
+   "pos": "right",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-right-charge",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-charge-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-charge-medium-nopull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-right-charge",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": 3.87,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.04,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-charge-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.07,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-charge-medium-pull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 56,
+     "pull": 0
+    },
+    "maxCalls": 57,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-right-charge.jpg"
+  },
+  {
+   "id": "boss-right-shard",
+   "kind": "boss",
+   "atk": "shard",
+   "pos": "right",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-right-shard",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": 3.84,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.05,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-shard-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.08,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-shard-medium-nopull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 64,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "pull": {
+    "id": "boss-right-shard",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": 3.84,
+     "z": -76
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.95,
+     "cz": -67.05,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-shard-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0,
+     "cy": 5.94,
+     "cz": -67.08,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-right-shard-medium-pull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 64,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "montage": "boss-right-shard.jpg"
+  },
+  {
+   "id": "boss-pillar-slam",
+   "kind": "boss",
+   "atk": "slam",
+   "pos": "pillar",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-pillar-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0
+    },
+    "maxCalls": 60,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-pillar-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0
+    },
+    "maxCalls": 60,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-pillar-slam.jpg"
+  },
+  {
+   "id": "boss-pillar-sweep",
+   "kind": "boss",
+   "atk": "sweep",
+   "pos": "pillar",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-pillar-sweep",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-sweep-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-sweep-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 58,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-pillar-sweep",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.95,
+    "shapes": [
+     "cone"
+    ],
+    "nTele": 1,
+    "tele0": 0.9166666666666666,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-sweep-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 65,
+     "prog": 0.53
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-sweep-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 58,
+     "pull": 0
+    },
+    "maxCalls": 58,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-pillar-sweep.jpg"
+  },
+  {
+   "id": "boss-pillar-charge",
+   "kind": "boss",
+   "atk": "charge",
+   "pos": "pillar",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-pillar-charge",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-charge-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 58,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-charge-medium-nopull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 57,
+     "pull": 0
+    },
+    "maxCalls": 60,
+    "maxPull": 0,
+    "tFirstPass": 1.33,
+    "failTicksWhileTele": 39,
+    "failTicksAfterMid": 20,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "boss-pillar-charge",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 1.35,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 1.3166666666666667,
+    "boss": {
+     "x": 4.2,
+     "z": -75.37
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 2,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 2,
+     "pass": false,
+     "calls": 59,
+     "pull": 0.17,
+     "cy": 5.24,
+     "cz": -61.31,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-charge-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 60,
+     "pull": 0.599,
+     "cy": 7.11,
+     "cz": -56.81,
+     "tick": 71,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-charge-medium-pull-mid.jpg",
+    "end": {
+     "k": 40,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0.6
+    },
+    "maxCalls": 62,
+    "maxPull": 0.6,
+    "tFirstPass": 0.1,
+    "failTicksWhileTele": 2,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "boss-pillar-charge.jpg"
+  },
+  {
+   "id": "boss-pillar-shard",
+   "kind": "boss",
+   "atk": "shard",
+   "pos": "pillar",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-pillar-shard",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": 4.2,
+     "z": -75.34
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 7,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 7,
+     "pass": false,
+     "calls": 62,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-shard-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 7,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 7,
+     "pass": false,
+     "calls": 62,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -63.1,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-shard-medium-nopull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 62,
+     "pull": 0
+    },
+    "maxCalls": 65,
+    "maxPull": 0,
+    "tFirstPass": 1.2,
+    "failTicksWhileTele": 35,
+    "failTicksAfterMid": 24,
+    "hpLost": 12
+   },
+   "pull": {
+    "id": "boss-pillar-shard",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 1,
+    "total": 0.85,
+    "shapes": [
+     "circle",
+     "circle",
+     "circle",
+     "circle",
+     "circle"
+    ],
+    "nTele": 5,
+    "tele0": 0.8166666666666667,
+    "boss": {
+     "x": 4.2,
+     "z": -75.34
+    },
+    "player": {
+     "x": 4.2,
+     "z": -68.6
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 62,
+     "pull": 0.057,
+     "cy": 4.75,
+     "cz": -62.5,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-shard-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 80,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 64,
+     "pull": 0.197,
+     "cy": 5.36,
+     "cz": -61.03,
+     "tick": 63,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-pillar-shard-medium-pull-mid.jpg",
+    "end": {
+     "k": 47,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 64,
+     "pull": 0.2
+    },
+    "maxCalls": 67,
+    "maxPull": 0.2,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 12
+   },
+   "montage": "boss-pillar-shard.jpg"
+  },
+  {
+   "id": "mon-behind-rush",
+   "kind": "mon",
+   "atk": "rush",
+   "pos": "behind",
+   "tier": "medium",
+   "nopull": {
+    "id": "mon-behind-rush",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 2,
+     "enemy": 32,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 34,
+     "pass": false,
+     "calls": 33,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-behind-rush-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 4,
+     "enemy": 32,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 36,
+     "pass": false,
+     "calls": 34,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-behind-rush-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 26,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 26,
+     "pass": false,
+     "calls": 41,
+     "pull": 0
+    },
+    "maxCalls": 43,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 15,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "mon-behind-rush",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 48,
+     "pull": 1.1,
+     "cy": 9.28,
+     "cz": -19.95,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-behind-rush-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 49,
+     "pull": 1.1,
+     "cy": 9.28,
+     "cz": -19.95,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-behind-rush-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 47,
+     "pull": 1.1
+    },
+    "maxCalls": 49,
+    "maxPull": 1.1,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "mon-behind-rush.jpg",
+   "clip": "mon-behind-rush.webm"
+  },
+  {
+   "id": "mon-left-rush",
+   "kind": "mon",
+   "atk": "rush",
+   "pos": "left",
+   "tier": "medium",
+   "nopull": {
+    "id": "mon-left-rush",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 28,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 29,
+     "pass": false,
+     "calls": 35,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-left-rush-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 2,
+     "enemy": 28,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 30,
+     "pass": false,
+     "calls": 36,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-left-rush-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 22,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 22,
+     "pass": false,
+     "calls": 43,
+     "pull": 0
+    },
+    "maxCalls": 45,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 15,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "mon-left-rush",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 12,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 12,
+     "pass": false,
+     "calls": 50,
+     "pull": 0.257,
+     "cy": 5.62,
+     "cz": -28.8,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-left-rush-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 51,
+     "pull": 0.393,
+     "cy": 6.21,
+     "cz": -27.37,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-left-rush-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 49,
+     "pull": 0.393
+    },
+    "maxCalls": 51,
+    "maxPull": 0.393,
+    "tFirstPass": 0.07,
+    "failTicksWhileTele": 1,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "mon-left-rush.jpg"
+  },
+  {
+   "id": "mon-right-rush",
+   "kind": "mon",
+   "atk": "rush",
+   "pos": "right",
+   "tier": "medium",
+   "nopull": {
+    "id": "mon-right-rush",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 1,
+     "enemy": 28,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 29,
+     "pass": false,
+     "calls": 35,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-right-rush-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 2,
+     "enemy": 28,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 30,
+     "pass": false,
+     "calls": 36,
+     "pull": 0,
+     "cy": 4.5,
+     "cz": -31.5,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-right-rush-medium-nopull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 22,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 22,
+     "pass": false,
+     "calls": 43,
+     "pull": 0
+    },
+    "maxCalls": 45,
+    "maxPull": 0,
+    "tFirstPass": null,
+    "failTicksWhileTele": 27,
+    "failTicksAfterMid": 15,
+    "hpLost": 0
+   },
+   "pull": {
+    "id": "mon-right-rush",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "844x390",
+    "waitTicks": 0,
+    "total": 0.9,
+    "shapes": [
+     "line"
+    ],
+    "nTele": 1,
+    "tele0": 0.8666666666666667,
+    "boss": {
+     "x": 6.99,
+     "z": -72.62
+    },
+    "player": {
+     "x": 3,
+     "z": -37
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 12,
+     "player": 0,
+     "n": {
+      "tele": 4,
+      "enemy": 32
+     },
+     "out": 12,
+     "pass": false,
+     "calls": 50,
+     "pull": 0.257,
+     "cy": 5.62,
+     "cz": -28.8,
+     "tick": 1
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-right-rush-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 8,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 51,
+     "pull": 0.393,
+     "cy": 6.21,
+     "cz": -27.37,
+     "tick": 14,
+     "prog": 0.52
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/mon-right-rush-medium-pull-mid.jpg",
+    "end": {
+     "k": 28,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 32
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 49,
+     "pull": 0.393
+    },
+    "maxCalls": 51,
+    "maxPull": 0.393,
+    "tFirstPass": 0.07,
+    "failTicksWhileTele": 1,
+    "failTicksAfterMid": 0,
+    "hpLost": 0
+   },
+   "montage": "mon-right-rush.jpg"
+  },
+  {
+   "id": "portrait-boss-front-slam",
+   "tier": "medium",
+   "nopull": {
+    "id": "boss-front-slam",
+    "tier": "medium",
+    "variant": "nopull",
+    "size": "390x844",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0,
+     "cy": 17.12,
+     "cz": -63.93,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-nopull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0,
+     "cy": 17.1,
+     "cz": -63.95,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-nopull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 61,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0,
+    "frames": []
+   },
+   "pull": {
+    "id": "boss-front-slam",
+    "tier": "medium",
+    "variant": "pull",
+    "size": "390x844",
+    "waitTicks": 1,
+    "total": 1.25,
+    "shapes": [
+     "circle"
+    ],
+    "nTele": 1,
+    "tele0": 1.2166666666666666,
+    "boss": {
+     "x": -2,
+     "z": -81.87
+    },
+    "player": {
+     "x": -2,
+     "z": -76
+    },
+    "start": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0,
+     "cy": 17.12,
+     "cz": -63.93,
+     "tick": 51
+    },
+    "shot_start": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-pull-start.jpg",
+    "mid": {
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 16,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 59,
+     "pull": 0,
+     "cy": 17.1,
+     "cz": -63.95,
+     "tick": 69,
+     "prog": 0.51
+    },
+    "shot_mid": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/cam/medium/_tmp/boss-front-slam-medium-pull-mid.jpg",
+    "end": {
+     "k": 37,
+     "tele": 0,
+     "enemy": 0,
+     "player": 0,
+     "n": {
+      "tele": 0,
+      "enemy": 8
+     },
+     "out": 0,
+     "pass": true,
+     "calls": 61,
+     "pull": 0
+    },
+    "maxCalls": 61,
+    "maxPull": 0,
+    "tFirstPass": 0,
+    "failTicksWhileTele": 0,
+    "failTicksAfterMid": 0,
+    "hpLost": 0,
+    "frames": []
+   },
+   "identicalMidJpeg": false
+  }
+ ],
+ "errors": []
+}
