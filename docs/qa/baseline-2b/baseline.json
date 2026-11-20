@@ -1,0 +1,1769 @@
+{
+ "generatedAt": "2026-11-20T17:35:56.448Z",
+ "base": "http://localhost:8097",
+ "viewport": "844x390@2x",
+ "note": "SwiftShader software GPU in a container; FPS relative only",
+ "dist": [
+  {
+   "file": "assets/index-C1Wu9jiZ.js",
+   "raw": 758888,
+   "gzip": 202101
+  },
+  {
+   "file": "assets/index-DEgg5_qv.css",
+   "raw": 11041,
+   "gzip": 3427
+  },
+  {
+   "file": "assets/models/synes_kit.glb",
+   "raw": 550472,
+   "gzip": 196828
+  },
+  {
+   "file": "assets/study-CxVln3H-.js",
+   "raw": 5287,
+   "gzip": 2206
+  },
+  {
+   "file": "index.html",
+   "raw": 7755,
+   "gzip": 2875
+  }
+ ],
+ "results": [
+  {
+   "scene": "camp",
+   "tier": "low",
+   "file": "camp-low.jpg",
+   "setup": {
+    "note": "player at start (0,1.5), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 1,
+   "canvas": {
+    "w": 844,
+    "h": 390,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 65,
+    "triangles": 28587,
+    "points": 0,
+    "lines": 0,
+    "geometries": 62,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 172,
+    "instancedMeshes": 24,
+    "instances": 350,
+    "transparent": 24,
+    "opaque": 148,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 148,
+     "instanced": 23
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 256,
+     "height": 512,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 697303,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 719094,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 185,
+    "seconds": 5.01,
+    "fps": 36.9,
+    "worstFrameMs": 33
+   },
+   "errors": []
+  },
+  {
+   "scene": "trail",
+   "tier": "low",
+   "file": "trail-low.jpg",
+   "setup": {
+    "note": "player on trail (1,-9.5)",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 35
+   },
+   "pixelRatio": 1,
+   "canvas": {
+    "w": 844,
+    "h": 390,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 67,
+    "triangles": 31067,
+    "points": 0,
+    "lines": 0,
+    "geometries": 86,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 172,
+    "instancedMeshes": 24,
+    "instances": 350,
+    "transparent": 24,
+    "opaque": 148,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 148,
+     "instanced": 23
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 256,
+     "height": 512,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 697303,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 719094,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 167,
+    "seconds": 5.01,
+    "fps": 33.3,
+    "worstFrameMs": 83
+   },
+   "errors": []
+  },
+  {
+   "scene": "clearing",
+   "tier": "low",
+   "file": "clearing-low.jpg",
+   "setup": {
+    "note": "player in clearing (3,-33.5), stepped 44 ticks, 2 telegraph(s)",
+    "tele": 2,
+    "telegraphs": [
+     "hop",
+     "hop"
+    ],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 45
+   },
+   "pixelRatio": 1,
+   "canvas": {
+    "w": 844,
+    "h": 390,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 86,
+    "triangles": 33965,
+    "points": 0,
+    "lines": 0,
+    "geometries": 101,
+    "textures": 2,
+    "programs": 9,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 174,
+    "instancedMeshes": 24,
+    "instances": 350,
+    "transparent": 26,
+    "opaque": 148,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 148,
+     "instanced": 23
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 2,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 84,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 256,
+     "height": 512,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 697303,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 719094,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 150,
+    "seconds": 5.05,
+    "fps": 29.7,
+    "worstFrameMs": 67
+   },
+   "errors": []
+  },
+  {
+   "scene": "spring",
+   "tier": "low",
+   "file": "spring-low.jpg",
+   "setup": {
+    "note": "start=boss checkpoint (spring), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 1,
+   "canvas": {
+    "w": 844,
+    "h": 390,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 48,
+    "triangles": 27651,
+    "points": 0,
+    "lines": 0,
+    "geometries": 47,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 127,
+    "instancedMeshes": 24,
+    "instances": 350,
+    "transparent": 19,
+    "opaque": 108,
+    "shadowCasters": 106,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 90,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 108,
+     "instanced": 23
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 81,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 256,
+     "height": 512,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 697303,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 719094,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 143,
+    "seconds": 5.01,
+    "fps": 28.5,
+    "worstFrameMs": 67
+   },
+   "errors": []
+  },
+  {
+   "scene": "boss",
+   "tier": "low",
+   "file": "boss-low.jpg",
+   "setup": {
+    "note": "arena, bossStarted=true, phase=1, stepped 208 ticks, 1 telegraph(s) [slam]",
+    "tele": 1,
+    "telegraphs": [
+     "slam"
+    ],
+    "phase": 1,
+    "bossStarted": true,
+    "tick": 216
+   },
+   "pixelRatio": 1,
+   "canvas": {
+    "w": 844,
+    "h": 390,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 89,
+    "triangles": 31649,
+    "points": 0,
+    "lines": 0,
+    "geometries": 76,
+    "textures": 2,
+    "programs": 9,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 133,
+    "instancedMeshes": 24,
+    "instances": 350,
+    "transparent": 25,
+    "opaque": 108,
+    "shadowCasters": 111,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 85,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 108,
+     "instanced": 23
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 20,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 1,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 87,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 256,
+     "height": 512,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 697303,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 719094,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 92,
+    "seconds": 5,
+    "fps": 18.4,
+    "worstFrameMs": 117
+   },
+   "errors": []
+  },
+  {
+   "scene": "camp",
+   "tier": "medium",
+   "file": "camp-medium.jpg",
+   "setup": {
+    "note": "player at start (0,1.5), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 1.5,
+   "canvas": {
+    "w": 1266,
+    "h": 585,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 71,
+    "triangles": 47547,
+    "points": 0,
+    "lines": 0,
+    "geometries": 68,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 175,
+    "instancedMeshes": 27,
+    "instances": 611,
+    "transparent": 24,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 49,
+    "seconds": 5.1,
+    "fps": 9.6,
+    "worstFrameMs": 150
+   },
+   "errors": []
+  },
+  {
+   "scene": "trail",
+   "tier": "medium",
+   "file": "trail-medium.jpg",
+   "setup": {
+    "note": "player on trail (1,-9.5)",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 1.5,
+   "canvas": {
+    "w": 1266,
+    "h": 585,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 70,
+    "triangles": 49883,
+    "points": 0,
+    "lines": 0,
+    "geometries": 78,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 175,
+    "instancedMeshes": 27,
+    "instances": 611,
+    "transparent": 24,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 51,
+    "seconds": 5.08,
+    "fps": 10,
+    "worstFrameMs": 167
+   },
+   "errors": []
+  },
+  {
+   "scene": "clearing",
+   "tier": "medium",
+   "file": "clearing-medium.jpg",
+   "setup": {
+    "note": "player in clearing (3,-33.5), stepped 44 ticks, 2 telegraph(s)",
+    "tele": 2,
+    "telegraphs": [
+     "hop",
+     "hop"
+    ],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 51
+   },
+   "pixelRatio": 1.5,
+   "canvas": {
+    "w": 1266,
+    "h": 585,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 92,
+    "triangles": 52925,
+    "points": 0,
+    "lines": 0,
+    "geometries": 104,
+    "textures": 2,
+    "programs": 9,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 177,
+    "instancedMeshes": 27,
+    "instances": 611,
+    "transparent": 26,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 2,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 84,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 49,
+    "seconds": 5.06,
+    "fps": 9.7,
+    "worstFrameMs": 167
+   },
+   "errors": []
+  },
+  {
+   "scene": "spring",
+   "tier": "medium",
+   "file": "spring-medium.jpg",
+   "setup": {
+    "note": "start=boss checkpoint (spring), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 1.5,
+   "canvas": {
+    "w": 1266,
+    "h": 585,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 54,
+    "triangles": 46611,
+    "points": 0,
+    "lines": 0,
+    "geometries": 53,
+    "textures": 2,
+    "programs": 8,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 130,
+    "instancedMeshes": 27,
+    "instances": 611,
+    "transparent": 19,
+    "opaque": 111,
+    "shadowCasters": 106,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 90,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 111,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 81,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 53,
+    "seconds": 5.09,
+    "fps": 10.4,
+    "worstFrameMs": 133
+   },
+   "errors": []
+  },
+  {
+   "scene": "boss",
+   "tier": "medium",
+   "file": "boss-medium.jpg",
+   "setup": {
+    "note": "arena, bossStarted=true, phase=1, stepped 208 ticks, 1 telegraph(s) [slam]",
+    "tele": 1,
+    "telegraphs": [
+     "slam"
+    ],
+    "phase": 1,
+    "bossStarted": true,
+    "tick": 209
+   },
+   "pixelRatio": 1.5,
+   "canvas": {
+    "w": 1266,
+    "h": 585,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 95,
+    "triangles": 50609,
+    "points": 0,
+    "lines": 0,
+    "geometries": 82,
+    "textures": 2,
+    "programs": 9,
+    "shadows": false
+   },
+   "counts": {
+    "meshes": 136,
+    "instancedMeshes": 27,
+    "instances": 611,
+    "transparent": 25,
+    "opaque": 111,
+    "shadowCasters": 111,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 85,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 111,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 20,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 1,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 87,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": null,
+   "kit": true,
+   "fps": {
+    "frames": 44,
+    "seconds": 5.01,
+    "fps": 8.8,
+    "worstFrameMs": 183
+   },
+   "errors": []
+  },
+  {
+   "scene": "camp",
+   "tier": "high",
+   "file": "camp-high.jpg",
+   "setup": {
+    "note": "player at start (0,1.5), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 2,
+   "canvas": {
+    "w": 1688,
+    "h": 780,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 130,
+    "triangles": 114117,
+    "points": 0,
+    "lines": 0,
+    "geometries": 77,
+    "textures": 4,
+    "programs": 12,
+    "shadows": true
+   },
+   "counts": {
+    "meshes": 175,
+    "instancedMeshes": 27,
+    "instances": 769,
+    "transparent": 24,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": {
+    "mapSize": "1024x1024",
+    "estBytes": 4194304
+   },
+   "kit": true,
+   "fps": {
+    "frames": 23,
+    "seconds": 5.12,
+    "fps": 4.5,
+    "worstFrameMs": 317
+   },
+   "errors": []
+  },
+  {
+   "scene": "trail",
+   "tier": "high",
+   "file": "trail-high.jpg",
+   "setup": {
+    "note": "player on trail (1,-9.5)",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 2,
+   "canvas": {
+    "w": 1688,
+    "h": 780,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 136,
+    "triangles": 117965,
+    "points": 0,
+    "lines": 0,
+    "geometries": 78,
+    "textures": 4,
+    "programs": 12,
+    "shadows": true
+   },
+   "counts": {
+    "meshes": 175,
+    "instancedMeshes": 27,
+    "instances": 769,
+    "transparent": 24,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 82,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": {
+    "mapSize": "1024x1024",
+    "estBytes": 4194304
+   },
+   "kit": true,
+   "fps": {
+    "frames": 22,
+    "seconds": 5.06,
+    "fps": 4.4,
+    "worstFrameMs": 317
+   },
+   "errors": []
+  },
+  {
+   "scene": "clearing",
+   "tier": "high",
+   "file": "clearing-high.jpg",
+   "setup": {
+    "note": "player in clearing (3,-33.5), stepped 44 ticks, 2 telegraph(s)",
+    "tele": 2,
+    "telegraphs": [
+     "hop",
+     "hop"
+    ],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 45
+   },
+   "pixelRatio": 2,
+   "canvas": {
+    "w": 1688,
+    "h": 780,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 176,
+    "triangles": 125495,
+    "points": 0,
+    "lines": 0,
+    "geometries": 104,
+    "textures": 4,
+    "programs": 13,
+    "shadows": true
+   },
+   "counts": {
+    "meshes": 177,
+    "instancedMeshes": 27,
+    "instances": 769,
+    "transparent": 26,
+    "opaque": 151,
+    "shadowCasters": 146,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 45,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 151,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 9,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 2,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 84,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": {
+    "mapSize": "1024x1024",
+    "estBytes": 4194304
+   },
+   "kit": true,
+   "fps": {
+    "frames": 22,
+    "seconds": 5.12,
+    "fps": 4.3,
+    "worstFrameMs": 350
+   },
+   "errors": []
+  },
+  {
+   "scene": "spring",
+   "tier": "high",
+   "file": "spring-high.jpg",
+   "setup": {
+    "note": "start=boss checkpoint (spring), sim idle",
+    "tele": 0,
+    "telegraphs": [],
+    "phase": 1,
+    "bossStarted": false,
+    "tick": 30
+   },
+   "pixelRatio": 2,
+   "canvas": {
+    "w": 1688,
+    "h": 780,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 103,
+    "triangles": 111299,
+    "points": 0,
+    "lines": 0,
+    "geometries": 74,
+    "textures": 4,
+    "programs": 12,
+    "shadows": true
+   },
+   "counts": {
+    "meshes": 130,
+    "instancedMeshes": 27,
+    "instances": 769,
+    "transparent": 19,
+    "opaque": 111,
+    "shadowCasters": 106,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 90,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 111,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 15,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    }
+   },
+   "uniqueMaterials": 81,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": {
+    "mapSize": "1024x1024",
+    "estBytes": 4194304
+   },
+   "kit": true,
+   "fps": {
+    "frames": 31,
+    "seconds": 5.07,
+    "fps": 6.1,
+    "worstFrameMs": 267
+   },
+   "errors": []
+  },
+  {
+   "scene": "boss",
+   "tier": "high",
+   "file": "boss-high.jpg",
+   "setup": {
+    "note": "arena, bossStarted=true, phase=1, stepped 208 ticks, 1 telegraph(s) [slam]",
+    "tele": 1,
+    "telegraphs": [
+     "slam"
+    ],
+    "phase": 1,
+    "bossStarted": true,
+    "tick": 209
+   },
+   "pixelRatio": 2,
+   "canvas": {
+    "w": 1688,
+    "h": 780,
+    "cssW": 844,
+    "cssH": 390,
+    "dpr": 2
+   },
+   "renderer": {
+    "calls": 170,
+    "triangles": 118733,
+    "points": 0,
+    "lines": 0,
+    "geometries": 96,
+    "textures": 4,
+    "programs": 13,
+    "shadows": true
+   },
+   "counts": {
+    "meshes": 136,
+    "instancedMeshes": 27,
+    "instances": 769,
+    "transparent": 25,
+    "opaque": 111,
+    "shadowCasters": 111,
+    "shadowReceivers": 1,
+    "points": 0,
+    "sprites": 0,
+    "lines": 0,
+    "hiddenMeshes": 85,
+    "skinned": 0
+   },
+   "byMatType": {
+    "MeshLambertMaterial (opaque)": {
+     "meshes": 111,
+     "instanced": 26
+    },
+    "MeshLambertMaterial (transparent)": {
+     "meshes": 20,
+     "instanced": 0
+    },
+    "MeshBasicMaterial (transparent)": {
+     "meshes": 4,
+     "instanced": 1
+    },
+    "ShaderMaterial (transparent)": {
+     "meshes": 1,
+     "instanced": 0
+    }
+   },
+   "uniqueMaterials": 87,
+   "textures": [
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 512,
+     "height": 1024,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "srgb",
+     "mipmaps": true,
+     "anisotropy": 4,
+     "bytes": 2789212,
+     "meshes": [
+      "Mesh:PlaneGeometry"
+     ],
+     "materials": [
+      "MeshLambertMaterial"
+     ],
+     "meshCount": 1
+    },
+    {
+     "name": "",
+     "slot": "map",
+     "source": "canvas",
+     "width": 64,
+     "height": 64,
+     "format": "RGBA",
+     "type": "UnsignedByte",
+     "colorSpace": "",
+     "mipmaps": true,
+     "anisotropy": 1,
+     "bytes": 21791,
+     "meshes": [
+      "Mesh:CircleGeometry"
+     ],
+     "materials": [
+      "MeshBasicMaterial"
+     ],
+     "meshCount": 1
+    }
+   ],
+   "sceneTextureBytes": 2811003,
+   "shadowMap": {
+    "mapSize": "1024x1024",
+    "estBytes": 4194304
+   },
+   "kit": true,
+   "fps": {
+    "frames": 25,
+    "seconds": 5.01,
+    "fps": 5,
+    "worstFrameMs": 333
+   },
+   "errors": []
+  }
+ ]
+}
