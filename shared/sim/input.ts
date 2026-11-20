@@ -1,11 +1,11 @@
 // Quantized per-tick input. World-space movement (client rotates camera-relative input before quantizing).
 export const AXIS = 64;
-export const BTN = { ATTACK: 1, DODGE: 2, SKILL: 4, POTION: 8, RETRY: 16 } as const;
+export const BTN = { ATTACK: 1, DODGE: 2, SKILL: 4, POTION: 8, RETRY: 16, SKILL2: 32, SKILL3: 64, ULT: 128 } as const;
 export interface TickInput { mx: number; mz: number; b: number; }
 export const NO_INPUT: TickInput = { mx: 0, mz: 0, b: 0 };
 export function quantize(x: number, z: number, b: number): TickInput {
   const q = (v: number) => Math.max(-AXIS, Math.min(AXIS, Math.round(v * AXIS)));
-  return { mx: q(x), mz: q(z), b: b & 31 };
+  return { mx: q(x), mz: q(z), b: b & 255 };
 }
 /** Run-length encoded log: flat array [count, mx, mz, b, count, mx, mz, b, ...] */
 export class InputLog {

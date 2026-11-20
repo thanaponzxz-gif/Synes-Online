@@ -6,7 +6,7 @@ import { len, norm } from '../shared/sim/math.ts';
 const WAYPOINTS: [number, number][] = [[0, -4], [1.5, -15], [3, -28], [3, -37], [3, -44], [-0.4, -52], [-2, -60], [-2, -70]];
 
 export class Bot {
-  wp = 0; t = 0; skill: number;
+  wp = -1; t = 0; skill: number;
   constructor(skill = 1) { this.skill = skill; } // skill<1 = slower reactions
   think(w: World): TickInput {
     this.t++;

@@ -1,6 +1,7 @@
 // Playtest harness: lets a tester agent play the real build through touch input, turn by turn.
 // The sim is frozen between actions (no overlay), so the tester can look at a screenshot and decide.
-// Usage: node tools/qa/playtest-harness.mjs <gameUrl> <outDir> [port]
+// Usage: node tools/qa/playtest-harness.mjs <gameUrl> <outDir> [port] [video]
+//   video: pass 1 (4th arg) or env VIDEO=1 to record a 844x390 video into <outDir> (finalized on /stop or /log)
 // API (POST JSON to http://localhost:<port>):
 //   /start                         → open game, tap the start button, return first screenshot
 //   /act {move:[dx,dy], ms, taps}  → run the game for ms (100–3000) with the stick held toward (dx,dy) in screen space
@@ -8,17 +9,28 @@
 //                                    spread evenly across the window; returns screenshot after re-freezing
 //   /ui {target}                   → tap an on-screen UI button: "retry" | "replay" | "resume" | "portrait"
 //   /screen                        → screenshot only
-//   /log                           → game event log (for the final report only)
+//   /log                           → game event log (for the final report only); also finalizes the video if recording
+//   /stop                          → close the browser context so the video file is written; returns its path
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from './pw.mjs';
 import { LAUNCH_ARGS } from './profiles.mjs';
 
-const [url = 'http://localhost:8080/?q=medium', outDir = 'tools/qa/out/playtest', port = '7777'] = process.argv.slice(2);
+const [url = 'http://localhost:8080/?q=medium', outDir = 'tools/qa/out/playtest', port = '7777', videoArg = ''] = process.argv.slice(2);
+const VIDEO = process.env.VIDEO === '1' || videoArg === '1';
 fs.mkdirSync(outDir, { recursive: true });
 const W = 844, H = 390;
-let browser, ctx, page, cdp, n = 0;
+let browser, ctx, page, cdp, n = 0, videoPath = null;
+/** Close the context so Playwright finalizes the .webm; returns the file path (or null when not recording). */
+async function finalizeVideo() {
+  if (!VIDEO || !ctx) return videoPath;
+  const v = page?.video?.();
+  await ctx.close().catch(() => {});
+  if (v) { try { videoPath = await v.path(); } catch { /* none */ } }
+  ctx = null;
+  return videoPath;
+}
 const actions = fs.createWriteStream(path.join(outDir, 'actions.jsonl'), { flags: 'a' });
 const diag = fs.createWriteStream(path.join(outDir, 'diag.jsonl'), { flags: 'a' });
 
@@ -86,7 +98,7 @@ async function handle(route, body) {
   if (route === '/start') {
     if (browser) await browser.close();
     browser = await chromium.launch({ args: LAUNCH_ARGS });
-    ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
+    ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, isMobile: true, hasTouch: true, ...(VIDEO ? { recordVideo: { dir: path.resolve(outDir), size: { width: W, height: H } } } : {}) });
     page = await ctx.newPage(); cdp = await ctx.newCDPSession(page); n = 0;
     page.on('pageerror', (e) => actions.write(JSON.stringify({ at: new Date().toISOString(), pageerror: String(e.message || e) }) + '\n'));
     await page.goto(url, { waitUntil: 'load' });
@@ -105,8 +117,11 @@ async function handle(route, body) {
     // also keep seed + full input log so any bug seen in the run can be replayed exactly (replayRun(seed, inputLog))
     const run = await page.evaluate(() => ({ seed: window.__synes?.world.seed, inputLog: window.__synes?.log.data, qaLog: window.__synesQA.log }));
     fs.writeFileSync(path.join(outDir, 'run.json'), JSON.stringify(run));
-    return page.evaluate(() => ({ log: window.__synesQA.log, summary: window.__synes?.world.summary(), net: document.querySelector('#net-chip')?.textContent, reward: document.querySelector('#victory .reward')?.textContent }));
+    const out = await page.evaluate(() => ({ log: window.__synesQA.log, summary: window.__synes?.world.summary(), net: document.querySelector('#net-chip')?.textContent, reward: document.querySelector('#victory .reward')?.textContent }));
+    if (VIDEO) { await finalizeVideo(); out.video = videoPath; }
+    return out;
   }
+  if (route === '/stop') { const v = await finalizeVideo(); if (browser) { await browser.close().catch(() => {}); browser = null; } page = null; return { stopped: true, video: v }; }
   return { error: 'unknown route' };
 }
 
