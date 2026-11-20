@@ -46,6 +46,7 @@
   แก้แล้ว (`3389f98`): ปุ่ม/จอยโปร่งเมื่อมีวงเตือน บอส หรือเสาอยู่ใต้ปุ่ม, วงในของกรวยวาดเท่าระยะโดนจริง, ชุดทดสอบส่งปุ่มตรงเวลา
 - **รอบ 2-B:** แผนรอเจ้าของอนุมัติ `docs/team/round-2B-plan.md` และใบสั่งงาน DRAFT 3 ใบ (`char_kit_outline_v01`, `fx_boss_defeat_v01`, `fx_dodge_trail_v01`)
 - GitHub: https://github.com/thanaponzxz-gif/Synes-Online (**Public** ห้าม commit ข้อมูลส่วนตัว อีเมล หรือ key) · branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
+- **GitHub Pages (สาธารณะ, เจ้าของอนุมัติ 2026-11-20 เฉพาะบิลด์ทดสอบ Version 4):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` (`b142dfa`) = ไฟล์ชุดเดียวกับ Artifact V4 (bundle `b601d38`, โมเดล glTF JSON) โหมดออฟไลน์ · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
 - ลิงก์ Artifact (ส่วนตัว): เกม https://claude.ai/artifact/5jsDtTKaLN22JGykznhNnA · โทน 10 แบบ https://claude.ai/artifact/B512M87CqpnicvUrNCrCvT · เทียบเอนจิน https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8
 
 ## 5. รอเจ้าของตัดสินใจหรือดำเนินการ
@@ -57,8 +58,8 @@
 | อนุมัติลำดับรอบ 2-A → 2-B → 3 | รอ (2-A ทำแล้ว) |
 | อนุมัติแผนรอบ 2-B + ใบสั่งงาน 3 ใบ + ภาพจากโค้ดต้องอนุมัติจากภาพเทียบไหม (`docs/team/round-2B-plan.md` หัวข้อ 4) | รอ |
 | ตัดสิน 3 ข้อที่ขัดกันใน Hybrid Asset Pipeline | **เสร็จ 2026-11-20** (ดู ADR-006) |
-| เล่นบิลด์ล่าสุดบน iPhone แบบเวลาจริงด้วย `#debug` หนึ่งรอบ | **ติด 2026-11-20:** แอป Claude บน iPhone ของเจ้าของขึ้น "This browser isn't supported · Update iOS to open this artifact" (หน้าของ claude.ai เอง เกมยังไม่ถูกโหลด) เปิดใน Safari ก็ขึ้นข้อความเดียวกัน ทางเลือก: อัปเดต iOS / โฮสต์ static เช่น GitHub Pages (ต้องอนุมัติ) |
-| เปิด Share สาธารณะ / ตั้งโฮสต์ (ต้องอนุมัติแยก) | รอ |
+| เล่นบิลด์ล่าสุดบน iPhone แบบเวลาจริงด้วย `#debug` หนึ่งรอบ | **ติด 2026-11-20:** แอป Claude บน iPhone ของเจ้าของขึ้น "This browser isn't supported · Update iOS to open this artifact" (หน้าของ claude.ai เอง เกมยังไม่ถูกโหลด) เปิดใน Safari ก็ขึ้นข้อความเดียวกัน ทางเลือก: อัปเดต iOS / GitHub Pages → **เจ้าของเลือก GitHub Pages แล้ว** รอผลเล่นบน iPhone |
+| เปิด Share สาธารณะ / ตั้งโฮสต์ (ต้องอนุมัติแยก) | GitHub Pages อนุมัติเฉพาะบิลด์ทดสอบ V4 (2026-11-20) · Share Artifact สาธารณะ: รอ |
 | นำร่อง pipeline: ส่ง prompt ใน `docs/handoff/ui_potion_v01.md` ให้ GPT Image แล้ววางผลใน `assets/_inbox/` | รอ |
 | เลือกโทนภาพจากแกลเลอรี 10 โทน | รอ |
 | ทดสอบบนมือถือจริงและจด FPS จากหน้าเทียบเอนจิน | รอ |

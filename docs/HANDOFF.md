@@ -1,5 +1,11 @@
 # Handoff: Synes Online
 
+## GitHub Pages สำหรับทดสอบ iPhone · 2026-11-20
+**เหตุผล:** หน้า Artifact ของ claude.ai ขึ้น "This browser isn't supported · Update iOS" ทั้งในแอป Claude และ Safari บน iPhone ของเจ้าของ
+**ทำแล้ว:** เจ้าของอนุมัติ GitHub Pages **เฉพาะบิลด์ทดสอบ Version 4** · branch `gh-pages` (`b142dfa`) ใช้ไฟล์ JS/โมเดลที่ดาวน์โหลดจาก Artifact V4 ตรง ๆ (ยืนยันแล้วว่าโค้ดเหมือน `main` ทุกอย่างยกเว้น build-id)
+**ผลทดสอบ:** smoke test ในเครื่อง ผ่าน (โหลดโมเดลได้, ออฟไลน์, ไม่มี error นอกจาก 404 ของ `./api/health` ที่คาดไว้) · GitHub "pages build and deployment" success · **container เปิด github.io ไม่ได้ (proxy ปฏิเสธ) จึงยังไม่ได้ยืนยันหน้าเว็บจริงจากที่นี่**
+**ลิงก์:** https://thanaponzxz-gif.github.io/Synes-Online/ และ https://thanaponzxz-gif.github.io/Synes-Online/#debug
+
 ## เพลย์เทสต์รอบ 3 + แผน 2-B · 2026-11-20 · 🟢 MAIN · Synes Online · รอบ 2-B
 **ทำแล้ว:** ปิดแชตเก่า (⚪ OLD · Synes · รอบ 2, archive), เพลย์เทสต์ agent รอบ 3 (Sonnet), PM ตรวจซ้ำด้วยภาพ + `diag.jsonl` + replay (seed 916771634)
 **แก้ (`3389f98`):** ปุ่ม/จอยโปร่ง 35% เมื่อมีวงเตือน/บอส/เสาอยู่ใต้ (`src/ui/buttonFade.ts`), `CONE_INNER_R` ใช้ร่วม sim + shader, ชุดทดสอบส่งปุ่มตรง tick (เดิมช้า 0.57–1.07 s) และปล่อยนิ้วถูกจุด
