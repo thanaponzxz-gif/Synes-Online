@@ -34,7 +34,7 @@ async function finalizeVideo() {
 const actions = fs.createWriteStream(path.join(outDir, 'actions.jsonl'), { flags: 'a' });
 const diag = fs.createWriteStream(path.join(outDir, 'diag.jsonl'), { flags: 'a' });
 
-const BTN = { attack: '#btn-attack', dodge: '#btn-dodge', skill: '#btn-skill', potion: '#btn-potion' };
+const BTN = { attack: '#btn-attack', dodge: '#btn-dodge', skill: '#btn-skill', skill2: '#btn-skill2', skill3: '#btn-skill3', ult: '#btn-ult', potion: '#btn-potion' };
 const UI = { retry: '#defeat button', replay: '#victory .replay', resume: '#btn-resume2', portrait: '#btn-portrait', start: '#btn-start' };
 const center = async (sel) => { const b = await page.locator(sel).boundingBox(); return b ? { x: b.x + b.width / 2, y: b.y + b.height / 2 } : null; };
 const freeze = () => page.evaluate(() => window.__synesQA?.freeze());

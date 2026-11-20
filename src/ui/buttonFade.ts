@@ -4,7 +4,7 @@
 import type { World, Telegraph } from '../../shared/sim/world.ts';
 
 type Project = (x: number, y: number, z: number, out: { x: number; y: number; vis: boolean }) => unknown;
-const IDS = ['#btn-attack', '#btn-dodge', '#btn-skill', '#btn-potion', '#stick-base'];
+const IDS = ['#btn-attack', '#btn-dodge', '#btn-skill', '#btn-skill2', '#btn-skill3', '#btn-ult', '#btn-potion', '#stick-base'];
 const PAD = 10, EVERY = 4;
 
 export class ButtonFade {
@@ -53,7 +53,7 @@ export class ButtonFade {
     if (++this.frame % EVERY !== 0) return;
     for (let i = 0; i < this.els.length; i++) {
       const el = this.els[i], q = this.rects[i];
-      const on = i < 4 || el.classList.contains('on'); // stick base only counts while it is on screen
+      const on = i < IDS.length - 1 || el.classList.contains('on'); // stick base only counts while it is on screen
       const b = on ? el.getBoundingClientRect() : null;
       q.ok = !!b && b.width > 0;
       if (b) { q.l = b.left - PAD; q.r = b.right + PAD; q.t = b.top - PAD; q.b = b.bottom + PAD; }

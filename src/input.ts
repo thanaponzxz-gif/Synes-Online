@@ -1,12 +1,12 @@
 // Touch + keyboard input → quantized TickInput once per sim tick. Engine-agnostic.
 import { BTN, quantize, type TickInput } from '../shared/sim/input.ts';
 
-type BtnName = 'attack' | 'dodge' | 'skill' | 'potion' | 'retry';
-const BIT: Record<BtnName, number> = { attack: BTN.ATTACK, dodge: BTN.DODGE, skill: BTN.SKILL, potion: BTN.POTION, retry: BTN.RETRY };
+type BtnName = 'attack' | 'dodge' | 'skill' | 'skill2' | 'skill3' | 'potion' | 'retry';
+const BIT: Record<BtnName, number> = { attack: BTN.ATTACK, dodge: BTN.DODGE, skill: BTN.SKILL, skill2: BTN.SKILL2, skill3: BTN.SKILL3, potion: BTN.POTION, retry: BTN.RETRY };
 
 export class Input {
-  private pending: Record<BtnName, number> = { attack: 0, dodge: 0, skill: 0, potion: 0, retry: 0 };
-  private held: Record<BtnName, boolean> = { attack: false, dodge: false, skill: false, potion: false, retry: false };
+  private pending: Record<BtnName, number> = { attack: 0, dodge: 0, skill: 0, skill2: 0, skill3: 0, potion: 0, retry: 0 };
+  private held: Record<BtnName, boolean> = { attack: false, dodge: false, skill: false, skill2: false, skill3: false, potion: false, retry: false };
   private lastBits = 0;
   private stickId: number | null = null; private ox = 0; private oy = 0;
   sx = 0; sy = 0; // stick vector, screen space (y down)
@@ -44,7 +44,7 @@ export class Input {
     zone.addEventListener('pointerup', end); zone.addEventListener('pointercancel', end); zone.addEventListener('lostpointercapture', end);
     addEventListener('keydown', (e) => {
       if (e.repeat) return; this.keys.add(e.code);
-      const map: Record<string, BtnName> = { KeyJ: 'attack', KeyZ: 'attack', KeyK: 'dodge', KeyX: 'dodge', Space: 'dodge', KeyL: 'skill', KeyC: 'skill', KeyQ: 'potion', KeyH: 'potion', KeyR: 'retry', Enter: 'retry' };
+      const map: Record<string, BtnName> = { KeyJ: 'attack', KeyZ: 'attack', KeyK: 'dodge', KeyX: 'dodge', Space: 'dodge', KeyL: 'skill', KeyC: 'skill', Digit1: 'skill', Digit2: 'skill2', Digit3: 'skill3', KeyQ: 'potion', KeyH: 'potion', KeyR: 'retry', Enter: 'retry' };
       const b = map[e.code]; if (b) { this.press(b); e.preventDefault(); }
     });
     addEventListener('keyup', (e) => this.keys.delete(e.code));

@@ -30,7 +30,9 @@ export class Hud {
   private boss = $('#boss'); private bossFill = $('#boss-fill'); private bossName = $('#boss-name');
   private timer = $('#timer'); private hint = $('#hint'); private hintTimer = 0; private hintGap = 0; private hintQueue: string[] = []; private hintCur = ''; private hintShown = 0;
   private lastPotions = -1; private taughtPerfect = false;
-  private skillBtn = $('#btn-skill'); private dodgeBtn = $('#btn-dodge'); private potionBtn = $('#btn-potion');
+  private skillBtns = [$('#btn-skill'), $('#btn-skill2'), $('#btn-skill3')]; private skillNums = this.skillBtns.map((b) => b.querySelector('.cdnum') as HTMLElement); private skillShown = [-1, -1, -1];
+  private get skillBtn() { return this.skillBtns[0]; }
+  private dodgeBtn = $('#btn-dodge'); private potionBtn = $('#btn-potion');
   private layer = $('#floaters'); private vignette = $('#vignette'); private banner = $('#banner');
   private bars = new Map<number, HTMLElement>();
   private tmp = { x: 0, y: 0, vis: false };
@@ -48,7 +50,7 @@ export class Hud {
     if (ps.potions !== this.lastPotions) { this.lastPotions = ps.potions; this.potions.innerHTML = Array.from({ length: PLAYER.potion.charges }, (_, i) => POTION_SVG(i < ps.potions)).join(''); this.potions.title = `ยาฟื้นพลัง ${ps.potions} ขวด`; }
     this.potionBtn.classList.toggle('empty', ps.potions <= 0);
     this.potionBtn.querySelector('.count')!.textContent = String(ps.potions);
-    cd(this.skillBtn, Math.max(0, ps.skillCd) / PLAYER.skill.cooldown);
+    for (let i = 0; i < 3; i++) this.skillCd(w, i + 1 as 1 | 2 | 3);
     cd(this.dodgeBtn, Math.max(0, ps.dodgeCd) / dodgeCdSeconds(w.variant));
     this.skillBtn.classList.toggle('empowered', ps.empowered);
     $('#btn-attack').classList.toggle('empowered', ps.empowered);
@@ -100,6 +102,15 @@ export class Hud {
     const el = document.createElement('div'); el.className = `floater ${cls}`; el.textContent = text;
     el.style.left = `${x + (Math.random() - 0.5) * 36}px`; el.style.top = `${y + (Math.random() - 0.5) * 14}px`;
     this.layer.appendChild(el); setTimeout(() => el.remove(), 900);
+  }
+  /** Cooldown ring + whole seconds for skill slot 1..3. Uses World.skillCooldown (sim lane) when present, else slot 1 falls back to ps.skillCd. */
+  private skillCd(w: World, slot: 1 | 2 | 3) {
+    const api = (w as unknown as SkillApi).skillCooldown;
+    const c = api ? api.call(w, slot) : slot === 1 ? { remaining: w.ps.skillCd, total: PLAYER.skill.cooldown } : { remaining: 0, total: 1 };
+    const rem = Math.max(0, c.remaining), sec = Math.ceil(rem - 1e-6);
+    const el = this.skillBtns[slot - 1];
+    cd(el, c.total > 0 ? rem / c.total : 0);
+    if (this.skillShown[slot - 1] !== sec) { this.skillShown[slot - 1] = sec; this.skillNums[slot - 1].textContent = sec > 0 ? String(sec) : ''; }
   }
   showBanner(text: string, secs: number, big = false) {
     this.banner.textContent = text; this.banner.className = big ? 'show big' : 'show';
@@ -162,6 +173,9 @@ function rankInfo(rank: string, s: { damageTaken: number; deaths: number; second
   else if (rank !== 'S') next = s.deaths > 0 ? 'ได้ A ถ้าชนะโดยไม่แพ้เลย' : `ได้ A ถ้าโดนดาเมจไม่เกิน ${R.A.damage}`;
   return `<div>${rules}</div>${next ? `<div class="nextrank">${next}</div>` : ''}`;
 }
+
+/** Contract with the sim lane (World.skillCooldown); optional until that lane is merged. */
+interface SkillApi { skillCooldown?: (slot: 1 | 2 | 3) => { remaining: number; total: number } }
 
 function cd(el: HTMLElement, frac: number) {
   el.style.setProperty('--cd', String(frac));

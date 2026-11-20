@@ -33,6 +33,10 @@ const input = new Input($('#stick-zone'), $('#stick-base'), $('#stick-knob'));
 input.bindButton($('#btn-attack'), 'attack', true);
 input.bindButton($('#btn-dodge'), 'dodge');
 input.bindButton($('#btn-skill'), 'skill');
+input.bindButton($('#btn-skill2'), 'skill2');
+input.bindButton($('#btn-skill3'), 'skill3');
+// ult is locked in this step: UI-only message, no sim input (DES-001 §3, Q6)
+$('#btn-ult').addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); hud.showBanner('อัลติจะปลดล็อกในอัปเดตถัดไป', 1.8); });
 input.bindButton($('#btn-potion'), 'potion');
 
 let pref: QualityPref = loadPref();
