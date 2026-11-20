@@ -1,6 +1,6 @@
 // DOM HUD: bars, buttons, hints, damage numbers, menus, results. Thai-first copy.
 import type { World, SimEvent, DefeatCause } from '../../shared/sim/world.ts';
-import { PLAYER, ENEMIES } from '../../shared/data/tuning.ts';
+import { PLAYER, ENEMIES, SKILLS, ULT } from '../../shared/data/tuning.ts';
 import { rankFor, RANK_RULES } from '../../shared/rules/reward.ts';
 import { dodgeCdSeconds } from '../../shared/sim/variant.ts';
 
@@ -31,6 +31,8 @@ export class Hud {
   private timer = $('#timer'); private hint = $('#hint'); private hintTimer = 0; private hintGap = 0; private hintQueue: string[] = []; private hintCur = ''; private hintShown = 0;
   private lastPotions = -1; private taughtPerfect = false;
   private skillBtns = [$('#btn-skill'), $('#btn-skill2'), $('#btn-skill3')]; private skillNums = this.skillBtns.map((b) => b.querySelector('.cdnum') as HTMLElement); private skillShown = [-1, -1, -1];
+  /** accessible names come from the data (Thai names), not hard-coded English */
+  private _aria = (() => { this.skillBtns.forEach((b, i) => b.setAttribute('aria-label', `สกิล ${i + 1} ${SKILLS[i].nameTh}`)); $('#btn-ult').setAttribute('aria-label', `อัลติ ${ULT.nameTh} (ล็อก)`); })();
   private get skillBtn() { return this.skillBtns[0]; }
   private dodgeBtn = $('#btn-dodge'); private potionBtn = $('#btn-potion');
   private layer = $('#floaters'); private vignette = $('#vignette'); private banner = $('#banner');
@@ -87,6 +89,7 @@ export class Hud {
         if (this.tmp.vis) this.floater(this.tmp.x, this.tmp.y, String(e.amount), e.byPlayer ? (e.crit ? 'crit' : 'dmg') : 'hurt');
         if (!e.byPlayer) { this.vignette.classList.remove('flash'); void this.vignette.offsetWidth; this.vignette.classList.add('flash'); try { navigator.vibrate?.(35); } catch { /* not allowed */ } }
       } else if (e.t === 'perfect') { project(w.player.id, 2.3, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'PERFECT!', 'perfect'); }
+      else if (e.t === 'dodge-early') { project(w.player.id, 2.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'หลบเร็วไป', 'early'); }
       else if (e.t === 'heal') { project(w.player.id, 2.0, this.tmp); this.floater(this.tmp.x, this.tmp.y, `+${e.amount}`, 'heal'); }
       else if (e.t === 'interrupt') { project(e.id, 1.6, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'ขัดจังหวะ!', 'crit'); }
       else if (e.t === 'stun' && e.long) this.showBanner('💥 บอสชนเสา! มึนงง — โจมตีเลย!', 2.2);

@@ -47,4 +47,20 @@
 - **sim 3 สกิล** (`25faaad`): ตามตัวเลขใน DES §2, เทสต์ 33 ข้อตาม DES §6 ข้อ 1 (ขอบระยะ/มุม, กดก่อนพร้อม, หลบยกเลิกร่าย, ตายก่อนโดน, หลบเพอร์เฟกต์คืนเฉพาะช่อง 1, replay ซ้ำได้ผลเดิม), log เก่าของรอบ 3 ได้ผลเหมือนเดิม
 - **HUD** (`d8de018`): ผังปุ่มตาม DES §3 (วัดตำแหน่งในเบราว์เซอร์แล้วตรง), วงคูลดาวน์ + เลขวินาที, อัลติล็อก ภาพ `docs/qa/hud-2b/`
 - **ทดสอบ:** test 62/62, typecheck ผ่าน, lifecycle 20/20 · กดทั้ง 3 สกิลในเบราว์เซอร์แล้ว คูลดาวน์ขึ้นถูก (8 / 4.5 / 12 s)
-- กำลังทำ: ท่าออก + VFX + คลิป (`lane/skills-vfx`)
+
+## ผลการทำ: ท่า + VFX ผู้เล่น (lane/skills-vfx)
+- ท่าอนิเมชันตาม `ps.cast` (Chime ยกก่อนกระแทก, Crescent ดึงหลังแล้วฟันขวาง, Crystal กดปลายลง) ใน `src/render/skillfx.ts` (`castPose`) / `view.ts`; VFX เป็นพูล mesh 3 ชิ้น ขับด้วย event `skill-hit` และสถานะ `ps.cast` ในหน่วย tick (replay ได้ภาพเดียวกัน) ปิดด้วย `?vfx=0`
+- draw calls ซ้อนสูงสุด: **+3 ทั้ง Medium และ Low** (เพดาน +5 / +3) รายละเอียดและภาพ: `docs/qa/vfx-2b.md` คลิป: `docs/qa/clips/`
+- "หลบเร็วไป" ขึ้นเป็น floater สี blossom เมื่อได้ event `dodge-early`; aria-label ปุ่มสกิลใช้ชื่อไทยจาก `SKILLS`/`ULT`
+- เครื่องมือ QA: `?qafreeze`, `__synesQA.stepTicks(n)`, `?botskills=1` (ไม่มีผลต่อเกมเมื่อไม่ใช้)
+
+### คำถามเพิ่มจากท่า + VFX (Q23–Q29)
+| # | เรื่อง | ใช้ชั่วคราว |
+|---|---|---|
+| Q23 | High tier | ใช้เพดาน Medium (DES ให้แค่ Medium/Low) |
+| Q24 | เสียงท่า 2/3 | Crescent ใช้ `sfx.swing(2)`, Crystal ใช้ `sfx.skill()` ที่ tick โดน ไม่มีเสียงใหม่ |
+| Q25 | Draw calls ต่อท่า | ใช้ 1 call/ท่าทุก tier (ต่ำกว่าเพดาน +2 ของ Crescent/Crystal Medium) ถ้าต้องการรายละเอียดเพิ่มให้บอกงบ |
+| Q26 | ภาพ Chime เดิม (วงแหวนตอนเริ่มร่าย) | ตัดออก เหลือวงแหวน lumen ตอนโดนตาม DES; ไม่มีภาพ prep ของ Chime นอกจากท่าตัวละคร |
+| Q27 | Crescent/Crystal ตอน prep | Crescent ไม่มีเอฟเฟกต์ prep (เฉพาะท่า) ส่วน Crystal มีรอยแตกที่วงเป้าหมาย (r 1.5) เติบโตตลอด 15 tick |
+| Q28 | สี/รูปเศษ | เศษแสงเป็นทรงแหลม 8 หน้า; Chime lumen+gold, Crescent blossom+violet, Crystal teal+gold ตามพาเลต |
+| Q29 | ข้อความ "หลบเร็วไป" | แสดงทุกครั้งที่ได้ event (ไม่จำกัดความถี่); สี blossom #FF9EC7 ขนาด 22px |

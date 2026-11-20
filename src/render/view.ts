@@ -10,6 +10,7 @@ import { PLAYER, CONE_INNER_R } from '../../shared/data/tuning.ts';
 import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenPropMerged, PAL } from './models.ts';
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
+import { SkillFx, castPose } from './skillfx.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
@@ -45,6 +46,9 @@ export class View {
   hemi: HemisphereLight; sun: DirectionalLight;
   q: QualitySettings = TIERS.medium; tone: Tone = DEFAULT_TONE;
   particles!: Particles; rings!: Rings;
+  /** DES-001 player skill VFX; `?vfx=0` turns them off (A/B draw-call measurement only) */
+  skillFx: SkillFx | null = null;
+  readonly vfx = new URLSearchParams(location.search).get('vfx') !== '0';
   private actors = new Map<number, ActorView>();
   private teles = new Map<number, { t: Telegraph; m: Mesh; mat: any }>();
   private gates = new Map<string, { g: Object3D; open: boolean; y: number }>();
@@ -204,6 +208,8 @@ export class View {
       this.playerMark.rotation.x = -Math.PI / 2; this.playerMark.renderOrder = 12; this.scene.add(this.playerMark);
     }
     if (!this.particles) { this.particles = new Particles(this.scene, this.q.particles); this.rings = new Rings(this.scene); }
+    // pooled skill VFX: allocated here (level build), never per cast
+    this.skillFx?.dispose(); this.skillFx = new SkillFx(this.scene, this.q.tier, this.vfx);
   }
 
   private addActor(a: Actor) {
@@ -246,7 +252,8 @@ export class View {
           this.rings.arc(p.x, p.z, Math.atan2(-p.fx, -p.fz), PLAYER.combo[e.step].range + 0.3, e.step === 2 ? PAL.gold : PAL.lumen, e.step);
           break;
         }
-        case 'skill': { const p = world.player; this.rings.ring(p.x, p.z, 0.5, PLAYER.skill.radius, PAL.gold, PLAYER.skill.cast + 0.15); this.rings.ring(p.x, p.z, 0.3, PLAYER.skill.radius * 0.8, PAL.lumen, PLAYER.skill.cast + 0.25); break; }
+        case 'skill': break; // legacy Chime event: its visuals are now the skill-hit ring (DES-001 §2)
+        case 'skill-hit': this.skillFx?.onSkillHit(e.slot, world.tick, e.x, e.z, e.dx, e.dz); break;
         case 'perfect': this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1); this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
         case 'death': { const v = this.actors.get(e.id); if (v) { this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
@@ -292,6 +299,7 @@ export class View {
     for (const f of this.flames) { f.scale.y = 0.85 + Math.sin(this.time * 17 + f.id) * 0.15; f.rotation.y += dt * 2; }
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
+    this.skillFx?.update(world.tick, alpha, world.ps.cast);
     this.updateCamera(world, alpha, dt);
     this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);
@@ -342,12 +350,20 @@ export class View {
       if (moving) { v.model.position.y = Math.abs(Math.sin(T * 13)) * 0.07; v.model.rotation.x = 0.12; }
       if (head) head.rotation.z = moving ? Math.sin(T * 13) * 0.06 : Math.sin(T * 2) * 0.03;
       if (sword) {
-        if (ps.swingT > 0) {
+        const cast = ps.cast, fa = this.skillFx ? this.skillFx.hitAge(1, world.tick, alpha) : null;
+        let pose = null as ReturnType<typeof castPose> | null;
+        if (cast) pose = castPose(cast.slot, Math.max(0, cast.tick - 1 + alpha));
+        else if (fa !== null && fa < 6 && ps.dodgeT <= 0) pose = castPose(1, 10 + fa); // Chime follow-through after the hit tick
+        if (pose) {
+          sword.position.set(0.36, 0.5 + pose.dy, 0.12); sword.rotation.set(pose.rx, pose.ry, 0);
+          v.model.rotation.x = pose.lean; v.model.position.y = pose.hop;
+        } else if (ps.swingT > 0) {
           const k = 1 - ps.swingT / ps.swingDur, e = 1 - (1 - k) * (1 - k);
           const dir = ps.combo === 1 ? -1 : 1;
           sword.rotation.set(-1.2 + (ps.combo === 2 ? e * 2.6 : 0), dir * (1.4 - e * 2.8), 0);
         } else if (ps.castT > 0) { sword.rotation.set(-2.6, 0, 0); v.model.position.y = 0.15; }
         else sword.rotation.set(-0.35, 0, 0.2);
+        if (!pose) sword.position.set(0.36, 0.5, 0.12);
       }
       if (ps.dodgeT > 0) { v.model.scale.set(0.9, 0.82, 1.25); v.model.rotation.x = 0.4; }
       if (ps.drinkT > 0 && head) head.rotation.x = -0.5;
