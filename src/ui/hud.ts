@@ -1,11 +1,12 @@
 // DOM HUD: bars, buttons, hints, damage numbers, menus, results. Thai-first copy.
 import type { World, SimEvent, DefeatCause } from '../../shared/sim/world.ts';
-import { PLAYER, ENEMIES, SKILLS, ULT } from '../../shared/data/tuning.ts';
+import { PLAYER, ENEMIES, SKILLS, ULT, TICK } from '../../shared/data/tuning.ts';
 import { rankFor, RANK_RULES } from '../../shared/rules/reward.ts';
 import { dodgeCdSeconds } from '../../shared/sim/variant.ts';
 
 /** Hint copy. `when` = only show while the thing it talks about is on screen (round-1 playtest: hints arrived before/after the event). */
-export const HINTS: Record<string, { icon: string; text: string; when?: (w: World) => boolean; urgent?: boolean }> = {
+/** `low`: secondary tip; it never takes the slot from another ready hint, and any ready hint may replace it once it has been read for 1.5 s. */
+export const HINTS: Record<string, { icon: string; text: string; when?: (w: World) => boolean; urgent?: boolean; low?: boolean }> = {
   move: { icon: '🕹', text: 'ลากนิ้วที่ครึ่งจอซ้ายเพื่อเดิน เดินตามทางไปยังคริสตัลข้างหน้า' },
   attack: { icon: '⚔', text: 'แตะ ⚔ เพื่อฟัน แตะต่อเนื่องเพื่อคอมโบ 3 จังหวะ', when: (w) => w.actors.some((e) => e.kind !== 'player' && e.alive && e.active) },
   dodge: { icon: '↯', text: 'วงสีส้มคือจุดที่จะโดนโจมตี เดินออกนอกวง หรือกด ↯ พุ่งหลบ', when: (w) => w.tele.some((t) => t.area && t.t > 0.35), urgent: true },
@@ -18,8 +19,12 @@ export const HINTS: Record<string, { icon: string; text: string; when?: (w: Worl
   pillar: { icon: '💎', text: 'ยืนหน้าเสาคริสตัลเพื่อล่อบอสพุ่งชน แล้วก้าวหลบด้านข้าง บอสจะมึนนาน', when: (w) => w.boss.state !== 'intro' },
   phase2: { icon: '⚠', text: 'บอสโกรธแล้ว! เสางอกใหม่ ท่าเร็วขึ้น และมีฝนผลึก ให้เดินตลอด', urgent: true },
   pillarP2: { icon: '💎', text: 'หลังฝนผลึก บอสจะพุ่งชนทุกครั้ง รีบไปยืนหน้าเสาแล้วหลบด้านข้าง!', urgent: true },
+  /** DES-006 Q32: first time an action button fades over a warning (queued by Hud, shown while a button is still faded) */
+  fadedButtons: { icon: '👆', text: 'ปุ่มจางลงเพื่อให้เห็นวงเตือนข้างใต้ แต่ยังกดได้ตามปกติ', when: () => !!document.querySelector('.act.seethru'), low: true },
 };
 const HINT_SECS = 4.5, HINT_GAP = 0.5;
+/** DES-006 Q29: one "หลบเร็วไป" per dodge, and at most one per 30 sim ticks */
+const EARLY_GAP_TICKS = 30;
 const POTION_SVG = (full: boolean) => `<svg viewBox="0 0 12 16" width="12" height="16" aria-hidden="true"><rect x="4" y="0.5" width="4" height="3" rx="0.6" fill="#e9dcc4"/><path d="M4 3.5h4v2l2.6 3.2a4.6 4.6 0 1 1-9.2 0L4 5.5z" fill="${full ? '#6ee07a' : 'rgba(255,255,255,0.12)'}" stroke="#fff" stroke-width="0.9"/></svg>`;
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T;
@@ -29,7 +34,9 @@ export class Hud {
   private hp = $('#hp-fill'); private hpText = $('#hp-text'); private potions = $('#potions');
   private boss = $('#boss'); private bossFill = $('#boss-fill'); private bossName = $('#boss-name');
   private timer = $('#timer'); private hint = $('#hint'); private hintTimer = 0; private hintGap = 0; private hintQueue: string[] = []; private hintCur = ''; private hintShown = 0;
-  private lastPotions = -1; private taughtPerfect = false;
+  private lastPotions = -1; private taughtPerfect = false; private taughtFade = false;
+  private w: World | null = null; private earlyAt = { w: null as World | null, tick: 0 };
+  private actBtns = [...document.querySelectorAll<HTMLElement>('.act')];
   private skillBtns = [$('#btn-skill'), $('#btn-skill2'), $('#btn-skill3')]; private skillNums = this.skillBtns.map((b) => b.querySelector('.cdnum') as HTMLElement); private skillShown = [-1, -1, -1];
   /** accessible names come from the data (Thai names), not hard-coded English */
   private _aria = (() => { this.skillBtns.forEach((b, i) => b.setAttribute('aria-label', `สกิล ${i + 1} ${SKILLS[i].nameTh}`)); $('#btn-ult').setAttribute('aria-label', `อัลติ ${ULT.nameTh} (ล็อก)`); })();
@@ -42,10 +49,34 @@ export class Hud {
 
   constructor() {
     this.bossName.textContent = ENEMIES.prismback.nameTh;
+    // DES-006 Q30: feedback on the button when a skill that is not ready is pressed (touch and the 1/2/3, L/C keys). UI only: the press
+    // still reaches the sim through Input exactly as before, and the sim starts nothing, so there is no swing/hit sound.
+    this.skillBtns.forEach((b, i) => b.addEventListener('pointerdown', () => this.denyIfNotReady(i + 1 as 1 | 2 | 3)));
+    addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      const slot = ({ Digit1: 1, KeyL: 1, KeyC: 1, Digit2: 2, Digit3: 3 } as Record<string, 1 | 2 | 3>)[e.code];
+      if (slot) this.denyIfNotReady(slot);
+    });
+  }
+
+  /** Will a press now be refused on the next sim tick? Mirrors World.updatePlayer: cooldowns tick down before the check, dodge/cast timers after it. */
+  private notReady(slot: 1 | 2 | 3) {
+    const w = this.w; if (!w || !w.player.alive || w.finished) return false;
+    const ps = w.ps, c = w.skillCooldown(slot);
+    if (c.remaining > TICK + 1e-6) return true;
+    return ps.dodgeT > 0 || ps.castT > 0 || (!!ps.cast && (ps.cast.slot === 1 || ps.cast.tick + 1 < ps.cast.endTick));
+  }
+  private denyIfNotReady(slot: 1 | 2 | 3) {
+    if (!this.notReady(slot)) return;
+    const el = this.skillBtns[slot - 1];
+    el.classList.remove('denied'); void el.offsetWidth; el.classList.add('denied');
+    clearTimeout((el as any)._deny); (el as any)._deny = setTimeout(() => el.classList.remove('denied'), 400);
   }
 
   update(w: World, dt: number, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp) {
     const p = w.player, ps = w.ps;
+    this.w = w;
+    if (!this.taughtFade && this.actBtns.some((b) => b.classList.contains('seethru'))) { this.taughtFade = true; this.queueHint('fadedButtons'); }
     this.hp.style.width = `${(p.hp / p.maxHp) * 100}%`;
     this.hp.classList.toggle('low', p.hp / p.maxHp < 0.3);
     this.hpText.textContent = `${Math.ceil(p.hp)} / ${p.maxHp}`;
@@ -89,7 +120,11 @@ export class Hud {
         if (this.tmp.vis) this.floater(this.tmp.x, this.tmp.y, String(e.amount), e.byPlayer ? (e.crit ? 'crit' : 'dmg') : 'hurt');
         if (!e.byPlayer) { this.vignette.classList.remove('flash'); void this.vignette.offsetWidth; this.vignette.classList.add('flash'); try { navigator.vibrate?.(35); } catch { /* not allowed */ } }
       } else if (e.t === 'perfect') { project(w.player.id, 2.3, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'PERFECT!', 'perfect'); }
-      else if (e.t === 'dodge-early') { project(w.player.id, 2.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'หลบเร็วไป', 'early'); }
+      else if (e.t === 'dodge-early') {
+        if (this.earlyAt.w === w && w.tick - this.earlyAt.tick < EARLY_GAP_TICKS) continue;
+        this.earlyAt.w = w; this.earlyAt.tick = w.tick;
+        project(w.player.id, 2.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'หลบเร็วไป', 'early', 1300);
+      }
       else if (e.t === 'heal') { project(w.player.id, 2.0, this.tmp); this.floater(this.tmp.x, this.tmp.y, `+${e.amount}`, 'heal'); }
       else if (e.t === 'interrupt') { project(e.id, 1.6, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'ขัดจังหวะ!', 'crit'); }
       else if (e.t === 'stun' && e.long) this.showBanner('💥 บอสชนเสา! มึนงง — โจมตีเลย!', 2.2);
@@ -102,10 +137,10 @@ export class Hud {
     }
   }
 
-  private floater(x: number, y: number, text: string, cls: string) {
+  private floater(x: number, y: number, text: string, cls: string, ms = 900) {
     const el = document.createElement('div'); el.className = `floater ${cls}`; el.textContent = text;
     el.style.left = `${x + (Math.random() - 0.5) * 36}px`; el.style.top = `${y + (Math.random() - 0.5) * 14}px`;
-    this.layer.appendChild(el); setTimeout(() => el.remove(), 900);
+    this.layer.appendChild(el); setTimeout(() => el.remove(), ms);
   }
   /** Cooldown ring + whole seconds for skill slot 1..3. Uses World.skillCooldown (sim lane) when present, else slot 1 falls back to ps.skillCd. */
   private skillCd(w: World, slot: 1 | 2 | 3) {
@@ -121,17 +156,19 @@ export class Hud {
     clearTimeout((this.banner as any)._t); (this.banner as any)._t = setTimeout(() => (this.banner.className = ''), secs * 1000);
   }
   queueHint(id: string) { if (!HINTS[id] || this.hintQueue.includes(id) || this.hintCur === id) return; this.hintQueue.push(id); }
-  /** One hint at a time, short gap between them, and context hints wait until what they describe is visible. Urgent ones cut a hint that has been read for 1.5 s. */
+  /** One hint at a time, short gap between them, and context hints wait until what they describe is visible. Urgent ones cut a hint that has been read for 1.5 s;
+   *  a low (secondary) hint waits behind every other ready hint and is cut by any of them after 1.5 s. */
   private tickHints(w: World, dt: number) {
     if (this.hintTimer > 0) { this.hintTimer -= dt; this.hintShown += dt; if (this.hintTimer <= 0) { this.hint.classList.remove('show'); this.hintCur = ''; this.hintGap = HINT_GAP; } }
     else if (this.hintGap > 0) this.hintGap -= dt;
     const ready = (id: string) => !HINTS[id].when || HINTS[id].when!(w);
     if (this.hintCur && this.hintShown > 1.5) {
-      const u = this.hintQueue.find((id) => HINTS[id].urgent && ready(id));
+      const cur = HINTS[this.hintCur];
+      const u = this.hintQueue.find((id) => (HINTS[id].urgent || (cur.low && !HINTS[id].low)) && ready(id));
       if (u && !HINTS[this.hintCur].urgent) { this.show(u); return; }
     }
     if (this.hintTimer > 0 || this.hintGap > 0) return;
-    const next = this.hintQueue.find(ready);
+    const next = this.hintQueue.find((id) => !HINTS[id].low && ready(id)) ?? this.hintQueue.find(ready);
     if (next) this.show(next);
   }
   private show(id: string) {

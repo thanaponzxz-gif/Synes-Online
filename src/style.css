@@ -41,10 +41,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #stick-knob { position: absolute; left: 50%; top: 50%; width: 38%; height: 38%; border-radius: 50%; background: url('/assets/ui/ui_stick_knob_v01.png') center / 100% 100% no-repeat; transform: translate(-50%, -50%); }
 /* DES-002 step 3: HP frames. The frame PNG is the .bar background; a .trough (clip-path chevron ends) holds the live fill, so widths stay driven by hud.ts.
    Trough fractions of the image: hp l .150 r .989 t .436 b .720 (chevron from 97.4%); boss l .0707 r .928 t .494 b .783 (chevrons 2.3% each end). */
-#top-left { position: absolute; left: calc(12px + var(--sl)); top: calc(10px + var(--st)); width: min(27vw, 420px); }
-.who { position: absolute; z-index: 2; left: 16%; right: 2%; top: 0; height: 13px; font-weight: 700; font-size: 12px; line-height: 13px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; align-items: center; }
-#potions { display: inline-flex; gap: 2px; align-items: center; }
-#potions svg { height: 12px; width: auto; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)); }
+/* DES-006 Q41 (team B layout): the name line is 14 px and sits on the transparent band above the trough, starting 7 px above the frame
+   (the frame moved down 2 px); potion bottles are 16 px. Nothing in the line reaches the boss bar (Q44 keeps the boss bar clear of #top-left). */
+#top-left { position: absolute; left: calc(12px + var(--sl)); top: calc(12px + var(--st)); width: min(27vw, 420px); }
+.who { position: absolute; z-index: 2; left: 16%; right: 2%; top: -7px; height: 18px; font-weight: 700; font-size: 14px; line-height: 18px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75), 0 0 2px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; align-items: center; }
+#potions { display: inline-flex; gap: 3px; align-items: center; }
+#potions svg { height: 16px; width: auto; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.7)); }
 .bar { position: relative; background-repeat: no-repeat; background-size: 100% 100%; background-position: center; }
 .bar .trough { position: absolute; overflow: hidden; }
 .bar .trough > div:not(.p2mark) { height: 100%; width: 100%; transition: width 0.12s; }
@@ -53,10 +55,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .bar.hp .trough { left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; clip-path: polygon(0 0, 97.4% 0, 100% 50%, 97.4% 100%, 0 100%); }
 #hp-fill { background: linear-gradient(180deg, #bcfff8, #2fe2d1 45%, #138b93); }
 #hp-fill.low { background: linear-gradient(90deg, #e04848, var(--hp-low)); animation: pulse 0.6s infinite alternate; }
-#hp-text { position: absolute; left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; display: flex; align-items: center; justify-content: center; font-size: clamp(9px, 1.65vmin, 18px); line-height: 1; text-align: center; font-weight: 700; text-shadow: 0 1px 2px #000; }
-#boss { position: absolute; left: 50%; top: calc(8px + var(--st)); transform: translate(-50%, -140%); width: min(42vw, 680px); text-align: center; transition: transform 0.35s; }
+#hp-text { position: absolute; left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; display: flex; align-items: center; justify-content: center; font-size: clamp(12px, 1.9vmin, 18px); line-height: 1; text-align: center; font-weight: 800; letter-spacing: 0.02em;
+  -webkit-text-stroke: 3px rgba(18, 12, 40, 0.92); paint-order: stroke fill; text-shadow: 0 1px 2px #000; } /* DES-006 Q42: >= 12 px, dark outline for contrast */
+/* DES-006 Q44: the centred boss bar keeps a 10 px gap from the HP block, including the side safe-area insets
+   (half width <= 50vw - (12px + inset + HP width + 10px)). At 844x390 without insets this is 344 px, with 47 px insets 250 px. */
+#boss { position: absolute; left: 50%; top: calc(8px + var(--st)); transform: translate(-50%, -140%); text-align: center; transition: transform 0.35s;
+  width: min(42vw, 680px, calc(100vw - 2 * (22px + max(var(--sl), var(--sr)) + min(27vw, 420px)))); }
 #boss.show { transform: translate(-50%, 0); }
-#boss-name { font-weight: 800; font-size: clamp(13px, 2.7vmin, 30px); line-height: 1.2; text-shadow: 0 2px 4px #000; }
+#boss-name { font-weight: 800; font-size: clamp(14px, 2.7vmin, 30px); line-height: 1.2; text-shadow: 0 2px 4px #000; }
 .bar.boss { width: 100%; aspect-ratio: 1260 / 129; background-image: url('/assets/ui/ui_hud_boss_frame_v01.png'); }
 .bar.boss .trough { left: 7.07%; right: 7.2%; top: 49.4%; bottom: 21.7%; clip-path: polygon(0 50%, 2.3% 0, 97.7% 0, 100% 50%, 97.7% 100%, 2.3% 100%); }
 #boss-fill { background: linear-gradient(180deg, #ff77aa, #df145c 50%, #900d50); }
@@ -64,8 +70,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .p2mark { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, 0.8); }
 #top-right { position: absolute; right: calc(10px + var(--sr)); top: calc(8px + var(--st)); display: flex; gap: 8px; align-items: center; pointer-events: auto; }
 #timer { font-variant-numeric: tabular-nums; font-weight: 700; text-shadow: 0 1px 3px #000; }
-#btn-pause { width: clamp(42px, 7.6vmin, 72px); height: clamp(42px, 7.6vmin, 72px); padding: 0; border: 0; background: url('/assets/ui/ui_menu_settings_v01.png') center / 100% 100% no-repeat; } /* DES-002 step 4: gear button */
-#hint { position: absolute; left: calc(12px + var(--sl)); top: calc(max(49px, min(5vw, 76px)) + var(--st)); transform: translate(-8px, 0); max-width: min(27vw, 420px); background: linear-gradient(125deg, rgba(79, 56, 125, 0.94), rgba(30, 23, 63, 0.9)); border: 1px solid #e0c398;
+/* DES-002 step 4: gear button. DES-006 Q46: the gear image stays clamp(42px, 7.6vmin, 72px); the button box (hit target) is at least 48 px and
+   a negative margin keeps the top-right row where it was. Pressed = the .act press look (scale .92, brightness 1.3); keyboard focus = lumen ring. */
+#btn-pause { --g: clamp(42px, 7.6vmin, 72px); --gh: max(48px, var(--g)); width: var(--gh); height: var(--gh); margin: calc((var(--g) - var(--gh)) / 2); padding: 0; border: 0; border-radius: 50%;
+  background: url('/assets/ui/ui_menu_settings_v01.png') center / var(--g) var(--g) no-repeat; transition: transform 0.08s, filter 0.08s; }
+#btn-pause:active { transform: scale(0.92); filter: brightness(1.3); }
+#btn-pause:focus-visible { outline: 2px solid var(--lumen); outline-offset: -1px; }
+#hint { position: absolute; left: calc(12px + var(--sl)); top: calc(max(51px, min(5vw, 76px) + 2px) + var(--st)); transform: translate(-8px, 0); max-width: min(27vw, 420px); background: linear-gradient(125deg, rgba(79, 56, 125, 0.94), rgba(30, 23, 63, 0.9)); border: 1px solid #e0c398;
   border-radius: 4px; box-shadow: 0 2px 8px #171128a8; padding: 7px 11px; font-size: clamp(12px, 2vmin, 14px); line-height: 1.3; display: flex; gap: 8px; align-items: center; opacity: 0; transition: opacity 0.25s, transform 0.25s; }
 #hint.show { opacity: 1; transform: translate(0, 0); }
 #hint b { font-size: 18px; }
@@ -78,7 +89,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .floater.crit { color: var(--gold); font-size: 26px; }
 .floater.hurt { color: #ffd0d6; font-size: 24px; -webkit-text-stroke: 4px #7a0f2a; text-shadow: 0 2px 0 #4a0618, 0 0 10px rgba(122, 15, 42, 0.8); }
 .floater.heal { color: #8dffb0; }
-.floater.early { color: #FF9EC7; font-size: 22px; } /* blossom: palette colour, never the reserved warning red/orange */
+.floater.early { color: #FF9EC7; font-size: 22px; line-height: 1.25; padding: 0 10px 2px; border-radius: 99px; background: rgba(18, 12, 40, 0.74); box-shadow: 0 0 0 1px rgba(255, 158, 199, 0.5), 0 2px 8px rgba(0, 0, 0, 0.45);
+  -webkit-text-stroke: 3px rgba(18, 12, 40, 0.95); animation: float-hold 1.3s ease-out forwards; } /* blossom: palette colour, never the reserved warning red/orange. DES-006 Q31: dark edge + thin backdrop, fully readable for ~0.9 s */
 .floater.perfect { color: var(--lumen); font-size: 24px; letter-spacing: 0.05em; }
 .ebar { position: absolute; left: 0; top: 0; width: 44px; height: 6px; border-radius: 3px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.7); overflow: hidden; }
 .ebar i { display: block; height: 100%; background: #ff6b7a; }
@@ -111,15 +123,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border: 1px solid #ebca93; border-radius: 6px; background: #211830; color: #fff2d8;
   font-size: calc(var(--d) * var(--s) * 0.25px); font-weight: 800; line-height: 1.1; pointer-events: none; }
 .act .ico { width: 66%; height: 66%; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }
-.act .cdnum { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: calc(var(--d) * var(--s) * 0.42px); font-weight: 800; pointer-events: none; text-shadow: 0 1px 4px #000, 0 0 6px #000; }
-.act.skill.cooling .ico { opacity: 0.45; }
-.act.ult.locked { flex-direction: column; gap: 0; }
-.act.ult .ico { width: 56%; height: 56%; }
-.act.ult .lbl { font-size: calc(var(--d) * var(--s) * 0.2px); font-weight: 700; line-height: 1; margin-top: -2px; color: #dfe4f5; }
-#btn-potion .count { position: absolute; right: -4px; bottom: -4px; background: #211830; border: 1px solid #ebca93; color: #fff; font-size: 11px; border-radius: 99px; padding: 1px 5px; }
+.act .cdnum { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: calc(var(--d) * var(--s) * 0.42px); font-weight: 800; pointer-events: none;
+  -webkit-text-stroke: 2px rgba(18, 12, 40, 0.9); paint-order: stroke fill; text-shadow: 0 1px 2px #000; } /* tight outline (was a 6 px dark glow) so the full-strength icon shows around the number */
+/* DES-006 Q33: cooldown darkens the button background (frame + glass); the icon keeps full strength */
+.act.skill.cooling::before { filter: brightness(0.5) saturate(0.6); }
+.act.ult .ico { width: 62%; height: 62%; margin-top: -8%; }
+/* DES-006 Q33: "ล็อก" uses the slot-number badge (DES-002 look) so it reads at >= 12 px under the lock icon */
+.act.ult .lbl { position: absolute; z-index: 2; bottom: -6%; padding: 0 4px; border: 1px solid #ebca93; border-radius: 6px; background: #211830; color: #fff2d8;
+  font-size: max(12px, calc(var(--d) * var(--s) * 0.25px)); font-weight: 800; line-height: 1.15; pointer-events: none; }
+#btn-potion .count { position: absolute; right: -6px; bottom: -6px; background: #211830; border: 1px solid #ebca93; color: #fff; font-size: 14px; font-weight: 800; line-height: 1.15; border-radius: 99px; padding: 0 5px; } /* DES-006 Q41: 14 px */
 #btn-potion.empty { opacity: 0.35; }
 .act.cooling::after { content: ''; position: absolute; inset: 2.4%; border-radius: 50%; background: conic-gradient(var(--lumen) calc(var(--cd) * 1turn), transparent 0); -webkit-mask-image: radial-gradient(farthest-side, transparent 84%, #000 88%); mask-image: radial-gradient(farthest-side, transparent 84%, #000 88%); pointer-events: none; }
 .act.empowered { box-shadow: 0 0 16px 4px rgba(255, 200, 87, 0.7); }
+/* DES-006 Q30: a press on a skill that is not ready shakes the button lightly, flashes its edge (white/violet, never the warning colours)
+   and pops the remaining-cooldown number; the sim gets the press as before and starts nothing, so there is no swing/hit sound. */
+.act.denied { animation: deny 0.34s ease-out; }
+.act.denied .cdnum { animation: cdpop 0.34s ease-out; }
 #debug { position: absolute; left: calc(8px + var(--sl)); top: 64px; font: 11px/1.3 ui-monospace, monospace; background: rgba(0, 0, 0, 0.5); padding: 4px 6px; border-radius: 6px; display: none; white-space: pre; }
 
 /* ---------- overlays ---------- */
@@ -129,9 +148,12 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #paused .card, #auto-panel .card { background: none; border: 0 solid transparent; border-radius: 0; box-shadow: none; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
   border-image-source: url('/assets/ui/ui_panel_v01.png'); border-image-slice: 140 60 60 140 fill; border-image-width: 56px 24px 24px 56px; border-image-repeat: stretch; padding: 9px 30px 20px; }
 /* sound switch: the real checkbox, drawn as ui_toggle_v01 (knob right = on; off = mirrored + desaturated) */
-#chk-sound, .tg { appearance: none; -webkit-appearance: none; order: 2; flex: none; width: 66px; height: 22px; margin: 0; cursor: pointer; background: url('/assets/ui/ui_toggle_v01.png') center / 100% 100% no-repeat; }
+/* DES-006 Q48: role="switch" (index.html); the whole label row (>= 44 px tall) toggles it and the input box itself is 66x44 around the 66x22 image */
+#chk-sound, .tg { appearance: none; -webkit-appearance: none; order: 2; flex: none; width: 66px; height: 44px; margin: 0; border-radius: 12px; cursor: pointer; background: url('/assets/ui/ui_toggle_v01.png') center / 66px 22px no-repeat; }
+label:has(> #chk-sound) { min-height: 44px; }
 #chk-sound:not(:checked), .tg:not(:checked) { transform: scaleX(-1); filter: saturate(0.35) brightness(0.85); }
 #chk-sound:focus-visible, .tg:focus-visible, #btn-auto:focus-visible, #btn-auto-set:focus-visible { outline: 2px solid var(--lumen); outline-offset: 3px; }
+#chk-sound:focus-visible, .tg:focus-visible { outline-offset: -2px; }
 .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(12, 14, 34, 0.62); z-index: 40; padding: 16px; }
 .overlay.show { display: flex; }
 .overlay .card { background: var(--panel-solid); border: 1.5px solid var(--line); border-radius: 20px; padding: 18px 22px; max-width: min(92vw, 520px); max-height: 92vh; overflow: auto; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45); }
@@ -159,6 +181,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .rankinfo .nextrank { color: var(--gold); font-weight: 700; margin-top: 2px; }
 
 @keyframes float { 0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); } 15% { opacity: 1; transform: translate(-50%, -70%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -190%) scale(1); } }
+@keyframes float-hold { 0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); } 12% { opacity: 1; transform: translate(-50%, -70%) scale(1.1); } 20% { transform: translate(-50%, -80%) scale(1); }
+  75% { opacity: 1; transform: translate(-50%, -125%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -160%) scale(1); } }
+@keyframes deny { 0%, 100% { translate: 0 0; } 20% { translate: -3px 0; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95), 0 0 12px 3px rgba(167, 139, 250, 0.85); }
+  45% { translate: 3px 0; } 70% { translate: -2px 0; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.5), 0 0 8px 2px rgba(167, 139, 250, 0.4); } }
+@keyframes cdpop { 0% { scale: 1; } 25% { scale: 1.3; } 100% { scale: 1; } }
 @keyframes pulse { to { filter: brightness(1.35); } }
 @keyframes vig { 0% { box-shadow: inset 0 0 90px 40px rgba(255, 40, 70, 0.55); } 100% { box-shadow: inset 0 0 90px 30px rgba(255, 40, 70, 0); } }
 
@@ -170,16 +197,18 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .stats { font-size: 13px; gap: 2px 12px; }
   .reward { margin: 6px 0 2px; padding: 6px; font-size: 13px; }
   .overlay button { padding: 8px 12px; margin-top: 6px; }
+  .overlay label { margin-top: 2px; } /* DES-006 Q48: the sound row is now 44 px tall; tighter row gaps keep the pause card height */
+  #paused .fine { margin-top: 4px; }
   .next { margin: 4px 0; }
   .rankinfo { font-size: 11px; margin-top: 2px; }
   .facts { font-size: 12px; margin-bottom: 8px; }
   #start .card { padding: 8px 18px; }
 }
 @media (orientation: portrait) {
-  :root { --s: 0.8; --stick-size: 96px; }
-  #top-left { width: 40vw; }
-  #boss { top: calc(48px + var(--st)); width: 57vw; transform: translate(-50%, -180%); }
-  #hint { top: calc(92px + var(--st)); max-width: 58vw; }
+  :root { --s: 0.88; --stick-size: 96px; } /* DES-006 Q21/Q73: was 0.8 (ult 41.6, potion 40 px); 0.88 = the landscape sizes, the layout scales uniformly */
+  #top-left { width: 50vw; } /* was 40vw: the trough was 6.7 px tall, too low for the >= 12 px HP text (Q42) */
+  #boss { top: calc(56px + var(--st)); width: 57vw; transform: translate(-50%, calc(-100% - 64px - var(--st))); } /* hidden = fully above the screen (it peeked in at y 0-17) */
+  #hint { top: calc(104px + var(--st)); max-width: 58vw; } /* was 92: below the boss bar, which moved down to clear the top-right row */
   #stick-base { left: calc(var(--sl) + 58px); top: calc(100% - var(--sb) - 59px); }
   #btn-attack { --r: 18; --b: 22; }
   #btn-dodge { --r: 112; --b: 26; }
@@ -193,6 +222,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* controls fade while a telegraph / boss / pillar is drawn underneath (see ui/buttonFade.ts); still fully tappable */
 .act, #stick-base { transition: opacity 0.15s; }
 .seethru { opacity: 0.35 !important; }
+/* DES-006 Q32/Q72 (team B values, see docs/qa/hud-fixes-v01): an action button over a warning drops its frame glass to 0.06, keeps a 1 px light
+   edge, the icon at 0.5 and badges/cooldown ring at 0.35. On the measured frames more of the warning shows through than with the old
+   whole-button 0.35 (the floor), and the button still reads as a live button (edge + icon); it stays fully tappable. */
+.act::before, .act .ico, .act .slot, .act .lbl, .act .count, .act::after { transition: opacity 0.15s; }
+.act.seethru { opacity: 1 !important; box-shadow: inset 0 0 0 1px rgba(255, 242, 216, 0.85); }
+.act.seethru::before { opacity: 0.06; }
+.act.seethru .ico { opacity: 0.5; filter: drop-shadow(0 0 1px rgba(18, 12, 40, 0.9)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)); }
+.act.seethru .slot, .act.seethru .lbl, .act.seethru .count, .act.seethru::after { opacity: 0.35; }
 
 /* ---------- Auto attack (DES-001 §3-4, DES-003 placement: bottom-left under the stick) ---------- */
 :root { --ak: 1; } /* Auto controls scale with the big-screen steps of --s, but never below 1 so the hit target stays >= 44 CSS px */
