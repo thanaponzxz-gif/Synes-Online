@@ -1,0 +1,114 @@
+{
+ "ui_hud_hp_frame_v01": {
+  "sheet_box": [
+   123,
+   0,
+   1497,
+   225
+  ],
+  "size": [
+   900,
+   135
+  ],
+  "semi_px": 8265,
+  "edge_alpha_max": 19
+ },
+ "ui_hud_boss_frame_v01": {
+  "sheet_box": [
+   75,
+   203,
+   1627,
+   166
+  ],
+  "size": [
+   1260,
+   129
+  ],
+  "semi_px": 14254,
+  "edge_alpha_max": 1
+ },
+ "ui_btn_frame_v01": {
+  "sheet_box": [
+   59,
+   367,
+   333,
+   330
+  ],
+  "size": [
+   270,
+   268
+  ],
+  "semi_px": 3039,
+  "edge_alpha_max": 2
+ },
+ "ui_stick_base_v01": {
+  "sheet_box": [
+   432,
+   370,
+   324,
+   323
+  ],
+  "size": [
+   324,
+   323
+  ],
+  "semi_px": 68483,
+  "edge_alpha_max": 0
+ },
+ "ui_stick_knob_v01": {
+  "sheet_box": [
+   787,
+   461,
+   142,
+   142
+  ],
+  "size": [
+   142,
+   142
+  ],
+  "semi_px": 1790,
+  "edge_alpha_max": 0
+ },
+ "ui_panel_v01": {
+  "sheet_box": [
+   983,
+   374,
+   731,
+   264
+  ],
+  "size": [
+   731,
+   264
+  ],
+  "semi_px": 7763,
+  "edge_alpha_max": 0
+ },
+ "ui_menu_settings_v01": {
+  "sheet_box": [
+   488,
+   695,
+   185,
+   184
+  ],
+  "size": [
+   150,
+   149
+  ],
+  "semi_px": 1489,
+  "edge_alpha_max": 4
+ },
+ "ui_toggle_v01": {
+  "sheet_box": [
+   1343,
+   728,
+   353,
+   116
+  ],
+  "size": [
+   353,
+   116
+  ],
+  "semi_px": 3223,
+  "edge_alpha_max": 0
+ }
+}

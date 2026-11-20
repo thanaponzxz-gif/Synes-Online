@@ -11,30 +11,32 @@
   html,body{margin:0;height:100%;background:#1d2340;color:#fff;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif}
   #start{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#4b5fa8 0%,#2a3170 45%,#1d2340 100%);z-index:50}
 </style>
-  <script>window.__SYNES_KIT_URL='./assets/models/synes_kit.json'</script>
-<script type="module" crossorigin src="./assets/index-BxWzV-gb.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DEgg5_qv.css">
+  <script type="module" crossorigin src="./assets/index-xH4hvLhB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-C_JXoGDZ.css">
 </head>
 <body>
-<canvas id="game" aria-label="Synes Online game view"></canvas>
+<canvas id="game" aria-label="หน้าจอเกม Synes Online"></canvas>
 
 <div id="hud" class="hidden">
   <div id="vignette"></div>
   <div id="stick-zone"></div>
   <div id="stick-base"><div id="stick-knob"></div></div>
   <div id="top-left">
-    <div class="who">Wayfarer <span id="potions" title="ยาฟื้นพลัง"></span></div>
-    <div class="bar hp"><div id="hp-fill"></div><span id="hp-text">120 / 120</span></div>
+    <div class="who">นักเดินทาง <span id="potions" title="ยาฟื้นพลัง"></span></div>
+    <div class="bar hp"><div class="trough"><div id="hp-fill"></div></div><span id="hp-text">120 / 120</span></div>
   </div>
-  <div id="boss"><div id="boss-name"></div><div class="bar boss"><div id="boss-fill"></div><i class="p2mark"></i></div></div>
-  <div id="top-right"><span id="net-chip" class="chip">…</span><span id="timer">0:00</span><button id="btn-pause" aria-label="หยุดเกม">❚❚</button></div>
+  <div id="boss"><div id="boss-name"></div><div class="bar boss"><div class="trough"><div id="boss-fill"></div><i class="p2mark"></i></div></div></div>
+  <div id="top-right"><span id="net-chip" class="chip">…</span><span id="timer">0:00</span><button id="btn-pause" aria-label="เปิดเมนูหยุดชั่วคราว"></button></div>
   <div id="hint"></div>
   <div id="banner"></div>
   <div id="floaters"></div>
-  <button id="btn-attack" class="act" aria-label="โจมตี">⚔</button>
-  <button id="btn-dodge" class="act" aria-label="หลบ">↯</button>
-  <button id="btn-skill" class="act" aria-label="สกิลระฆังสะท้อน">✧</button>
-  <button id="btn-potion" class="act" aria-label="ดื่มยา">✚<span class="count">2</span></button>
+  <button id="btn-attack" class="act" aria-label="โจมตี"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M27 25 37 7l6-3-1 7-12 20-6 2-6 10-4 1-2-4 7-10-2-4 3-3z" fill="#81eaf9" stroke="#fff0bc" stroke-width="2.4" stroke-linejoin="round"/><path d="m18 25 12 8M24 28 39 8" fill="none" stroke="#ffcc79" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <button id="btn-dodge" class="act" aria-label="หลบ"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M22 10h17l-4 18-8 8H10l2-7 11-5z" fill="#988cc8" stroke="#f4eeff" stroke-width="2" stroke-linejoin="round"/><path d="M21 15h17M8 38h30M4 23h13M36 22h8M31 31h14" fill="none" stroke="#7ef5fa" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+  <button id="btn-skill" class="act skill" data-slot="1" aria-label="สกิล 1 ระฆังสะท้อน"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8c-6 0-9.5 4.6-9.5 10.5V27l-3.5 5h26l-3.5-5V18.5C33.5 12.6 30 8 24 8z" fill="#5CF2E6" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="36" r="2.6" fill="#FFC857"/><ellipse cx="24" cy="24" rx="20" ry="8" fill="none" stroke="#A78BFA" stroke-width="2.2" opacity=".9"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">1</span></button>
+  <button id="btn-skill2" class="act skill" data-slot="2" aria-label="สกิล 2 ฟันเสี้ยวจันทร์"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38C8 22 20 8 38 8c-9 3-12 10-11 17 1 7 6 10 11 11C28 44 14 46 10 38z" transform="rotate(18 24 24)" fill="#FF9EC7" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 36c3-9 9-16 18-20" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">2</span></button>
+  <button id="btn-skill3" class="act skill" data-slot="3" aria-label="สกิล 3 ผลึกพิฆาต"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40L19 15l5-8 5 8z" fill="#FFC857" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 40L9 21l6-3 5 14z" fill="#A78BFA" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M31 40l8-19-6-3-5 14z" fill="#A78BFA" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M5 41l8-2 6 3 5-3 6 3 6-3 7 2" fill="none" stroke="#2BB3A3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">3</span></button>
+  <button id="btn-ult" class="act ult locked" aria-label="อัลติ มหาระฆัง (ล็อก)"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M17 8c-4 0-6.4 3.1-6.4 7.2V21l-2.4 3.4h17.6L23.4 21v-5.8C23.4 11.1 21 8 17 8z" fill="#5d6785" stroke="#c9d0e6" stroke-width="1.2"/><path d="M31 14c-4 0-6.4 3.1-6.4 7.2V27l-2.4 3.4h17.6L37.4 27v-5.8C37.4 17.1 35 14 31 14z" fill="#7a85a6" stroke="#c9d0e6" stroke-width="1.2"/><rect x="18" y="31" width="14" height="11" rx="2.2" fill="#FFC857" stroke="#fff" stroke-width="1.2"/><path d="M21 31v-3.5a4 4 0 0 1 8 0V31" fill="none" stroke="#fff" stroke-width="2"/></svg><span class="lbl">ล็อก</span></button>
+  <button id="btn-potion" class="act" aria-label="ดื่มยา"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="m25 8 10 5-5 10c6 7 4 16-3 19S9 40 9 32c0-6 5-11 12-12z" fill="#26cfbf" stroke="#eaffff" stroke-width="2.5" stroke-linejoin="round"/><path d="m24 7 13 6 2-6-13-5z" fill="#d6984a" stroke="#ffdd9c" stroke-width="1.8"/><path d="M14 30c1 4 4 6 8 6" fill="none" stroke="#c6fffd" stroke-width="2.2" stroke-linecap="round"/></svg><span class="count">2</span></button>
   <div id="debug"></div>
 </div>
 
@@ -59,7 +61,7 @@
   <h2>หยุดชั่วคราว</h2>
   <button id="btn-resume" class="primary">เล่นต่อ</button>
   <label>กราฟิก <select id="sel-quality"><option value="auto">อัตโนมัติ</option><option value="low">ต่ำ (ประหยัดแบต)</option><option value="medium">กลาง</option><option value="high">สูง</option></select></label>
-  <label><input type="checkbox" id="chk-sound" checked> เสียง</label>
+  <label><input type="checkbox" id="chk-sound" checked> เสียงเกม</label>
   <button id="btn-howto">วิธีเล่น</button>
   <button id="btn-credits">เครดิตและสิทธิ์</button>
   <button id="btn-restart">เริ่มด่านใหม่</button>
