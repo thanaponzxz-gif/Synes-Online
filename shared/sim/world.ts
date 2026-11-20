@@ -6,6 +6,7 @@ import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
 import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
+import { AutoState } from './auto.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
 
@@ -27,6 +28,8 @@ export type SimEvent =
   | { t: 'dodge-early'; x: number; z: number }
   | { t: 'heal'; amount: number } | { t: 'interrupt'; id: number }
   | { t: 'player-down'; cause: DefeatCause } | { t: 'respawn'; at: string }
+  /** Auto attack turned itself off: the player entered the boss area ('boss') or was defeated without keep-after-respawn ('down') */
+  | { t: 'auto-off'; reason: 'boss' | 'down' }
   | { t: 'checkpoint'; id: string } | { t: 'victory' };
 
 export interface Telegraph {
@@ -88,6 +91,8 @@ export class World {
   private nextId = 1;
   private hints = new Set<string>();
 
+  /** Auto attack (DES-001 §4): settings + controller state. Off by default, so runs that never enable it are unchanged. */
+  auto = new AutoState();
   seed: number;
   variant: RunVariant;
   constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT) {
@@ -129,6 +134,8 @@ export class World {
   step(inp: TickInput): SimEvent[] {
     this.events = this.events.length && this.tick === 0 ? this.events : [];
     if (this.finished) return this.events;
+    if (inp.auto) this.auto.apply(this, inp.auto); // settings change from the input log, effective from this tick
+    if (!this.ps.down) inp = this.auto.resolve(this, inp); // Auto turns "no manual input" into a normal TickInput
     const edges = inp.b & ~this.prevB;
     this.prevB = inp.b;
     const ps = this.ps;
@@ -363,6 +370,7 @@ export class World {
       ps.cast = null;
       p.hp = 0; ps.down = true; ps.downT = 0; this.stats.deaths++;
       this.tele = [];
+      this.auto.onDown(this);
       this.events.push({ t: 'player-down', cause: ps.cause });
     }
   }
@@ -384,6 +392,7 @@ export class World {
       this.events.push({ t: 'gate', id: 'arenaEntry', open: true });
     }
     if (this.clearingTriggered && this.actors.some((e) => e.group === 'clearing' && e.alive)) this.clearingTriggered = false;
+    this.auto.onRespawn(this);
     this.events.push({ t: 'respawn', at: this.checkpoint.id });
   }
 
