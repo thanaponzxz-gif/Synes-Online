@@ -1,5 +1,19 @@
 # Handoff: Synes Online
 
+## Rollover รอบ 1–2 → รอบ 2 · 2026-11-20
+**เหตุผล:** แชตหลักใช้ไป ~535k token ซึ่งเกินเกณฑ์ 450k (CLAUDE.md ข้อ 5)
+**สถานะ:** `main` push แล้วที่ https://github.com/thanaponzxz-gif/Synes-Online, test 16/16, lifecycle 20/20 (ผลเดิม ยังไม่ได้รันซ้ำหลังเพิ่มไฟล์ governance)
+**สิ่งที่ทำหลัง handoff รอบ 1:**
+- เพลย์เทสต์ agent รอบ 1 (`docs/qa/playtest-agent-round1.md`) และชุดควบคุม (`tools/qa/playtest-harness.mjs`)
+- ต้นแบบปรับภาพบน branch `art/visual-pass-poc` (ยังไม่ merge)
+- มติทีม (`docs/team/2026-11-20-review.md`) ให้ทำความชัดก่อน
+- ตั้งกฎโปรเจค (CLAUDE.md, PROJECT_SYNES.md, agent `project-synes`, skills `synes-pm`/`synes-playtest`), บีบอัดที่ 450k + hook หลังบีบอัด และสคริปต์ Windows Remote Control
+**งานถัดไปของเซสชันใหม่:** รอบ 2-A (backlog ข้อ 1–3) แล้วเพลย์เทสต์ซ้ำเพื่อเทียบคะแนนความชัด (รอบ 1 ได้ 5/10)
+**หมายเหตุสำหรับเซสชันใหม่:**
+- ต้องรัน `npm ci` ก่อน (node_modules ไม่อยู่ใน repo)
+- Blender ใช้ได้หลัง `uv venv tools/blender/.venv && uv pip install --python tools/blender/.venv/bin/python bpy==5.3.0`
+- จะอัปเดต Artifact เดิมต้องส่ง `url` ของ artifact นั้นและ `read` ก่อน (ลิงก์อยู่ใน PROJECT_SYNES.md)
+
 ## รอบที่ 1 · 2026-11-19
 **commit ล่าสุด:** ดู `git log --oneline` บน `main` (merge `art/blender-kit` ที่ f07a730)
 **สายงานที่ทำในรอบนี้:** gameplay/engine, UI/UX, web perf/QA (เซสชันหลัก บน `main`) และ art/Blender (agent แยก บน worktree `art/blender-kit` แล้ว merge เข้า `main`)

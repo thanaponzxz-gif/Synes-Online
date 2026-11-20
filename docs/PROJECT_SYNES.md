@@ -34,13 +34,13 @@
 - **รอบ 1 เสร็จแล้ว:** vertical slice "ทุ่งน้ำค้างแสง" เล่นจบได้, test 16/16, QA lifecycle 20/20
 - **เพลย์เทสต์ agent รอบ 1** (`docs/qa/playtest-agent-round1.md`): ชนะ 1:17 · คะแนน เข้าใจ 7 / **ชัด 5** / สนุก 7 / ภาพ 7 / เล่นซ้ำ 6
 - **มติทีม 2026-11-20** (`docs/team/2026-11-20-review.md`): ทำความชัดก่อน (รอบ 2-A) → ความสวยราคาถูก (2-B) → art direction ตามโทนที่เจ้าของเลือก (รอบ 3)
-- branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
+- GitHub: https://github.com/thanaponzxz-gif/Synes-Online (**Public** ห้าม commit ข้อมูลส่วนตัว อีเมล หรือ key) · branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
 - ลิงก์ Artifact (ส่วนตัว): เกม https://claude.ai/artifact/5jsDtTKaLN22JGykznhNnA · โทน 10 แบบ https://claude.ai/artifact/B512M87CqpnicvUrNCrCvT · เทียบเอนจิน https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8
 
 ## 5. รอเจ้าของตัดสินใจหรือดำเนินการ
 | เรื่อง | สถานะ |
 |---|---|
-| **สร้าง GitHub repo + เชื่อม GitHub กับ Claude** (จำเป็นต่อการขึ้นเซสชันใหม่และการทำงานหลายเซสชัน) | รอ |
+| สร้าง GitHub repo + เชื่อม GitHub กับ Claude | **เสร็จ 2026-11-20**: https://github.com/thanaponzxz-gif/Synes-Online (Public) |
 | ตั้ง `CLAUDE_CODE_AUTO_COMPACT_WINDOW=450000` ใน Settings ของ environment "Default" (ตั้งจากในเซสชันไม่ได้) และ/หรือพิมพ์ `/autocompact 450k` | รอ |
 | รัน `tools/setup/setup-windows.ps1` บนเครื่อง Windows หลัง clone repo เพื่อทำโฟลเดอร์โปรเจค + Remote Control อัตโนมัติ | รอ |
 | อนุมัติลำดับรอบ 2-A → 2-B → 3 | รอ |
@@ -61,5 +61,6 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-20 | 🟢 MAIN · Synes Online · รอบ 1–2 (`session_01A1roa5LGxnKhAviAP9VGZk`) | เพลย์เทสต์ agent, ต้นแบบปรับภาพ, ประชุมทีม, ตั้งกฎ + agent project-synes, บีบอัดที่ 450k, สคริปต์ Remote Control | `main` ล่าสุด, `art/visual-pass-poc` |
+| 2026-11-20 | 🟢 MAIN · Synes Online · รอบ 2 (สร้างโดย rollover) | เริ่มรอบ 2-A (ความชัด) | — |
+| 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 1–2) `session_01A1roa5LGxnKhAviAP9VGZk` | เพลย์เทสต์ agent, ต้นแบบปรับภาพ, ประชุมทีม, ตั้งกฎ + agent project-synes, บีบอัดที่ 450k, สคริปต์ Remote Control | `main` ล่าสุด, `art/visual-pass-poc` |
 | 2026-11-19 | เซสชันแรก | scaffold, spike, sim/server, slice, QA, ชุดโมเดล Blender, โทน 10 แบบ, Artifact | `f404bac` |
