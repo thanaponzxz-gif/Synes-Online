@@ -76,10 +76,24 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .act { position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.85); background: rgba(30, 34, 80, 0.5);
   color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
 .act.down { transform: scale(0.92); background: rgba(92, 242, 230, 0.35); }
-#btn-attack { right: calc(18px + var(--sr)); bottom: calc(20px + var(--sb)); width: var(--btn); height: var(--btn); font-size: calc(var(--btn) * 0.42); }
-#btn-dodge { right: calc(var(--btn) + 34px + var(--sr)); bottom: calc(14px + var(--sb)); width: calc(var(--btn) * 0.72); height: calc(var(--btn) * 0.72); font-size: calc(var(--btn) * 0.34); }
-#btn-skill { right: calc(var(--btn) * 0.95 + 26px + var(--sr)); bottom: calc(var(--btn) * 0.8 + 30px + var(--sb)); width: calc(var(--btn) * 0.66); height: calc(var(--btn) * 0.66); font-size: calc(var(--btn) * 0.32); }
-#btn-potion { right: calc(26px + var(--sr)); bottom: calc(var(--btn) + 36px + var(--sb)); width: calc(var(--btn) * 0.56); height: calc(var(--btn) * 0.56); font-size: calc(var(--btn) * 0.24); color: #8dffb0; }
+/* DES-001 §3 layout: 844x390 frame anchored bottom-right (offsets = frame edge - centre - radius), x --s (1.15 when viewport height > 420) */
+:root { --s: 1; }
+@media (min-height: 421px) { :root { --s: 1.15; } }
+.act { width: calc(var(--d) * var(--s) * 1px); height: calc(var(--d) * var(--s) * 1px); right: calc(var(--sr) + var(--r) * var(--s) * 1px); bottom: calc(var(--sb) + var(--b) * var(--s) * 1px); }
+#btn-attack { --d: 68; --r: 20; --b: 19; font-size: calc(var(--d) * var(--s) * 0.42px); }
+#btn-dodge { --d: 56; --r: 100; --b: 25; font-size: calc(var(--d) * var(--s) * 0.42px); }
+#btn-potion { --d: 48; --r: 169; --b: 29; font-size: calc(var(--d) * var(--s) * 0.4px); color: #8dffb0; }
+#btn-skill { --d: 54; --r: 32; --b: 98; }
+#btn-skill2 { --d: 54; --r: 96; --b: 98; }
+#btn-skill3 { --d: 54; --r: 160; --b: 98; }
+#btn-ult { --d: 48; --r: 35; --b: 163; }
+.act .ico { width: 66%; height: 66%; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }
+.act .cdnum { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: calc(var(--d) * var(--s) * 0.42px); font-weight: 800; pointer-events: none; text-shadow: 0 1px 4px #000, 0 0 6px #000; }
+.act.skill { border-color: rgba(92, 242, 230, 0.85); }
+.act.skill.cooling .ico { opacity: 0.45; }
+.act.ult.locked { background: rgba(60, 68, 98, 0.62); border-color: rgba(201, 208, 230, 0.6); flex-direction: column; gap: 0; }
+.act.ult .ico { width: 56%; height: 56%; }
+.act.ult .lbl { font-size: calc(var(--d) * var(--s) * 0.2px); font-weight: 700; line-height: 1; margin-top: -2px; color: #dfe4f5; }
 #btn-potion .count { position: absolute; right: -4px; bottom: -4px; background: #2b8a4b; color: #fff; font-size: 11px; border-radius: 99px; padding: 1px 5px; }
 #btn-potion.empty { opacity: 0.35; }
 .act.cooling::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(rgba(10, 12, 30, 0.72) calc(var(--cd) * 360deg), transparent 0); }
