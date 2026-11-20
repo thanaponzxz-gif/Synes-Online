@@ -1,5 +1,5 @@
 // Touch + keyboard input → quantized TickInput once per sim tick. Engine-agnostic.
-import { BTN, quantize, type TickInput } from '../shared/sim/input.ts';
+import { BTN, quantize, type TickInput, type AutoCmd } from '../shared/sim/input.ts';
 
 type BtnName = 'attack' | 'dodge' | 'skill' | 'skill2' | 'skill3' | 'potion' | 'retry';
 const BIT: Record<BtnName, number> = { attack: BTN.ATTACK, dodge: BTN.DODGE, skill: BTN.SKILL, skill2: BTN.SKILL2, skill3: BTN.SKILL3, potion: BTN.POTION, retry: BTN.RETRY };
@@ -12,6 +12,8 @@ export class Input {
   sx = 0; sy = 0; // stick vector, screen space (y down)
   private keys = new Set<string>();
   bot: (() => TickInput) | null = null;
+  /** Auto settings change waiting for the next sim tick. It rides on the TickInput of that tick, so it is logged like any other input. */
+  autoPending: AutoCmd | null = null;
   enabled = true;
   usedStick = false; usedAttack = false; usedDodge = false;
 
@@ -57,6 +59,7 @@ export class Input {
     const up = () => { this.held[name] = false; el.classList.remove('down'); };
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); el.addEventListener('pointerleave', up);
   }
+  queueAuto(c: AutoCmd) { this.autoPending = c; }
   press(name: BtnName) { this.pending[name] = Math.min(2, this.pending[name] + 1); if (name === 'attack') this.usedAttack = true; if (name === 'dodge') this.usedDodge = true; }
   releaseAll() { for (const k of Object.keys(this.held) as BtnName[]) this.held[k] = false; this.stickId = null; this.sx = this.sy = 0; this.resetStick(); }
 
@@ -69,7 +72,12 @@ export class Input {
 
   /** One quantized input per sim tick. Every tap yields a rising edge (0→1) the sim can see. */
   sample(): TickInput {
-    if (this.bot) return this.bot();
+    const inp = this.sampleManual();
+    if (this.autoPending) { inp.auto = this.autoPending; this.autoPending = null; }
+    return inp;
+  }
+  private sampleManual(): TickInput {
+    if (this.bot) return { ...this.bot() };
     if (!this.enabled) { this.lastBits = 0; return quantize(0, 0, 0); }
     let bits = 0;
     for (const k of Object.keys(BIT) as BtnName[]) {

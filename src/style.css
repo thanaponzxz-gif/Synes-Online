@@ -123,13 +123,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---------- overlays ---------- */
 /* DES-002 step 4: pause card wears ui_panel_v01 (731x264) as a 9-slice. Slices keep the gem corner whole (top 140 / left 140) and the notched corners
    (right 60 / bottom 60); border-image-width scales them x0.4 and is drawn over the padding, so layout is unchanged. */
-#paused .card h2 { line-height: 26px; margin-bottom: 10px; }
-#paused .card { background: none; border: 0 solid transparent; border-radius: 0; box-shadow: none; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+#paused .card h2, #auto-panel .card h2 { line-height: 26px; margin-bottom: 10px; }
+#paused .card, #auto-panel .card { background: none; border: 0 solid transparent; border-radius: 0; box-shadow: none; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
   border-image-source: url('/assets/ui/ui_panel_v01.png'); border-image-slice: 140 60 60 140 fill; border-image-width: 56px 24px 24px 56px; border-image-repeat: stretch; padding: 9px 30px 20px; }
 /* sound switch: the real checkbox, drawn as ui_toggle_v01 (knob right = on; off = mirrored + desaturated) */
-#chk-sound { appearance: none; -webkit-appearance: none; order: 2; flex: none; width: 66px; height: 22px; margin: 0; cursor: pointer; background: url('/assets/ui/ui_toggle_v01.png') center / 100% 100% no-repeat; }
-#chk-sound:not(:checked) { transform: scaleX(-1); filter: saturate(0.35) brightness(0.85); }
-#chk-sound:focus-visible { outline: 2px solid var(--lumen); outline-offset: 3px; }
+#chk-sound, .tg { appearance: none; -webkit-appearance: none; order: 2; flex: none; width: 66px; height: 22px; margin: 0; cursor: pointer; background: url('/assets/ui/ui_toggle_v01.png') center / 100% 100% no-repeat; }
+#chk-sound:not(:checked), .tg:not(:checked) { transform: scaleX(-1); filter: saturate(0.35) brightness(0.85); }
+#chk-sound:focus-visible, .tg:focus-visible, #btn-auto:focus-visible, #btn-auto-set:focus-visible { outline: 2px solid var(--lumen); outline-offset: 3px; }
 .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(12, 14, 34, 0.62); z-index: 40; padding: 16px; }
 .overlay.show { display: flex; }
 .overlay .card { background: var(--panel-solid); border: 1.5px solid var(--line); border-radius: 20px; padding: 18px 22px; max-width: min(92vw, 520px); max-height: 92vh; overflow: auto; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45); }
@@ -162,7 +162,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 @media (max-height: 420px) {
   .overlay .card { padding: 10px 16px; }
-  #paused .card { padding: 13px 30px 12px; }
+  #paused .card, #auto-panel .card { padding: 13px 30px 12px; }
   .overlay h2 { margin-bottom: 4px; font-size: 20px; }
   .rank { font-size: 44px; margin: 0 0 4px; }
   .stats { font-size: 13px; gap: 2px 12px; }
@@ -191,3 +191,46 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* controls fade while a telegraph / boss / pillar is drawn underneath (see ui/buttonFade.ts); still fully tappable */
 .act, #stick-base { transition: opacity 0.15s; }
 .seethru { opacity: 0.35 !important; }
+
+/* ---------- Auto attack (DES-001 §3-4, DES-003 placement: bottom-left under the stick) ---------- */
+:root { --ak: 1; } /* Auto controls scale with the big-screen steps of --s, but never below 1 so the hit target stays >= 44 CSS px */
+@media (min-width: 1000px) and (min-height: 540px) { :root { --ak: 1.25; } }
+@media (min-width: 1300px) and (min-height: 720px) { :root { --ak: 1.65; } }
+@media (min-width: 1600px) and (min-height: 860px) { :root { --ak: 2; } }
+#auto-bar { position: absolute; z-index: 3; left: calc(var(--sl) + 12px); bottom: calc(var(--sb) + 8px); display: flex; align-items: center; gap: calc(8px * var(--ak)); pointer-events: none; }
+#btn-auto { pointer-events: auto; touch-action: none; width: calc(98px * var(--ak)); height: calc(46px * var(--ak)); padding: 0 calc(8px * var(--ak)); display: flex; flex-direction: column; justify-content: center; gap: calc(3px * var(--ak));
+  border: 1px solid #ebca93; border-radius: calc(12px * var(--ak)); background: rgba(33, 24, 48, 0.82); box-shadow: 0 2px 8px rgba(23, 17, 40, 0.65); text-shadow: 0 1px 2px #000; }
+#btn-auto .au-top { display: flex; justify-content: space-between; align-items: baseline; font-size: calc(12px * var(--ak)); line-height: 1.1; }
+#btn-auto .au-lbl { letter-spacing: 0.08em; }
+#btn-auto .au-state { font-weight: 800; color: #c8cde4; }
+#btn-auto.on .au-state { color: var(--lumen); }
+#btn-auto .au-sw { display: block; align-self: center; width: calc(62px * var(--ak)); height: calc(21px * var(--ak)); background: url('/assets/ui/ui_toggle_v01.png') center / 100% 100% no-repeat; transform: scaleX(-1); filter: saturate(0.35) brightness(0.85); transition: filter 0.15s; }
+#btn-auto.on .au-sw { transform: none; filter: none; }
+#btn-auto:active { transform: scale(0.96); }
+#btn-auto-set { pointer-events: auto; touch-action: none; width: calc(46px * var(--ak)); height: calc(46px * var(--ak)); padding: 0; border: 0; background: url('/assets/ui/ui_menu_settings_v01.png') center / 100% 100% no-repeat; }
+#btn-auto-set:active { transform: scale(0.94); filter: brightness(1.2); }
+@media (orientation: portrait) { #stick-base { top: calc(100% - var(--sb) - 112px); } }
+
+/* settings panel: pause-panel skin, two columns so it fits 844x390 with >= 44px targets */
+#auto-panel .card { width: min(92vw, 700px); max-width: none; text-align: left; }
+#auto-panel h2 { text-align: center; }
+#auto-panel label { margin: 0; }
+.ap-radius { justify-content: flex-start; align-items: stretch; }
+.ap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; }
+.ap-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ap-block { display: flex; flex-direction: column; gap: 3px; margin: 0; }
+.ap-k { font-size: 12px; opacity: 0.8; }
+.ap-k b { color: var(--lumen); font-variant-numeric: tabular-nums; }
+.ap-line { flex-direction: row; justify-content: space-between; align-items: center; min-height: 44px; gap: 10px; font-size: 14px; }
+.ap-line .tg { margin: 0; }
+.ap-off { opacity: 0.45; border-top: 1px dashed var(--line); }
+.ap-radius input { width: 100%; height: 44px; margin: 0; accent-color: var(--lumen); }
+.ap-radius.dim { opacity: 0.4; }
+#auto-panel .seg { display: flex; gap: 6px; }
+#auto-panel .seg button { flex: 1 1 0; width: auto; min-width: 44px; min-height: 44px; margin: 0; padding: 4px 6px; font-size: 14px; line-height: 1.15; border-radius: 10px; border: 1.5px solid var(--line); background: rgba(255, 255, 255, 0.06); }
+#auto-panel .seg button[aria-pressed="true"] { border-color: var(--lumen); background: rgba(92, 242, 230, 0.2); box-shadow: inset 0 0 0 1px rgba(92, 242, 230, 0.5); font-weight: 700; }
+#ap-skills button { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px !important; }
+#ap-skills button b { font-size: 15px; color: var(--gold); }
+.ap-none { align-self: center; opacity: 0.6; font-size: 12px; }
+#btn-auto-close { margin-top: 8px; min-height: 44px; }
+@media (max-width: 560px) { .ap-grid { grid-template-columns: 1fr; } }
