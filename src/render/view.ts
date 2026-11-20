@@ -71,6 +71,8 @@ export class View {
   private sunOffset = new Vector3().copy(BASE_SUN_OFFSET);
   env = new Group();
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
+  /** DES-006 §1 pull-back: smoothed base pose (camBase), current pull amount (0 = low angle), hold timer, scratch camera for the visibility test */
+  private camBase = new Vector3(); private camPull = 0; private camPullHold = 0; private noPull = /[?&]nopull\b/.test(location.search); /* QA only: ?nopull = the pre-pull-back camera, for before/after */ private pullCam = new PerspectiveCamera(48, 16 / 9, 0.5, 90); private pullPts: number[] = [];
   time = 0;
   pixelRatio = 1;
   /** shared uniform: decoration closer than this (m) to the camera dithers out so it never hides the action */
@@ -503,9 +505,17 @@ export class View {
     const oy = 10.5 * dist * (1 - low) + (4.5 + wide + back * 0.42) * low;
     const cz = (tz + 9 * dist) * (1 - low) + (pz + 5.5 + wide + back) * low;
     const k = 1 - Math.exp(-dt * 6);
-    if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camPos.set(tx, oy, cz); }
+    if (this.camBase.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camBase.set(tx, oy, cz); }
     this.camTarget.lerp(TMP.set(tx, ty, tz), k);
-    this.camPos.lerp(TMP.set(tx, oy, cz), k);
+    this.camBase.lerp(TMP.set(tx, oy, cz), k);
+    // DES-006 §1: when a warning edge / threatening enemy would be off-screen, back off + rise along the SAME view angle
+    // (no rotation, controls unchanged); fast attack, slow release. Portrait is untouched.
+    const need = portrait || this.noPull ? 0 : this.pullNeeded(world, px, pz);
+    if (need > this.camPull) { this.camPull += (need - this.camPull) * (1 - Math.exp(-dt * 10)); this.camPullHold = 0.7; }
+    else if (need > 0.01) this.camPullHold = Math.max(this.camPullHold, 0.35);
+    else if ((this.camPullHold -= dt) <= 0) this.camPull = Math.max(0, this.camPull - dt * 0.9);
+    if (this.camPull < 0.002) this.camPull = 0;
+    this.camPos.copy(this.camBase).sub(this.camTarget).multiplyScalar(1 + this.camPull).add(this.camTarget);
     this.shake = Math.max(0, this.shake - dt * 2.2);
     const s = this.shake * this.shake * 0.6;
     this.camera.position.set(this.camPos.x + (Math.random() - 0.5) * s, this.camPos.y + (Math.random() - 0.5) * s, this.camPos.z);
@@ -514,6 +524,51 @@ export class View {
     const so = this.sunOffset;
     if (this.q.shadows) { this.sun.position.set(this.camTarget.x + so.x, so.y, this.camTarget.z + so.z); this.sun.target.position.set(this.camTarget.x, 0, this.camTarget.z); }
     else { this.sun.position.copy(so); this.sun.target.position.set(0, 0, 0); }
+  }
+
+  /** Smallest extra pull-back (0..PULL_MAX, scale of the camera offset from its target) that keeps the player, nearby/attacking
+   *  enemies and every active telegraph outline (circle ring, cone arc+edges, line rectangle) inside the viewport safe area. */
+  private pullNeeded(world: World, px: number, pz: number): number {
+    const pts = this.pullPts; pts.length = 0;
+    const push = (x: number, y: number, z: number) => { pts.push(x, y, z); };
+    push(px, 0, pz); push(px, 1.6, pz);
+    for (const t of world.tele) {
+      if (t.shape === 'circle') { for (let i = 0; i < 16; i++) { const a = i * (Math.PI / 8); push(t.x + Math.cos(a) * t.r, 0, t.z + Math.sin(a) * t.r); } }
+      else if (t.shape === 'cone') {
+        const base = Math.atan2(t.dz, t.dx), half = Math.acos(Math.min(1, Math.max(-1, t.cos)));
+        push(t.x, 0, t.z);
+        for (let i = 0; i <= 6; i++) { const a = base - half + (2 * half * i) / 6; push(t.x + Math.cos(a) * t.r, 0, t.z + Math.sin(a) * t.r); }
+      } else {
+        // charge/rush line: far end capped a few metres past the player (the rest of an 18 m line only matters to whoever stands in it)
+        const along = (px - t.x) * t.dx + (pz - t.z) * t.dz, L = Math.min(t.r, Math.max(6, along + 4)), hw = t.w / 2, nx = -t.dz, nz = t.dx;
+        for (const l of [0, L]) for (const s of [-hw, hw]) push(t.x + t.dx * l + nx * s, 0, t.z + t.dz * l + nz * s);
+      }
+    }
+    for (const a of world.actors) {
+      if (a.kind === 'player' || !a.alive) continue;
+      const boss = a.kind === 'prismback';
+      if (!boss) { const d = Math.hypot(a.x - px, a.z - pz); if (a.state === 'idle' || a.state === 'dead' || d > 10) continue; }
+      else if (!world.bossStarted) continue;
+      const h = boss ? 3.2 : 1.3, r = a.r;
+      for (const [ox, oz] of [[-r, 0], [r, 0], [0, -r], [0, r]]) { push(a.x + ox, 0, a.z + oz); push(a.x + ox, h, a.z + oz); }
+    }
+    const cam = this.pullCam, P = this.camera.projectionMatrix.elements, off = TMP_C2.copy(this.camBase).sub(this.camTarget);
+    cam.near = this.camera.near;
+    for (let p = 0; p <= PULL_MAX + 1e-6; p += 0.1) {
+      cam.position.copy(this.camTarget).addScaledVector(off, 1 + p);
+      cam.lookAt(this.camTarget); cam.updateMatrixWorld(true);
+      const m = cam.matrixWorldInverse.elements;
+      let ok = true;
+      for (let i = 0; i < pts.length && ok; i += 3) {
+        const x = pts[i], y = pts[i + 1], z = pts[i + 2];
+        const vz = m[2] * x + m[6] * y + m[10] * z + m[14];
+        if (vz > -cam.near) { ok = false; break; }
+        const nx = (P[0] * (m[0] * x + m[4] * y + m[8] * z + m[12])) / -vz, ny = (P[5] * (m[1] * x + m[5] * y + m[9] * z + m[13])) / -vz;
+        if (nx < -PULL_SAFE_X || nx > PULL_SAFE_X || ny < PULL_SAFE_BOTTOM || ny > PULL_SAFE_TOP) ok = false;
+      }
+      if (ok) return p;
+    }
+    return PULL_MAX;
   }
 
   private addOccluder(obj: Object3D, r: number, h: number, actor?: Actor) {
@@ -564,6 +619,9 @@ export class View {
 }
 const TMP = new Vector3();
 const TMP_C = new Color();
+const TMP_C2 = new Vector3();
+/** DES-006 §1 camera pull-back: max extra scale of the camera offset, and the viewport safe area in NDC (bottom margin leaves room for the HUD buttons / joystick) */
+const PULL_MAX = 1.2, PULL_SAFE_X = 0.94, PULL_SAFE_TOP = 0.94, PULL_SAFE_BOTTOM = -0.86;
 function dist2(a: Actor, b: Actor) { return (a.x - b.x) ** 2 + (a.z - b.z) ** 2; }
 /** Patch a Lambert material so fragments near the camera dither away (keeps foreground trees from hiding the player). */
 function nearFade(src: Material, u: { value: number }): Material {
