@@ -1,7 +1,7 @@
 # Handoff: Synes Online
 
 ## PM ตรวจรับ `lane/prismatic-graphics` (`dd04146`) · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-B (ต่อ)
-**อัปเดต:** เจ้าของ "อนุมัติแบบใหม่" (โมเดล 3 ชิ้น) และขอลิงก์เล่น → **merge เข้า `main` แล้ว** · คำถามถึงทีม A ด้านล่างยังเปิดอยู่ ถ้าทีม A ไม่รับส่วนใด ให้แก้ทีหลังด้วย commit ใหม่ (ไม่ revert ทั้งก้อน)
+**อัปเดต:** เจ้าของ "อนุมัติแบบใหม่" (โมเดล 3 ชิ้น) และขอลิงก์เล่น → **merge เข้า `main` แล้ว** (`4fdc1b3`, test 62/62, typecheck, build, lifecycle 20/20) · ขึ้น GitHub Pages แล้ว (`gh-pages` `260d107`, ตรวจที่ sub-path ในเครื่อง: เล่นได้ออฟไลน์ ไม่มี 4xx นอกจาก `/api/health` ที่คาดไว้) · คำถามถึงทีม A ด้านล่างยังเปิดอยู่ ถ้าทีม A ไม่รับส่วนใด ให้แก้ทีหลังด้วย commit ใหม่ (ไม่ revert ทั้งก้อน)
 **ผลก่อนอนุมัติ:** ยัง**ไม่ merge** เข้า `main` เพราะ handoff ของสายเองระบุว่าต้องรอทีม A กับเจ้าของตรวจภาพก่อน, GLB ใหม่ยังไม่ได้รับอนุมัติ (CLAUDE.md ข้อ 6) และข้อยกเว้น ADR-007 ยังไม่ได้บันทึกเป็น ADR
 **ลอง merge แยก (branch ในเครื่อง `trial/prismatic-merge`):** ชนเฉพาะ `docs/HANDOFF.md` (แก้โดยเก็บทุกส่วน) ส่วน `CLAUDE.md` merge อัตโนมัติ คงกฎ 🟡 + ADR-008 + บรรทัด Opus กราฟิก
 test 62/62 · typecheck ผ่าน · build ผ่าน (JS 780.8 KB / gzip 211 KB) · lifecycle 20/20 (Chromium headless, server ของ repo)
