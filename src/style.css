@@ -74,9 +74,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #vignette { position: absolute; inset: 0; box-shadow: inset 0 0 90px 30px rgba(255, 40, 70, 0.0); }
 #vignette.flash { animation: vig 0.45s ease-out; }
 
-.act { position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.85); background: rgba(30, 34, 80, 0.5);
-  color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
-.act.down { transform: scale(0.92); background: rgba(92, 242, 230, 0.35); }
+/* DES-002 step 1: combat buttons wear ui_btn_frame_v01.png. The gold ring's outer diameter is 292/333 of the image width, so the frame is drawn
+   333/292 = 114.04% of the button (ring outer edge == the DES-001 button diameter, studs overflow). Hit area stays the button box. */
+.act { --ring: 114.04%; position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; border: 0; background: none; isolation: isolate;
+  color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
+.act::before { content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: var(--ring); height: calc(var(--ring) * 268 / 270); transform: translate(-50%, -50%);
+  background: url('/assets/ui/ui_btn_frame_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
+.act.down { transform: scale(0.92); filter: brightness(1.3); }
 /* DES-001 §3 layout: 844x390 frame anchored bottom-right (offsets = frame edge - centre - radius), x --s (1.15 when viewport height > 420) */
 :root { --s: 1; }
 @media (min-height: 421px) { :root { --s: 1.15; } }
@@ -90,15 +94,14 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #btn-ult { --d: 48; --r: 35; --b: 163; }
 .act .ico { width: 66%; height: 66%; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }
 .act .cdnum { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: calc(var(--d) * var(--s) * 0.42px); font-weight: 800; pointer-events: none; text-shadow: 0 1px 4px #000, 0 0 6px #000; }
-.act.skill { border-color: rgba(92, 242, 230, 0.85); }
 .act.skill.cooling .ico { opacity: 0.45; }
-.act.ult.locked { background: rgba(60, 68, 98, 0.62); border-color: rgba(201, 208, 230, 0.6); flex-direction: column; gap: 0; }
+.act.ult.locked { flex-direction: column; gap: 0; }
 .act.ult .ico { width: 56%; height: 56%; }
 .act.ult .lbl { font-size: calc(var(--d) * var(--s) * 0.2px); font-weight: 700; line-height: 1; margin-top: -2px; color: #dfe4f5; }
 #btn-potion .count { position: absolute; right: -4px; bottom: -4px; background: #2b8a4b; color: #fff; font-size: 11px; border-radius: 99px; padding: 1px 5px; }
 #btn-potion.empty { opacity: 0.35; }
-.act.cooling::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(rgba(10, 12, 30, 0.72) calc(var(--cd) * 360deg), transparent 0); }
-.act.empowered { border-color: var(--gold); box-shadow: 0 0 16px 4px rgba(255, 200, 87, 0.7); }
+.act.cooling::after { content: ''; position: absolute; inset: 2.4%; border-radius: 50%; /* inner glass circle: 139/146 of the ring's outer radius */ background: conic-gradient(rgba(10, 12, 30, 0.72) calc(var(--cd) * 360deg), transparent 0); }
+.act.empowered { box-shadow: 0 0 16px 4px rgba(255, 200, 87, 0.7); }
 #debug { position: absolute; left: calc(8px + var(--sl)); top: 64px; font: 11px/1.3 ui-monospace, monospace; background: rgba(0, 0, 0, 0.5); padding: 4px 6px; border-radius: 6px; display: none; white-space: pre; }
 
 /* ---------- overlays ---------- */
