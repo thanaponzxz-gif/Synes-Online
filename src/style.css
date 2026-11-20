@@ -39,22 +39,29 @@ button { font: inherit; color: inherit; cursor: pointer; }
   background: url('/assets/ui/ui_stick_base_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
 #stick-base.on { opacity: 1; }
 #stick-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: url('/assets/ui/ui_stick_knob_v01.png') center / 100% 100% no-repeat; transform: translate(-50%, -50%); }
+/* DES-002 step 3: HP frames. The frame PNG is the .bar background; a .trough (clip-path chevron ends) holds the live fill, so widths stay driven by hud.ts.
+   Trough fractions of the image: hp l .150 r .989 t .436 b .720 (chevron from 97.4%); boss l .0707 r .928 t .494 b .783 (chevrons 2.3% each end). */
 #top-left { position: absolute; left: calc(12px + var(--sl)); top: calc(10px + var(--st)); width: min(34vw, 260px); }
-.who { font-weight: 700; font-size: 14px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; }
-#potions { display: inline-flex; gap: 3px; align-items: center; }
-#potions svg { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)); }
-.bar { position: relative; height: 14px; border-radius: 8px; background: rgba(10, 12, 30, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.6); overflow: hidden; margin-top: 3px; }
-.bar > div { height: 100%; width: 100%; transition: width 0.12s; }
+.who { position: absolute; z-index: 2; left: 16%; right: 2%; top: 0; height: 13px; font-weight: 700; font-size: 12px; line-height: 13px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; align-items: center; }
+#potions { display: inline-flex; gap: 2px; align-items: center; }
+#potions svg { height: 12px; width: auto; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)); }
+.bar { position: relative; background-repeat: no-repeat; background-size: 100% 100%; background-position: center; }
+.bar .trough { position: absolute; overflow: hidden; }
+.bar .trough > div:not(.p2mark) { height: 100%; width: 100%; transition: width 0.12s; }
+.bar.hp { width: 100%; aspect-ratio: 900 / 135; background-image: url('/assets/ui/ui_hud_hp_frame_v01.png'); }
+.bar.hp::before { content: ''; position: absolute; left: 7.67%; top: 50%; width: 10.67%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(10, 12, 30, 0.55); } /* temporary portrait disc (Q-list) */
+.bar.hp .trough { left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; clip-path: polygon(0 0, 97.4% 0, 100% 50%, 97.4% 100%, 0 100%); }
 #hp-fill { background: linear-gradient(90deg, #52c96a, var(--hp)); }
 #hp-fill.low { background: linear-gradient(90deg, #e04848, var(--hp-low)); animation: pulse 0.6s infinite alternate; }
-#hp-text { position: absolute; inset: 0; font-size: 10px; line-height: 12px; text-align: center; font-weight: 700; text-shadow: 0 1px 2px #000; }
+#hp-text { position: absolute; left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; display: flex; align-items: center; justify-content: center; font-size: 9px; line-height: 1; text-align: center; font-weight: 700; text-shadow: 0 1px 2px #000; }
 #boss { position: absolute; left: 50%; top: calc(8px + var(--st)); transform: translate(-50%, -140%); width: min(46vw, 420px); text-align: center; transition: transform 0.35s; }
 #boss.show { transform: translate(-50%, 0); }
-#boss-name { font-weight: 800; font-size: 14px; text-shadow: 0 1px 4px #000; }
-.bar.boss { height: 12px; }
+#boss-name { font-weight: 800; font-size: 14px; line-height: 16px; text-shadow: 0 1px 4px #000; }
+.bar.boss { width: 100%; aspect-ratio: 1260 / 129; background-image: url('/assets/ui/ui_hud_boss_frame_v01.png'); }
+.bar.boss .trough { left: 7.07%; right: 7.2%; top: 49.4%; bottom: 21.7%; clip-path: polygon(0 50%, 2.3% 0, 97.7% 0, 100% 50%, 97.7% 100%, 2.3% 100%); }
 #boss-fill { background: linear-gradient(90deg, #ff3d6e, var(--boss)); }
 #boss.stunned #boss-fill { background: linear-gradient(90deg, var(--gold), #fff2b0); }
-.p2mark { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.8); }
+.p2mark { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, 0.8); }
 #top-right { position: absolute; right: calc(10px + var(--sr)); top: calc(8px + var(--st)); display: flex; gap: 8px; align-items: center; pointer-events: auto; }
 #timer { font-variant-numeric: tabular-nums; font-weight: 700; text-shadow: 0 1px 3px #000; }
 #btn-pause { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--panel); font-size: 13px; }
