@@ -2,7 +2,7 @@
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Color, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, CanvasTexture,
   Group, Object3D, Vector3, Fog, InstancedMesh, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
-  MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry,
+  MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry, ShaderMaterial,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
 import { LEVEL, type Shape } from '../../shared/data/level.ts';
@@ -12,6 +12,8 @@ import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
 import { SkillFx, castPose } from './skillfx.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
+import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
+import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -57,6 +59,16 @@ export class View {
   private playerMark: Mesh | null = null;
   private springGem: Object3D | null = null;
   private flames: Object3D[] = [];
+  private arenaFloor: ArenaFloor | null = null;
+  private arenaRuins: Group | null = null;
+  /** DES-004 step 1 (arena light + atmosphere); `?atmos=0`, `?glow=0`, `?rays=0` switch parts off for A/B shots */
+  private readonly flags = new URLSearchParams(location.search);
+  atmosOn = this.flags.get('atmos') !== '0';
+  private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
+  private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
+  /** 0 meadow … 1 arena; exposed for QA */
+  atmosW = 0;
+  private sunOffset = new Vector3().copy(BASE_SUN_OFFSET);
   env = new Group();
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
   time = 0;
@@ -104,10 +116,40 @@ export class View {
     this.hemi.color.set(t.hemiSky); this.hemi.groundColor.set(t.hemiGround); this.hemi.intensity = t.hemiI;
     this.sun.color.set(t.sun); this.sun.intensity = t.sunI;
     this.renderer.toneMappingExposure = (t.exposure ?? 1.05) * 0.95;
+    this.atmosW = -1; // force the next applyAtmosphere() to rewrite every value
+  }
+
+  /** Blend the tone (meadow) toward the arena atmosphere by w (0..1). Only writes when w moves. */
+  private applyAtmosphere(w: number) {
+    if (!this.atmosOn) w = 0;
+    if (Math.abs(w - this.atmosW) < 0.002) return;
+    this.atmosW = w;
+    const t = this.tone, A = ARENA_ATMOS, fog = this.scene.fog as Fog;
+    fog.color.set(t.fog).lerp(TMP_C.set(A.fog), w);
+    (this.scene.background as Color).copy(fog.color);
+    fog.near = t.fogNear + (A.fogNear - t.fogNear) * w; fog.far = t.fogFar + (A.fogFar - t.fogFar) * w;
+    this.hemi.color.set(t.hemiSky).lerp(TMP_C.set(A.hemiSky), w);
+    this.hemi.groundColor.set(t.hemiGround).lerp(TMP_C.set(A.hemiGround), w);
+    this.hemi.intensity = t.hemiI + (A.hemiI - t.hemiI) * w;
+    this.sun.color.set(t.sun).lerp(TMP_C.set(A.sun), w);
+    this.sun.intensity = t.sunI + (A.sunI - t.sunI) * w;
+    this.sunOffset.copy(BASE_SUN_OFFSET).lerp(A.sunOffset, w);
   }
 
   // ------------------------------------------------------------------ environment
   buildLevel(world: World, seed = 1) {
+    this.arenaFloor?.material.map?.dispose();
+    this.arenaFloor?.material.dispose();
+    this.arenaFloor?.geometry.dispose();
+    this.arenaRuins?.traverse((object) => {
+      if (object instanceof InstancedMesh) {
+        object.dispose();
+        object.geometry.dispose();
+        (object.material as Material).dispose();
+      }
+    });
+    for (const fx of [this.glow, this.shafts]) { fx?.mesh.geometry.dispose(); fx?.mat.dispose(); }
+    this.glow = this.shafts = null;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
@@ -119,6 +161,16 @@ export class View {
     const t = this.tone;
     const grad = g.createLinearGradient(0, 0, 0, H); grad.addColorStop(0, hex(t.grassB)); grad.addColorStop(1, hex(t.grassA));
     g.fillStyle = grad; g.fillRect(0, 0, W, H);
+    const arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    if (arena?.type === 'circle') {
+      const x = U(arena.x), z = V(arena.z);
+      const grove = g.createRadialGradient(x, z, 6 * sx, x, z, 31 * sx);
+      grove.addColorStop(0, '#526f65');
+      grove.addColorStop(0.44, '#526f65e6');
+      grove.addColorStop(1, '#526f6500');
+      g.fillStyle = grove;
+      g.fillRect(0, 0, W, H);
+    }
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
     const drawShapes = (pad: number, style: string) => {
@@ -133,14 +185,17 @@ export class View {
     drawShapes(0.15, hex(t.pathEdge));
     drawShapes(-0.25, hex(t.path));
     for (let i = 0; i < W * H / 90; i++) { const x = rnd() * W, y = rnd() * H; g.fillStyle = 'rgba(120,90,60,0.07)'; g.fillRect(x, y, 3, 2); }
-    // arena rune ring
-    const A = LEVEL.walkable.find((s) => s.id === 'arena')! as Extract<Shape, { type: 'circle' }>;
-    g.strokeStyle = hex(t.rune, 0.5); g.lineWidth = 0.25 * sx; g.beginPath(); g.arc(U(A.x), V(A.z), (A.r - 1.2) * sx, 0, Math.PI * 2); g.stroke();
-    g.beginPath(); g.arc(U(A.x), V(A.z), (A.r - 1.6) * sx, 0, Math.PI * 2); g.stroke();
     const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 4; tex.minFilter = LinearMipmapLinearFilter;
     const ground = new Mesh(new PlaneGeometry(BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0), new MeshLambertMaterial({ map: tex }));
     ground.rotation.x = -Math.PI / 2; ground.position.set((BOUNDS.x0 + BOUNDS.x1) / 2, 0, (BOUNDS.z0 + BOUNDS.z1) / 2);
     ground.receiveShadow = true; this.env.add(ground);
+    if (arena?.type === 'circle') {
+      this.arenaFloor = makeArenaFloor(arena, this.q.groundRes, seed);
+      this.arenaRuins = makeArenaRuins(arena, seed);
+      this.env.add(this.arenaFloor, this.arenaRuins);
+      if (this.atmosOn && this.q.glow && this.flags.get('glow') !== '0') { this.glow = makeGlowHalos(arena); this.env.add(this.glow.mesh); }
+      if (this.atmosOn && this.q.rays && this.flags.get('rays') !== '0') { this.shafts = makeLightShafts(arena); this.env.add(this.shafts.mesh); }
+    }
     const outer = new Mesh(new PlaneGeometry(400, 400), new MeshLambertMaterial({ color: t.grassA }));
     outer.rotation.x = -Math.PI / 2; outer.position.y = -0.02; this.env.add(outer);
 
@@ -163,12 +218,15 @@ export class View {
         else if (r < 0.245) add('mushroom_glow', x, z, 0.8 + rnd() * 0.6, rot);
       } else if (d >= 16 && r < 0.05) add('tree_pine', x, z, 1 + rnd() * 0.5, rot);
     }
-    // arena rim: a ring of rocks/crystals just outside the walkable edge so the boundary reads as a wall (render only; entry gap to the south)
-    { const A2 = LEVEL.walkable.find((s) => s.id === 'arena')! as Extract<Shape, { type: 'circle' }>;
-      const n = 30;
-      for (let i = 0; i < n; i++) { const ang = (i / n) * Math.PI * 2, x = A2.x + Math.cos(ang) * (A2.r + 0.7), z = A2.z + Math.sin(ang) * (A2.r + 0.7);
-        if (Math.abs(x - A2.x) < 3.6 && z > A2.z) continue;
-        add(i % 3 === 0 ? 'crystal_cluster' : 'rock_a', x, z, 0.9 + rnd() * 0.4, rnd() * 6.28); } }
+    // Keep the entry open and let small rocks and flowers mark the arena rim.
+    if (arena?.type === 'circle') {
+      for (let i = 0; i < 26; i++) {
+        const angle = i * Math.PI / 13, radius = arena.r + 0.7 + rnd() * 0.7;
+        const x = arena.x + Math.cos(angle) * radius, z = arena.z + Math.sin(angle) * radius;
+        if (Math.abs(x - arena.x) < 3.6 && z > arena.z) continue;
+        add(i % 3 === 0 ? 'rock_a' : 'flower_patch', x, z, 0.85 + rnd() * 0.4, rnd() * Math.PI * 2);
+      }
+    }
     const faded = new Map<Material, Material>();
     for (const [name, mats] of Object.entries(place)) {
       for (const part of flattenPropMerged(name)) {
@@ -300,7 +358,12 @@ export class View {
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.skillFx?.update(world.tick, alpha, world.ps.cast);
-    this.updateCamera(world, alpha, dt);
+    const pv = this.actors.get(world.player.id);
+    this.applyAtmosphere(pv ? arenaWeight(pv.root.position.z) : 0);
+    const w = this.atmosW;
+    if (this.glow) { this.glow.mesh.visible = w > 0.01; this.glow.mat.uniforms.uI.value = 0.55 * w; this.glow.mat.uniforms.uTime.value = this.time; }
+    if (this.shafts) { this.shafts.mesh.visible = w > 0.01; this.shafts.mat.uniforms.uI.value = 0.16 * w; }
+    this.updateCamera(world, dt);
     this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);
   }
@@ -409,28 +472,37 @@ export class View {
     });
   }
 
-  private updateCamera(world: World, alpha: number, dt: number) {
+  private updateCamera(world: World, dt: number) {
     const pv = this.actors.get(world.player.id)!;
     const px = pv.root.position.x, pz = pv.root.position.z;
     const boss = world.bossStarted && world.boss.alive;
-    // keep the player in the lower-middle of the frame: look ahead (−z) rather than at the boss, which can be behind the player
-    // when the boss is south of the player (toward the camera) shift the frame toward it, and pull back with distance, so boss + its telegraph stay on screen
-    const bdz = boss ? world.boss.z - pz : 0, bd = boss ? Math.hypot(world.boss.x - px, bdz) : 0;
-    const tx = boss ? px + (world.boss.x - px) * 0.18 : px, tz = pz - (boss ? 2.6 : 2.4) + Math.max(0, bdz) * 0.6;
+    const bdx = boss ? world.boss.x - px : 0, bdz = boss ? world.boss.z - pz : 0;
+    const bd = Math.hypot(bdx, bdz);
     const portrait = this.camera.aspect < 1;
+    // Lower the camera when there is room to frame the boss ahead. Lift for close
+    // combat and flanks so the player and ground warnings stay visible.
+    const lead = Math.max(0, Math.min(1, (-bdz - 3.5) / 2.5));
+    const side = Math.max(0, Math.min(1, (8 - Math.abs(bdx)) / 4));
+    const low = boss && !portrait ? lead * side : 0;
     const dist = (boss ? 1.18 + Math.min(0.22, Math.max(0, bd - 5) * 0.03) : 0.86) * (portrait ? 1.35 : 1);
-    const ox = 0, oy = 10.5 * dist, oz = 9.0 * dist;
+    const wide = Math.min(2, Math.max(0, -bdz - 10) * 0.2);
+    const tx = px + bdx * (0.18 + 0.16 * low);
+    const ty = 0.6 - 0.45 * low;
+    const tz = pz - (boss ? 2.6 + 2.4 * low : 2.4) + Math.max(0, bdz) * 0.6;
+    const oy = 10.5 * dist * (1 - low) + (4.5 + wide) * low;
+    const cz = (tz + 9 * dist) * (1 - low) + (pz + 5.5 + wide) * low;
     const k = 1 - Math.exp(-dt * 6);
-    if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, 0, tz); this.camPos.set(tx + ox, oy, tz + oz); }
-    this.camTarget.x += (tx - this.camTarget.x) * k; this.camTarget.z += (tz - this.camTarget.z) * k;
-    this.camPos.x += (this.camTarget.x + ox - this.camPos.x) * k; this.camPos.y += (oy - this.camPos.y) * k; this.camPos.z += (this.camTarget.z + oz - this.camPos.z) * k;
+    if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camPos.set(tx, oy, cz); }
+    this.camTarget.lerp(TMP.set(tx, ty, tz), k);
+    this.camPos.lerp(TMP.set(tx, oy, cz), k);
     this.shake = Math.max(0, this.shake - dt * 2.2);
     const s = this.shake * this.shake * 0.6;
     this.camera.position.set(this.camPos.x + (Math.random() - 0.5) * s, this.camPos.y + (Math.random() - 0.5) * s, this.camPos.z);
-    this.camera.lookAt(this.camTarget.x, 0.6, this.camTarget.z);
-    this.nearFadeU.value = Math.hypot(oy, oz) * 0.72;
-    if (this.q.shadows) { this.sun.position.set(this.camTarget.x + 8, 18, this.camTarget.z + 6); this.sun.target.position.set(this.camTarget.x, 0, this.camTarget.z); }
-    else { this.sun.position.set(8, 18, 6); this.sun.target.position.set(0, 0, 0); }
+    this.camera.lookAt(this.camTarget);
+    this.nearFadeU.value = Math.hypot(this.camPos.y, this.camPos.z - this.camTarget.z) * 0.72;
+    const so = this.sunOffset;
+    if (this.q.shadows) { this.sun.position.set(this.camTarget.x + so.x, so.y, this.camTarget.z + so.z); this.sun.target.position.set(this.camTarget.x, 0, this.camTarget.z); }
+    else { this.sun.position.copy(so); this.sun.target.position.set(0, 0, 0); }
   }
 
   private addOccluder(obj: Object3D, r: number, h: number, actor?: Actor) {
@@ -446,10 +518,12 @@ export class View {
   private updateOccluders(world: World, dt: number) {
     const pv = this.actors.get(world.player.id); if (!pv) return;
     const px = pv.root.position.x, pz = pv.root.position.z;
+    // On a shallower sightline, tall props can hide the player from farther away.
+    const slope = Math.max(0.86, Math.min(1.8, (this.camPos.z - pz) / Math.max(1, this.camPos.y - 1)));
     if (this.playerMark) { this.playerMark.position.set(px, 0.05, pz); this.playerMark.visible = !world.ps.down; }
     for (const o of this.occluders) {
       const ox = o.obj.position.x, oz = o.obj.position.z, dz = oz - pz;
-      const reach = o.h * 0.86 + o.r + 0.6; // projected height of the prop on the ground behind it
+      const reach = o.h * slope + o.r + 0.6;
       const hides = o.obj.visible && dz > -0.6 && dz < reach && Math.abs(ox - px) < o.r + 0.8;
       const target = hides ? 0.28 : 1;
       o.f += (target - o.f) * Math.min(1, dt * 10);
@@ -465,7 +539,7 @@ export class View {
   /** World → CSS pixel coordinates (for DOM overlays). */
   project(x: number, y: number, z: number, out: { x: number; y: number; vis: boolean }) {
     const v = TMP.set(x, y, z).project(this.camera);
-    out.x = (v.x * 0.5 + 0.5) * window.innerWidth; out.y = (-v.y * 0.5 + 0.5) * window.innerHeight; out.vis = v.z < 1;
+    out.x = (v.x * 0.5 + 0.5) * window.innerWidth; out.y = (-v.y * 0.5 + 0.5) * window.innerHeight; out.vis = v.z >= -1 && v.z < 1;
     return out;
   }
   actorScreenPos(id: number, h: number, out: { x: number; y: number; vis: boolean }) {
@@ -474,6 +548,7 @@ export class View {
   }
 }
 const TMP = new Vector3();
+const TMP_C = new Color();
 function dist2(a: Actor, b: Actor) { return (a.x - b.x) ** 2 + (a.z - b.z) ** 2; }
 /** Patch a Lambert material so fragments near the camera dither away (keeps foreground trees from hiding the player). */
 function nearFade(src: Material, u: { value: number }): Material {

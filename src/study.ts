@@ -9,6 +9,7 @@ import type { Tone } from './render/tones.ts';
 import type { Hud } from './ui/hud.ts';
 
 export async function runStudy(view: View, hud: Hud, kind: string, tone: Tone) {
+  view.atmosOn = false; // tone studies compare the tone presets themselves; the DES-004 arena atmosphere would override them
   view.applyTone(tone);
   const w = new World(5);
   w.player.hp = w.player.maxHp = 99999; // studies must never end in a defeat screen

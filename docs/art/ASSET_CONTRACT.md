@@ -30,10 +30,10 @@ node ใดหายไป เกมจะใช้ procedural fallback แท�
 ### ตัวละคร: node แม่ (Empty) + mesh ลูกตามชื่อ เพื่อทำ procedural animation (เด้ง, เหวี่ยงดาบ, squash)
 | node แม่ | ลูกที่ต้องมี | ขนาดโดยประมาณ | หมายเหตุ |
 |---|---|---|---|
-| `hero` | `hero_body`, `hero_head`, `hero_sword` | สูง 1.5 m | Wayfarer ผมน้ำตาลแดง ผ้าพันคอ teal เสื้อครีม/กรม มีดาบ "Chime Blade" ใบดาบสี lumen และ origin ของดาบอยู่ที่ด้ามจับ |
+| `hero` | `hero_body`, `hero_head`, `hero_sword` | สูง 1.5 m | Wayfarer ผมเงิน ผ้าคลุมม่วง เสื้อครีม/กรม เกราะขอบทอง มีดาบ "Chime Blade" ใบดาบสี lumen และ origin ของดาบอยู่ที่ด้ามจับ |
 | `puffcap` | `puffcap_cap`, `puffcap_stem` | สูง 1.0 m | สัตว์เห็ดอ้วนกลม หมวกสีชมพูอ่อนมีจุดครีม หน้าน่ารัก (ตาเป็นทรงกลมดำเล็ก) |
 | `thornling` | `thornling_body` | สูง 0.9 m | สัตว์กลมมีหนามใบไม้สีเขียวเข้มพร้อมปลายหนามสีม่วง วิ่งพุ่งชน |
-| `prismback` | `prismback_body`, `prismback_shell`, `prismback_horn`, `prismback_legs` | สูง 3.0 m ยาว 5 m | บอสด้วงเต่าหินมอส หลังเป็นกลุ่มคริสตัล lumen/violet และมีเขาคริสตัลด้านหน้า หันหน้าไป +Z |
+| `prismback` | `prismback_body`, `prismback_shell`, `prismback_horn`, `prismback_legs` | สูง 3.0 m ยาว 5 m | บอสด้วงเต่าเกราะหินขอบทอง หลังเป็นกลุ่มคริสตัล lumen/violet และมีเขาคริสตัลด้านหน้า หันหน้าไป +Z |
 
 ### ฉาก (mesh เดียว หรือ node แม่ + ลูก)
 `tree_round`, `tree_round_b`, `tree_pine`, `bush`, `rock_a`, `rock_b`, `crystal_cluster`, `flower_patch`, `mushroom_glow`,

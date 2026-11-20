@@ -1,0 +1,555 @@
+{
+ "shots": [
+  {
+   "file": "tools/qa/out/des004-step1/before-1672-open.png",
+   "atmosW": 0,
+   "warmVivid": 0,
+   "goldSatP99": 0.845,
+   "luma": {
+    "shrineCrystal": 0.466,
+    "crystalL": 0.441,
+    "crystalR": 0.587,
+    "floorNearPlayer": 0.354,
+    "floorMid": 0.413,
+    "skyTop": 0.368
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-1672-slam.png",
+   "telegraph": "slam",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 19,
+   "goldSatP99": 0.845,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.472,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.57,
+    "floorMid": 0.415,
+    "skyTop": 0.385
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-1672-open.png",
+   "atmosW": 1,
+   "warmVivid": 0,
+   "goldSatP99": 0.791,
+   "luma": {
+    "shrineCrystal": 0.466,
+    "crystalL": 0.31,
+    "crystalR": 0.503,
+    "floorNearPlayer": 0.282,
+    "floorMid": 0.34,
+    "skyTop": 0.31
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-1672-slam.png",
+   "telegraph": "slam",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 0,
+   "goldSatP99": 0.798,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.43,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.465,
+    "floorMid": 0.342,
+    "skyTop": 0.322
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-1672-sweep.png",
+   "telegraph": "sweep",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 0,
+   "goldSatP99": 0.845,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.472,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.359,
+    "floorMid": 0.411,
+    "skyTop": 0.385
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-1672-sweep.png",
+   "telegraph": "sweep",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 0,
+   "goldSatP99": 0.798,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.43,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.296,
+    "floorMid": 0.345,
+    "skyTop": 0.322
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-1672-charge.png",
+   "telegraph": "charge",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 64,
+   "goldSatP99": 0.834,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.472,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.329,
+    "floorMid": 0.415,
+    "skyTop": 0.384
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-1672-charge.png",
+   "telegraph": "charge",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 0,
+   "goldSatP99": 0.798,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.43,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.279,
+    "floorMid": 0.342,
+    "skyTop": 0.322
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 30.5,
+     "font": "25.407px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 17.9,
+     "font": "15.5265px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 19.6,
+     "font": "19.6px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-844-open.png",
+   "atmosW": 0,
+   "warmVivid": 2,
+   "goldSatP99": 0.845,
+   "luma": {
+    "shrineCrystal": 0.662,
+    "crystalL": 0.458,
+    "crystalR": 0.59,
+    "floorNearPlayer": 0.333,
+    "floorMid": 0.418,
+    "skyTop": 0.403
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-844-slam.png",
+   "telegraph": "slam",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 15,
+   "goldSatP99": 0.845,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.538,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.543,
+    "floorMid": 0.42,
+    "skyTop": 0.422
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-844-open.png",
+   "atmosW": 1,
+   "warmVivid": 2,
+   "goldSatP99": 0.791,
+   "luma": {
+    "shrineCrystal": 0.475,
+    "crystalL": 0.318,
+    "crystalR": 0.508,
+    "floorNearPlayer": 0.267,
+    "floorMid": 0.345,
+    "skyTop": 0.339
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-844-slam.png",
+   "telegraph": "slam",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 2,
+   "goldSatP99": 0.794,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.48,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.442,
+    "floorMid": 0.347,
+    "skyTop": 0.353
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-844-sweep.png",
+   "telegraph": "sweep",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 2,
+   "goldSatP99": 0.834,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.538,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.342,
+    "floorMid": 0.417,
+    "skyTop": 0.422
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-844-sweep.png",
+   "telegraph": "sweep",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 2,
+   "goldSatP99": 0.794,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.48,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.282,
+    "floorMid": 0.351,
+    "skyTop": 0.353
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/before-844-charge.png",
+   "telegraph": "charge",
+   "tick": 80,
+   "atmosW": 0,
+   "warmVivid": 46,
+   "goldSatP99": 0.834,
+   "luma": {
+    "shrineCrystal": 0.667,
+    "crystalL": 0.538,
+    "crystalR": 0.561,
+    "floorNearPlayer": 0.315,
+    "floorMid": 0.42,
+    "skyTop": 0.422
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  },
+  {
+   "file": "tools/qa/out/des004-step1/after-844-charge.png",
+   "telegraph": "charge",
+   "tick": 80,
+   "atmosW": 1,
+   "warmVivid": 2,
+   "goldSatP99": 0.794,
+   "luma": {
+    "shrineCrystal": 0.471,
+    "crystalL": 0.48,
+    "crystalR": 0.447,
+    "floorNearPlayer": 0.267,
+    "floorMid": 0.347,
+    "skyTop": 0.353
+   },
+   "hud": {
+    "bossName": {
+     "text": "ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง",
+     "h": 15.6,
+     "font": "13px",
+     "visible": true
+    },
+    "hp": {
+     "text": "120 / 120",
+     "h": 9.7,
+     "font": "9px",
+     "visible": true
+    },
+    "lock": {
+     "text": "ล็อก",
+     "h": 8.6,
+     "font": "8.624px",
+     "visible": true
+    },
+    "elementAtBoss": "game",
+    "elementAtTelegraph": "game"
+   }
+  }
+ ],
+ "perf": [
+  {
+   "tier": "low",
+   "atmos": false,
+   "calls": 95,
+   "tris": 34331
+  },
+  {
+   "tier": "low",
+   "atmos": true,
+   "calls": 96,
+   "tris": 34345
+  },
+  {
+   "tier": "medium",
+   "atmos": false,
+   "calls": 105,
+   "tris": 53675
+  },
+  {
+   "tier": "medium",
+   "atmos": true,
+   "calls": 107,
+   "tris": 53695
+  },
+  {
+   "tier": "high",
+   "atmos": false,
+   "calls": 204,
+   "tris": 121835
+  },
+  {
+   "tier": "high",
+   "atmos": true,
+   "calls": 207,
+   "tris": 121867
+  }
+ ],
+ "errors": []
+}

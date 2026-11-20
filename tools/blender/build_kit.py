@@ -47,11 +47,18 @@ PALETTE = {
     # --- derived support colours
     "crystal_violet": ("#A78BFA", 0.45, 0.30),  # violet crystals (emissive twin of synes_violet)
     "crystal_mid":    ("#82BEF2", 0.50, 0.30),  # midpoint of the lumen -> violet gradient
+    "prism_edge":     ("#DAF6FF", 0.64, 0.20),
+    "prism_cyan":     ("#39CFEC", 0.62, 0.22),
+    "prism_violet":   ("#7761D9", 0.36, 0.24),
+    "prism_slate":    ("#4C5277", 0.0, 0.72),
+    "prism_trim":     ("#DAB381", 0.0, 0.45),
     "glow_gold":      ("#FFC857", 0.80, 0.40),  # lantern glass, windows, campfire flame
     "cream":          ("#FFF3DC", 0.0, 0.85),
     "navy":           ("#33437A", 0.0, 0.85),
     "skin":           ("#FFD9BF", 0.0, 0.70),
-    "hair_auburn":    ("#9A4A3A", 0.0, 0.80),
+    "hero_silver":    ("#C4C8EA", 0.0, 0.57),
+    "hero_silver_tip":("#F1EDFF", 0.0, 0.52),
+    "hero_violet":    ("#6754A8", 0.0, 0.72),
     "ink":            ("#2B2440", 0.0, 0.40),
     "white":          ("#FFFFFF", 0.0, 0.40),
     "stone_dark":     ("#8F89A6", 0.0, 0.90),
@@ -255,7 +262,7 @@ class Part:
         return self._tag(v, m, mat, smooth)
 
     def crystal(self, at, h, r, direction=(0, 0, 1), tip=None, mat="lumen", sides=6, yaw=0.0,
-                taper=0.86, sink=0.3):
+                taper=0.86, sink=0.3, facets=None):
         """Faceted Synes crystal: hexagonal prism + pointed cap, base sunk below `at`."""
         tip = r * 1.7 if tip is None else tip
         coords, faces = [], []
@@ -271,7 +278,20 @@ class Part:
             faces.append((i, j, sides + j, sides + i))
             faces.append((sides + i, sides + j, 2 * sides))
         v = self._mesh(coords, faces, closed=False)
-        return self._tag(v, Matrix.Translation(Vector(at)) @ basis(direction), mat, False)
+        self._tag(v, Matrix.Translation(Vector(at)) @ basis(direction), mat, False)
+        if facets:
+            for name in (*facets, "prism_edge"):
+                if name not in self.slots:
+                    self.slots.append(name)
+            highlight = self.slots.index("prism_edge")
+            for i in range(sides):
+                face_material = self.slots.index(facets[i % len(facets)])
+                next_i = (i + 1) % sides
+                wall = self.bm.faces.get((v[i], v[next_i], v[sides + next_i], v[sides + i]))
+                cap = self.bm.faces.get((v[sides + i], v[sides + next_i], v[-1]))
+                wall.material_index = face_material
+                cap.material_index = highlight if i % 3 == 0 else face_material
+        return v
 
     def thorn(self, at, direction, length, width, thick, mat="leaf_dark", tip_mat="synes_violet",
               x_hint=(1, 0, 0), tip_frac=0.38):
@@ -497,7 +517,7 @@ def finish(part, parent=None, pivot=(0, 0, 0), bevel=0.04):
 
 # ============================================================================= characters
 def build_hero():
-    """Wayfarer: auburn hair, teal scarf (silhouette cue), cream/navy tunic, Chime Blade."""
+    """Wayfarer in silver, violet and gold for the Prismback battle art pass."""
     root = empty("hero")
 
     b = Part("hero_body")  # pivot: feet
@@ -505,6 +525,7 @@ def build_hero():
         x = 0.1 * s
         b.limb((x, 0.0, 0.06), (x, 0.0, 0.34), 0.075, 0.085, seg=8, mat="navy")
         b.ico(0.1, at=(x, -0.035, 0.065), scale=(0.95, 1.3, 0.68), sub=1, mat="bark", smooth=True)
+        b.cyl(0.084, 0.035, at=(x, 0, 0.19), seg=8, mat="gold")
     b.cyl(0.255, 0.27, at=(0, 0, 0.25), r2=0.205, seg=10, mat="navy", smooth=True)  # tunic skirt
     b.cyl(0.205, 0.33, at=(0, 0, 0.5), r2=0.165, seg=10, mat="cream", smooth=True)  # shirt
     b.cyl(0.218, 0.06, at=(0, 0, 0.49), seg=10, mat="bark", smooth=True)  # belt
@@ -515,12 +536,15 @@ def build_hero():
     for sh, hd in ((shoulder_r, hand_r), (shoulder_l, hand_l)):
         b.limb(sh, hd + (hd - sh).normalized() * -0.03, 0.068, 0.058, seg=8, mat="cream")
         b.ico(0.066, at=hd, sub=1, mat="skin", smooth=True)
+        b.ico(0.112, at=sh, scale=(1.04, 0.99, 0.62), sub=2, mat="gold", smooth=True)
+        b.ico(0.101, at=sh + Vector((0, 0, 0.022)), scale=(1.0, 0.93, 0.6), sub=2,
+              mat="hero_violet", smooth=True)
     # scarf: chunky collar + two tails streaming back and to the hero's left
     b.torus(0.165, 0.07, at=(0, 0, 0.845), seg=12, seg2=6, scale=(1.0, 1.0, 0.9), mat="cloth_teal")
     b.ribbon([(0.06, 0.15, 0.87), (0.2, 0.29, 0.83), (0.36, 0.4, 0.75), (0.5, 0.47, 0.67), (0.6, 0.5, 0.6)],
-             [0.17, 0.17, 0.16, 0.15, 0.13], 0.04)
+             [0.23, 0.25, 0.21, 0.15, 0.06], 0.04, mat="hero_violet")
     b.ribbon([(0.0, 0.17, 0.84), (0.1, 0.32, 0.76), (0.22, 0.44, 0.66), (0.3, 0.5, 0.56)],
-             [0.14, 0.14, 0.13, 0.11], 0.04)
+             [0.15, 0.16, 0.13, 0.05], 0.04, mat="hero_silver")
     b.box((0.1, 0.035, 0.09), at=(0.6, 0.5, 0.57), rot=(-25, 0, 30), mat="gold", bevel=True)  # tail clasp
     finish(b, parent=root)
 
@@ -528,14 +552,14 @@ def build_hero():
     hc, hr = Vector((0, 0, 1.14)), (0.30, 0.29, 0.285)
     h.sphere(1.0, at=hc, scale=hr, seg=14, rings=9, mat="skin")
     h.sphere(1.0, at=hc + Vector((0, 0.045, 0.05)), scale=(0.318, 0.31, 0.3), seg=14, rings=9,
-             mat="hair_auburn")
+             mat="hero_silver")
     # fringe locks and swept-back tufts (faceted for a crisp silhouette)
     for x, tz in ((-0.17, 1.2), (-0.07, 1.22), (0.05, 1.23), (0.16, 1.21)):
-        h.limb((x * 0.9, -0.17, 1.38), (x * 1.08, -0.3, tz), 0.085, 0.0, seg=4, mat="hair_auburn",
+        h.limb((x * 0.9, -0.17, 1.38), (x * 1.08, -0.3, tz), 0.085, 0.0, seg=5, mat="hero_silver_tip",
                smooth=False, scale=(1.0, 0.55))
     for x, y, z, tx, ty, tz in ((0.0, 0.02, 1.4, 0.0, 0.27, 1.52), (-0.13, 0.12, 1.32, -0.17, 0.36, 1.29),
                                 (0.13, 0.12, 1.32, 0.17, 0.36, 1.29), (0.0, 0.2, 1.22, 0.0, 0.38, 1.12)):
-        h.limb((x, y, z), (tx, ty, tz), 0.1, 0.0, seg=4, mat="hair_auburn", smooth=False,
+        h.limb((x, y, z), (tx, ty, tz), 0.1, 0.0, seg=5, mat="hero_silver_tip", smooth=False,
                scale=(1.0, 0.6))  # swept back, so the silhouette never reads as ears
     for s in (-1, 1):
         h.stud(hc, hr, (0.36 * s, -1, -0.12), (0.042, 0.062, 0.026), "ink", sub=2)  # eyes
@@ -549,6 +573,8 @@ def build_hero():
     s.cyl(0.028, 0.17, at=g + Vector((0, 0, -0.085)), seg=6, mat="bark")
     s.ico(0.044, at=g + Vector((0, 0, -0.11)), sub=1, mat="gold", smooth=True)  # pommel
     s.box((0.24, 0.065, 0.05), at=g + Vector((0, 0, 0.1)), mat="gold", bevel=True)  # guard
+    s.ico(0.065, at=g + Vector((0, 0, 0.12)), scale=(0.8, 0.75, 1.15),
+          sub=1, mat="crystal_violet")
     for sx in (-1, 1):  # the "chimes": little bells hanging from the guard
         s.cyl(0.032, 0.05, at=g + Vector((0.11 * sx, 0, 0.03)), seg=6, r2=0.012, mat="gold")
     s.blade(g + Vector((0, 0, 0.12)), 0.6, 0.12, 0.145, 0.045, 0.14, mat="lumen")
@@ -632,84 +658,91 @@ def build_thornling():
 
 
 def build_prismback():
-    """Boss: mossy stone tortoise-beetle, crystal cluster back, crystal horn. Faces -Y (glTF +Z)."""
+    """Crystal-armored tortoise with a low, broad stance. Faces -Y (glTF +Z)."""
     root = empty("prismback")
+    cyan = ("prism_cyan", "lumen", "crystal_mid")
+    violet = ("prism_violet", "crystal_violet", "crystal_mid")
 
     legs = Part("prismback_legs")  # pivot: ground centre
-    for y in (-1.05, 0.15, 1.25):
+    for y in (-1.08, 0.15, 1.22):
         for sx in (-1, 1):
-            x = 1.2 * sx
-            legs.cyl(0.36, 0.95, at=(x, y, 0.0), r2=0.28, seg=8, rot=(0, 8 * sx, 0), mat="stone",
-                     smooth=True)
-            legs.cyl(0.42, 0.16, at=(x, y, 0.0), r2=0.38, seg=8, mat="stone_dark")
-            for k in (-1, 0, 1):
-                legs.ico(0.1, at=(x + 0.2 * k, y - 0.36, 0.06), scale=(1, 1.3, 0.8), sub=1, mat="stone_dark")
+            hip = Vector((1.04 * sx, y + 0.14, 1.05))
+            knee = Vector((1.44 * sx, y - 0.14, 0.58))
+            foot = Vector((1.58 * sx, y - 0.28, 0.19))
+            legs.limb(hip, knee, 0.38, 0.32, seg=6, mat="prism_slate", smooth=False)
+            legs.limb(knee, foot, 0.34, 0.28, seg=6, mat="stone_dark", smooth=False)
+            legs.ico(1.0, at=knee, scale=(0.32, 0.39, 0.27), sub=1, mat="stone")
+            legs.ico(1.0, at=foot, scale=(0.37, 0.41, 0.2), sub=1, mat="prism_slate")
+            for toe in (-1, 0, 1):
+                claw = foot + Vector((0.18 * toe, -0.25, 0.0))
+                legs.crystal(claw, 0.13, 0.105, direction=(toe * 0.13, -1, -0.34),
+                             tip=0.12, mat="crystal_mid", sides=4, facets=cyan)
     finish(legs, parent=root)
 
-    body = Part("prismback_body")  # pivot: ground centre (bob)
-    body.sphere(1.0, at=(0, 0.12, 0.9), scale=(1.4, 1.85, 0.45), seg=14, rings=8, mat="stone_dark")
-    body.limb((0, -1.1, 0.95), (0, -1.65, 1.05), 0.5, 0.45, seg=10, mat="stone_dark")  # neck
+    body = Part("prismback_body")  # pivot: ground centre
+    body.sphere(1.0, at=(0, 0.12, 0.9), scale=(1.4, 1.85, 0.45), seg=14, rings=8, mat="prism_slate")
+    body.limb((0, -1.1, 0.95), (0, -1.65, 1.05), 0.5, 0.45, seg=8, mat="prism_slate", smooth=False)
     hc, hr = Vector((0, -1.86, 1.1)), (0.7, 0.6, 0.55)
-    body.sphere(1.0, at=hc, scale=hr, seg=14, rings=9, mat="stone")
-    body.box((0.95, 0.6, 0.26), at=(0, -2.03, 0.74), mat="stone_dark", bevel=True)  # jaw
+    body.sphere(1.0, at=hc, scale=hr, seg=12, rings=8, mat="stone_dark", smooth=False)
+    body.box((0.9, 0.64, 0.24), at=(0, -2.04, 0.74), mat="prism_slate", bevel=True)
+    body.ico(1.0, at=(0, -2.27, 0.93), scale=(0.39, 0.29, 0.22), sub=1, mat="stone")
     for s in (-1, 1):
-        body.stud(hc, hr, (0.5 * s, -1, 0.2), (0.15, 0.17, 0.07), "ink", sub=2)  # big friendly eyes
-        body.stud(hc, hr, (0.44 * s, -1, 0.36), (0.045, 0.045, 0.03), "white", inset=-0.9)
-        p, n = on_ellipsoid(hc, hr, (0.5 * s, -1, 0.78))
-        body.box((0.4, 0.22, 0.14), at=p, rot=(10, -14 * s, 0), mat="stone", bevel=True)  # brow
-        body.stud(hc, hr, (s, -0.3, 0.1), (0.24, 0.22, 0.08), "leaf", smooth=False)  # cheek moss
+        body.stud(hc, hr, (0.59 * s, -1, 0.19), (0.15, 0.11, 0.075), "ink", sub=2)
+        body.stud(hc, hr, (0.61 * s, -1, 0.19), (0.094, 0.035, 0.032), "prism_cyan", inset=-0.95)
+        p, n = on_ellipsoid(hc, hr, (0.56 * s, -1, 0.56))
+        body.thorn(p - n * 0.05, (s * 0.55, -0.65, 0.42), 0.36, 0.28, 0.18,
+                   mat="prism_slate", tip_mat="prism_trim")
+        body.stud(hc, hr, (s, -0.35, 0.03), (0.26, 0.22, 0.1), "prism_trim", smooth=False)
     hp, _ = on_ellipsoid(hc, hr, (0, -1, 0.95))
-    horn_dir = Vector((0, -0.62, 1.0)).normalized()
-    body.limb(hp - horn_dir * 0.08, hp + horn_dir * 0.06, 0.26, 0.23, seg=6, mat="stone_dark",
-              smooth=False)  # horn socket
-    body.limb((0, 1.9, 0.9), (0, 2.25, 0.78), 0.22, 0.0, seg=6, mat="stone_dark", smooth=False)  # tail
+    horn_dir = Vector((0, -0.58, 1.0)).normalized()
+    body.limb(hp - horn_dir * 0.08, hp + horn_dir * 0.06, 0.26, 0.23, seg=6, mat="prism_trim",
+              smooth=False)
+    body.limb((0, 1.9, 0.9), (0, 2.25, 0.78), 0.22, 0.0, seg=6, mat="prism_slate", smooth=False)
     finish(body, parent=root, bevel=0.05)
 
     shell = Part("prismback_shell")  # pivot: ground centre
     sc, sr = Vector((0, 0.12, 1.0)), (1.65, 1.9, 1.15)
-    shell.sphere(1.0, at=sc, scale=sr, seg=14, rings=10, mat="stone", smooth=False, cut=1.0)
-    shell.torus(1.0, 0.17, at=(0, 0.12, 1.0), seg=20, seg2=5, scale=(1.68, 1.93, 1.0), mat="stone_dark")
-    moss_r = (sr[0] + 0.04, sr[1] + 0.04, sr[2] + 0.04)
-    shell.sphere(1.0, at=sc, scale=moss_r, seg=14, rings=10, mat="leaf", smooth=False, cut=1.78)
-    for v in shell.bm.verts:  # ragged moss edge, tucked under the stone
-        if v.is_boundary and v.co.z > 1.7:
-            v.co.z -= shell.rng.uniform(0.05, 0.35)
+    shell.sphere(1.0, at=sc, scale=sr, seg=14, rings=10, mat="prism_slate", smooth=False, cut=1.0)
+    shell.torus(1.0, 0.1, at=(0, 0.12, 1.03), seg=20, seg2=4, scale=(1.64, 1.88, 1.0), mat="prism_trim")
 
-    def on_shell(fx, fy):  # point/normal on the shell from horizontal fractions of its radii
+    def on_shell(fx, fy):
         uz = math.sqrt(max(0.0, 1.0 - fx * fx - fy * fy))
         p = sc + Vector((sr[0] * fx, sr[1] * fy, sr[2] * uz))
         return p, Vector((fx / sr[0], fy / sr[1], uz / sr[2])).normalized()
 
-    for i in range(10):  # raised hexagonal scutes around the flank echo the crystal shapes
-        az = math.radians(i * 36 + 18)
-        p, n = on_shell(0.86 * math.cos(az), 0.86 * math.sin(az))
-        scute = shell.cyl(0.34, 0.1, seg=6, mat="stone_dark", r2=0.27)
-        bmesh.ops.transform(shell.bm, matrix=Matrix.Translation(p - n * 0.03) @ basis(n, (0, 0, 1)),
-                            verts=scute)
+    for i in range(12):
+        az = math.radians(i * 30 + 15)
+        p, n = on_shell(0.89 * math.cos(az), 0.89 * math.sin(az))
+        for inset, radius, top_radius, height, name in (
+            (-0.10, 0.39, 0.33, 0.15, "prism_trim"),
+            (0.035, 0.34, 0.25, 0.13, "stone_dark"),
+        ):
+            plate = shell.cyl(radius, height, seg=5, mat=name, r2=top_radius)
+            bmesh.ops.transform(shell.bm, matrix=Matrix.Translation(p + n * inset) @ basis(n, (0, 0, 1)),
+                                verts=plate)
 
-    # crystal cluster on the back: one big lumen spire, a ring of violet/mid, a scatter of small ones
-    core, _ = on_shell(0.0, 0.05)
-    shell.crystal(core, 0.5, 0.3, direction=(0, 0.1, 1), tip=0.45, mat="lumen", sink=0.35)
-    ring1 = ("crystal_violet", "crystal_mid", "lumen", "crystal_violet", "crystal_mid", "crystal_violet", "lumen")
-    for i, m in enumerate(ring1):
-        az = math.radians(20 + i * 360 / 7)
-        p, n = on_shell(0.3 * math.cos(az), 0.05 + 0.27 * math.sin(az))
-        h = 0.38 + 0.14 * ((i * 3) % 4) / 3
-        shell.crystal(p, h, 0.19, direction=n + Vector((0, 0, 1.0)), tip=0.3, mat=m, yaw=i * 23)
-    for i in range(9):
-        az = math.radians(i * 40 + 5)
-        p, n = on_shell(0.56 * math.cos(az), 0.08 + 0.5 * math.sin(az))
-        m = ("crystal_mid", "crystal_violet", "lumen")[i % 3]
-        shell.crystal(p, 0.2 + 0.06 * (i % 3), 0.12, direction=n + Vector((0, 0, 0.5)), tip=0.2, mat=m,
-                      yaw=i * 31)
+        shard, normal = on_shell(0.73 * math.cos(az), 0.73 * math.sin(az))
+        shell.crystal(shard, 0.26 + 0.08 * (i % 3), 0.18, direction=normal + Vector((0, 0, 0.4)),
+                      tip=0.24, mat="crystal_violet", yaw=i * 23, facets=violet if i % 3 else cyan)
+
+    core, _ = on_shell(0, 0.05)
+    shell.crystal(core, 0.69, 0.35, direction=(0, 0.08, 1), tip=0.54, mat="crystal_violet", facets=violet)
+    for fx, fy, h, r, colors in (
+        (-0.43, -0.31, 0.53, 0.29, violet), (0.43, -0.31, 0.51, 0.29, cyan),
+        (-0.42, 0.31, 0.61, 0.28, cyan), (0.42, 0.31, 0.63, 0.29, violet),
+        (-0.14, -0.54, 0.42, 0.21, cyan), (0.16, 0.58, 0.55, 0.21, violet),
+    ):
+        p, n = on_shell(fx, fy)
+        shell.crystal(p, h, r, direction=n + Vector((0, 0, 0.48)), tip=h * 0.72, mat=colors[0],
+                      yaw=fy * 230, facets=colors)
     finish(shell, parent=root)
 
-    horn = Part("prismback_horn")  # pivot: base of the horn on the forehead
-    horn.crystal(hp, 0.62, 0.19, direction=horn_dir, tip=0.38, mat="lumen", sink=0.15)
-    side = Vector((1, 0, 0))
+    horn = Part("prismback_horn")  # pivot: base on forehead
+    horn.crystal(hp, 0.49, 0.21, direction=horn_dir, tip=0.31, mat="crystal_mid", facets=cyan)
     for s in (-1, 1):
-        horn.crystal(hp + side * 0.2 * s + Vector((0, 0.06, -0.04)), 0.24, 0.09,
-                     direction=horn_dir + side * 0.7 * s, tip=0.14, mat="crystal_violet", sink=0.3)
+        horn.crystal(hp + Vector((s * 0.23, 0.045, -0.04)), 0.28, 0.12,
+                     direction=horn_dir + Vector((s * 0.87, 0, 0)), tip=0.2,
+                     mat="crystal_violet", facets=violet)
     finish(horn, parent=root, pivot=tuple(hp))
     return root
 
@@ -890,11 +923,12 @@ def build_crystal_pillar():
     p = Part("crystal_pillar")
     p.cyl(0.8, 0.3, seg=8, mat="stone", rot=(0, 0, 22.5))
     p.cyl(0.62, 0.22, at=(0, 0, 0.3), seg=8, mat="stone_dark", rot=(0, 0, 22.5))
-    p.crystal((0, 0, 0.45), 2.85, 0.4, tip=0.72, mat="lumen", sink=0.08)
+    p.crystal((0, 0, 0.45), 2.85, 0.4, tip=0.72, mat="lumen", sink=0.08, facets=("prism_cyan", "lumen", "crystal_mid"))
     for az, h, r, m in ((10, 1.9, 0.21, "crystal_mid"), (85, 1.3, 0.19, "crystal_violet"),
                         (160, 1.65, 0.2, "crystal_violet"), (235, 1.1, 0.18, "crystal_mid"),
                         (300, 1.45, 0.19, "crystal_violet")):
-        p.crystal(polar(0.38, az, 0.45), h, r, direction=polar(0.09, az, 1.0), tip=r * 1.8, mat=m, yaw=az)
+        p.crystal(polar(0.38, az, 0.45), h, r, direction=polar(0.14, az, 1.0), tip=r * 1.8, mat=m, yaw=az,
+                  facets=("prism_violet", m, "crystal_mid"))
     for az in (50, 200, 330):
         p.crystal(polar(0.6, az, 0.3), 0.26, 0.08, direction=polar(0.3, az, 1.0), mat="lumen", yaw=az)
     finish(p)
