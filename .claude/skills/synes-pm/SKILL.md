@@ -37,13 +37,19 @@ description: Routine ของผู้จัดการโปรเจค Syne
 2. `npm test` → commit → `git push` (ถ้า push ไม่ได้ให้หยุดและแจ้งเจ้าของ)
 3. `create_session` ด้วยค่า:
    - `source_url`: URL ของ GitHub repo
-   - `title`: `Project Synes · รอบ <N>`
-   - `prompt`: prompt มาตรฐานด้านล่าง
-4. แจ้งเจ้าของด้วยลิงก์เซสชันใหม่ 1 บรรทัด และบอกว่าเซสชันเดิมยังไม่ได้ archive
+   - `title`: `🟢 MAIN · Synes Online · รอบ <N>`
+   - `tags`: `["project-synes"]`
+   - `prompt`: prompt มาตรฐานด้านล่าง (ใส่ id ของเซสชันเดิมด้วย)
+4. แจ้งเจ้าของด้วยลิงก์เซสชันใหม่ 1 บรรทัด
+5. **เซสชันใหม่เป็นผู้ปิดเซสชันเดิม** (CLAUDE.md ข้อ 5.1)
+   - ตรวจก่อนว่า push ล่าสุดของเซสชันเดิมอยู่บน remote และเซสชันเดิมมีแท็ก `project-synes`
+   - จากนั้นใช้ `set_session_title` เปลี่ยนชื่อเป็น `⚪ OLD · Synes · รอบ <N-1>` แล้ว `archive_session`
+   - ห้ามแตะเซสชันที่ไม่มีแท็กนี้
 
 ### Prompt มาตรฐานสำหรับเซสชันใหม่
 ```
-คุณคือผู้จัดการโปรเจค Synes (Synes Online) ทำงานต่อจากเซสชันก่อน
+คุณคือผู้จัดการโปรเจค Synes (Synes Online) ทำงานต่อจากเซสชันก่อน (เซสชันเดิม: <session_id เดิม>)
+0) set_session_tags เพิ่มแท็ก project-synes ให้เซสชันนี้ จากนั้นปิดเซสชันเดิมตาม CLAUDE.md ข้อ 5.1 หลังตรวจว่า push แล้ว
 1) อ่าน CLAUDE.md และ docs/PROJECT_SYNES.md แล้วทำขั้นเริ่มเซสชันให้ครบ
 2) อ่าน docs/HANDOFF.md ส่วนล่าสุด
 3) ทำงานรอบถัดไปตาม backlog ข้อแรกที่ยังไม่เสร็จ (หรืองานที่ระบุ: <งาน>)

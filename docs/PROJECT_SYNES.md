@@ -41,6 +41,8 @@
 | เรื่อง | สถานะ |
 |---|---|
 | **สร้าง GitHub repo + เชื่อม GitHub กับ Claude** (จำเป็นต่อการขึ้นเซสชันใหม่และการทำงานหลายเซสชัน) | รอ |
+| ตั้ง `CLAUDE_CODE_AUTO_COMPACT_WINDOW=450000` ใน Settings ของ environment "Default" (ตั้งจากในเซสชันไม่ได้) และ/หรือพิมพ์ `/autocompact 450k` | รอ |
+| รัน `tools/setup/setup-windows.ps1` บนเครื่อง Windows หลัง clone repo เพื่อทำโฟลเดอร์โปรเจค + Remote Control อัตโนมัติ | รอ |
 | อนุมัติลำดับรอบ 2-A → 2-B → 3 | รอ |
 | เลือกโทนภาพจากแกลเลอรี 10 โทน | รอ |
 | ทดสอบบนมือถือจริงและจด FPS จากหน้าเทียบเอนจิน | รอ |
@@ -59,5 +61,5 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-20 | เซสชันแรก (ต่อ) | เพลย์เทสต์ agent, ต้นแบบปรับภาพ, ประชุมทีม, ตั้งกฎ + agent project-synes | `main` ล่าสุด, `art/visual-pass-poc` |
+| 2026-11-20 | 🟢 MAIN · Synes Online · รอบ 1–2 (`session_01A1roa5LGxnKhAviAP9VGZk`) | เพลย์เทสต์ agent, ต้นแบบปรับภาพ, ประชุมทีม, ตั้งกฎ + agent project-synes, บีบอัดที่ 450k, สคริปต์ Remote Control | `main` ล่าสุด, `art/visual-pass-poc` |
 | 2026-11-19 | เซสชันแรก | scaffold, spike, sim/server, slice, QA, ชุดโมเดล Blender, โทน 10 แบบ, Artifact | `f404bac` |
