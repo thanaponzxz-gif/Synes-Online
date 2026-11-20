@@ -128,6 +128,9 @@ export class View {
     fog.color.set(t.fog).lerp(TMP_C.set(A.fog), w);
     (this.scene.background as Color).copy(fog.color);
     fog.near = t.fogNear + (A.fogNear - t.fogNear) * w; fog.far = t.fogFar + (A.fogFar - t.fogFar) * w;
+    // Perf only, no visible change: anything deeper than fog.far is drawn in pure fog colour (= background), so cull it.
+    // +2 m keeps fog-free halos of crystals that sit right at the fog edge.
+    if (this.camera.far !== fog.far + 2) { this.camera.far = fog.far + 2; this.camera.updateProjectionMatrix(); }
     this.hemi.color.set(t.hemiSky).lerp(TMP_C.set(A.hemiSky), w);
     this.hemi.groundColor.set(t.hemiGround).lerp(TMP_C.set(A.hemiGround), w);
     this.hemi.intensity = t.hemiI + (A.hemiI - t.hemiI) * w;
@@ -479,18 +482,21 @@ export class View {
     const bdx = boss ? world.boss.x - px : 0, bdz = boss ? world.boss.z - pz : 0;
     const bd = Math.hypot(bdx, bdz);
     const portrait = this.camera.aspect < 1;
-    // Lower the camera when there is room to frame the boss ahead. Lift for close
-    // combat and flanks so the player and ground warnings stay visible.
-    const lead = Math.max(0, Math.min(1, (-bdz - 3.5) / 2.5));
-    const side = Math.max(0, Math.min(1, (8 - Math.abs(bdx)) / 4));
-    const low = boss && !portrait ? lead * side : 0;
+    // Owner 2026-11-21: keep the low over-the-shoulder framing of the DES-003 reference at all times in landscape
+    // (field and boss fight). Portrait keeps the older high framing unchanged.
+    // When the boss is behind or level with the player, the camera backs off along the same angle so the boss
+    // and its ground warnings stay in frame instead of lifting to a top-down view.
+    const low = portrait ? 0 : 1;
     const dist = (boss ? 1.18 + Math.min(0.22, Math.max(0, bd - 5) * 0.03) : 0.86) * (portrait ? 1.35 : 1);
-    const wide = Math.min(2, Math.max(0, -bdz - 10) * 0.2);
+    const wide = boss ? Math.min(2, Math.max(0, -bdz - 10) * 0.2) : 0;
+    const back = boss && !portrait ? Math.min(7, Math.max(0, bdz + 2.5) + Math.max(0, Math.abs(bdx) - 4) * 0.5) : 0;
     const tx = px + bdx * (0.18 + 0.16 * low);
     const ty = 0.6 - 0.45 * low;
-    const tz = pz - (boss ? 2.6 + 2.4 * low : 2.4) + Math.max(0, bdz) * 0.6;
-    const oy = 10.5 * dist * (1 - low) + (4.5 + wide) * low;
-    const cz = (tz + 9 * dist) * (1 - low) + (pz + 5.5 + wide) * low;
+    const tz = portrait
+      ? pz - (boss ? 2.6 + 2.4 * low : 2.4) + Math.max(0, bdz) * 0.6
+      : pz - 5 + back * 0.55;
+    const oy = 10.5 * dist * (1 - low) + (4.5 + wide + back * 0.42) * low;
+    const cz = (tz + 9 * dist) * (1 - low) + (pz + 5.5 + wide + back) * low;
     const k = 1 - Math.exp(-dt * 6);
     if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camPos.set(tx, oy, cz); }
     this.camTarget.lerp(TMP.set(tx, ty, tz), k);
