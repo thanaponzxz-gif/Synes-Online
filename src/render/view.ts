@@ -2,7 +2,7 @@
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Color, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, CanvasTexture,
   Group, Object3D, Vector3, Fog, InstancedMesh, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
-  MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping,
+  MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
 import { LEVEL, type Shape } from '../../shared/data/level.ts';
@@ -29,6 +29,15 @@ function shapeSDF(s: Shape, x: number, z: number) {
   return Math.hypot(x - (s.ax + abx * k), z - (s.az + abz * k)) - s.r;
 }
 
+/** Big props that may stand between the camera and the player: faded so they never hide the player or a telegraph. */
+interface Occluder { obj: Object3D; r: number; h: number; mats: Material[]; f: number; actor?: Actor; }
+let STAR_GEO: ShapeGeometry | null = null;
+function starGeo() {
+  if (STAR_GEO) return STAR_GEO;
+  const s = new TShape();
+  for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 + Math.PI / 2, r = i % 2 ? 0.07 : 0.17; i ? s.lineTo(Math.cos(a) * r, Math.sin(a) * r) : s.moveTo(Math.cos(a) * r, Math.sin(a) * r); }
+  return (STAR_GEO = new ShapeGeometry(s));
+}
 interface ActorView { a: Actor; root: Group; model: Group; parts: Record<string, Object3D>; px: number; pz: number; cx: number; cz: number; shadow: Mesh; stars: Group; flash: number; deathT: number; hopH: number; }
 
 export class View {
@@ -40,6 +49,8 @@ export class View {
   private teles = new Map<number, { t: Telegraph; m: Mesh; mat: any }>();
   private gates = new Map<string, { g: Object3D; open: boolean; y: number }>();
   private pillars: Object3D[] = [];
+  private occluders: Occluder[] = [];
+  private playerMark: Mesh | null = null;
   private springGem: Object3D | null = null;
   private flames: Object3D[] = [];
   env = new Group();
@@ -94,7 +105,7 @@ export class View {
   // ------------------------------------------------------------------ environment
   buildLevel(world: World, seed = 1) {
     this.env.clear();
-    this.flames = []; this.pillars = []; this.gates.clear();
+    this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
     const W = this.q.groundRes / 2, H = this.q.groundRes;
     const c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -168,18 +179,24 @@ export class View {
     put('lantern_post', 6.5, -44); put('lantern_post', -0.4, -46);
     const spring = put('lumen_spring', LEVEL.spring.x, LEVEL.spring.z);
     this.springGem = spring.getObjectByName('gem') ?? null;
-    for (const pl of LEVEL.pillars) this.pillars.push(put('crystal_pillar', pl.x, pl.z, pl.x * 0.3));
+    for (const pl of LEVEL.pillars) { const o = put('crystal_pillar', pl.x, pl.z, pl.x * 0.3); this.pillars.push(o); this.addOccluder(o, pl.r + 0.2, 4.5); }
     for (const gd of LEVEL.gates) {
       const gate = put('crystal_gate', gd.x, gd.z, Math.atan2(-gd.dirz, gd.dirx));
       const open = world.gates[gd.id];
       gate.position.y = open ? -4 : 0; gate.visible = !open;
       this.gates.set(gd.id, { g: gate, open, y: gate.position.y });
+      this.addOccluder(gate, 3.2, 3.0);
     }
     put('lantern_post', -6, -63.5); put('lantern_post', 2, -63.5);
     // actors
     for (const v of this.actors.values()) this.scene.remove(v.root);
     this.actors.clear();
     for (const a of world.actors) this.addActor(a);
+    // always-visible player marker (drawn over everything, so the player is findable behind any prop)
+    if (!this.playerMark) {
+      this.playerMark = new Mesh(new RingGeometry(0.55, 0.7, 32), new MeshBasicMaterial({ color: PAL.lumen, transparent: true, opacity: 0.85, depthTest: false, depthWrite: false }));
+      this.playerMark.rotation.x = -Math.PI / 2; this.playerMark.renderOrder = 12; this.scene.add(this.playerMark);
+    }
     if (!this.particles) { this.particles = new Particles(this.scene, this.q.particles); this.rings = new Rings(this.scene); }
   }
 
@@ -192,9 +209,10 @@ export class View {
     if (a.kind === 'prismback') { // private materials so stun glow doesn't leak to scenery
       parts.prismback_shell?.traverse((o) => { const m = o as Mesh; if (m.isMesh) m.material = (m.material as Material).clone(); });
     }
+    if (a.kind === 'prismback') this.addOccluder(root, a.r, 3.6, a);
     const shadow = blobShadow(a.r); root.add(shadow);
     const stars = new Group();
-    for (let i = 0; i < 3; i++) { const s = new Mesh(new PlaneGeometry(0.22, 0.22), new MeshBasicMaterial({ color: PAL.gold, transparent: true, depthWrite: false })); s.rotation.z = Math.PI / 4; stars.add(s); }
+    for (let i = 0; i < 3; i++) { const s = new Mesh(starGeo(), new MeshBasicMaterial({ color: PAL.gold, transparent: true, depthWrite: false, depthTest: false })); s.renderOrder = 11; stars.add(s); }
     stars.visible = false; root.add(stars);
     this.scene.add(root);
     this.actors.set(a.id, { a, root, model, parts, px: a.x, pz: a.z, cx: a.x, cz: a.z, shadow, stars, flash: 0, deathT: 0, hopH: a.kind === 'prismback' ? 4.2 : a.kind === 'puffcap' ? 1.2 : 1.2 });
@@ -228,7 +246,7 @@ export class View {
         case 'gate': { const gv = this.gates.get(e.id); if (gv) { gv.open = e.open; gv.g.visible = true; } break; }
         case 'heal': { const p = world.player; this.particles.burst(p.x, 1, p.z, 0x8dffb0, 12, 1.2, 2, 0.8, 1, -1); break; }
         case 'boss-phase': case 'boss-roar': { const b = world.boss; this.rings.ring(b.x, b.z, 1, 9, TELE_HEAVY, 0.6, 0.6); this.shake = 0.5; break; }
-        case 'respawn': for (let i = 0; i < this.pillars.length; i++) this.pillars[i].visible = world.pillars[i].alive; break;
+        case 'respawn': case 'pillars-regrow': for (let i = 0; i < this.pillars.length; i++) this.pillars[i].visible = world.pillars[i].alive; break;
       }
     }
   }
@@ -266,6 +284,7 @@ export class View {
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.updateCamera(world, alpha, dt);
+    this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -278,7 +297,7 @@ export class View {
     const m = new Mesh(geo, mat);
     m.position.set(t.x, 0.06 + this.teles.size * 0.004, t.z);
     if (t.shape !== 'circle') m.rotation.y = Math.atan2(-t.dx, -t.dz);
-    m.renderOrder = 4;
+    m.renderOrder = 10; // drawn after (and on top of) every opaque object: a warning is never hidden by the boss or a pillar
     if (t.shape === 'line' && t.owner === this.findBossId()) {
       // charge line follows the boss start position (already set); clip visually to arena handled by fog/edge
     }
@@ -369,7 +388,8 @@ export class View {
     const pv = this.actors.get(world.player.id)!;
     const px = pv.root.position.x, pz = pv.root.position.z;
     const boss = world.bossStarted && world.boss.alive;
-    const tx = boss ? px + (world.boss.x - px) * 0.3 : px, tz = boss ? pz + (world.boss.z - pz) * 0.3 : pz - 1.4;
+    // keep the player in the lower-middle of the frame: look ahead (−z) rather than at the boss, which can be behind the player
+    const tx = boss ? px + (world.boss.x - px) * 0.18 : px, tz = pz - (boss ? 2.6 : 2.4);
     const portrait = this.camera.aspect < 1;
     const dist = (boss ? 1.18 : 0.86) * (portrait ? 1.35 : 1);
     const ox = 0, oy = 10.5 * dist, oz = 9.0 * dist;
@@ -384,6 +404,35 @@ export class View {
     this.nearFadeU.value = Math.hypot(oy, oz) * 0.72;
     if (this.q.shadows) { this.sun.position.set(this.camTarget.x + 8, 18, this.camTarget.z + 6); this.sun.target.position.set(this.camTarget.x, 0, this.camTarget.z); }
     else { this.sun.position.set(8, 18, 6); this.sun.target.position.set(0, 0, 0); }
+  }
+
+  private addOccluder(obj: Object3D, r: number, h: number, actor?: Actor) {
+    const mats: Material[] = [];
+    obj.traverse((o) => {
+      const m = o as Mesh; if (!m.isMesh || o === this.playerMark) return;
+      const own = (m.material as Material).clone(); m.material = own; mats.push(own);
+    });
+    this.occluders.push({ obj, r, h, mats, f: 1, actor });
+  }
+
+  /** Fade boss / pillars / gates that sit between the camera and the player. Camera looks along −z from +z, so "in front" = larger z. */
+  private updateOccluders(world: World, dt: number) {
+    const pv = this.actors.get(world.player.id); if (!pv) return;
+    const px = pv.root.position.x, pz = pv.root.position.z;
+    if (this.playerMark) { this.playerMark.position.set(px, 0.05, pz); this.playerMark.visible = !world.ps.down; }
+    for (const o of this.occluders) {
+      const ox = o.obj.position.x, oz = o.obj.position.z, dz = oz - pz;
+      const reach = o.h * 0.86 + o.r + 0.6; // projected height of the prop on the ground behind it
+      const hides = o.obj.visible && dz > -0.6 && dz < reach && Math.abs(ox - px) < o.r + 0.8;
+      const target = hides ? 0.28 : 1;
+      o.f += (target - o.f) * Math.min(1, dt * 10);
+      if (Math.abs(o.f - target) < 0.01) o.f = target;
+      const transparent = o.f < 0.99;
+      for (const m of o.mats) {
+        if (m.transparent !== transparent) { m.transparent = transparent; m.depthWrite = !transparent; m.needsUpdate = true; }
+        m.opacity = o.f;
+      }
+    }
   }
 
   /** World → CSS pixel coordinates (for DOM overlays). */

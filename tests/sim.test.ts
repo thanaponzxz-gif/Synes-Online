@@ -53,6 +53,27 @@ describe('simulation', () => {
   });
 });
 
+describe('phase 2 keeps the pillar lure (round 2-A)', () => {
+  it('boss charges again after the phase change, and broken pillars regrow', () => {
+    for (const seed of [1, 2, 3]) {
+      const w = new World(seed), bot = new Bot(1);
+      let inP2 = false, p2Charges = 0, sawShardThenCharge = false, lastAtkP2 = '';
+      while (!w.finished && w.tick < 30 * 60 * 8) {
+        const before = w.boss.state;
+        for (const e of w.step(bot.think(w))) if (e.t === 'boss-phase') { inP2 = true; expect(w.pillars.every((p) => p.alive)).toBe(true); }
+        if (inP2 && before !== 'windup' && w.boss.state === 'windup') {
+          if (w.boss.atk === 'charge') { p2Charges++; if (lastAtkP2 === 'shard') sawShardThenCharge = true; }
+          lastAtkP2 = w.boss.atk;
+        }
+        if (inP2 && before !== 'cast' && w.boss.state === 'cast') lastAtkP2 = 'shard';
+      }
+      expect(inP2, `seed ${seed}`).toBe(true);
+      expect(p2Charges, `seed ${seed}`).toBeGreaterThan(0);
+      expect(sawShardThenCharge, `seed ${seed}`).toBe(true);
+    }
+  });
+});
+
 describe('fairness constraints (mobile reaction budget)', () => {
   it('every telegraph gives at least 0.65 s warning, including phase 2', () => {
     const all = [ENEMIES.puffcap.attacks.hop, ENEMIES.thornling.attacks.rush, ...Object.values(ENEMIES.prismback.attacks)];
@@ -60,6 +81,9 @@ describe('fairness constraints (mobile reaction budget)', () => {
       const mul = Object.values(ENEMIES.prismback.attacks).includes(a as any) ? ENEMIES.prismback.windupMulP2 : 1;
       expect(a.windup * mul, a.id).toBeGreaterThanOrEqual(0.65);
     }
+  });
+  it('phase-2 follow-up charge warns longer than a normal charge', () => {
+    expect(ENEMIES.prismback.followChargeWindup).toBeGreaterThan(ENEMIES.prismback.attacks.charge.windup);
   });
   it('dodge cooldown is shorter than the shortest windup (always possible to react)', () => {
     expect(PLAYER.dodge.cooldown).toBeLessThan(0.65);

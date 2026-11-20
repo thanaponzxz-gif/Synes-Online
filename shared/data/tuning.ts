@@ -31,8 +31,10 @@ export const ENEMIES = {
   prismback: {
     nameTh: 'ปริซึมแบ็ก ผู้พิทักษ์ทุ่ง', radius: 1.9, maxHp: 1000, speed: 2.0, speedP2: 2.4, phase2At: 0.5,
     windupMulP2: 0.85, stunPillar: 2.6, stunMiss: 0.9, chargeSpeed: 15, stunDmgMul: 1.5, roar: 1.1,
+    // phase 2: every shard rain is followed by a charge with a longer, earlier warning so the pillar lure stays the core beat
+    p2FollowCharge: true, followChargeWindup: 1.35, shardStagger: 0.22, p2ShardEvery: 3, // rhythm: 2 moves → shard rain → charge
     attacks: {
-      sweep: { id: 'sweep', nameTh: 'กวาดเขา', shape: 'cone', windup: 0.8, dmg: 18, r: 5.2, w: 0.5, tipTh: 'รูปพัดด้านหน้าบอส ให้หลบไปด้านข้างหรือด้านหลังบอส' } as AttackDef,
+      sweep: { id: 'sweep', nameTh: 'กวาดเขา', shape: 'cone', windup: 0.95, dmg: 18, r: 5.2, w: 0.5, tipTh: 'รูปพัดด้านหน้าบอส ให้หลบไปด้านข้างหรือด้านหลังบอส' } as AttackDef,
       slam: { id: 'slam', nameTh: 'กระแทกปริซึม', shape: 'circle', windup: 1.25, dmg: 26, r: 4.6, tipTh: 'วงทองรอบตัวบอส ให้วิ่งออกนอกวง หรือกด ↯ ตอนวงเต็ม' } as AttackDef,
       charge: { id: 'charge', nameTh: 'พุ่งคริสตัล', shape: 'line', windup: 1.0, dmg: 24, r: 18, w: 3.0, tipTh: 'ยืนหน้าเสาคริสตัลแล้วหลบด้านข้าง บอสจะชนเสาและมึนนาน' } as AttackDef,
       shard: { id: 'shard', nameTh: 'ฝนผลึก', shape: 'circle', windup: 1.0, dmg: 12, r: 1.5, tipTh: 'วงเล็กตกตามตำแหน่งคุณ ให้เคลื่อนที่ต่อเนื่อง อย่ายืนนิ่ง' } as AttackDef,

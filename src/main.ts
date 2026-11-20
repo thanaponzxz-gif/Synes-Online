@@ -61,7 +61,7 @@ const qaLog: { t: number; e: string }[] = [];
     Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`)).then((ok) => (perf.kit = ok)),
   ]);
   bar.style.width = '100%';
-  $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: server ตรวจผล' : 'ออฟไลน์: ผลไม่ถูกบันทึก';
+  $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: บันทึกผลได้' : 'ออฟไลน์: ผลไม่ถูกบันทึก';
   const btn = $<HTMLButtonElement>('#btn-start');
   btn.disabled = false; btn.textContent = 'แตะเพื่อเริ่มผจญภัย';
   perf.readyMs = performance.now();
@@ -96,7 +96,7 @@ async function newRun() {
   log = new InputLog();
   view.buildLevel(world, 7);
   hud.netChip.textContent = ticket ? 'ออนไลน์' : 'ออฟไลน์';
-  hud.netChip.title = ticket ? 'ผลจะถูกตรวจโดย server' : 'โหมดออฟไลน์: ผลไม่ถูกบันทึก';
+  hud.netChip.title = ticket ? 'ผลและรางวัลจะถูกบันทึก' : 'โหมดออฟไลน์: ผลไม่ถูกบันทึก';
   for (const s of ['#defeat', '#victory']) $(s).classList.remove('show');
   bot = Q.has('bot') ? new Bot(+(Q.get('bot') || 1) || 1) : null;
   input.bot = bot ? () => bot!.think(world!) : null;
@@ -172,15 +172,15 @@ async function onVictory() {
   if (!ticket) {
     const s = w.summary();
     const rank = rankFor({ victory: true, seconds: s.seconds, damageTaken: s.damageTaken, deaths: s.deaths, perfect: s.perfect });
-    setTimeout(() => hud.setReward(`<b>โหมดออฟไลน์:</b> ไม่มีการแจกหรือบันทึกรางวัล<br><small>อันดับ ${rank} คำนวณบนเครื่องคุณเพื่อแสดงผลเท่านั้น ส่วนรางวัลจริงต้องให้ server ตรวจซ้ำจาก input ก่อน</small>`), 1500);
+    setTimeout(() => hud.setReward(`<b>โหมดออฟไลน์:</b> รอบนี้ไม่ถูกบันทึกและไม่ได้รับรางวัล<br><small>อันดับ ${rank} แสดงให้ดูเท่านั้น</small>`), 1500);
     return;
   }
   const res = await net.finish(ticket.runId, log.data);
   const show = () => {
     if (res.verified) {
       const r = res.reward;
-      hud.setReward(`✅ server ตรวจซ้ำแล้ว: อันดับ <b>${r.rank}</b><br>💰 ${r.gold} ทอง · ✨ ${r.exp} EXP${r.drop ? `<br>ได้รับ <span class="${r.drop.rarity}">${r.drop.nameTh}</span>` : ''}`);
-    } else hud.setReward(`⚠ server ไม่รับผลนี้ (${res.error}) จึงไม่ได้บันทึกรางวัล`);
+      hud.setReward(`✅ บันทึกผลแล้ว: อันดับ <b>${r.rank}</b><br>💰 ${r.gold} ทอง · ✨ ${r.exp} EXP${r.drop ? `<br>ได้รับ <span class="${r.drop.rarity}">${r.drop.nameTh}</span>` : ''}`);
+    } else hud.setReward(`⚠ บันทึกผลไม่สำเร็จ จึงยังไม่ได้รับรางวัล <small>(${res.error})</small>`);
   };
   setTimeout(show, 1500);
 }

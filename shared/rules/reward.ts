@@ -2,10 +2,13 @@
 export interface RunResult { victory: boolean; seconds: number; damageTaken: number; deaths: number; perfect: number; }
 export type Rank = 'S' | 'A' | 'B' | 'C';
 
+/** Shown to the player on the result screen, so keep these the single source of truth. */
+export const RANK_RULES = { S: { damage: 60, seconds: 180 }, A: { damage: 150 } } as const;
+
 export function rankFor(r: RunResult): Rank {
   if (!r.victory) return 'C';
-  if (r.deaths === 0 && r.damageTaken <= 60 && r.seconds <= 180) return 'S';
-  if (r.deaths === 0 && r.damageTaken <= 150) return 'A';
+  if (r.deaths === 0 && r.damageTaken <= RANK_RULES.S.damage && r.seconds <= RANK_RULES.S.seconds) return 'S';
+  if (r.deaths === 0 && r.damageTaken <= RANK_RULES.A.damage) return 'A';
   if (r.deaths <= 1) return 'B';
   return 'C';
 }

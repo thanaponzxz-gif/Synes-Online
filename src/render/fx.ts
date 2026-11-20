@@ -74,7 +74,7 @@ export class Rings {
 /** Telegraph material: fills with progress, bright pulsing edge. Shape: 0 circle, 1 cone, 2 line. */
 export function telegraphMaterial(color: number, shape: number, cos = 0.5): ShaderMaterial {
   return new ShaderMaterial({
-    transparent: true, depthWrite: false, side: DoubleSide,
+    transparent: true, depthWrite: false, depthTest: false, side: DoubleSide,
     uniforms: { uColor: { value: new Color(color) }, uProg: { value: 0 }, uShape: { value: shape }, uCos: { value: cos }, uTime: { value: 0 }, uAlpha: { value: 1 } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: `

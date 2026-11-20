@@ -17,7 +17,7 @@ export type SimEvent =
   | { t: 'gate'; id: string; open: boolean }
   | { t: 'boss-start' } | { t: 'boss-phase' } | { t: 'boss-roar' }
   | { t: 'stun'; id: number; long: boolean }
-  | { t: 'pillar-break'; i: number }
+  | { t: 'pillar-break'; i: number } | { t: 'pillars-regrow' }
   | { t: 'swing'; step: number } | { t: 'dodge' } | { t: 'skill' } | { t: 'potion' }
   | { t: 'heal'; amount: number } | { t: 'interrupt'; id: number }
   | { t: 'player-down'; cause: DefeatCause } | { t: 'respawn'; at: string }
@@ -53,6 +53,9 @@ export class World {
   boss: Actor;
   bossStarted = false;
   phase = 1;
+  /** forced next boss move (phase 2: charge after every shard rain) */
+  bossNext: string | null = null;
+  private p2Moves = 0;
   clearingTriggered = false;
   checkpoint = { id: 'camp', x: LEVEL.start.x, z: LEVEL.start.z };
   finished = false;
@@ -282,7 +285,7 @@ export class World {
       e.x = e.sx; e.z = e.sz; e.hp = e.maxHp; e.state = 'idle'; e.st = 0; e.active = false; e.fx = 0; e.fz = 1;
     }
     if (this.bossStarted) {
-      this.bossStarted = false; this.phase = 1; this.gates.arenaEntry = true;
+      this.bossStarted = false; this.phase = 1; this.bossNext = null; this.p2Moves = 0; this.gates.arenaEntry = true;
       for (const pl of this.pillars) pl.alive = true;
       this.events.push({ t: 'gate', id: 'arenaEntry', open: true });
     }
@@ -387,7 +390,10 @@ export class World {
         }
         break;
       case 'cast':
-        if (a.st <= 0) { a.state = 'recover'; a.st = 0.6; }
+        if (a.st <= 0) {
+          a.state = 'recover'; a.st = 0.6;
+          if (this.phase === 2 && D.p2FollowCharge && this.pillars.some((pl) => pl.alive)) { this.bossNext = 'charge'; this.hint('pillarP2'); }
+        }
         break;
       case 'charge': {
         const step = D.chargeSpeed * TICK;
@@ -414,6 +420,8 @@ export class World {
         if (a.st <= 0) {
           if (this.phase === 1 && a.hp <= a.maxHp * D.phase2At) {
             this.phase = 2; a.state = 'roar'; a.st = D.roar;
+            // broken pillars regrow so the lure mechanic carries into phase 2
+            if (this.pillars.some((pl) => !pl.alive)) { for (const pl of this.pillars) pl.alive = true; this.events.push({ t: 'pillars-regrow' }); }
             this.events.push({ t: 'boss-phase' }); this.hint('phase2');
           } else { a.state = 'approach'; a.st = this.rng.range(0.5, 1.2) * (this.phase === 2 ? 0.75 : 1); }
         }
@@ -431,6 +439,10 @@ export class World {
     let total = 0; for (const [, w] of pick) total += w;
     let r = this.rng.next() * total, id = pick[0][0];
     for (const [k, w] of pick) { if (r < w) { id = k; break; } r -= w; }
+    const forced = this.bossNext !== null;
+    if (forced) { id = this.bossNext!; this.bossNext = null; }
+    else if (this.phase === 2 && ++this.p2Moves >= D.p2ShardEvery) id = 'shard';
+    if (id === 'shard') this.p2Moves = 0;
     a.repeat = id === a.lastAtk ? a.repeat + 1 : 0; a.lastAtk = id; a.atk = id;
     const [dx, dz] = norm(p.x - a.x, p.z - a.z);
     if (id === 'sweep') {
@@ -440,7 +452,7 @@ export class World {
       const w = A.slam.windup * mul;
       this.addTele(a, D.nameTh, A.slam, a.x, a.z, 0, 1, w, true); a.state = 'windup'; a.st = w;
     } else if (id === 'charge') {
-      a.fx = dx; a.fz = dz; a.dx = dx; a.dz = dz; const w = A.charge.windup * mul;
+      a.fx = dx; a.fz = dz; a.dx = dx; a.dz = dz; const w = forced ? D.followChargeWindup : A.charge.windup * mul;
       this.addTele(a, D.nameTh, A.charge, a.x, a.z, dx, dz, w, false); a.state = 'windup'; a.st = w;
     } else {
       const n = 5;
@@ -448,7 +460,7 @@ export class World {
         let sx = p.x, sz = p.z;
         if (i > 0) { const v = DIRS16[this.rng.int(16)]; sx += v[0] * 2.4; sz += v[1] * 2.4; }
         const [cx, cz] = this.clampArena(sx, sz, 0.5);
-        this.addTele(a, D.nameTh, A.shard, cx, cz, 0, 1, (A.shard.windup + i * 0.16) * mul, true);
+        this.addTele(a, D.nameTh, A.shard, cx, cz, 0, 1, (A.shard.windup + i * D.shardStagger) * mul, true);
       }
       a.state = 'cast'; a.st = 0.9;
     }

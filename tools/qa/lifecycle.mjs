@@ -44,10 +44,10 @@ async function open(url, prof = PROFILES['android-mid'], extraCtx = {}) {
   await page.waitForTimeout(2500);
   const during = await page.textContent('#victory .reward');
   await ctx.setOffline(false);
-  await page.waitForFunction(() => /server ตรวจซ้ำแล้ว|ไม่รับ/.test(document.querySelector('#victory .reward')?.textContent || ''), null, { timeout: 30000 }).catch(() => {});
+  await page.waitForFunction(() => /บันทึกผลแล้ว|ไม่สำเร็จ/.test(document.querySelector('#victory .reward')?.textContent || ''), null, { timeout: 30000 }).catch(() => {});
   const after = await page.textContent('#victory .reward');
-  check('online run survives signal loss (sim is local)', online.includes('ออนไลน์') && /server/.test(during), `during="${during.trim().slice(0, 40)}"`);
-  check('result is verified after reconnect', after.includes('ตรวจซ้ำแล้ว'), after.trim().slice(0, 60));
+  check('online run survives signal loss (sim is local)', online.includes('ออนไลน์') && /บันทึกผล/.test(during), `during="${during.trim().slice(0, 40)}"`);
+  check('result is verified after reconnect', after.includes('บันทึกผลแล้ว'), after.trim().slice(0, 60));
   check('no page errors (offline)', errors.length === 0, errors.join('; '));
   await ctx.close();
 }
