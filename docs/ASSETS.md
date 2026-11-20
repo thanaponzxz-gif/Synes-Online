@@ -11,4 +11,12 @@
 | เสียง SFX | src/audio.ts | ทีม Synes (สังเคราะห์) | โค้ด | เป็นของโปรเจกต์ | ไม่ต้อง | gameplay · 2026-11-19 |
 | ฟอนต์ | ใช้ system-ui (ไม่ฝังฟอนต์) | n/a | n/a | n/a | n/a | gameplay · 2026-11-19 |
 
+## Placeholder (ใช้ระหว่างรอ asset จริงตาม `docs/ASSET_PIPELINE.md`)
+| placeholder | path | แทนด้วย (ใบสั่งงาน) | สถานะ |
+|---|---|---|---|
+| ไอคอนขวดยา (SVG ในโค้ด) | `src/ui/hud.ts` `POTION_SVG` | `docs/handoff/ui_potion_v01.md` | brief DRAFT |
+| ดาวเสียหลัก (ShapeGeometry 5 แฉก) | `src/render/view.ts` `starGeo()` | ยังไม่มี brief (backlog art) | placeholder |
+| ขอบลานบอส (วาง `rock_a`/`crystal_cluster` จากชุดเดิม) | `src/render/view.ts` | ใช้โมเดลชุดเดิม | placeholder |
+| โมเดลทั้งชุด `synes_kit.glb` | `public/assets/models/` | รอเจ้าของตัดสินข้อ ข-2 ใน ASSET_PIPELINE.md | ใช้งานอยู่ |
+
 ยังไม่มีการดาวน์โหลด asset หรือ plugin จากภายนอก จึงยังไม่มี plugin ที่ต้องตรวจโค้ด

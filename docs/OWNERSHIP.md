@@ -7,7 +7,8 @@
 | art / Blender | `lane/art` (ก่อนหน้าใช้ `art/blender-kit`, merge แล้ว) | `tools/blender/**`, `public/assets/models/**`, `docs/art/**` |
 | web perf / QA | `main` | `tools/qa/**`, `docs/qa/**` |
 | spike | `main` (ปิดงานแล้ว) | `spike/**`, `vite.spike.config.ts` |
-| ผู้จัดการโปรเจค Synes (PM) | `main` | `CLAUDE.md`, `docs/PROJECT_SYNES.md`, `docs/HANDOFF.md`, `docs/team/**`, `.claude/agents/**`, `.claude/skills/**` และเป็นคนเดียวที่ merge เข้า `main` |
+| ผู้จัดการโปรเจค Synes (PM) | `main` | `CLAUDE.md`, `docs/PROJECT_SYNES.md`, `docs/HANDOFF.md`, `docs/team/**`, `docs/ASSET_PIPELINE.md`, `docs/handoff/**`, `.claude/agents/**`, `.claude/skills/**` และเป็นคนเดียวที่ merge เข้า `main` |
+| inbox asset (เจ้าของ / GPT / Tripo วางไฟล์) | `main` | `assets/_inbox/**` (Claude ย้ายออกเมื่อ APPROVED) |
 
 ไฟล์ที่ใช้ร่วมกัน (`docs/ASSETS.md`, `docs/HANDOFF.md`, `package.json`) ให้แก้เฉพาะส่วนของตัวเอง แล้ว merge เข้า `main` ทีละสายงาน
 ทุกเซสชันต้องเริ่มด้วย `git fetch && git status && git log --oneline -5` และจบด้วย handoff ใน `docs/HANDOFF.md`
