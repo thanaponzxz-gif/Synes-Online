@@ -7,6 +7,7 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { Matrix4 } from 'three';
+import { STYLE, toonMaterial } from './stylize.ts';
 
 export const PAL = {
   lumen: 0x5cf2e6, violet: 0xa78bfa, blossom: 0xff9ec7, gold: 0xffc857, leaf: 0x7ccb5e, leafDark: 0x3f8f4a,
@@ -18,7 +19,7 @@ const matCache = new Map<string, MeshLambertMaterial>();
 export function lam(color: number, emissive = 0, ei = 0.6): MeshLambertMaterial {
   const k = `${color}-${emissive}-${ei}`;
   let m = matCache.get(k);
-  if (!m) { m = new MeshLambertMaterial({ color, emissive, emissiveIntensity: emissive ? ei : 0, flatShading: true }); matCache.set(k, m); }
+  if (!m) { m = STYLE.on ? (toonMaterial(color, emissive, emissive ? ei : 0) as unknown as MeshLambertMaterial) : new MeshLambertMaterial({ color, emissive, emissiveIntensity: emissive ? ei : 0, flatShading: true }); matCache.set(k, m); }
   return m;
 }
 function mesh(g: BufferGeometry, m: Material, name = '', x = 0, y = 0, z = 0): Mesh {
@@ -40,7 +41,8 @@ export async function loadKit(url: string, onProgress?: (f: number) => void): Pr
       const src = m.material as any;
       if (!swap.has(src)) {
         const em = src.emissive && (src.emissive.r + src.emissive.g + src.emissive.b) > 0.01;
-        swap.set(src, new MeshLambertMaterial({ color: src.color ?? new Color(1, 1, 1), emissive: em ? src.emissive : new Color(0, 0, 0), emissiveIntensity: em ? Math.min(1, src.emissiveIntensity ?? 1) * 0.8 : 0, flatShading: true }));
+        const col = src.color ?? new Color(1, 1, 1), emc = em ? src.emissive : new Color(0, 0, 0), emi = em ? Math.min(1, src.emissiveIntensity ?? 1) * 0.8 : 0;
+        swap.set(src, STYLE.on ? toonMaterial(col, emc, emi) : new MeshLambertMaterial({ color: col, emissive: emc, emissiveIntensity: emi, flatShading: true }));
       }
       m.material = swap.get(src)!;
     });

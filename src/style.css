@@ -127,3 +127,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   #start .card { padding: 8px 18px; }
 }
 @media (prefers-reduced-motion: reduce) { .floater { animation-duration: 0.5s; } }
+
+/* visual pass: soft vignette + warm/cool grade (compositor only, no GPU passes) */
+#grade { position: fixed; inset: 0; pointer-events: none; display: none; }
+.stylized #grade { display: block; background: radial-gradient(ellipse 75% 70% at 50% 46%, transparent 58%, rgba(40, 24, 80, 0.26) 100%); }

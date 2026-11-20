@@ -11,6 +11,7 @@ import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenP
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
+import { STYLE, stylizeCharacter, paintGrass, paintPath, paintAO, grassTufts, Motes } from './stylize.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -35,7 +36,7 @@ export class View {
   renderer: WebGLRenderer; scene = new Scene(); camera: PerspectiveCamera;
   hemi: HemisphereLight; sun: DirectionalLight;
   q: QualitySettings = TIERS.medium; tone: Tone = DEFAULT_TONE;
-  particles!: Particles; rings!: Rings;
+  particles!: Particles; rings!: Rings; motes: Motes | null = null;
   private actors = new Map<number, ActorView>();
   private teles = new Map<number, { t: Telegraph; m: Mesh; mat: any }>();
   private gates = new Map<string, { g: Object3D; open: boolean; y: number }>();
@@ -106,6 +107,8 @@ export class View {
     g.fillStyle = grad; g.fillRect(0, 0, W, H);
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
+    const art = prng(seed * 7919 + 17); // separate stream: style painting must not shift scatter placement
+    if (STYLE.on) paintGrass(g, W, H, art, t.grassA, t.grassB);
     const drawShapes = (pad: number, style: string) => {
       g.fillStyle = style;
       for (const s of LEVEL.walkable) {
@@ -118,6 +121,7 @@ export class View {
     drawShapes(0.15, hex(t.pathEdge));
     drawShapes(-0.25, hex(t.path));
     for (let i = 0; i < W * H / 90; i++) { const x = rnd() * W, y = rnd() * H; g.fillStyle = 'rgba(120,90,60,0.07)'; g.fillRect(x, y, 3, 2); }
+    if (STYLE.on) paintPath(g, W, H, art, (u, v) => walkSDF(u / sx + BOUNDS.x0, v / sz + BOUNDS.z0) < -0.35);
     // arena rune ring
     const A = LEVEL.walkable.find((s) => s.id === 'arena')! as Extract<Shape, { type: 'circle' }>;
     g.strokeStyle = hex(t.rune, 0.5); g.lineWidth = 0.25 * sx; g.beginPath(); g.arc(U(A.x), V(A.z), (A.r - 1.2) * sx, 0, Math.PI * 2); g.stroke();
@@ -147,6 +151,18 @@ export class View {
         else if (r < 0.225) add('crystal_cluster', x, z, 0.6 + rnd() * 0.8, rot);
         else if (r < 0.245) add('mushroom_glow', x, z, 0.8 + rnd() * 0.6, rot);
       } else if (d >= 16 && r < 0.05) add('tree_pine', x, z, 1 + rnd() * 0.5, rot);
+    }
+    if (STYLE.on) { // fake contact shadows under scenery + grass tufts
+      const ao: { u: number; v: number; r: number }[] = [];
+      const rad: Record<string, number> = { tree_round: 1.7, tree_round_b: 1.6, tree_pine: 1.5, rock_a: 1.0, rock_b: 0.9, bush: 0.9, crystal_cluster: 0.8 };
+      for (const [name, mats] of Object.entries(place)) { const r = rad[name]; if (!r) continue; for (const m of mats) { const e = m.elements; ao.push({ u: U(e[12]), v: V(e[14]), r: r * Math.hypot(e[0], e[1], e[2]) * sx }); } }
+      paintAO(g, ao); tex.needsUpdate = true;
+      const nT = this.q.tier === 'low' ? 0 : this.q.tier === 'medium' ? 450 : 800, spots: { x: number; z: number; s: number; rot: number }[] = [];
+      for (let i = 0; spots.length < nT && i < nT * 20; i++) {
+        const x = BOUNDS.x0 + art() * (BOUNDS.x1 - BOUNDS.x0), z = BOUNDS.z0 + art() * (BOUNDS.z1 - BOUNDS.z0), d = walkSDF(x, z);
+        if (d > 0.25 && d < 7 && art() < 1 / (1 + d * 0.5)) spots.push({ x, z, s: 0.7 + art() * 0.8, rot: art() * 6.28 });
+      }
+      if (spots.length) this.env.add(grassTufts(spots, shiftColor(t.grassA, 28)));
     }
     const faded = new Map<Material, Material>();
     for (const [name, mats] of Object.entries(place)) {
@@ -181,10 +197,12 @@ export class View {
     this.actors.clear();
     for (const a of world.actors) this.addActor(a);
     if (!this.particles) { this.particles = new Particles(this.scene, this.q.particles); this.rings = new Rings(this.scene); }
+    if (STYLE.on && !this.motes) this.motes = new Motes(this.scene, this.q.tier === 'low' ? 60 : 140);
   }
 
   private addActor(a: Actor) {
     const model = a.kind === 'player' ? makeHero() : a.kind === 'puffcap' ? makePuffcap() : a.kind === 'thornling' ? makeThornling() : makePrismback();
+    if (STYLE.on) stylizeCharacter(model, a.kind === 'player' ? 0x9ff8ff : a.kind === 'puffcap' ? 0xffd6ea : a.kind === 'thornling' ? 0xdccbff : 0xbff6ff, this.q.tier !== 'low');
     const root = new Group(); root.add(model);
     root.scale.setScalar(a.kind === 'prismback' ? 1.05 : 1.22); // render-only: chibi read on small screens (hitbox unchanged)
     const parts: Record<string, Object3D> = {};
@@ -265,6 +283,7 @@ export class View {
     for (const f of this.flames) { f.scale.y = 0.85 + Math.sin(this.time * 17 + f.id) * 0.15; f.rotation.y += dt * 2; }
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
+    this.motes?.update(this.time, this.camTarget.x, this.camTarget.z);
     this.updateCamera(world, alpha, dt);
     this.renderer.render(this.scene, this.camera);
   }
@@ -412,5 +431,7 @@ function nearFade(src: Material, u: { value: number }): Material {
   m.customProgramCacheKey = () => 'nearfade';
   return m;
 }
+function prng(seed: number) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = Math.imul(a ^ (a >>> 15), a | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function shiftColor(c: number, d: number) { const f = (v: number) => Math.max(0, Math.min(255, v + d)); return (f((c >> 16) & 255) << 16) | (f((c >> 8) & 255) << 8) | f(c & 255); }
 function hex(c: number, a = 1) { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return a === 1 ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a})`; }
 export { Color, Group };

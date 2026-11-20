@@ -13,11 +13,14 @@ import { Hud } from './ui/hud.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
 import { Bot } from '../tests/bot.ts';
+import { STYLE } from './render/stylize.ts';
 
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
+STYLE.on = Q.get('style') !== '0' && location.hash !== '#classic';
+if (STYLE.on) document.documentElement.classList.add('stylized');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
 const canvas = $<HTMLCanvasElement>('#game');
 const perf = { bootMs: performance.now(), readyMs: 0, firstPlayFrameMs: 0, kit: false };
