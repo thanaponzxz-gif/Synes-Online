@@ -4,7 +4,7 @@ import { PLAYER, ENEMIES, TICK, CONE_INNER_R, type AttackDef, type EnemyKind } f
 import { LEVEL, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
-import { DEFAULT_VARIANT, type RunVariant } from './variant.ts';
+import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
@@ -153,7 +153,7 @@ export class World {
     // dodge (highest priority, cancels swing/drink)
     if (ps.bufDodge > 0 && ps.dodgeCd <= 0 && ps.castT <= 0) {
       const [dx, dz] = ps.moving ? norm(mx, mz) : [p.fx, p.fz];
-      ps.dashx = dx; ps.dashz = dz; ps.dodgeT = P.dodge.dur; ps.iframes = P.dodge.iframes; ps.dodgeCd = this.variant.dodgeCd;
+      ps.dashx = dx; ps.dashz = dz; ps.dodgeT = P.dodge.dur; ps.iframes = P.dodge.iframes; ps.dodgeCd = dodgeCdSeconds(this.variant);
       ps.swingT = 0; ps.drinkT = 0; ps.bufDodge = 0; p.fx = dx; p.fz = dz;
       this.stats.dodges++; this.events.push({ t: 'dodge' });
     }
