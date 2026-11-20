@@ -1,7 +1,8 @@
 """Synes Online - original low-poly model kit, built entirely from code with Blender (bpy).
 
 Headless (from the repo root):
-    tools/blender/.venv/bin/python tools/blender/build_kit.py
+    tools/blender/.venv/bin/python tools/blender/build_kit.py [--variant r0|A|B]
+    (or SYNES_CHAR_VARIANT=r0|A|B; only `hero` and `prismback` differ between variants, see CHAR_VARIANT)
 
 Desktop Blender (4.1+) / Blender MCP: paste this whole file into the Text Editor (or the MCP
 "execute code" tool) and run it. Set REPO_ROOT below (or the env var SYNES_REPO) so the
@@ -20,12 +21,25 @@ produces the same GLB byte for byte.
 import math
 import os
 import random
+import sys
 
 import bpy  # must come first: the bpy wheel provides bmesh/mathutils
 import bmesh
 from mathutils import Euler, Matrix, Vector
 
 REPO_ROOT = os.environ.get("SYNES_REPO", "")  # e.g. r"C:\dev\synes-online" for desktop use
+# Character variant (hero + prismback only; every other asset is identical in all of them):
+#   r0 = owner-approved DES-003 models (what main shipped before DES-004 steps 3-4)
+#   A  = DES-004 steps 3-4, conservative edit of r0      (default on exp/stage1-chars)
+#   B  = DES-004 steps 3-4, stronger silhouette change
+# Pick with the env var SYNES_CHAR_VARIANT, or `--variant B` on the command line, or edit the default.
+CHAR_VARIANTS = ("r0", "A", "B")
+CHAR_VARIANT = os.environ.get("SYNES_CHAR_VARIANT", "A")
+if "--variant" in sys.argv[:-1]:
+    CHAR_VARIANT = sys.argv[sys.argv.index("--variant") + 1]
+CHAR_VARIANT = {"R0": "r0", "CURRENT": "r0"}.get(CHAR_VARIANT.upper(), CHAR_VARIANT.upper())
+if CHAR_VARIANT not in CHAR_VARIANTS:
+    raise SystemExit("unknown character variant %r (use one of %s)" % (CHAR_VARIANT, ", ".join(CHAR_VARIANTS)))
 KIT_COLLECTION = "synes_kit"
 GLB_RELPATH = os.path.join("public", "assets", "models", "synes_kit.glb")
 
@@ -58,6 +72,7 @@ PALETTE = {
     "skin":           ("#FFD9BF", 0.0, 0.70),
     "hero_silver":    ("#C4C8EA", 0.0, 0.57),
     "hero_silver_tip":("#F1EDFF", 0.0, 0.52),
+    "hero_silver_shade": ("#A2A6D6", 0.0, 0.6),  # DES-004 variant B: darker hair cap between the locks
     "hero_violet":    ("#6754A8", 0.0, 0.72),
     "ink":            ("#2B2440", 0.0, 0.40),
     "white":          ("#FFFFFF", 0.0, 0.40),
@@ -453,6 +468,100 @@ class Part:
         v = self._mesh(coords, faces)
         return self._tag(v, Matrix.Identity(4), mat, smooth)
 
+    # -- DES-004 character primitives (used by the A/B variants only)
+    def _slot(self, name):
+        if name not in self.slots:
+            self.slots.append(name)
+        return self.slots.index(name)
+
+    def strip(self, points, widths, thick, mats, normal=(0, 1, 0)):
+        """Thick cloth strip (capes, scarf ends) along a polyline. Unlike `ribbon`, the flat side
+        faces `normal` (one vector, or one per point), so strips can hang down a back or twist.
+        `mats`: one palette name, or one per segment (a cheap colour gradient along the cloth)."""
+        pts = [Vector(p) for p in points]
+        nrms = [Vector(n).normalized() for n in (normal if isinstance(normal[0], (tuple, list)) else
+                                                 [normal] * len(pts))]
+        mats = [mats] * (len(pts) - 1) if isinstance(mats, str) else list(mats)
+        coords = []
+        for i, p in enumerate(pts):
+            t = (pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)]).normalized()
+            side = t.cross(nrms[i]).normalized()
+            up = side.cross(t).normalized()
+            w = widths[i] / 2
+            coords += [p + side * w + up * thick / 2, p - side * w + up * thick / 2,
+                       p - side * w - up * thick / 2, p + side * w - up * thick / 2]
+        faces = [(0, 1, 2, 3)]
+        for i in range(len(pts) - 1):
+            a, b = 4 * i, 4 * (i + 1)
+            faces += [(a + k, a + (k + 1) % 4, b + (k + 1) % 4, b + k) for k in range(4)]
+        last = 4 * (len(pts) - 1)
+        faces.append((last + 3, last + 2, last + 1, last))
+        v = self._mesh(coords, faces)
+        self._tag(v, Matrix.Identity(4), mats[0], False)
+        index = {vert: i for i, vert in enumerate(v)}
+        for f in linked(v, "link_faces"):
+            seg = min(min(index[x] for x in f.verts) // 4, len(pts) - 2)
+            f.material_index = self._slot(mats[seg])
+        return v
+
+    def lock(self, base, d1, d2, length, width, thick, mat="hero_silver_tip", up=(0, 0, 1), bend=0.55,
+             mid=0.62):
+        """Curved hair lock / spike with a diamond section: from `base` along d1, bending at `bend`
+        of its length towards d2. `up` is the surface normal at the root: the lock lies flat on it
+        (its width runs along the surface), so overlapping locks read as layered hair."""
+        base, up = Vector(base), Vector(up).normalized()
+        d1, d2 = Vector(d1).normalized(), Vector(d2).normalized()
+
+        def ring(c, d, s):
+            w = d.cross(up)
+            if w.length < 1e-4:
+                w = d.cross(Vector((1, 0, 0)))
+            w.normalize()
+            t = w.cross(d).normalized()
+            return [c + w * width * s / 2, c + t * thick * s / 2, c - w * width * s / 2, c - t * thick * s / 2]
+
+        m = base + d1 * length * bend
+        tip = m + d2 * length * (1 - bend)
+        coords = ring(base, d1, 1.0) + ring(m, (d1 + d2).normalized(), mid) + [tip]
+        faces = [(3, 2, 1, 0)] + [(i, (i + 1) % 4, 4 + (i + 1) % 4, 4 + i) for i in range(4)]
+        faces += [(4 + i, 4 + (i + 1) % 4, 8) for i in range(4)]
+        v = self._mesh(coords, faces)
+        return self._tag(v, Matrix.Identity(4), mat, False)
+
+    def shard(self, at, h, r, direction=(0, 0, 1), tip=None, sides=6, yaw=0.0, taper=0.86, sink=0.3,
+              mats=("lumen", "crystal_mid", "crystal_violet"), split=0.38, edge=None, x_hint=(1, 0, 0),
+              squash=1.0):
+        """Chunky crystal with a vertical colour gradient (DES-004 step 3: lumen at the root, violet at
+        the tip, done with flat materials instead of vertex colours): lower walls mats[0], upper walls
+        mats[1], cap mats[2]. Each entry is a palette name or a tuple cycled facet by facet (light /
+        dark facets are what make a flat-shaded crystal read as cut). `edge` paints every third cap
+        facet (sparkle). `squash` < 1 flattens the section (blade-like crest crystals)."""
+        tip = r * 1.5 if tip is None else tip
+        rings = ((-sink * h, 1.0), (split * h, 1.0 - (1.0 - taper) * 0.5), (h, taper))
+        coords = []
+        for z, k in rings:
+            for i in range(sides):
+                a = math.radians(yaw) + 2 * math.pi * i / sides
+                coords.append((r * k * math.cos(a), r * k * squash * math.sin(a), z))
+        coords.append((0.0, 0.0, h + tip))
+        apex = len(coords) - 1
+        bands = [(m,) if isinstance(m, str) else tuple(m) for m in mats]
+        faces, names = [], []
+        for ring_i in range(2):
+            for i in range(sides):
+                j = (i + 1) % sides
+                a, b = ring_i * sides, (ring_i + 1) * sides
+                faces.append((a + i, a + j, b + j, b + i))
+                names.append(bands[ring_i][i % len(bands[ring_i])])
+        for i in range(sides):
+            faces.append((2 * sides + i, 2 * sides + (i + 1) % sides, apex))
+            names.append(edge if edge and i % 3 == 0 else bands[2][i % len(bands[2])])
+        v = self._mesh(coords, faces, closed=False)
+        self._tag(v, Matrix.Translation(Vector(at)) @ basis(direction, x_hint), names[0], False)
+        for face, name in zip(faces, names):
+            self.bm.faces.get([v[k] for k in face]).material_index = self._slot(name)
+        return v
+
 
 # ----------------------------------------------------------------------------- objects
 def kit_collection():
@@ -516,11 +625,9 @@ def finish(part, parent=None, pivot=(0, 0, 0), bevel=0.04):
 
 
 # ============================================================================= characters
-def build_hero():
-    """Wayfarer in silver, violet and gold for the Prismback battle art pass."""
-    root = empty("hero")
-
-    b = Part("hero_body")  # pivot: feet
+def _hero_body_core(b):
+    """Legs, tunic, shirt, belt, pouch, arms and shoulder pads (identical in every variant).
+    Returns the right-hand grip position (the sword pivot)."""
     for s in (-1, 1):  # s = -1 is the hero's right side (-X when facing -Y)
         x = 0.1 * s
         b.limb((x, 0.0, 0.06), (x, 0.0, 0.34), 0.075, 0.085, seg=8, mat="navy")
@@ -539,37 +646,30 @@ def build_hero():
         b.ico(0.112, at=sh, scale=(1.04, 0.99, 0.62), sub=2, mat="gold", smooth=True)
         b.ico(0.101, at=sh + Vector((0, 0, 0.022)), scale=(1.0, 0.93, 0.6), sub=2,
               mat="hero_violet", smooth=True)
-    # scarf: chunky collar + two tails streaming back and to the hero's left
-    b.torus(0.165, 0.07, at=(0, 0, 0.845), seg=12, seg2=6, scale=(1.0, 1.0, 0.9), mat="cloth_teal")
+    return hand_r
+
+
+def _hero_tails(b):
+    """The owner-approved violet + silver tails streaming back to the hero's left (r0). DES-006 §3:
+    not changed without an owner comparison, so every variant builds them exactly like this."""
     b.ribbon([(0.06, 0.15, 0.87), (0.2, 0.29, 0.83), (0.36, 0.4, 0.75), (0.5, 0.47, 0.67), (0.6, 0.5, 0.6)],
              [0.23, 0.25, 0.21, 0.15, 0.06], 0.04, mat="hero_violet")
     b.ribbon([(0.0, 0.17, 0.84), (0.1, 0.32, 0.76), (0.22, 0.44, 0.66), (0.3, 0.5, 0.56)],
              [0.15, 0.16, 0.13, 0.05], 0.04, mat="hero_silver")
     b.box((0.1, 0.035, 0.09), at=(0.6, 0.5, 0.57), rot=(-25, 0, 30), mat="gold", bevel=True)  # tail clasp
-    finish(b, parent=root)
 
-    h = Part("hero_head")  # pivot: neck
-    hc, hr = Vector((0, 0, 1.14)), (0.30, 0.29, 0.285)
-    h.sphere(1.0, at=hc, scale=hr, seg=14, rings=9, mat="skin")
-    h.sphere(1.0, at=hc + Vector((0, 0.045, 0.05)), scale=(0.318, 0.31, 0.3), seg=14, rings=9,
-             mat="hero_silver")
-    # fringe locks and swept-back tufts (faceted for a crisp silhouette)
-    for x, tz in ((-0.17, 1.2), (-0.07, 1.22), (0.05, 1.23), (0.16, 1.21)):
-        h.limb((x * 0.9, -0.17, 1.38), (x * 1.08, -0.3, tz), 0.085, 0.0, seg=5, mat="hero_silver_tip",
-               smooth=False, scale=(1.0, 0.55))
-    for x, y, z, tx, ty, tz in ((0.0, 0.02, 1.4, 0.0, 0.27, 1.52), (-0.13, 0.12, 1.32, -0.17, 0.36, 1.29),
-                                (0.13, 0.12, 1.32, 0.17, 0.36, 1.29), (0.0, 0.2, 1.22, 0.0, 0.38, 1.12)):
-        h.limb((x, y, z), (tx, ty, tz), 0.1, 0.0, seg=5, mat="hero_silver_tip", smooth=False,
-               scale=(1.0, 0.6))  # swept back, so the silhouette never reads as ears
+
+def _hero_face(h, hc, hr):
     for s in (-1, 1):
         h.stud(hc, hr, (0.36 * s, -1, -0.12), (0.042, 0.062, 0.026), "ink", sub=2)  # eyes
         h.stud(hc, hr, (0.30 * s, -1, -0.02), (0.015, 0.015, 0.012), "white", inset=-0.6, sub=1)
         h.stud(hc, hr, (0.66 * s, -1, -0.38), (0.045, 0.028, 0.012), "blossom")  # cheeks
     h.stud(hc, hr, (0, -1, -0.42), (0.022, 0.012, 0.01), "ink", sub=1)  # small mouth
-    finish(h, parent=root, pivot=(0, 0, 0.86))
 
+
+def _hero_sword(root, g):
+    """Chime Blade: lumen crystal blade, gold guard (already matches DES-004 step 4; same in every variant)."""
     s = Part("hero_sword")  # pivot: centre of the grip (in the right hand)
-    g = hand_r
     s.cyl(0.028, 0.17, at=g + Vector((0, 0, -0.085)), seg=6, mat="bark")
     s.ico(0.044, at=g + Vector((0, 0, -0.11)), sub=1, mat="gold", smooth=True)  # pommel
     s.box((0.24, 0.065, 0.05), at=g + Vector((0, 0, 0.1)), mat="gold", bevel=True)  # guard
@@ -581,7 +681,129 @@ def build_hero():
     s.box((0.03, 0.05, 0.42), at=g + Vector((0, 0, 0.36)), mat="crystal_mid")  # fuller inlay
     s.tilt((15, -22, 0), g)  # rest pose: blade leans forward and away from the face
     finish(s, parent=root, pivot=tuple(g), bevel=0.012)
+
+
+def build_hero_r0():
+    """r0 = the owner-approved DES-003 prismatic Wayfarer (2026-11-21), kept for reference builds."""
+    root = empty("hero")
+
+    b = Part("hero_body")  # pivot: feet
+    hand_r = _hero_body_core(b)
+    # scarf: chunky collar + two tails streaming back and to the hero's left
+    b.torus(0.165, 0.07, at=(0, 0, 0.845), seg=12, seg2=6, scale=(1.0, 1.0, 0.9), mat="cloth_teal")
+    _hero_tails(b)
+    finish(b, parent=root)
+
+    h = Part("hero_head")  # pivot: neck
+    hc, hr = Vector((0, 0, 1.14)), (0.30, 0.29, 0.285)
+    h.sphere(1.0, at=hc, scale=hr, seg=14, rings=9, mat="skin")
+    h.sphere(1.0, at=hc + Vector((0, 0.045, 0.05)), scale=(0.318, 0.31, 0.3), seg=14, rings=9,
+             mat="hero_silver")
+    _hero_fringe_r0(h)
+    for x, y, z, tx, ty, tz in ((0.0, 0.02, 1.4, 0.0, 0.27, 1.52), (-0.13, 0.12, 1.32, -0.17, 0.36, 1.29),
+                                (0.13, 0.12, 1.32, 0.17, 0.36, 1.29), (0.0, 0.2, 1.22, 0.0, 0.38, 1.12)):
+        h.limb((x, y, z), (tx, ty, tz), 0.1, 0.0, seg=5, mat="hero_silver_tip", smooth=False,
+               scale=(1.0, 0.6))  # swept back, so the silhouette never reads as ears
+    _hero_face(h, hc, hr)
+    finish(h, parent=root, pivot=(0, 0, 0.86))
+
+    _hero_sword(root, hand_r)
     return root
+
+
+def _hero_fringe_r0(h):
+    """Four faceted fringe locks over the forehead (r0; variant A keeps them)."""
+    for x, tz in ((-0.17, 1.2), (-0.07, 1.22), (0.05, 1.23), (0.16, 1.21)):
+        h.limb((x * 0.9, -0.17, 1.38), (x * 1.08, -0.3, tz), 0.085, 0.0, seg=5, mat="hero_silver_tip",
+               smooth=False, scale=(1.0, 0.55))
+
+
+def build_hero_des004(variant):
+    """DES-004 step 4 (Wayfarer). Both variants keep the r0 body, face, sword and the owner-approved
+    violet/silver tails, and add: spiky silver locks that break the round head outline seen from
+    behind, a violet cape split into two tails, a chunkier teal scarf with a visible teal end
+    (DES-006 §3) and gold trim on the belt.
+    Hair: 7-9 locks in total; they run down the head from the crown and flick their tips out, so
+    the outline seen from the gameplay camera (behind, ~30 deg above) is jagged, not a helmet.
+      A = conservative: r0 hair cap + r0 fringe (4 locks); the four small r0 back tufts become four
+          wide back locks + a crown cowlick (9); short cape (hip length); the teal scarf end hangs
+          down the back, just off the cape split so both stay visible.
+      B = silhouette-first: darker cap under two tiers of bigger locks, new fringe (3 + 4 + 2 = 9),
+          the side locks flick far out; long cape (calf length) whose tails flare apart and turn
+          outwards; long teal scarf end streaming to the hero's right (mirrors the violet tail)
+          + a knot at the front."""
+    bold = variant == "B"
+    root = empty("hero")
+
+    b = Part("hero_body")  # pivot: feet
+    hand_r = _hero_body_core(b)
+    for z in (0.484, 0.545):  # gold trim on both belt edges (DES-004: gold at shoulders and belt)
+        b.cyl(0.226, 0.016, at=(0, 0, z), seg=10, mat="gold", smooth=True)
+    b.torus(0.178 if bold else 0.172, 0.09 if bold else 0.082, at=(0, 0, 0.84), seg=12, seg2=6,
+            scale=(1.0, 1.0, 0.95), mat="cloth_teal")  # scarf wrap, chunkier than r0
+    _hero_tails(b)
+    cape = ["synes_violet", "synes_violet", "hero_violet", "hero_violet"]  # light -> deep violet
+    if not bold:
+        for s in (-1, 1):  # two tails meeting under the collar, a V split opening from the waist down
+            b.strip([(0.095 * s, 0.2, 0.8), (0.115 * s, 0.245, 0.62), (0.14 * s, 0.28, 0.45),
+                     (0.16 * s, 0.3, 0.33)], [0.2, 0.19, 0.15, 0.035], 0.03, cape[1:])
+        b.strip([(-0.05, 0.255, 0.83), (-0.065, 0.275, 0.72), (-0.08, 0.29, 0.63), (-0.09, 0.3, 0.57)],
+                [0.14, 0.14, 0.12, 0.05], 0.035, "cloth_teal")  # scarf end down the back, off the split
+    else:
+        for s in (-1, 1):  # longer tails that flare apart and turn outwards
+            b.strip([(0.1 * s, 0.2, 0.8), (0.13 * s, 0.26, 0.6), (0.165 * s, 0.31, 0.4), (0.2 * s, 0.35, 0.24),
+                     (0.235 * s, 0.38, 0.13)], [0.21, 0.22, 0.21, 0.15, 0.03], 0.03, cape,
+                    normal=[(0.0, 1, 0), (0.1 * s, 1, 0), (0.2 * s, 1, 0), (0.3 * s, 1, 0), (0.35 * s, 1, 0)])
+        b.ribbon([(-0.06, 0.2, 0.85), (-0.17, 0.31, 0.79), (-0.28, 0.4, 0.71), (-0.38, 0.46, 0.63)],
+                 [0.18, 0.19, 0.15, 0.05], 0.045, mat="cloth_teal")  # scarf end to the hero's right
+        b.ico(0.075, at=(-0.1, -0.235, 0.8), scale=(1.1, 0.8, 0.9), sub=1, mat="cloth_teal")  # front knot
+    finish(b, parent=root)
+
+    h = Part("hero_head")  # pivot: neck
+    hc, hr = Vector((0, 0, 1.14)), (0.30, 0.29, 0.285)
+    h.sphere(1.0, at=hc, scale=hr, seg=14, rings=9, mat="skin")
+    cap_c, cap_r = hc + Vector((0, 0.045, 0.05)), (0.318, 0.31, 0.3)
+
+    def cap_point(polar, az):
+        """Point + normal on the hair cap; polar 0 = top, az 90 = back (+Y), az 0 = hero's left (+X)."""
+        t, a = math.radians(polar), math.radians(az)
+        return on_ellipsoid(cap_c, cap_r, (math.sin(t) * math.cos(a), math.sin(t) * math.sin(a), math.cos(t)))
+
+    def flow_lock(polar, az, length, width, thick, flick, lift=0.15, mat="hero_silver_tip", sink=0.03):
+        """Lock rooted on the cap that runs down the head (along the meridian) and flicks its tip out."""
+        p, n = cap_point(polar, az)
+        t, a = math.radians(polar), math.radians(az)
+        down = Vector((math.cos(t) * math.cos(a), math.cos(t) * math.sin(a), -math.sin(t)))
+        down = (down - n * down.dot(n)).normalized()
+        h.lock(p - n * sink, down + n * lift, down + n * flick, length, width, thick, mat=mat, up=n)
+
+    if not bold:  # r0 cap and fringe; four wide back locks + a crown cowlick replace the four r0 tufts
+        h.sphere(1.0, at=cap_c, scale=cap_r, seg=14, rings=9, mat="hero_silver")
+        _hero_fringe_r0(h)
+        for az in (12, 62, 118, 168):
+            flow_lock(42, az, 0.36, 0.26, 0.08, flick=0.75 if az in (12, 168) else 0.5)
+        flow_lock(12, 90, 0.25, 0.2, 0.08, flick=0.35, lift=0.9)  # cowlick: up, then back
+    else:  # darker cap under two tiers of bigger locks, new fringe: 3 + 4 + 2 = 9 locks
+        h.sphere(1.0, at=cap_c, scale=cap_r, seg=14, rings=9, mat="hero_silver_shade")
+        for x in (-0.42, 0.0, 0.42):  # fringe
+            p, n = on_ellipsoid(cap_c, cap_r, (x, -0.8, 0.55))
+            h.lock(p - n * 0.03, (x * 0.5, -1, -0.25), (x * 0.4, -0.3, -1), 0.24, 0.2 if x else 0.22, 0.07,
+                   up=n)
+        for az in (8, 60, 120, 172):  # upper tier: from the crown, rising first, flicking far out
+            flow_lock(24, az, 0.42, 0.3, 0.09, flick=0.85 if az in (8, 172) else 0.7, lift=0.45)
+        for az in (62, 118):  # lower tier at the nape, flicking out under the upper locks
+            flow_lock(80, az, 0.3, 0.24, 0.08, flick=0.9, mat="hero_silver")
+    _hero_face(h, hc, hr)
+    finish(h, parent=root, pivot=(0, 0, 0.86))
+
+    _hero_sword(root, hand_r)
+    return root
+
+
+def build_hero():
+    if CHAR_VARIANT == "r0":
+        return build_hero_r0()
+    return build_hero_des004(CHAR_VARIANT)
 
 
 def build_puffcap():
@@ -657,8 +879,9 @@ def build_thornling():
     return root
 
 
-def build_prismback():
-    """Crystal-armored tortoise with a low, broad stance. Faces -Y (glTF +Z)."""
+def build_prismback_r0():
+    """r0 = the owner-approved DES-003 Prismback (2026-11-21): crystal-armored tortoise with a low,
+    broad stance. Faces -Y (glTF +Z). Kept for reference builds."""
     root = empty("prismback")
     cyan = ("prism_cyan", "lumen", "crystal_mid")
     violet = ("prism_violet", "crystal_violet", "crystal_mid")
@@ -745,6 +968,148 @@ def build_prismback():
                      mat="crystal_violet", facets=violet)
     finish(horn, parent=root, pivot=tuple(hp))
     return root
+
+
+def build_prismback_des004(variant):
+    """DES-004 step 3 (Prismback). Both variants: stone #B9B4C7 armour over a stone_dark body,
+    armour plates with a gold (prism_trim) rim, glowing lumen cracks on the shins and flanks, fewer
+    but much chunkier back crystals (lumen root -> crystal_mid -> violet tip, flat materials) rising
+    to the tallest one in the middle, a bigger lighter head with a crystal crest and lumen eyes.
+    The boss keeps one draw call per material per node in the game (models.ts KEEP_SEPARATE), so the
+    palette per node is kept smaller than r0 (28 primitives).
+      A = conservative: r0 body/legs/dome proportions, 7 plates round the lower dome, 11 crystals
+          (1 + ring of 4 + ring of 6), head x1.14.
+      B = silhouette-first: lower wider dome, 8 thick pentagon plates whose points jut out over the
+          rim (scalloped armour edge), 9 crystals as a stepped pyramid (1 + 4 leaning diagonals +
+          4 small), head x1.29 with a brow plate, chunkier legs."""
+    bold = variant == "B"
+    root = empty("prismback")
+    grad = ("lumen", "crystal_mid", "crystal_violet")  # root -> tip (small crest crystals)
+    # back crystals: the same gradient with light/dark facets alternating in every band
+    cut = (("lumen", "crystal_mid"), ("crystal_mid", "prism_violet"), ("crystal_violet", "prism_violet"))
+
+    legs = Part("prismback_legs")  # pivot: ground centre
+    k = 1.12 if bold else 1.0
+    for y in (-1.08, 0.15, 1.22):
+        for sx in (-1, 1):
+            hip = Vector((1.04 * sx, y + 0.14, 1.05))
+            knee = Vector((1.44 * sx, y - 0.14, 0.58))
+            foot = Vector((1.58 * sx, y - 0.28, 0.19))
+            legs.limb(hip, knee, 0.38 * k, 0.32 * k, seg=6, mat="stone_dark", smooth=False)
+            legs.limb(knee, foot, 0.34 * k, 0.28 * k, seg=6, mat="stone_dark", smooth=False)
+            legs.ico(1.0, at=knee, scale=(0.32 * k, 0.39 * k, 0.27 * k), sub=1, mat="stone")
+            legs.ico(1.0, at=foot, scale=(0.37 * k, 0.41 * k, 0.2), sub=1, mat="stone")
+            out, shin = Vector((sx, 0, 0)), foot - knee
+            crack = [knee + shin * f + out * (0.34 + (0.28 - 0.34) * f) * k + Vector((0, 0.07 * (-1) ** i, 0))
+                     for i, f in enumerate((0.1, 0.38, 0.64, 0.9))]
+            legs.strip(crack, [0.08, 0.07, 0.07, 0.03], 0.05, "lumen", normal=out)  # glowing crack
+            for toe in (-1, 0, 1):
+                claw = foot + Vector((0.18 * toe, -0.25, 0.0))
+                legs.crystal(claw, 0.13, 0.105, direction=(toe * 0.13, -1, -0.34), tip=0.12, mat="lumen", sides=4)
+    finish(legs, parent=root)
+
+    body = Part("prismback_body")  # pivot: ground centre
+    body.sphere(1.0, at=(0, 0.12, 0.9), scale=(1.4, 1.85, 0.45), seg=14, rings=8, mat="stone_dark")
+    hc, hr = (Vector((0, -2.0, 1.2)), (0.9, 0.74, 0.66)) if bold else (Vector((0, -1.92, 1.14)), (0.8, 0.67, 0.6))
+    hs = hr[0] / 0.7  # head scale vs r0
+    body.limb((0, -1.1, 0.95), (0, hc.y + 0.2, hc.z - 0.04), 0.52, 0.48, seg=8, mat="stone_dark", smooth=False)
+    body.sphere(1.0, at=hc, scale=hr, seg=12, rings=8, mat="stone", smooth=False)
+    body.box((0.9 * hs, 0.64 * hs, 0.24 * hs), at=(0, hc.y - 0.17 * hs, hc.z - 0.36 * hs), mat="stone_dark",
+             bevel=True)  # jaw
+    body.ico(1.0, at=(0, hc.y - 0.41 * hs, hc.z - 0.17 * hs), scale=(0.39 * hs, 0.29 * hs, 0.22 * hs), sub=1,
+             mat="stone_dark")  # snout
+    for s in (-1, 1):
+        body.stud(hc, hr, (0.55 * s, -1, 0.16), (0.18, 0.15, 0.09), "ink", sub=2)  # eye socket (dark rim)
+        body.stud(hc, hr, (0.56 * s, -1, 0.16), (0.145, 0.115, 0.06), "lumen", inset=-1.0)  # glowing eye dot
+        p, n = on_ellipsoid(hc, hr, (0.56 * s, -1, 0.56))
+        body.thorn(p - n * 0.05, (s * 0.55, -0.65, 0.42), 0.36 * hs, 0.28 * hs, 0.18 * hs,
+                   mat="stone", tip_mat="prism_trim")  # cheek spikes
+        body.stud(hc, hr, (s, -0.35, 0.03), (0.26 * hs, 0.22 * hs, 0.1), "prism_trim", smooth=False)
+    if bold:  # brow plate over the eyes: a heavier, armoured face
+        p, n = on_ellipsoid(hc, hr, (0, -1, 0.62))
+        body.box((1.15, 0.34, 0.16), at=p + n * 0.02, rot=(-38, 0, 0), mat="stone", bevel=True)
+        body.box((1.24, 0.3, 0.08), at=p - n * 0.04 + Vector((0, 0, -0.02)), rot=(-38, 0, 0), mat="prism_trim")
+    hp, _ = on_ellipsoid(hc, hr, (0, -1, 0.95))
+    horn_dir = Vector((0, -0.58, 1.0)).normalized()
+    body.limb(hp - horn_dir * 0.08, hp + horn_dir * 0.06, 0.28 * hs, 0.25 * hs, seg=6, mat="prism_trim",
+              smooth=False)
+    body.limb((0, 1.9, 0.9), (0, 2.25, 0.78), 0.22, 0.0, seg=6, mat="stone_dark", smooth=False)  # tail
+    finish(body, parent=root, bevel=0.05)
+
+    shell = Part("prismback_shell")  # pivot: ground centre
+    sc, sr = Vector((0, 0.12, 1.0)), ((1.72, 1.98, 0.85) if bold else (1.65, 1.9, 1.0))
+    shell.sphere(1.0, at=sc, scale=sr, seg=14, rings=10, mat="stone_dark", smooth=False, cut=1.0)
+    shell.torus(1.0, 0.11, at=(0, 0.12, 1.03), seg=20, seg2=4, scale=(sr[0] - 0.01, sr[1] - 0.02, 1.0),
+                mat="prism_trim")
+
+    def on_shell(fx, fy):
+        uz = math.sqrt(max(0.0, 1.0 - fx * fx - fy * fy))
+        p = sc + Vector((sr[0] * fx, sr[1] * fy, sr[2] * uz))
+        return p, Vector((fx / sr[0], fy / sr[1], uz / sr[2])).normalized()
+
+    # armour plates: a gold rim slab under a stone face
+    plates = 8 if bold else 7
+    for i in range(plates):
+        az = math.radians(-90 + i * 360 / plates)
+        p, n = on_shell(0.8 * math.cos(az), 0.8 * math.sin(az))
+        if bold:  # thick hexagons, one point down the dome so the rim reads scalloped
+            layers = ((-0.1, 0.72, 0.62, 0.18, "prism_trim"), (0.06, 0.62, 0.44, 0.22, "stone"))
+            sides, hint = 6, (0, 0, -1)
+        else:
+            layers = ((-0.08, 0.6, 0.52, 0.14, "prism_trim"), (0.05, 0.52, 0.4, 0.14, "stone"))
+            sides, hint = 6, (0, 0, 1)
+        for inset, radius, top, height, name in layers:
+            plate = shell.cyl(radius, height, seg=sides, mat=name, r2=top)
+            bmesh.ops.transform(shell.bm, matrix=Matrix.Translation(p + n * inset) @ basis(n, hint), verts=plate)
+    # glowing cracks on the flanks, between the plates
+    for i in (0, 1, 3, 4) if not bold else (0, 1, 4, 5):
+        az = math.radians(-90 + (i + 0.5) * 360 / plates)
+        pts = []
+        for j, ring in enumerate((0.99, 0.93, 0.86, 0.79)):
+            a = az + math.radians(5 * (-1) ** j)
+            p, n = on_shell(ring * math.cos(a), ring * math.sin(a))
+            pts.append(p + n * 0.02)
+        nrm = on_shell(0.9 * math.cos(az), 0.9 * math.sin(az))[1]
+        shell.strip(pts, [0.09, 0.08, 0.07, 0.03], 0.05, "lumen", normal=tuple(nrm))
+    # back crystals: few, chunky, a stepped pyramid with the tallest in the middle
+    core, _ = on_shell(0, 0.05)
+    if bold:
+        shell.shard(core, 0.95, 0.7, direction=(0, 0.06, 1), tip=0.62, mats=cut, edge="prism_edge")
+        for i in range(4):  # big diagonals leaning well out: a broad stepped pyramid
+            az = math.radians(45 + 90 * i)
+            p, n = on_shell(0.44 * math.cos(az), 0.44 * math.sin(az))
+            shell.shard(p, 0.6, 0.46, direction=n + Vector((0, 0, 0.45)), tip=0.44, mats=cut,
+                        edge="prism_edge", yaw=15 * i)
+        for i in range(4):  # small ones on the axes, low
+            az = math.radians(90 * i)
+            p, n = on_shell(0.66 * math.cos(az), 0.66 * math.sin(az))
+            shell.shard(p, 0.36, 0.3, direction=n + Vector((0, 0, 0.35)), tip=0.3, mats=cut, yaw=20 * i)
+    else:
+        shell.shard(core, 0.75, 0.55, direction=(0, 0.08, 1), tip=0.55, mats=cut, edge="prism_edge")
+        for fx, fy in ((-0.36, -0.3), (0.36, -0.3), (-0.36, 0.32), (0.36, 0.32)):
+            p, n = on_shell(fx, fy)
+            shell.shard(p, 0.55, 0.4, direction=n + Vector((0, 0, 0.6)), tip=0.4, mats=cut, edge="prism_edge",
+                        yaw=fy * 200)
+        for i in range(6):
+            az = math.radians(30 + 60 * i)
+            p, n = on_shell(0.6 * math.cos(az), 0.6 * math.sin(az))
+            shell.shard(p, 0.38, 0.3, direction=n + Vector((0, 0, 0.3)), tip=0.3, mats=cut, yaw=17 * i)
+    finish(shell, parent=root)
+
+    horn = Part("prismback_horn")  # pivot: base on forehead: a crest of three crystals
+    big, side = ((0.64, 0.27, 0.4), (0.4, 0.17, 0.26)) if bold else ((0.5, 0.22, 0.32), (0.3, 0.13, 0.2))
+    horn.shard(hp, big[0], big[1], direction=horn_dir, tip=big[2], mats=grad, edge="prism_edge", squash=0.75)
+    for s in (-1, 1):
+        horn.shard(hp + Vector((s * (0.3 if bold else 0.25), 0.06, -0.05)), side[0], side[1],
+                   direction=horn_dir + Vector((s * 0.8, 0, 0)), tip=side[2], mats=grad, sides=5)
+    finish(horn, parent=root, pivot=tuple(hp))
+    return root
+
+
+def build_prismback():
+    if CHAR_VARIANT == "r0":
+        return build_prismback_r0()
+    return build_prismback_des004(CHAR_VARIANT)
 
 
 # ============================================================================= nature
@@ -1272,6 +1637,7 @@ def export_glb(path):
 def main(factory_reset=None):
     reset_scene(bpy.app.background if factory_reset is None else factory_reset)
     kit_collection()
+    print("character variant: %s" % CHAR_VARIANT)
     rows = []
     for name, build in ASSETS:
         build()
