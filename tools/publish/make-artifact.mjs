@@ -4,7 +4,9 @@
 import fs from 'node:fs'; import path from 'node:path';
 const dist = path.resolve('dist');
 let html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-const css = [...html.matchAll(/<link rel="stylesheet"[^>]*href="\.\/(assets\/[^"]+\.css)"[^>]*>/g)].map((m) => fs.readFileSync(path.join(dist, m[1]), 'utf8')).join('\n');
+const css = [...html.matchAll(/<link rel="stylesheet"[^>]*href="\.\/(assets\/[^"]+\.css)"[^>]*>/g)].map((m) => fs.readFileSync(path.join(dist, m[1]), 'utf8')).join('\n')
+  // Vite writes public-asset URLs relative to the CSS file (../assets/ui/x.png); once inlined the base is the page, so make them page-relative
+  .replace(/url\((['"]?)\.\.\/assets\//g, 'url($1./assets/');
 const head = html.match(/<head>([\s\S]*?)<\/head>/)[1]
   .replace(/<meta charset[^>]*>/, '')
   .replace(/<link rel="stylesheet"[^>]*>/g, '')
@@ -30,5 +32,8 @@ const files = {};
 for (const f of fs.readdirSync(path.join(dist, 'assets'))) if (!f.endsWith('.css') && fs.statSync(path.join(dist, 'assets', f)).isFile()) files[`assets/${f}`] = `dist/assets/${f}`;
 const walk = (d) => { for (const f of fs.readdirSync(d)) { const p = path.join(d, f); if (fs.statSync(p).isDirectory()) walk(p); else if (p.endsWith('.json')) files[path.relative(dist, p)] = path.relative(process.cwd(), p); } };
 if (fs.existsSync(path.join(dist, 'assets/models'))) walk(path.join(dist, 'assets/models'));
+// HUD skin PNGs (DES-002) referenced from the inlined CSS
+const uiDir = path.join(dist, 'assets/ui');
+if (fs.existsSync(uiDir)) for (const f of fs.readdirSync(uiDir)) if (f.endsWith('.png')) files[`assets/ui/${f}`] = path.relative(process.cwd(), path.join(uiDir, f));
 fs.writeFileSync(path.join(dist, 'artifact-files.json'), JSON.stringify(files, null, 2));
 console.log(`artifact.html ${(out.length / 1024).toFixed(1)} KB`); console.log(JSON.stringify(files, null, 2));

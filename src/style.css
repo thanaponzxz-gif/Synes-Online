@@ -31,29 +31,40 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---------- HUD ---------- */
 #hud { position: fixed; inset: 0; pointer-events: none; }
 #stick-zone { position: absolute; left: 0; top: 22%; bottom: 0; width: 46%; pointer-events: auto; touch-action: none; }
+/* DES-002 step 2: stick wears ui_stick_base_v01 / ui_stick_knob_v01. Base rim outer = 292/324 of the image width, so the image is drawn 324/292 = 110.96% of the
+   124px base (rim == old size, soft glow overflows); the box, position and opacity behaviour are unchanged. */
 #stick-base { position: absolute; left: calc(90px + var(--sl)); top: calc(100% - 110px); width: 124px; height: 124px; margin: -62px 0 0 -62px; border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.08); opacity: 0.45; transition: opacity 0.15s; }
+  opacity: 0.45; transition: opacity 0.15s; }
+#stick-base::before { content: ''; position: absolute; left: 50%; top: 50%; width: 110.96%; height: calc(110.96% * 323 / 324); transform: translate(-50%, -50%);
+  background: url('/assets/ui/ui_stick_base_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
 #stick-base.on { opacity: 1; }
-#stick-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: rgba(255, 255, 255, 0.82); transform: translate(-50%, -50%); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); }
+#stick-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: url('/assets/ui/ui_stick_knob_v01.png') center / 100% 100% no-repeat; transform: translate(-50%, -50%); }
+/* DES-002 step 3: HP frames. The frame PNG is the .bar background; a .trough (clip-path chevron ends) holds the live fill, so widths stay driven by hud.ts.
+   Trough fractions of the image: hp l .150 r .989 t .436 b .720 (chevron from 97.4%); boss l .0707 r .928 t .494 b .783 (chevrons 2.3% each end). */
 #top-left { position: absolute; left: calc(12px + var(--sl)); top: calc(10px + var(--st)); width: min(34vw, 260px); }
-.who { font-weight: 700; font-size: 14px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; }
-#potions { display: inline-flex; gap: 3px; align-items: center; }
-#potions svg { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)); }
-.bar { position: relative; height: 14px; border-radius: 8px; background: rgba(10, 12, 30, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.6); overflow: hidden; margin-top: 3px; }
-.bar > div { height: 100%; width: 100%; transition: width 0.12s; }
+.who { position: absolute; z-index: 2; left: 16%; right: 2%; top: 0; height: 13px; font-weight: 700; font-size: 12px; line-height: 13px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); display: flex; justify-content: space-between; align-items: center; }
+#potions { display: inline-flex; gap: 2px; align-items: center; }
+#potions svg { height: 12px; width: auto; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6)); }
+.bar { position: relative; background-repeat: no-repeat; background-size: 100% 100%; background-position: center; }
+.bar .trough { position: absolute; overflow: hidden; }
+.bar .trough > div:not(.p2mark) { height: 100%; width: 100%; transition: width 0.12s; }
+.bar.hp { width: 100%; aspect-ratio: 900 / 135; background-image: url('/assets/ui/ui_hud_hp_frame_v01.png'); }
+.bar.hp::before { content: ''; position: absolute; left: 7.67%; top: 50%; width: 10.67%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(10, 12, 30, 0.55); } /* temporary portrait disc (Q-list) */
+.bar.hp .trough { left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; clip-path: polygon(0 0, 97.4% 0, 100% 50%, 97.4% 100%, 0 100%); }
 #hp-fill { background: linear-gradient(90deg, #52c96a, var(--hp)); }
 #hp-fill.low { background: linear-gradient(90deg, #e04848, var(--hp-low)); animation: pulse 0.6s infinite alternate; }
-#hp-text { position: absolute; inset: 0; font-size: 10px; line-height: 12px; text-align: center; font-weight: 700; text-shadow: 0 1px 2px #000; }
+#hp-text { position: absolute; left: 15%; right: 1.1%; top: 43.6%; bottom: 28%; display: flex; align-items: center; justify-content: center; font-size: 9px; line-height: 1; text-align: center; font-weight: 700; text-shadow: 0 1px 2px #000; }
 #boss { position: absolute; left: 50%; top: calc(8px + var(--st)); transform: translate(-50%, -140%); width: min(46vw, 420px); text-align: center; transition: transform 0.35s; }
 #boss.show { transform: translate(-50%, 0); }
-#boss-name { font-weight: 800; font-size: 14px; text-shadow: 0 1px 4px #000; }
-.bar.boss { height: 12px; }
+#boss-name { font-weight: 800; font-size: 14px; line-height: 16px; text-shadow: 0 1px 4px #000; }
+.bar.boss { width: 100%; aspect-ratio: 1260 / 129; background-image: url('/assets/ui/ui_hud_boss_frame_v01.png'); }
+.bar.boss .trough { left: 7.07%; right: 7.2%; top: 49.4%; bottom: 21.7%; clip-path: polygon(0 50%, 2.3% 0, 97.7% 0, 100% 50%, 97.7% 100%, 2.3% 100%); }
 #boss-fill { background: linear-gradient(90deg, #ff3d6e, var(--boss)); }
 #boss.stunned #boss-fill { background: linear-gradient(90deg, var(--gold), #fff2b0); }
-.p2mark { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255, 255, 255, 0.8); }
+.p2mark { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: rgba(255, 255, 255, 0.8); }
 #top-right { position: absolute; right: calc(10px + var(--sr)); top: calc(8px + var(--st)); display: flex; gap: 8px; align-items: center; pointer-events: auto; }
 #timer { font-variant-numeric: tabular-nums; font-weight: 700; text-shadow: 0 1px 3px #000; }
-#btn-pause { width: 40px; height: 40px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--panel); font-size: 13px; }
+#btn-pause { width: 42px; height: 42px; padding: 0; border: 0; background: url('/assets/ui/ui_menu_settings_v01.png') center / 100% 100% no-repeat; } /* DES-002 step 4: gear button */
 #hint { position: absolute; left: calc(12px + var(--sl)); top: calc(52px + var(--st)); transform: translate(-8px, 0); max-width: min(34vw, 300px); background: var(--panel); border: 1.5px solid rgba(92, 242, 230, 0.6);
   border-radius: 12px; padding: 6px 10px; font-size: clamp(12px, 2vmin, 14px); line-height: 1.3; display: flex; gap: 8px; align-items: center; opacity: 0; transition: opacity 0.25s, transform 0.25s; }
 #hint.show { opacity: 1; transform: translate(0, 0); }
@@ -74,9 +85,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #vignette { position: absolute; inset: 0; box-shadow: inset 0 0 90px 30px rgba(255, 40, 70, 0.0); }
 #vignette.flash { animation: vig 0.45s ease-out; }
 
-.act { position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.85); background: rgba(30, 34, 80, 0.5);
-  color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
-.act.down { transform: scale(0.92); background: rgba(92, 242, 230, 0.35); }
+/* DES-002 step 1: combat buttons wear ui_btn_frame_v01.png. The gold ring's outer diameter is 292/333 of the image width, so the frame is drawn
+   333/292 = 114.04% of the button (ring outer edge == the DES-001 button diameter, studs overflow). Hit area stays the button box. */
+.act { --ring: 114.04%; position: absolute; pointer-events: auto; touch-action: none; border-radius: 50%; border: 0; background: none; isolation: isolate;
+  color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); }
+.act::before { content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: var(--ring); height: calc(var(--ring) * 268 / 270); transform: translate(-50%, -50%);
+  background: url('/assets/ui/ui_btn_frame_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
+.act.down { transform: scale(0.92); filter: brightness(1.3); }
 /* DES-001 §3 layout: 844x390 frame anchored bottom-right (offsets = frame edge - centre - radius), x --s (1.15 when viewport height > 420) */
 :root { --s: 1; }
 @media (min-height: 421px) { :root { --s: 1.15; } }
@@ -90,18 +105,26 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #btn-ult { --d: 48; --r: 35; --b: 163; }
 .act .ico { width: 66%; height: 66%; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)); }
 .act .cdnum { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; font-size: calc(var(--d) * var(--s) * 0.42px); font-weight: 800; pointer-events: none; text-shadow: 0 1px 4px #000, 0 0 6px #000; }
-.act.skill { border-color: rgba(92, 242, 230, 0.85); }
 .act.skill.cooling .ico { opacity: 0.45; }
-.act.ult.locked { background: rgba(60, 68, 98, 0.62); border-color: rgba(201, 208, 230, 0.6); flex-direction: column; gap: 0; }
+.act.ult.locked { flex-direction: column; gap: 0; }
 .act.ult .ico { width: 56%; height: 56%; }
 .act.ult .lbl { font-size: calc(var(--d) * var(--s) * 0.2px); font-weight: 700; line-height: 1; margin-top: -2px; color: #dfe4f5; }
 #btn-potion .count { position: absolute; right: -4px; bottom: -4px; background: #2b8a4b; color: #fff; font-size: 11px; border-radius: 99px; padding: 1px 5px; }
 #btn-potion.empty { opacity: 0.35; }
-.act.cooling::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(rgba(10, 12, 30, 0.72) calc(var(--cd) * 360deg), transparent 0); }
-.act.empowered { border-color: var(--gold); box-shadow: 0 0 16px 4px rgba(255, 200, 87, 0.7); }
+.act.cooling::after { content: ''; position: absolute; inset: 2.4%; border-radius: 50%; /* inner glass circle: 139/146 of the ring's outer radius */ background: conic-gradient(rgba(10, 12, 30, 0.72) calc(var(--cd) * 360deg), transparent 0); }
+.act.empowered { box-shadow: 0 0 16px 4px rgba(255, 200, 87, 0.7); }
 #debug { position: absolute; left: calc(8px + var(--sl)); top: 64px; font: 11px/1.3 ui-monospace, monospace; background: rgba(0, 0, 0, 0.5); padding: 4px 6px; border-radius: 6px; display: none; white-space: pre; }
 
 /* ---------- overlays ---------- */
+/* DES-002 step 4: pause card wears ui_panel_v01 (731x264) as a 9-slice. Slices keep the gem corner whole (top 140 / left 140) and the notched corners
+   (right 60 / bottom 60); border-image-width scales them x0.4 and is drawn over the padding, so layout is unchanged. */
+#paused .card h2 { line-height: 26px; margin-bottom: 10px; }
+#paused .card { background: none; border: 0 solid transparent; border-radius: 0; box-shadow: none; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+  border-image-source: url('/assets/ui/ui_panel_v01.png'); border-image-slice: 140 60 60 140 fill; border-image-width: 56px 24px 24px 56px; border-image-repeat: stretch; padding: 9px 30px 20px; }
+/* sound switch: the real checkbox, drawn as ui_toggle_v01 (knob right = on; off = mirrored + desaturated) */
+#chk-sound { appearance: none; -webkit-appearance: none; order: 2; flex: none; width: 66px; height: 22px; margin: 0; cursor: pointer; background: url('/assets/ui/ui_toggle_v01.png') center / 100% 100% no-repeat; }
+#chk-sound:not(:checked) { transform: scaleX(-1); filter: saturate(0.35) brightness(0.85); }
+#chk-sound:focus-visible { outline: 2px solid var(--lumen); outline-offset: 3px; }
 .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(12, 14, 34, 0.62); z-index: 40; padding: 16px; }
 .overlay.show { display: flex; }
 .overlay .card { background: var(--panel-solid); border: 1.5px solid var(--line); border-radius: 20px; padding: 18px 22px; max-width: min(92vw, 520px); max-height: 92vh; overflow: auto; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45); }
@@ -135,6 +158,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @media (max-height: 420px) {
   :root { --btn: 78px; }
   .overlay .card { padding: 10px 16px; }
+  #paused .card { padding: 13px 30px 12px; }
   .overlay h2 { margin-bottom: 4px; font-size: 20px; }
   .rank { font-size: 44px; margin: 0 0 4px; }
   .stats { font-size: 13px; gap: 2px 12px; }
