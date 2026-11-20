@@ -33,7 +33,7 @@ function shapeSDF(s: Shape, x: number, z: number) {
 }
 
 /** Big props that may stand between the camera and the player: faded so they never hide the player or a telegraph. */
-interface Occluder { obj: Object3D; r: number; h: number; mats: Material[]; f: number; actor?: Actor; }
+interface Occluder { obj: Object3D; r: number; h: number; mats: Material[]; f: number; actor?: Actor; twins: Mesh[]; parts: Mesh[]; }
 let STAR_GEO: ShapeGeometry | null = null;
 function starGeo() {
   if (STAR_GEO) return STAR_GEO;
@@ -230,16 +230,19 @@ export class View {
         add(i % 3 === 0 ? 'rock_a' : 'flower_patch', x, z, 0.85 + rnd() * 0.4, rnd() * Math.PI * 2);
       }
     }
-    const faded = new Map<Material, Material>();
-    for (const [name, mats] of Object.entries(place)) {
-      for (const part of flattenPropMerged(name)) {
-        let mat = faded.get(part.material);
-        if (!mat) { mat = nearFade(part.material, this.nearFadeU); faded.set(part.material, mat); }
-        const im = new InstancedMesh(part.geometry, mat, mats.length);
-        mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
-        im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
-        this.env.add(im);
-      }
+    // Opaque batches are drawn in material.id order, which decides the winner where two surfaces tie in depth. Before batching,
+    // each source material had one near-fade clone, created in order of first use; keep that order: one clone per batch, created
+    // in the order of the first source material the batch contains.
+    const rank = new Map<Material, number>();
+    const batches: { name: string; mats: Matrix4[]; part: ReturnType<typeof flattenPropMerged>[number] }[] = [];
+    for (const [name, mats] of Object.entries(place)) for (const part of flattenPropMerged(name, rank)) batches.push({ name, mats, part });
+    batches.sort((x, y) => x.part.rank - y.part.rank);
+    for (const { name, mats, part } of batches) {
+      const mat = nearFade(part.material, this.nearFadeU);
+      const im = new InstancedMesh(part.geometry, mat, mats.length);
+      mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
+      im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
+      this.env.add(im);
     }
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
@@ -512,12 +515,15 @@ export class View {
   }
 
   private addOccluder(obj: Object3D, r: number, h: number, actor?: Actor) {
-    const mats: Material[] = [];
+    const mats: Material[] = [], twins: Mesh[] = [], parts: Mesh[] = [];
     obj.traverse((o) => {
       const m = o as Mesh; if (!m.isMesh || o === this.playerMark) return;
       const own = (m.material as Material).clone(); m.material = own; mats.push(own);
+      if (m.userData.twin) twins.push(m); else parts.push(m);
     });
-    this.occluders.push({ obj, r, h, mats, f: 1, actor });
+    // Perf: while opaque, draw the merged twin (1 draw call); while faded, draw the separate meshes (see models.ts TWIN)
+    if (twins.length) { for (const m of twins) m.visible = true; for (const m of parts) m.visible = false; } else parts.length = 0;
+    this.occluders.push({ obj, r, h, mats, f: 1, actor, twins, parts });
   }
 
   /** Fade boss / pillars / gates that sit between the camera and the player. Camera looks along −z from +z, so "in front" = larger z. */
@@ -535,6 +541,7 @@ export class View {
       o.f += (target - o.f) * Math.min(1, dt * 10);
       if (Math.abs(o.f - target) < 0.01) o.f = target;
       const transparent = o.f < 0.99;
+      if (o.twins.length && o.twins[0].visible === transparent) { for (const m of o.twins) m.visible = !transparent; for (const m of o.parts) m.visible = transparent; }
       for (const m of o.mats) {
         if (m.transparent !== transparent) { m.transparent = transparent; m.depthWrite = !transparent; m.needsUpdate = true; }
         m.opacity = o.f;
@@ -558,15 +565,16 @@ const TMP_C = new Color();
 function dist2(a: Actor, b: Actor) { return (a.x - b.x) ** 2 + (a.z - b.z) ** 2; }
 /** Patch a Lambert material so fragments near the camera dither away (keeps foreground trees from hiding the player). */
 function nearFade(src: Material, u: { value: number }): Material {
-  const m = src.clone();
-  m.onBeforeCompile = (sh) => {
+  const m = src.clone(), prevCompile = m.onBeforeCompile.bind(m), prevKey = m.customProgramCacheKey.bind(m); // keep the source's own shader patch (baked emissive)
+  m.onBeforeCompile = (sh, rd) => {
+    prevCompile(sh, rd);
     sh.uniforms.uNearFade = u;
     sh.fragmentShader = 'uniform float uNearFade;\n' + sh.fragmentShader.replace('void main() {', `void main() {
       float nfT = smoothstep(uNearFade, uNearFade + 3.0, length(vViewPosition));
       float nfB = mod(floor(gl_FragCoord.x), 2.0) * 0.5 + mod(floor(gl_FragCoord.y), 2.0) * 0.25 + 0.125;
       if (nfT < nfB) discard;`);
   };
-  m.customProgramCacheKey = () => 'nearfade';
+  m.customProgramCacheKey = () => prevKey() + 'nearfade';
   return m;
 }
 function hex(c: number, a = 1) { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return a === 1 ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a})`; }
