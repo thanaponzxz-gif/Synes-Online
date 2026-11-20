@@ -52,12 +52,15 @@ let state: 'menu' | 'playing' | 'paused' | 'done' = 'menu';
 let acc = 0, last = performance.now();
 let bot: Bot | null = null;
 let portraitOk = false;
-let qaFrozen = false;
+let qaPend = 0; // QA: ticks stepped since the last drawn frame (effect/camera smoothing gets exactly that much time, so stepping is deterministic)
+let qaFrozen = Q.has('qafreeze'); // ?qafreeze: start with the sim frozen (QA only; deterministic stepping via __synesQA.stepTicks)
 const qaLog: { t: number; e: string }[] = [];
 (window as any).__synesQA = {
   freeze() { qaFrozen = true; },
   unfreeze() { qaFrozen = false; last = performance.now(); acc = 0; },
   log: qaLog,
+  /** QA only: run exactly n sim ticks (same step as the live loop, bot/input included), then draw one frame at the end state. */
+  stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); qaPend = 0; } return i; },
 };
 
 // ------------------------------------------------------------------ boot
@@ -106,7 +109,7 @@ async function newRun() {
   hud.netChip.textContent = ticket ? 'ออนไลน์' : 'ออฟไลน์';
   hud.netChip.title = ticket ? 'ผลและรางวัลจะถูกบันทึก' : 'โหมดออฟไลน์: ผลไม่ถูกบันทึก';
   for (const s of ['#defeat', '#victory']) $(s).classList.remove('show');
-  bot = Q.has('bot') ? new Bot(+(Q.get('bot') || 1) || 1) : null;
+  bot = Q.has('bot') ? new Bot(+(Q.get('bot') || 1) || 1, { useSkills: Q.has('botskills') }) : null; // ?botskills=1: bot also fires slots 2-3 (demo clips)
   input.bot = bot ? () => bot!.think(world!) : null;
   handleEvents(world.events.splice(0));
   state = 'playing'; acc = 0; last = performance.now();
@@ -115,6 +118,17 @@ async function newRun() {
 }
 
 // ------------------------------------------------------------------ loop
+function simStep() {
+  view.beforeTick();
+  const inp = input.sample();
+  log.push(inp);
+  handleEvents(world!.step(inp));
+}
+function renderFrame(alpha: number, dt: number) {
+  const w = world!;
+  try { view.render(w, alpha, dt); }
+  catch (err) { if (qaLog.length < 400) qaLog.push({ t: +(w.tick / 30).toFixed(1), e: 'render-error ' + String((err as Error)?.message || err) }); console.error(err); }
+}
 function frame(now: number) {
   requestAnimationFrame(frame);
   const dt = Math.min(0.25, (now - last) / 1000); last = now;
@@ -123,21 +137,18 @@ function frame(now: number) {
     acc += dt;
     let steps = 0;
     while (acc >= TICK && steps < 8) {
-      view.beforeTick();
-      const inp = input.sample();
-      log.push(inp);
-      handleEvents(world.step(inp));
+      simStep();
       acc -= TICK; steps++;
       if (world.finished) break;
     }
     if (steps === 8) acc = 0; // spiral-of-death guard on very slow frames
   }
-  try { view.render(world, state === 'playing' ? Math.min(1, acc / TICK) : 1, state === 'paused' ? 0 : dt); }
-  catch (err) { if (qaLog.length < 400) qaLog.push({ t: +(world.tick / 30).toFixed(1), e: 'render-error ' + String((err as Error)?.message || err) }); console.error(err); }
+  // frozen (QA): draw the exact end state of the last tick and let no wall-clock time pass in the effects
+  renderFrame(state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : 1, state === 'paused' || qaFrozen ? 0 : dt);
   hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out));
   if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
-  if (pref === 'auto' && state === 'playing') { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
+  if (pref === 'auto' && state === 'playing' && !qaFrozen) { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
   if (Q.has('debug')) {
     const info = view.renderer.info, mem = (performance as any).memory;
     $('#debug').textContent = `fps ${adaptive.fps.toFixed(0)}  tier ${tierName}  px ${view.pixelRatio.toFixed(2)}\ncalls ${info.render.calls}  tris ${info.render.triangles}\nkit ${perf.kit ? 'glb' : 'procedural'}  heap ${mem ? (mem.usedJSHeapSize / 1048576).toFixed(0) + 'MB' : 'n/a'}`;
@@ -152,13 +163,15 @@ function handleEvents(evts: SimEvent[]) {
   for (const e of evts) {
     const tt = +(world.tick / 30).toFixed(1);
     if (e.t === 'hit' && !e.byPlayer) { const c = world.ps.cause; qaLog.push({ t: tt, e: `hurt ${e.amount} by ${c?.enemyTh}/${c?.attackTh}` }); }
-    else if (['player-down', 'perfect', 'boss-start', 'boss-phase', 'victory', 'checkpoint', 'respawn', 'gate', 'stun', 'hint', 'interrupt', 'potion', 'skill'].includes(e.t)) qaLog.push({ t: tt, e: e.t + ('id' in e ? ' ' + e.id : '') + ('cause' in e ? ' ' + e.cause.attackTh : '') + ('long' in e ? (e.long ? ' long' : ' short') : '') });
+    else if (['player-down', 'perfect', 'boss-start', 'boss-phase', 'victory', 'checkpoint', 'respawn', 'gate', 'stun', 'hint', 'interrupt', 'potion', 'skill', 'skill-hit', 'skill-cancel', 'dodge-early'].includes(e.t)) qaLog.push({ t: tt, e: e.t + ('id' in e ? ' ' + e.id : '') + ('cause' in e ? ' ' + e.cause.attackTh : '') + ('long' in e ? (e.long ? ' long' : ' short') : '') });
     switch (e.t) {
       case 'swing': sfx.swing(e.step); hud.dismissHintIf('attack'); break;
       case 'hit': if (e.byPlayer) sfx.hit(e.crit); else sfx.hurt(); break;
       case 'dodge': sfx.dodge(); hud.dismissHintIf('dodge'); break;
       case 'perfect': sfx.perfect(); break;
       case 'skill': sfx.skill(); break;
+      // slots 2-3 reuse existing sounds (no new audio assets): Crescent = the heavy swing, Crystal = the skill chime (DES gives no sound spec)
+      case 'skill-hit': if (e.slot === 2) sfx.swing(2); else if (e.slot === 3) sfx.skill(); break;
       case 'heal': sfx.heal(); break;
       case 'telegraph': { const t = world.tele.find((x) => x.id === e.id); if (t) sfx.warn(t.atk.id === 'slam' || t.atk.id === 'charge'); break; }
       case 'boss-start': case 'boss-phase': sfx.roar(); break;

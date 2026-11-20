@@ -67,6 +67,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .floater.crit { color: var(--gold); font-size: 26px; }
 .floater.hurt { color: #ffd0d6; font-size: 24px; -webkit-text-stroke: 4px #7a0f2a; text-shadow: 0 2px 0 #4a0618, 0 0 10px rgba(122, 15, 42, 0.8); }
 .floater.heal { color: #8dffb0; }
+.floater.early { color: #FF9EC7; font-size: 22px; } /* blossom: palette colour, never the reserved warning red/orange */
 .floater.perfect { color: var(--lumen); font-size: 24px; letter-spacing: 0.05em; }
 .ebar { position: absolute; left: 0; top: 0; width: 44px; height: 6px; border-radius: 3px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.7); overflow: hidden; }
 .ebar i { display: block; height: 100%; background: #ff6b7a; }
