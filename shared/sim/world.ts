@@ -1,6 +1,6 @@
 // Synes Online — deterministic gameplay simulation (runs identically on client and server).
 // Rules: no engine/DOM imports, no Math.random/Date, no trig. Fixed tick = 1/30 s.
-import { PLAYER, ENEMIES, TICK, CONE_INNER_R, type AttackDef, type EnemyKind } from '../data/tuning.ts';
+import { PLAYER, ENEMIES, TICK, SKILLS, CONE_INNER_R, type AttackDef, type EnemyKind } from '../data/tuning.ts';
 import { LEVEL, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
@@ -20,6 +20,11 @@ export type SimEvent =
   | { t: 'stun'; id: number; long: boolean }
   | { t: 'pillar-break'; i: number } | { t: 'pillars-regrow' }
   | { t: 'swing'; step: number } | { t: 'dodge' } | { t: 'skill' } | { t: 'potion' }
+  | { t: 'skill-start'; slot: 1 | 2 | 3; x: number; z: number; dx: number; dz: number }
+  | { t: 'skill-hit'; slot: 1 | 2 | 3; x: number; z: number; dx: number; dz: number; hits: number }
+  | { t: 'skill-cancel'; slot: 1 | 2 | 3 }
+  /** the player dodged while this attack was already telegraphed/active, i-frames ended, then the same attack hit */
+  | { t: 'dodge-early'; x: number; z: number }
   | { t: 'heal'; amount: number } | { t: 'interrupt'; id: number }
   | { t: 'player-down'; cause: DefeatCause } | { t: 'respawn'; at: string }
   | { t: 'checkpoint'; id: string } | { t: 'victory' };
@@ -37,6 +42,9 @@ export interface Actor {
   tx: number; tz: number; ox: number; oz: number; dx: number; dz: number; travel: number;
   hitDone: boolean; atk: string; lastAtk: string; repeat: number; flinch: number; deadT: number;
 }
+
+/** Active skill cast. tick = ticks elapsed since the start tick (0 on the start tick). Position/direction are locked at start. */
+export interface Cast { slot: 1 | 2 | 3; tick: number; hitTick: number; endTick: number; x: number; z: number; dx: number; dz: number; }
 
 export interface Stats { damageTaken: number; perfect: number; deaths: number; dodges: number; potionsUsed: number; hitsLanded: number; }
 
@@ -67,7 +75,15 @@ export class World {
     bufAttack: 0, bufDodge: 0, dodgeT: 0, dodgeCd: 0, iframes: 0, dashx: 0, dashz: 1,
     skillCd: 0, castT: 0, potions: P.potion.charges, drinkT: 0, empowered: false,
     down: false, downT: 0, cause: null as DefeatCause | null, moving: false,
+    /** active skill cast (all slots; slot 1 keeps its legacy castT timer too) */
+    cast: null as Cast | null,
+    /** integer-tick cooldowns indexed slot-1 (slot 1 uses skillCd seconds, its entry stays 0) */
+    cdT: [0, 0, 0] as number[],
   };
+  /** attack instances (telegraph ids) that were telegraphed/active when the current dodge started: for the 'dodge-early' event */
+  private seenAtk = new Set<number>();
+  /** latest non-area attack instance (telegraph id) per owner actor: lets rush/charge hits be traced to their telegraph */
+  private atkToken = new Map<number, number>();
   private prevB = 0;
   private nextId = 1;
   private hints = new Set<string>();
@@ -148,6 +164,15 @@ export class World {
     // timers
     ps.dodgeCd -= TICK; ps.skillCd -= TICK; ps.iframes -= TICK; ps.comboTimer -= TICK;
     ps.bufAttack -= TICK; ps.bufDodge -= TICK;
+    if (ps.cdT[1] > 0) ps.cdT[1]--;
+    if (ps.cdT[2] > 0) ps.cdT[2]--;
+    if (ps.cast) {
+      ps.cast.tick++;
+      if (ps.cast.slot !== 1) {
+        if (ps.cast.tick === ps.cast.hitTick) this.resolveCast(ps.cast);
+        if (ps.cast.tick >= ps.cast.endTick) ps.cast = null;
+      }
+    }
     if (edges & BTN.ATTACK) ps.bufAttack = P.inputBufferS;
     if (edges & BTN.DODGE) ps.bufDodge = 0.2;
     // dodge (highest priority, cancels swing/drink)
@@ -155,20 +180,34 @@ export class World {
       const [dx, dz] = ps.moving ? norm(mx, mz) : [p.fx, p.fz];
       ps.dashx = dx; ps.dashz = dz; ps.dodgeT = P.dodge.dur; ps.iframes = P.dodge.iframes; ps.dodgeCd = dodgeCdSeconds(this.variant);
       ps.swingT = 0; ps.drinkT = 0; ps.bufDodge = 0; p.fx = dx; p.fz = dz;
+      if (ps.cast) { if (ps.cast.tick < ps.cast.hitTick) this.events.push({ t: 'skill-cancel', slot: ps.cast.slot }); ps.cast = null; }
+      this.seenAtk.clear();
+      for (const t of this.tele) this.seenAtk.add(t.id);
+      for (const e of this.actors) if (e.alive && (e.state === 'rush' || e.state === 'charge')) { const k = this.atkToken.get(e.id); if (k !== undefined) this.seenAtk.add(k); }
       this.stats.dodges++; this.events.push({ t: 'dodge' });
     }
     // skill
-    if (edges & BTN.SKILL && ps.skillCd <= 0 && ps.dodgeT <= 0 && ps.castT <= 0) {
+    if (edges & BTN.SKILL && ps.skillCd <= 0 && ps.dodgeT <= 0 && ps.castT <= 0 && !ps.cast) {
       ps.castT = P.skill.cast; ps.skillCd = P.skill.cooldown; ps.swingT = 0; ps.drinkT = 0;
+      this.beginCast(1, p.fx, p.fz);
       this.events.push({ t: 'skill' });
     }
+    // slots 2-3 (integer-tick skills; position + horizontal facing locked at start; BTN.ULT is ignored)
+    for (const slot of [2, 3] as const) {
+      if (edges & (slot === 2 ? BTN.SKILL2 : BTN.SKILL3) && ps.cdT[slot - 1] <= 0 && ps.dodgeT <= 0 && ps.castT <= 0 && !ps.cast) {
+        const [dx, dz] = ps.moving ? norm(mx, mz) : [p.fx, p.fz];
+        p.fx = dx; p.fz = dz; ps.swingT = 0; ps.drinkT = 0;
+        ps.cdT[slot - 1] = SKILLS[slot - 1].cdTicks;
+        this.beginCast(slot, dx, dz);
+      }
+    }
     // potion
-    if (edges & BTN.POTION && ps.potions > 0 && p.hp < p.maxHp && ps.drinkT <= 0 && ps.castT <= 0) {
+    if (edges & BTN.POTION && ps.potions > 0 && p.hp < p.maxHp && ps.drinkT <= 0 && ps.castT <= 0 && !ps.cast) {
       ps.drinkT = P.potion.dur; ps.potions--; this.stats.potionsUsed++; this.events.push({ t: 'potion' });
     }
     // attack start
     const swingProgress = ps.swingT > 0 ? 1 - ps.swingT / ps.swingDur : 1;
-    if (ps.bufAttack > 0 && ps.dodgeT <= 0 && ps.castT <= 0 && ps.drinkT <= 0 && swingProgress >= 0.62) {
+    if (ps.bufAttack > 0 && ps.dodgeT <= 0 && ps.castT <= 0 && !ps.cast && ps.drinkT <= 0 && swingProgress >= 0.62) {
       const step = ps.comboTimer > 0 && ps.combo < 2 ? ps.combo + 1 : 0;
       const c = P.combo[step];
       ps.combo = step; ps.swingT = c.dur; ps.swingDur = c.dur; ps.hitAt = c.hitAt; ps.hitDone = false;
@@ -182,7 +221,7 @@ export class World {
     let vx = 0, vz = 0;
     if (ps.dodgeT > 0) {
       ps.dodgeT -= TICK; vx = ps.dashx * P.dodge.speed; vz = ps.dashz * P.dodge.speed;
-    } else if (ps.castT <= 0) {
+    } else if (ps.castT <= 0 && !ps.cast) {
       let sp = P.speed;
       if (ps.swingT > 0) sp *= P.attackMoveMul;
       if (ps.drinkT > 0) sp *= 0.4;
@@ -214,14 +253,19 @@ export class World {
     if (ps.castT > 0) {
       ps.castT -= TICK;
       if (ps.castT <= 0) {
+        let hits = 0;
         for (const e of this.actors) {
           if (e.kind === 'player' || !e.alive) continue;
           if (e.kind === 'prismback' && !this.bossStarted) continue;
           if (dist(e.x, e.z, p.x, p.z) > P.skill.radius + e.r) continue;
           this.damageEnemy(e, P.skill.dmg, ps.empowered);
+          hits++;
           if (e.kind !== 'prismback' && e.alive && (e.state === 'windup')) this.interrupt(e);
         }
         ps.empowered = false;
+        const c = ps.cast;
+        this.events.push({ t: 'skill-hit', slot: 1, x: c ? c.x : p.x, z: c ? c.z : p.z, dx: c ? c.dx : p.fx, dz: c ? c.dz : p.fz, hits });
+        ps.cast = null;
       }
     }
     // potion resolution
@@ -229,6 +273,37 @@ export class World {
       ps.drinkT -= TICK;
       if (ps.drinkT <= 0) { const h = Math.min(P.potion.heal, p.maxHp - p.hp); p.hp += h; this.events.push({ t: 'heal', amount: h }); }
     }
+  }
+
+  private beginCast(slot: 1 | 2 | 3, dx: number, dz: number) {
+    const D = SKILLS[slot - 1], p = this.player;
+    this.ps.cast = { slot, tick: 0, hitTick: D.hitTick, endTick: D.endTick, x: p.x, z: p.z, dx, dz };
+    this.events.push({ t: 'skill-start', slot, x: p.x, z: p.z, dx, dz });
+  }
+
+  /** Hit tick of slot 2/3: targets come from the real state now; at most one hit per target. */
+  private resolveCast(c: Cast) {
+    const ps = this.ps, D = SKILLS[c.slot - 1];
+    let hits = 0;
+    const ax = c.slot === 3 ? c.x + c.dx * (D.ahead ?? 0) : c.x, az = c.slot === 3 ? c.z + c.dz * (D.ahead ?? 0) : c.z;
+    for (const e of this.actors) {
+      if (e.kind === 'player' || !e.alive) continue;
+      if (e.kind === 'prismback' && !this.bossStarted) continue;
+      const dx = e.x - ax, dz = e.z - az, d = len(dx, dz);
+      if (d > D.radius + e.r) continue; // inclusive edge, target radius included (Q1)
+      if (c.slot === 2 && d > 1e-6 && (dx * c.dx + dz * c.dz) / d < (D.cosHalf ?? 0)) continue;
+      this.damageEnemy(e, D.dmg, ps.empowered);
+      hits++;
+    }
+    ps.empowered = false;
+    this.events.push({ t: 'skill-hit', slot: c.slot, x: c.x, z: c.z, dx: c.dx, dz: c.dz, hits });
+  }
+
+  /** Remaining/total cooldown of a skill slot in seconds (remaining <= 0 = ready). Slot 1 uses its legacy seconds timer. */
+  skillCooldown(slot: 1 | 2 | 3): { remaining: number; total: number } {
+    if (slot === 1) return { remaining: this.ps.skillCd, total: P.skill.cooldown };
+    const n = SKILLS[slot - 1].cdTicks;
+    return { remaining: this.ps.cdT[slot - 1] * TICK, total: n * TICK };
   }
 
   private nearestEnemy(x: number, z: number, range: number): Actor | null {
@@ -270,7 +345,7 @@ export class World {
     e.x += dx * d; e.z += dz * d;
   }
 
-  private hurtPlayer(dmg: number, enemyTh: string, atk: AttackDef) {
+  private hurtPlayer(dmg: number, enemyTh: string, atk: AttackDef, token: number | null = null) {
     const ps = this.ps, p = this.player;
     if (ps.down) return;
     if (ps.iframes > 0) {
@@ -282,7 +357,10 @@ export class World {
     p.hp -= dmg; this.stats.damageTaken += dmg;
     ps.cause = { enemyTh, attackTh: atk.nameTh, tipTh: atk.tipTh, attackId: atk.id };
     this.events.push({ t: 'hit', target: p.id, amount: dmg, x: p.x, z: p.z, crit: false, byPlayer: false });
+    if (token !== null && this.seenAtk.has(token)) this.events.push({ t: 'dodge-early', x: p.x, z: p.z });
     if (p.hp <= 0) {
+      if (ps.cast && ps.cast.tick < ps.cast.hitTick) this.events.push({ t: 'skill-cancel', slot: ps.cast.slot });
+      ps.cast = null;
       p.hp = 0; ps.down = true; ps.downT = 0; this.stats.deaths++;
       this.tele = [];
       this.events.push({ t: 'player-down', cause: ps.cause });
@@ -293,6 +371,7 @@ export class World {
     const ps = this.ps, p = this.player;
     ps.down = false; p.hp = p.maxHp; ps.potions = P.potion.charges;
     ps.swingT = 0; ps.dodgeT = 0; ps.castT = 0; ps.drinkT = 0; ps.skillCd = 0; ps.dodgeCd = 0; ps.empowered = false;
+    ps.cast = null; ps.cdT = [0, 0, 0]; this.seenAtk.clear();
     p.x = this.checkpoint.x; p.z = this.checkpoint.z; p.fx = 0; p.fz = -1;
     this.tele = [];
     for (const e of this.actors) {
@@ -313,6 +392,7 @@ export class World {
     const t: Telegraph = { id: this.nextId++, owner: owner.id, atk, enemyTh, shape: atk.shape, x, z, dx, dz, r: atk.r, w: atk.w ?? 0,
       cos: atk.shape === 'cone' ? (atk.w ?? 0.5) : 0, t: total, total, area };
     this.tele.push(t);
+    if (!area) this.atkToken.set(owner.id, t.id);
     this.events.push({ t: 'telegraph', id: t.id });
     this.hint('dodge');
     return t;
@@ -373,7 +453,7 @@ export class World {
       const nx = a.x + a.dx * D.rushSpeed * TICK, nz = a.z + a.dz * D.rushSpeed * TICK;
       const [cx, cz] = this.clampWalk(nx, nz, a.r);
       a.x = cx; a.z = cz;
-      if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk); }
+      if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
       if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.hint('counter'); }
     } else if (a.state === 'recover') {
       if (a.st <= 0) a.state = 'approach';
@@ -413,7 +493,7 @@ export class World {
       case 'charge': {
         const step = D.chargeSpeed * TICK;
         a.x += a.dx * step; a.z += a.dz * step; a.travel += step;
-        if (!a.hitDone && dist(a.x, a.z, p.x, p.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(A.charge.dmg, D.nameTh, A.charge); }
+        if (!a.hitDone && dist(a.x, a.z, p.x, p.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(A.charge.dmg, D.nameTh, A.charge, this.atkToken.get(a.id) ?? null); }
         for (let i = 0; i < this.pillars.length; i++) {
           const pl = this.pillars[i];
           if (pl.alive && dist(a.x, a.z, pl.x, pl.z) < a.r + pl.r) {
@@ -487,7 +567,7 @@ export class World {
     for (const t of this.tele) {
       t.t -= TICK;
       if (t.t > 0) { keep.push(t); continue; }
-      if (t.area && this.insideTele(t, p.x, p.z, P.radius * 0.5)) this.hurtPlayer(t.atk.dmg, t.enemyTh, t.atk);
+      if (t.area && this.insideTele(t, p.x, p.z, P.radius * 0.5)) this.hurtPlayer(t.atk.dmg, t.enemyTh, t.atk, t.id);
       if (this.ps.down) return; // hurtPlayer cleared all telegraphs
     }
     this.tele = keep;

@@ -16,6 +16,22 @@ export const PLAYER = {
   potion: { charges: 2, heal: 45, dur: 0.6 },
 };
 
+/** Active skills (DES-001 §2). Slot 1 = Chime Burst (legacy seconds-based code in world.ts: cast resolves on the 11th tick,
+ *  i.e. 10 ticks after the start tick; cooldown timer 8 s needs 241 decrements). Slots 2-3 are integer-tick skills.
+ *  Ticks are counted from the start tick (= 0). cdTicks = minimum ticks between two accepted presses. */
+export interface SkillDef {
+  slot: 1 | 2 | 3; id: 'chime' | 'crescent' | 'crystal'; nameTh: string; nameEn: string;
+  cdTicks: number; prepTicks: number; hitTick: number; endTick: number;
+  radius: number; cosHalf?: number; ahead?: number; dmg: number;
+}
+export const SKILLS: readonly SkillDef[] = [
+  { slot: 1, id: 'chime', nameTh: 'ระฆังสะท้อน', nameEn: 'Chime Burst', cdTicks: 241, prepTicks: 10, hitTick: 10, endTick: 10, radius: PLAYER.skill.radius, dmg: PLAYER.skill.dmg },
+  { slot: 2, id: 'crescent', nameTh: 'ฟันเสี้ยวจันทร์', nameEn: 'Crescent Cut', cdTicks: 135, prepTicks: 6, hitTick: 6, endTick: 12, radius: 3.0, cosHalf: 0.642788, dmg: 22 },
+  { slot: 3, id: 'crystal', nameTh: 'ผลึกพิฆาต', nameEn: 'Crystal Break', cdTicks: 360, prepTicks: 15, hitTick: 15, endTick: 24, radius: 1.5, ahead: 2.6, dmg: 48 },
+];
+/** Ultimate: separate, locked slot in 2-B (no sim effect; BTN.ULT is ignored). */
+export const ULT = { id: 'grand', nameTh: 'มหาระฆัง', nameEn: 'Grand Resonance', locked: true } as const;
+
 /** Cone telegraphs also hit everything within this radius (m) of the origin, whatever the angle. Renderer draws the same disc. */
 export const CONE_INNER_R = 1.2;
 
