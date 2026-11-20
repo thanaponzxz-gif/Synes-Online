@@ -92,19 +92,21 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .act::before { content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: var(--ring); height: calc(var(--ring) * 268 / 270); transform: translate(-50%, -50%);
   background: url('/assets/ui/ui_btn_frame_v01.png') center / 100% 100% no-repeat; pointer-events: none; }
 .act.down { transform: scale(0.92); filter: brightness(1.3); }
-/* Place the largest action at the lower right, with skills in reading order above it. */
+/* Owner 2026-11-21 (TERRAVIA concept, section 3): skills in one row along the bottom, big attack at the lower right,
+   dodge and potion in a column above it. 844x390 targets (CSS px, --s 0.88): attack d76 @763,305 · skills d50 @518/576/634,352 ·
+   ult d46 @692,352 · dodge d52 @770,231 · potion d44 @785,175. Every hit target >= 44 px. */
 :root { --s: 0.88; }
 @media (min-width: 1000px) and (min-height: 540px) { :root { --s: 1.25; } }
 @media (min-width: 1300px) and (min-height: 720px) { :root { --s: 1.65; } }
 @media (min-width: 1600px) and (min-height: 860px) { :root { --s: 2; } }
 .act { width: calc(var(--d) * var(--s) * 1px); height: calc(var(--d) * var(--s) * 1px); right: calc(var(--sr) + var(--r) * var(--s) * 1px); bottom: calc(var(--sb) + var(--b) * var(--s) * 1px); }
 #btn-attack { --d: 86; --r: 49; --b: 54; }
-#btn-dodge { --d: 55; --r: 148; --b: 63; }
-#btn-potion { --d: 46; --r: 215; --b: 65; }
-#btn-skill { --d: 56; --r: 156; --b: 140; }
-#btn-skill2 { --d: 56; --r: 94; --b: 155; }
-#btn-skill3 { --d: 56; --r: 32; --b: 152; }
-#btn-ult { --d: 49; --r: 26; --b: 215; }
+#btn-skill { --d: 57; --r: 342; --b: 15; }
+#btn-skill2 { --d: 57; --r: 276; --b: 15; }
+#btn-skill3 { --d: 57; --r: 210; --b: 15; }
+#btn-ult { --d: 52; --r: 147; --b: 17; }
+#btn-dodge { --d: 59; --r: 55; --b: 151; }
+#btn-potion { --d: 50; --r: 42; --b: 219; }
 .act.skill .slot { position: absolute; z-index: 2; bottom: -5%; min-width: 42%; padding: 0 4px;
   border: 1px solid #ebca93; border-radius: 6px; background: #211830; color: #fff2d8;
   font-size: calc(var(--d) * var(--s) * 0.25px); font-weight: 800; line-height: 1.1; pointer-events: none; }
