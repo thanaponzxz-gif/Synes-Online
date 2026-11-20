@@ -3,7 +3,10 @@
 import { chromium } from './pw.mjs';
 import { contextOpts, LAUNCH_ARGS, PROFILES } from './profiles.mjs';
 const base = process.argv[2] || 'http://localhost:8080';
-const browser = await chromium.launch({ args: LAUNCH_ARGS });
+// On Windows without Playwright's bundled Chromium, fall back to the installed Edge (same as atmos-shots.mjs).
+import fs from 'node:fs';
+const edge = process.env.SYNES_BROWSER || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+const browser = await chromium.launch({ args: LAUNCH_ARGS, ...(fs.existsSync(edge) ? { executablePath: edge } : {}) });
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? '  — ' + detail : ''}`); };
 const tick = (p) => p.evaluate(() => window.__synes?.world.tick ?? -1);

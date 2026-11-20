@@ -1,5 +1,29 @@
 # Handoff: Synes Online
 
+## สาย 🔵 lane/prismatic-graphics: DES-003 ต้นแบบ + DES-004 ขั้น 1 · 2026-11-21 · Claude Code Opus 5.5 (เครื่องเจ้าของ, Windows)
+**ที่มา:** เซสชันเดิม `d1e1b0df-…` ชน max turns ระหว่างทำแสง/บรรยากาศ เซสชันนี้รับช่วงงานที่ยังไม่ได้ commit มาตรวจ ทดสอบ แล้ว commit และ push branch นี้ **ไม่ได้ merge `main`** (PM เป็นคน merge ตาม CLAUDE.md ข้อ 4)
+**base:** `b5d20dc` แต่ `origin/main` ไปถึง `a8c9abb` แล้ว (มี 2 commit ใหม่: ADR-008, กฎ label 🟡) ทั้งสอง commit แก้ `CLAUDE.md` ส่วน branch นี้ก็แก้ `CLAUDE.md` 1 บรรทัด (ห้ามใช้ Sonnet ทำกราฟิก) **PM ต้องตรวจ conflict ตอน merge**
+**ขอบเขตไฟล์ที่แตะ:**
+- กล้อง/ฉาก/แสง (render อย่างเดียว ไม่แตะ sim): `src/render/view.ts`, `src/render/arena.ts` (ใหม่), `src/render/atmosphere.ts` (ใหม่), `src/render/quality.ts` (เพิ่ม `glow`/`rays`), `src/render/fx.ts` (shader วงเตือนแบบขอบบาง ตาม DES-003), `src/study.ts` (ปิดบรรยากาศในหน้าโทน)
+- HUD: `index.html` (ไอคอน SVG ปุ่มโจมตี/หลบ/ยา, เลขช่องสกิล, ชื่อไทย), `src/style.css`, `src/input.ts` (รัศมีจอยตามขนาดฐาน + คืนตำแหน่งจอย)
+- Blender: `tools/blender/build_kit.py` → `public/assets/models/synes_kit.glb` (579.4 KB, 15,604 tris, Blender 4.5.3)
+- เอกสาร: `docs/design/DES-003-prismatic-battle.md`, `docs/design/DES-004-prismatic-graphics.md` (+§8 ความคืบหน้า), `docs/design/README.md`, `docs/ASSETS.md`, `docs/art/ASSET_CONTRACT.md`, `CLAUDE.md`, `docs/qa/des004-step1/` (report.json + ภาพ 4 ภาพ)
+- เครื่องมือ: `tools/qa/atmos-shots.mjs` (ใหม่), `tools/qa/lifecycle.mjs` (ใช้ Edge ถ้าไม่มี Chromium ของ Playwright), `server/index.ts` (แก้บั๊ก Windows: server ไม่ listen เมื่อ path มีไดรฟ์/เว้นวรรค ใช้ `fileURLToPath`)
+**สถานะ DES-004:** ขั้น 1 ทำเป็นต้นแบบแล้ว · ขั้น 2–4 ทำบางส่วน (จาก DES-003) · ขั้น 5–6 ยังไม่เริ่ม รายละเอียดอยู่ใน DES-004 §8 · **ยังไม่มีใครตรวจ ทั้งทีม A และเจ้าของ**
+**ผลทดสอบ (รันจริงในเซสชันนี้):**
+- vitest 62/62 · `tsc --noEmit` ผ่าน · `vite build` ผ่าน (bundle 780.8 KB / gzip 211 KB) · lifecycle 20/20 (Edge headless)
+- `atmos-shots.mjs` (Edge headless, ไม่มี page error): draw calls ที่ 844 ก่อน→หลัง ได้แก่ low 95→96, medium 105→107, high 204→207
+- จุดที่ยังไม่ผ่านหรือต้องตัดสิน: พิกเซลส้ม/แดงสดลดลงเมื่อเปิดบรรยากาศ · ผลึกซ้ายในช็อตเปิดมืดกว่าพื้น · ชื่อบอสบนจอ 844 สูง 13 px (เกณฑ์คือ 14)
+- ตรวจ secrets ใน diff และไฟล์ใหม่แล้ว ไม่พบ · ไม่ commit `tools/qa/out/` (มี blender-portable อยู่) และ `node_modules`
+- **Android: ยังไม่ได้ทดสอบ · iPhone: ยังไม่ได้ทดสอบ · PC: Edge headless เท่านั้น (ไม่ใช่การเล่นจริงแบบเวลาจริง)**
+- ไม่ได้รัน `verify_kit.py` / Blender ซ้ำในเซสชันนี้ ตัวเลข GLB มาจากเซสชันเดิม
+**งานยังไม่ยืนยัน:** การตีความภาพอ้างอิงของ DES-004 (ข้อยกเว้น ADR-007 ยังไม่ได้บันทึกเป็น ADR) · FPS บนเครื่องจริง · งบทดลองใน DES-004 §4 (เจ้าของยังไม่อนุมัติ) · โมเดล GLB ใหม่ยังไม่ได้รับอนุมัติให้ใช้จริง (ADR-006 ข้อ ข-2)
+**ขั้นถัดไปสำหรับ PM:**
+1. `git fetch && git checkout lane/prismatic-graphics` ตรวจ diff เทียบกับ `origin/main` (ระวัง `CLAUDE.md`) **ห้าม merge จนกว่าทีม A และเจ้าของตรวจภาพ** เพราะเปลี่ยนภาพที่ผู้เล่นเห็น
+2. ส่ง DES-004 §8 + `docs/qa/des004-step1/` ให้ทีม A ตัดสิน 3 จุดข้างบน และบันทึกข้อยกเว้น ADR-007 ของงานนี้เป็น ADR
+3. ให้เจ้าของเล่น `?start=boss` บนมือถือจริงด้วย `#debug` (เทียบกับ `&atmos=0`) และจด FPS
+4. ขั้น 2–6 ใช้ **Opus 5.5** ตามคำสั่งเจ้าของ (ห้ามใช้ Sonnet ทำกราฟิก) ส่วนงานโค้ดที่ไม่เปลี่ยนภาพใช้ Sonnet ได้
+
 ## Rollover รอบ 2-B → รอบ 2-B (ต่อ) · 2026-11-20
 **เหตุผล:** context ของแชตนี้ 494k เกินเกณฑ์ 450k (CLAUDE.md ข้อ 5 ก)
 แชตนี้เริ่มที่ `/home/user` ไม่ใช่โฟลเดอร์ repo เลยน่าจะไม่ได้อ่าน `autoCompactWindow` จาก `.claude/settings.json` (get_session แสดง `source: model-default`, 980k) ยังไม่ยืนยันสาเหตุ

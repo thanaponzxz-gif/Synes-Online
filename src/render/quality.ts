@@ -2,12 +2,14 @@
 export type Tier = 'low' | 'medium' | 'high';
 export type QualityPref = 'auto' | Tier;
 
-export interface QualitySettings { tier: Tier; maxPixelRatio: number; shadows: boolean; decoDensity: number; groundRes: number; particles: number; }
+/** glow: DES-004 crystal halos (1 draw call) · rays: warm light shafts (1 draw call, large overdraw; off on low).
+ *  `?glow=0` / `?rays=0` turn either off on any tier, `?atmos=0` turns off the whole DES-004 step-1 arena atmosphere. */
+export interface QualitySettings { tier: Tier; maxPixelRatio: number; shadows: boolean; decoDensity: number; groundRes: number; particles: number; glow: boolean; rays: boolean; }
 
 export const TIERS: Record<Tier, QualitySettings> = {
-  low: { tier: 'low', maxPixelRatio: 1, shadows: false, decoDensity: 0.45, groundRes: 512, particles: 90 },
-  medium: { tier: 'medium', maxPixelRatio: 1.5, shadows: false, decoDensity: 0.8, groundRes: 1024, particles: 160 },
-  high: { tier: 'high', maxPixelRatio: 2, shadows: true, decoDensity: 1, groundRes: 1024, particles: 220 },
+  low: { tier: 'low', maxPixelRatio: 1, shadows: false, decoDensity: 0.45, groundRes: 512, particles: 90, glow: true, rays: false },
+  medium: { tier: 'medium', maxPixelRatio: 1.5, shadows: false, decoDensity: 0.8, groundRes: 1024, particles: 160, glow: true, rays: true },
+  high: { tier: 'high', maxPixelRatio: 2, shadows: true, decoDensity: 1, groundRes: 1024, particles: 220, glow: true, rays: true },
 };
 
 const KEY = 'synes.quality';

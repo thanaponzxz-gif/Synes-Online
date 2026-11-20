@@ -81,23 +81,27 @@ export function telegraphMaterial(color: number, shape: number, cos = 0.5, inner
       uniform vec3 uColor; uniform float uProg; uniform float uShape; uniform float uCos; uniform float uInner; uniform float uTime; uniform float uAlpha; varying vec2 vUv;
       void main(){
         float pulse = 0.75 + 0.25 * sin(uTime * (8.0 + 22.0 * uProg));
-        float a = 0.0; float edge = 0.0; float fill = 0.0;
+        float a = 0.0; float edge = 0.0; float fill = 0.0; float front = 0.0;
         if (uShape < 0.5) {
           vec2 p = vUv * 2.0 - 1.0; float d = length(p); if (d > 1.0) discard;
-          edge = smoothstep(0.86, 0.95, d); fill = step(d, uProg);
+          edge = smoothstep(0.93, 0.97, d); fill = step(d, uProg);
+          front = (1.0 - smoothstep(0.0, 0.03, abs(d - uProg))) * step(0.02, uProg);
         } else if (uShape < 1.5) {
           vec2 p = vUv * 2.0 - 1.0; float d = length(p); if (d > 1.0) discard;
           float c = d > 0.001 ? p.y / d : 1.0; if (c < uCos && d > uInner) discard;
           float ang = clamp((c - uCos) / max(0.0001, 1.0 - uCos), 0.0, 1.0);
-          edge = max(smoothstep(0.88, 0.96, d), 1.0 - smoothstep(0.0, 0.07, ang)); fill = step(d, uProg);
+          edge = max(smoothstep(0.93, 0.97, d), 1.0 - smoothstep(0.0, 0.035, ang)); fill = step(d, uProg);
+          front = (1.0 - smoothstep(0.0, 0.03, abs(d - uProg))) * step(0.02, uProg);
         } else {
           float sx = abs(vUv.x - 0.5) * 2.0;
-          edge = max(smoothstep(0.78, 0.92, sx), max(1.0 - smoothstep(0.0, 0.03, vUv.y), smoothstep(0.97, 1.0, vUv.y)));
+          edge = max(smoothstep(0.90, 0.96, sx), max(1.0 - smoothstep(0.0, 0.015, vUv.y), smoothstep(0.985, 1.0, vUv.y)));
           fill = step(vUv.y, uProg);
-          float chev = step(0.5, fract(vUv.y * 10.0 - uTime * 2.0 + sx * 0.5)) * 0.12; fill = max(fill, chev);
+          front = (1.0 - smoothstep(0.0, 0.015, abs(vUv.y - uProg))) * step(0.01, uProg);
+          float chev = step(0.5, fract(vUv.y * 10.0 - uTime * 2.0 + sx * 0.5)) * 0.35; fill = max(fill, chev);
         }
-        vec3 col = mix(uColor, vec3(1.0, 0.98, 0.9), edge * 0.55);
-        a = max(edge * 0.95 * pulse, fill * 0.5 + 0.14);
+        vec3 col = mix(uColor, vec3(1.0, 0.98, 0.9), max(edge, front * 0.6) * 0.7);
+        // interior: ~0.08 before fill, ~0.25 after; thin bright edge + progress front keep the countdown readable
+        a = max(max(edge * 0.95 * pulse, front * 0.6), mix(0.08, 0.25, fill));
         gl_FragColor = vec4(col, a * uAlpha);
       }`,
   });

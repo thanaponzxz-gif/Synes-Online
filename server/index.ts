@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { replayRun } from '../shared/rules/validate.ts';
 import { parseVariant, type RunVariant } from '../shared/sim/variant.ts';
 import { rewardFor } from '../shared/rules/reward.ts';
@@ -87,6 +88,6 @@ export const server = http.createServer(async (req, res) => {
   }
 });
 
-if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname)) {
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url))) { // fileURLToPath: Windows drive letters + spaces
   server.listen(PORT, () => console.log(`Synes server on :${PORT} (static: ${ROOT})`));
 }

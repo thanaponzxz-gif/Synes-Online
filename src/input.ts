@@ -18,10 +18,11 @@ export class Input {
   private zone: HTMLElement; private base: HTMLElement; private knob: HTMLElement;
   constructor(zone: HTMLElement, base: HTMLElement, knob: HTMLElement) {
     this.zone = zone; this.base = base; this.knob = knob;
-    const R = 58;
+    let radius = 58;
     zone.addEventListener('pointerdown', (e) => {
       if (this.stickId !== null) return;
       this.stickId = e.pointerId; zone.setPointerCapture(e.pointerId);
+      radius = base.clientWidth * (58 / 124);
       this.ox = e.clientX; this.oy = e.clientY;
       base.style.left = `${e.clientX}px`; base.style.top = `${e.clientY}px`; base.classList.add('on');
       knob.style.transform = 'translate(-50%,-50%)';
@@ -30,17 +31,17 @@ export class Input {
       if (e.pointerId !== this.stickId) return;
       let dx = e.clientX - this.ox, dy = e.clientY - this.oy;
       const l = Math.hypot(dx, dy);
-      if (l > R) { // drag the base along (floating stick)
-        this.ox += (dx / l) * (l - R); this.oy += (dy / l) * (l - R); dx = (dx / l) * R; dy = (dy / l) * R;
+      if (l > radius) { // drag the base along (floating stick)
+        this.ox += (dx / l) * (l - radius); this.oy += (dy / l) * (l - radius); dx = (dx / l) * radius; dy = (dy / l) * radius;
         base.style.left = `${this.ox}px`; base.style.top = `${this.oy}px`;
       }
-      const dead = 8; const m = Math.max(0, Math.hypot(dx, dy) - dead) / (R - dead);
+      const dead = 8; const m = Math.max(0, Math.hypot(dx, dy) - dead) / (radius - dead);
       const n = Math.hypot(dx, dy) || 1;
       this.sx = (dx / n) * m; this.sy = (dy / n) * m;
       if (m > 0.3) this.usedStick = true;
       knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
     });
-    const end = (e: PointerEvent) => { if (e.pointerId !== this.stickId) return; this.stickId = null; this.sx = this.sy = 0; base.classList.remove('on'); knob.style.transform = 'translate(-50%,-50%)'; };
+    const end = (e: PointerEvent) => { if (e.pointerId !== this.stickId) return; this.stickId = null; this.sx = this.sy = 0; this.resetStick(); };
     zone.addEventListener('pointerup', end); zone.addEventListener('pointercancel', end); zone.addEventListener('lostpointercapture', end);
     addEventListener('keydown', (e) => {
       if (e.repeat) return; this.keys.add(e.code);
@@ -57,7 +58,14 @@ export class Input {
     el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); el.addEventListener('pointerleave', up);
   }
   press(name: BtnName) { this.pending[name] = Math.min(2, this.pending[name] + 1); if (name === 'attack') this.usedAttack = true; if (name === 'dodge') this.usedDodge = true; }
-  releaseAll() { for (const k of Object.keys(this.held) as BtnName[]) this.held[k] = false; this.stickId = null; this.sx = this.sy = 0; this.base.classList.remove('on'); }
+  releaseAll() { for (const k of Object.keys(this.held) as BtnName[]) this.held[k] = false; this.stickId = null; this.sx = this.sy = 0; this.resetStick(); }
+
+  private resetStick() {
+    this.base.classList.remove('on');
+    this.base.style.removeProperty('left');
+    this.base.style.removeProperty('top');
+    this.knob.style.removeProperty('transform');
+  }
 
   /** One quantized input per sim tick. Every tap yields a rising edge (0→1) the sim can see. */
   sample(): TickInput {
