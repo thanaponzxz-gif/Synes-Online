@@ -2,12 +2,14 @@
 import { World } from '../shared/sim/world.ts';
 import { BTN, quantize, type TickInput } from '../shared/sim/input.ts';
 import { len, norm } from '../shared/sim/math.ts';
+import { SKILLS } from '../shared/data/tuning.ts';
 
 const WAYPOINTS: [number, number][] = [[0, -4], [1.5, -15], [3, -28], [3, -37], [3, -44], [-0.4, -52], [-2, -60], [-2, -70]];
 
 export class Bot {
-  wp = -1; t = 0; skill: number;
-  constructor(skill = 1) { this.skill = skill; } // skill<1 = slower reactions
+  wp = -1; t = 0; skill: number; useSkills: boolean;
+  /** skill<1 = slower reactions. useSkills (default off) also fires slots 2-3 when a target is inside their hit area (demo clips). */
+  constructor(skill = 1, opts: { useSkills?: boolean } = {}) { this.skill = skill; this.useSkills = !!opts.useSkills; }
   think(w: World): TickInput {
     this.t++;
     const p = w.player, ps = w.ps;
@@ -49,6 +51,12 @@ export class Bot {
         if (bd < reach + 0.6 && this.t % 3 === 0) b |= BTN.ATTACK;
         const near = w.actors.filter((e) => e.alive && e.kind !== 'player' && e.active && len(e.x - p.x, e.z - p.z) < 3.8).length;
         if ((near >= 2 || target.kind === 'prismback') && bd < 3.8 && ps.skillCd <= 0) b |= BTN.SKILL;
+        if (this.useSkills && !ps.cast && ps.castT <= 0 && !(b & BTN.SKILL)) {
+          const C = SKILLS[1], K = SKILLS[2], cx = p.x + p.fx * K.ahead!, cz = p.z + p.fz * K.ahead!;
+          const foes = w.actors.filter((e) => e.kind !== 'player' && e.alive && (e.active || e.kind === 'prismback') && (e.kind !== 'prismback' || w.bossStarted));
+          if (ps.cdT[2] <= 0 && foes.some((e) => len(e.x - cx, e.z - cz) <= K.radius + e.r)) b |= BTN.SKILL3;
+          else if (ps.cdT[1] <= 0 && foes.some((e) => { const d = len(e.x - p.x, e.z - p.z); return d <= C.radius + e.r && (d < 1e-6 || ((e.x - p.x) * p.fx + (e.z - p.z) * p.fz) / d >= C.cosHalf!); })) b |= BTN.SKILL2;
+        }
       } else {
         const [wx, wz] = WAYPOINTS[Math.min(this.wp, WAYPOINTS.length - 1)];
         if (len(wx - p.x, wz - p.z) < 1.5 && this.wp < WAYPOINTS.length - 1) this.wp++;
@@ -61,7 +69,7 @@ export class Bot {
     if (len(wx - p.x, wz - p.z) < 2 && this.wp < WAYPOINTS.length - 1) this.wp++;
     const l = len(mx, mz); if (l > 1) { mx /= l; mz /= l; }
     // release buttons every other tick so the sim sees edges
-    if (this.t % 2 === 0) b &= ~(BTN.DODGE | BTN.SKILL | BTN.POTION);
+    if (this.t % 2 === 0) b &= ~(BTN.DODGE | BTN.SKILL | BTN.SKILL2 | BTN.SKILL3 | BTN.POTION);
     return quantize(mx, mz, b);
   }
 }
