@@ -1,0 +1,4726 @@
+{
+ "tag": "before-eabfc35",
+ "dist": "../../../../../../tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/dist-before2",
+ "seed": 1,
+ "generatedAt": "2026-11-20T22:52:03.179Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "boss-circle-844-low",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 54,
+   "tris": 34569,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 253,
+   "roi": {
+    "all": {
+     "n": 2757,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.7,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.1,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      88
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.233,
+     "wcagContrast": 2.44
+    },
+    "arc": {
+     "n": 2757,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.7,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.1,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      88
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.233,
+     "wcagContrast": 2.44
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1855,
+     "meanRGB": [
+      165,
+      129,
+      134
+     ],
+     "meanHex": "#A58186",
+     "hue": 352.6,
+     "sat": 0.227,
+     "val": 0.648,
+     "dE00mean": 22,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.5,
+     "rgbDist": 129.3,
+     "shareDE10": 0,
+     "underRGB": [
+      82,
+      84,
+      102
+     ],
+     "grayEdge": 0.538,
+     "grayUnder": 0.334,
+     "grayDelta": 0.204,
+     "wcagContrast": 2.16
+    },
+    "overCrystalGlow": {
+     "n": 38,
+     "meanRGB": [
+      162,
+      150,
+      176
+     ],
+     "meanHex": "#A296B0",
+     "hue": 267.3,
+     "sat": 0.243,
+     "val": 0.707,
+     "dE00mean": 35.2,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.2,
+     "rgbDist": 164.7,
+     "shareDE10": 0,
+     "underRGB": [
+      76,
+      124,
+      184
+     ],
+     "grayEdge": 0.605,
+     "grayUnder": 0.464,
+     "grayDelta": 0.142,
+     "wcagContrast": 1.56
+    },
+    "overDark": {
+     "n": 864,
+     "meanRGB": [
+      136,
+      104,
+      109
+     ],
+     "meanHex": "#88686D",
+     "hue": 351.3,
+     "sat": 0.246,
+     "val": 0.532,
+     "dE00mean": 24.7,
+     "dE00median": 24.7,
+     "dE00ofMean": 23.8,
+     "rgbDist": 133.5,
+     "shareDE10": 0,
+     "underRGB": [
+      25,
+      37,
+      55
+     ],
+     "grayEdge": 0.437,
+     "grayUnder": 0.139,
+     "grayDelta": 0.297,
+     "wcagContrast": 3.08
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.137,
+    "roiSVp10": 0.125,
+    "roiCmedian": 14.6,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 786,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.2,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 38971,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 19.9,
+    "shareChangedOver24": 0.57,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12462,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-844-low",
+   "attack": "sweep",
+   "size": "844x390",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 54,
+   "tris": 34569,
+   "W": 844,
+   "H": 390,
+   "target": "#FF7A1A",
+   "maskPx": 3146,
+   "hiddenByLaterPx": 480,
+   "roi": {
+    "all": {
+     "n": 2666,
+     "meanRGB": [
+      160,
+      129,
+      125
+     ],
+     "meanHex": "#A0817D",
+     "hue": 6,
+     "sat": 0.218,
+     "val": 0.627,
+     "dE00mean": 26.3,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.4,
+     "rgbDist": 139.8,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.529,
+     "grayUnder": 0.295,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.43
+    },
+    "arc": {
+     "n": 2558,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.629,
+     "dE00mean": 26.2,
+     "dE00median": 25.3,
+     "dE00ofMean": 25.7,
+     "rgbDist": 139.8,
+     "shareDE10": 0,
+     "underRGB": [
+      75,
+      74,
+      93
+     ],
+     "grayEdge": 0.531,
+     "grayUnder": 0.297,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.43
+    },
+    "side": {
+     "n": 108,
+     "meanRGB": [
+      148,
+      117,
+      113
+     ],
+     "meanHex": "#947571",
+     "hue": 5.7,
+     "sat": 0.245,
+     "val": 0.58,
+     "dE00mean": 28.5,
+     "dE00median": 27,
+     "dE00ofMean": 27,
+     "rgbDist": 140.9,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      65,
+      83
+     ],
+     "grayEdge": 0.483,
+     "grayUnder": 0.257,
+     "grayDelta": 0.225,
+     "wcagContrast": 2.39
+    },
+    "end": null,
+    "overFloor": {
+     "n": 2025,
+     "meanRGB": [
+      168,
+      136,
+      132
+     ],
+     "meanHex": "#A88884",
+     "hue": 6.2,
+     "sat": 0.217,
+     "val": 0.66,
+     "dE00mean": 25,
+     "dE00median": 24.5,
+     "dE00ofMean": 24.7,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      90,
+      87,
+      106
+     ],
+     "grayEdge": 0.558,
+     "grayUnder": 0.35,
+     "grayDelta": 0.208,
+     "wcagContrast": 2.16
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 641,
+     "meanRGB": [
+      133,
+      107,
+      104
+     ],
+     "meanHex": "#856B68",
+     "hue": 5.5,
+     "sat": 0.218,
+     "val": 0.521,
+     "dE00mean": 30.3,
+     "dE00median": 30.4,
+     "dE00ofMean": 30,
+     "rgbDist": 145.9,
+     "shareDE10": 0,
+     "underRGB": [
+      23,
+      32,
+      53
+     ],
+     "grayEdge": 0.439,
+     "grayUnder": 0.124,
+     "grayDelta": 0.315,
+     "wcagContrast": 3.28
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.133,
+    "roiSVp10": 0.11,
+    "roiCmedian": 13.2,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 1381,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 30844,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 26.9,
+    "shareChangedOver24": 0.499,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12373,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-844-low",
+   "attack": "charge",
+   "size": "844x390",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 54,
+   "tris": 34569,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 2152,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 2152,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.3,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      93
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.288,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.78
+    },
+    "arc": null,
+    "side": {
+     "n": 2128,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.4,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      93
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.288,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.78
+    },
+    "end": {
+     "n": 24,
+     "meanRGB": [
+      200,
+      139,
+      141
+     ],
+     "meanHex": "#C88B8D",
+     "hue": 358.4,
+     "sat": 0.307,
+     "val": 0.785,
+     "dE00mean": 18.3,
+     "dE00median": 18,
+     "dE00ofMean": 18,
+     "rgbDist": 119.8,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      68,
+      94
+     ],
+     "grayEdge": 0.596,
+     "grayUnder": 0.27,
+     "grayDelta": 0.326,
+     "wcagContrast": 3.77
+    },
+    "overFloor": {
+     "n": 1563,
+     "meanRGB": [
+      213,
+      156,
+      153
+     ],
+     "meanHex": "#D59C99",
+     "hue": 2.6,
+     "sat": 0.284,
+     "val": 0.837,
+     "dE00mean": 20.6,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.7,
+     "rgbDist": 131.4,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      88,
+      109
+     ],
+     "grayEdge": 0.657,
+     "grayUnder": 0.35,
+     "grayDelta": 0.307,
+     "wcagContrast": 3
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 589,
+     "meanRGB": [
+      198,
+      141,
+      139
+     ],
+     "meanHex": "#C68D8B",
+     "hue": 2.2,
+     "sat": 0.296,
+     "val": 0.775,
+     "dE00mean": 18.7,
+     "dE00median": 18.7,
+     "dE00ofMean": 18.5,
+     "rgbDist": 120,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      32,
+      53
+     ],
+     "grayEdge": 0.6,
+     "grayUnder": 0.122,
+     "grayDelta": 0.478,
+     "wcagContrast": 5.85
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.227,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 1401,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 47772,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 8.5,
+    "shareChangedOver24": 0.172,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 11307,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-844-low",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 55,
+   "tris": 34641,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 228,
+   "roi": {
+    "all": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      152,
+      149
+     ],
+     "meanHex": "#CD9895",
+     "hue": 3.5,
+     "sat": 0.278,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      81,
+      96
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.31,
+     "grayDelta": 0.329,
+     "wcagContrast": 3.58
+    },
+    "arc": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      152,
+      149
+     ],
+     "meanHex": "#CD9895",
+     "hue": 3.5,
+     "sat": 0.278,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      81,
+      96
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.31,
+     "grayDelta": 0.329,
+     "wcagContrast": 3.58
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1609,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 3,
+     "sat": 0.282,
+     "val": 0.823,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.4,
+     "shareDE10": 0,
+     "underRGB": [
+      85,
+      88,
+      105
+     ],
+     "grayEdge": 0.649,
+     "grayUnder": 0.348,
+     "grayDelta": 0.301,
+     "wcagContrast": 2.99
+    },
+    "overCrystalGlow": {
+     "n": 305,
+     "meanRGB": [
+      214,
+      175,
+      167
+     ],
+     "meanHex": "#D6AFA7",
+     "hue": 10.5,
+     "sat": 0.219,
+     "val": 0.839,
+     "dE00mean": 26,
+     "dE00median": 26,
+     "dE00ofMean": 25.9,
+     "rgbDist": 154.5,
+     "shareDE10": 0,
+     "underRGB": [
+      100,
+      169,
+      165
+     ],
+     "grayEdge": 0.717,
+     "grayUnder": 0.603,
+     "grayDelta": 0.114,
+     "wcagContrast": 1.39
+    },
+    "overDark": {
+     "n": 868,
+     "meanRGB": [
+      194,
+      140,
+      138
+     ],
+     "meanHex": "#C28C8A",
+     "hue": 2.5,
+     "sat": 0.293,
+     "val": 0.761,
+     "dE00mean": 19,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.8,
+     "rgbDist": 120.2,
+     "shareDE10": 0,
+     "underRGB": [
+      25,
+      36,
+      54
+     ],
+     "grayEdge": 0.593,
+     "grayUnder": 0.137,
+     "grayDelta": 0.456,
+     "wcagContrast": 5.43
+    },
+    "overVfx": {
+     "n": 328,
+     "meanRGB": [
+      215,
+      176,
+      167
+     ],
+     "meanHex": "#D7B0A7",
+     "hue": 10.8,
+     "sat": 0.221,
+     "val": 0.842,
+     "dE00mean": 26.2,
+     "dE00median": 26.1,
+     "dE00ofMean": 26.2,
+     "rgbDist": 155,
+     "shareDE10": 0,
+     "underRGB": [
+      103,
+      171,
+      166
+     ],
+     "grayEdge": 0.72,
+     "grayUnder": 0.613,
+     "grayDelta": 0.106,
+     "wcagContrast": 1.36
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.5,
+    "roiCp10": 16.8,
+    "sceneWarmOtherN": 1132,
+    "sceneWarmOtherSVp99": 0.639,
+    "sceneWarmOtherSVmax": 0.678,
+    "sceneWarmOtherCp99": 61.4,
+    "sceneWarmOtherCmax": 64.5,
+    "telegraphFootprintPx": 38784,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 25.9,
+    "shareChangedOver24": 0.874,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12468,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-1672-low",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 52,
+   "tris": 34129,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1541,
+   "roi": {
+    "all": {
+     "n": 16123,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.6,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.1,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.3,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      89
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.232,
+     "wcagContrast": 2.43
+    },
+    "arc": {
+     "n": 16123,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.6,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.1,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.3,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      89
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.232,
+     "wcagContrast": 2.43
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 10860,
+     "meanRGB": [
+      165,
+      129,
+      134
+     ],
+     "meanHex": "#A58186",
+     "hue": 352.6,
+     "sat": 0.226,
+     "val": 0.648,
+     "dE00mean": 22,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.5,
+     "rgbDist": 129.3,
+     "shareDE10": 0,
+     "underRGB": [
+      82,
+      84,
+      102
+     ],
+     "grayEdge": 0.538,
+     "grayUnder": 0.334,
+     "grayDelta": 0.204,
+     "wcagContrast": 2.16
+    },
+    "overCrystalGlow": {
+     "n": 269,
+     "meanRGB": [
+      160,
+      152,
+      176
+     ],
+     "meanHex": "#A098B0",
+     "hue": 260.7,
+     "sat": 0.241,
+     "val": 0.707,
+     "dE00mean": 36,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.9,
+     "rgbDist": 166.7,
+     "shareDE10": 0,
+     "underRGB": [
+      73,
+      128,
+      184
+     ],
+     "grayEdge": 0.61,
+     "grayUnder": 0.472,
+     "grayDelta": 0.138,
+     "wcagContrast": 1.53
+    },
+    "overDark": {
+     "n": 4994,
+     "meanRGB": [
+      135,
+      104,
+      109
+     ],
+     "meanHex": "#87686D",
+     "hue": 351.1,
+     "sat": 0.246,
+     "val": 0.53,
+     "dE00mean": 24.8,
+     "dE00median": 24.8,
+     "dE00ofMean": 24.1,
+     "rgbDist": 133.6,
+     "shareDE10": 0,
+     "underRGB": [
+      24,
+      36,
+      54
+     ],
+     "grayEdge": 0.435,
+     "grayUnder": 0.137,
+     "grayDelta": 0.298,
+     "wcagContrast": 3.08
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.141,
+    "roiSVp10": 0.122,
+    "roiCmedian": 14.6,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 4469,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.2,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 226955,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 19.9,
+    "shareChangedOver24": 0.577,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 46617,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-1672-low",
+   "attack": "sweep",
+   "size": "1672x941",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 52,
+   "tris": 34129,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF7A1A",
+   "maskPx": 18333,
+   "hiddenByLaterPx": 2847,
+   "roi": {
+    "all": {
+     "n": 15486,
+     "meanRGB": [
+      160,
+      128,
+      125
+     ],
+     "meanHex": "#A0807D",
+     "hue": 6,
+     "sat": 0.217,
+     "val": 0.626,
+     "dE00mean": 26.3,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.7,
+     "rgbDist": 139.9,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.529,
+     "grayUnder": 0.295,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.43
+    },
+    "arc": {
+     "n": 14869,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.628,
+     "dE00mean": 26.2,
+     "dE00median": 25.3,
+     "dE00ofMean": 25.7,
+     "rgbDist": 139.8,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.531,
+     "grayUnder": 0.296,
+     "grayDelta": 0.235,
+     "wcagContrast": 2.43
+    },
+    "side": {
+     "n": 617,
+     "meanRGB": [
+      147,
+      116,
+      113
+     ],
+     "meanHex": "#937471",
+     "hue": 5.6,
+     "sat": 0.243,
+     "val": 0.577,
+     "dE00mean": 28.7,
+     "dE00median": 27.1,
+     "dE00ofMean": 27.5,
+     "rgbDist": 141.4,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      65,
+      83
+     ],
+     "grayEdge": 0.481,
+     "grayUnder": 0.257,
+     "grayDelta": 0.225,
+     "wcagContrast": 2.38
+    },
+    "end": null,
+    "overFloor": {
+     "n": 11697,
+     "meanRGB": [
+      168,
+      136,
+      132
+     ],
+     "meanHex": "#A88884",
+     "hue": 6.2,
+     "sat": 0.217,
+     "val": 0.66,
+     "dE00mean": 25,
+     "dE00median": 24.5,
+     "dE00ofMean": 24.7,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      90,
+      87,
+      106
+     ],
+     "grayEdge": 0.558,
+     "grayUnder": 0.35,
+     "grayDelta": 0.208,
+     "wcagContrast": 2.16
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3789,
+     "meanRGB": [
+      133,
+      106,
+      104
+     ],
+     "meanHex": "#856A68",
+     "hue": 5.4,
+     "sat": 0.218,
+     "val": 0.52,
+     "dE00mean": 30.4,
+     "dE00median": 30.4,
+     "dE00ofMean": 30.4,
+     "rgbDist": 146.1,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      32,
+      53
+     ],
+     "grayEdge": 0.439,
+     "grayUnder": 0.124,
+     "grayDelta": 0.315,
+     "wcagContrast": 3.28
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.133,
+    "roiSVp10": 0.11,
+    "roiCmedian": 13,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 8070,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 179516,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 27.1,
+    "shareChangedOver24": 0.505,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 46353,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-1672-low",
+   "attack": "charge",
+   "size": "1672x941",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 52,
+   "tris": 34129,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 12549,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 12549,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.4,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.3,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      94
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.289,
+     "grayDelta": 0.353,
+     "wcagContrast": 3.77
+    },
+    "arc": null,
+    "side": {
+     "n": 12371,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.5,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      94
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.289,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.77
+    },
+    "end": {
+     "n": 178,
+     "meanRGB": [
+      197,
+      135,
+      138
+     ],
+     "meanHex": "#C5878A",
+     "hue": 357.4,
+     "sat": 0.316,
+     "val": 0.771,
+     "dE00mean": 18.4,
+     "dE00median": 18.4,
+     "dE00ofMean": 17.4,
+     "rgbDist": 119,
+     "shareDE10": 0,
+     "underRGB": [
+      63,
+      66,
+      94
+     ],
+     "grayEdge": 0.583,
+     "grayUnder": 0.265,
+     "grayDelta": 0.317,
+     "wcagContrast": 3.68
+    },
+    "overFloor": {
+     "n": 9193,
+     "meanRGB": [
+      213,
+      155,
+      153
+     ],
+     "meanHex": "#D59B99",
+     "hue": 2.6,
+     "sat": 0.284,
+     "val": 0.837,
+     "dE00mean": 20.6,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.5,
+     "rgbDist": 131.4,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      88,
+      109
+     ],
+     "grayEdge": 0.657,
+     "grayUnder": 0.35,
+     "grayDelta": 0.307,
+     "wcagContrast": 3
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3356,
+     "meanRGB": [
+      197,
+      141,
+      139
+     ],
+     "meanHex": "#C58D8B",
+     "hue": 2.1,
+     "sat": 0.296,
+     "val": 0.773,
+     "dE00mean": 18.7,
+     "dE00median": 18.7,
+     "dE00ofMean": 18.7,
+     "rgbDist": 119.9,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      31,
+      53
+     ],
+     "grayEdge": 0.599,
+     "grayUnder": 0.121,
+     "grayDelta": 0.478,
+     "wcagContrast": 5.87
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.227,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 8227,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 278135,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 8.8,
+    "shareChangedOver24": 0.177,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 39335,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-1672-low",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "low",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 53,
+   "tris": 34201,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1400,
+   "roi": {
+    "all": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      80,
+      95
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.309,
+     "grayDelta": 0.33,
+     "wcagContrast": 3.59
+    },
+    "arc": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      80,
+      95
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.309,
+     "grayDelta": 0.33,
+     "wcagContrast": 3.59
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 9438,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 3,
+     "sat": 0.282,
+     "val": 0.823,
+     "dE00mean": 20.6,
+     "dE00median": 20.5,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.4,
+     "shareDE10": 0,
+     "underRGB": [
+      85,
+      88,
+      105
+     ],
+     "grayEdge": 0.649,
+     "grayUnder": 0.348,
+     "grayDelta": 0.301,
+     "wcagContrast": 3
+    },
+    "overCrystalGlow": {
+     "n": 1759,
+     "meanRGB": [
+      214,
+      175,
+      167
+     ],
+     "meanHex": "#D6AFA7",
+     "hue": 10.5,
+     "sat": 0.219,
+     "val": 0.838,
+     "dE00mean": 26,
+     "dE00median": 26,
+     "dE00ofMean": 25.9,
+     "rgbDist": 154.4,
+     "shareDE10": 0,
+     "underRGB": [
+      99,
+      169,
+      165
+     ],
+     "grayEdge": 0.717,
+     "grayUnder": 0.602,
+     "grayDelta": 0.114,
+     "wcagContrast": 1.39
+    },
+    "overDark": {
+     "n": 5067,
+     "meanRGB": [
+      194,
+      140,
+      138
+     ],
+     "meanHex": "#C28C8A",
+     "hue": 2.4,
+     "sat": 0.293,
+     "val": 0.76,
+     "dE00mean": 19,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.8,
+     "rgbDist": 120.2,
+     "shareDE10": 0,
+     "underRGB": [
+      24,
+      36,
+      54
+     ],
+     "grayEdge": 0.593,
+     "grayUnder": 0.135,
+     "grayDelta": 0.458,
+     "wcagContrast": 5.45
+    },
+    "overVfx": {
+     "n": 1908,
+     "meanRGB": [
+      215,
+      176,
+      167
+     ],
+     "meanHex": "#D7B0A7",
+     "hue": 10.9,
+     "sat": 0.221,
+     "val": 0.842,
+     "dE00mean": 26.2,
+     "dE00median": 26.1,
+     "dE00ofMean": 26.2,
+     "rgbDist": 155,
+     "shareDE10": 0,
+     "underRGB": [
+      103,
+      172,
+      166
+     ],
+     "grayEdge": 0.72,
+     "grayUnder": 0.614,
+     "grayDelta": 0.106,
+     "wcagContrast": 1.36
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.5,
+    "roiCp10": 16.9,
+    "sceneWarmOtherN": 6705,
+    "sceneWarmOtherSVp99": 0.639,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 61.4,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 225907,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 26,
+    "shareChangedOver24": 0.875,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 41018,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-844-medium",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 58,
+   "tris": 53919,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 253,
+   "roi": {
+    "all": {
+     "n": 2757,
+     "meanRGB": [
+      156,
+      122,
+      126
+     ],
+     "meanHex": "#9C7A7E",
+     "hue": 351.7,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.1,
+     "dE00median": 22.2,
+     "dE00ofMean": 21.8,
+     "rgbDist": 131.3,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      88
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.274,
+     "grayDelta": 0.233,
+     "wcagContrast": 2.43
+    },
+    "arc": {
+     "n": 2757,
+     "meanRGB": [
+      156,
+      122,
+      126
+     ],
+     "meanHex": "#9C7A7E",
+     "hue": 351.7,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.1,
+     "dE00median": 22.2,
+     "dE00ofMean": 21.8,
+     "rgbDist": 131.3,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      88
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.274,
+     "grayDelta": 0.233,
+     "wcagContrast": 2.43
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1860,
+     "meanRGB": [
+      166,
+      130,
+      134
+     ],
+     "meanHex": "#A68286",
+     "hue": 352.7,
+     "sat": 0.226,
+     "val": 0.65,
+     "dE00mean": 22,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.4,
+     "rgbDist": 129.4,
+     "shareDE10": 0,
+     "underRGB": [
+      83,
+      85,
+      103
+     ],
+     "grayEdge": 0.54,
+     "grayUnder": 0.338,
+     "grayDelta": 0.202,
+     "wcagContrast": 2.14
+    },
+    "overCrystalGlow": {
+     "n": 38,
+     "meanRGB": [
+      162,
+      150,
+      176
+     ],
+     "meanHex": "#A296B0",
+     "hue": 267.3,
+     "sat": 0.243,
+     "val": 0.707,
+     "dE00mean": 35.2,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.2,
+     "rgbDist": 164.7,
+     "shareDE10": 0,
+     "underRGB": [
+      76,
+      124,
+      184
+     ],
+     "grayEdge": 0.605,
+     "grayUnder": 0.464,
+     "grayDelta": 0.142,
+     "wcagContrast": 1.56
+    },
+    "overDark": {
+     "n": 859,
+     "meanRGB": [
+      134,
+      103,
+      107
+     ],
+     "meanHex": "#86676B",
+     "hue": 350.9,
+     "sat": 0.248,
+     "val": 0.526,
+     "dE00mean": 25,
+     "dE00median": 24.9,
+     "dE00ofMean": 24.1,
+     "rgbDist": 134,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      34,
+      52
+     ],
+     "grayEdge": 0.431,
+     "grayUnder": 0.128,
+     "grayDelta": 0.303,
+     "wcagContrast": 3.11
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.137,
+    "roiSVp10": 0.125,
+    "roiCmedian": 14.6,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 966,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.2,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 38971,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 19.9,
+    "shareChangedOver24": 0.57,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12420,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-844-medium",
+   "attack": "sweep",
+   "size": "844x390",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 58,
+   "tris": 53919,
+   "W": 844,
+   "H": 390,
+   "target": "#FF7A1A",
+   "maskPx": 3146,
+   "hiddenByLaterPx": 480,
+   "roi": {
+    "all": {
+     "n": 2666,
+     "meanRGB": [
+      160,
+      129,
+      125
+     ],
+     "meanHex": "#A0817D",
+     "hue": 6,
+     "sat": 0.217,
+     "val": 0.627,
+     "dE00mean": 26.3,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.4,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.53,
+     "grayUnder": 0.296,
+     "grayDelta": 0.233,
+     "wcagContrast": 2.42
+    },
+    "arc": {
+     "n": 2558,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.629,
+     "dE00mean": 26.2,
+     "dE00median": 25.3,
+     "dE00ofMean": 25.7,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      75,
+      74,
+      94
+     ],
+     "grayEdge": 0.532,
+     "grayUnder": 0.298,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "side": {
+     "n": 108,
+     "meanRGB": [
+      148,
+      117,
+      114
+     ],
+     "meanHex": "#947572",
+     "hue": 5.5,
+     "sat": 0.244,
+     "val": 0.581,
+     "dE00mean": 28.6,
+     "dE00median": 26.9,
+     "dE00ofMean": 27.3,
+     "rgbDist": 141.1,
+     "shareDE10": 0,
+     "underRGB": [
+      62,
+      66,
+      83
+     ],
+     "grayEdge": 0.484,
+     "grayUnder": 0.26,
+     "grayDelta": 0.224,
+     "wcagContrast": 2.37
+    },
+    "end": null,
+    "overFloor": {
+     "n": 2024,
+     "meanRGB": [
+      169,
+      136,
+      133
+     ],
+     "meanHex": "#A98885",
+     "hue": 6.2,
+     "sat": 0.217,
+     "val": 0.663,
+     "dE00mean": 24.9,
+     "dE00median": 24.4,
+     "dE00ofMean": 24.9,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      92,
+      89,
+      107
+     ],
+     "grayEdge": 0.561,
+     "grayUnder": 0.355,
+     "grayDelta": 0.206,
+     "wcagContrast": 2.13
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 642,
+     "meanRGB": [
+      131,
+      105,
+      102
+     ],
+     "meanHex": "#836966",
+     "hue": 5.2,
+     "sat": 0.219,
+     "val": 0.512,
+     "dE00mean": 30.9,
+     "dE00median": 30.7,
+     "dE00ofMean": 30.4,
+     "rgbDist": 147,
+     "shareDE10": 0,
+     "underRGB": [
+      19,
+      29,
+      50
+     ],
+     "grayEdge": 0.431,
+     "grayUnder": 0.11,
+     "grayDelta": 0.321,
+     "wcagContrast": 3.31
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.133,
+    "roiSVp10": 0.11,
+    "roiCmedian": 13,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 1561,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 30844,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 26.9,
+    "shareChangedOver24": 0.499,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12368,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-844-medium",
+   "attack": "charge",
+   "size": "844x390",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 58,
+   "tris": 53919,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 2152,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 2152,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.4,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      93
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.287,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.79
+    },
+    "arc": null,
+    "side": {
+     "n": 2128,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.5,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      93
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.287,
+     "grayDelta": 0.355,
+     "wcagContrast": 3.79
+    },
+    "end": {
+     "n": 24,
+     "meanRGB": [
+      200,
+      139,
+      141
+     ],
+     "meanHex": "#C88B8D",
+     "hue": 358.2,
+     "sat": 0.308,
+     "val": 0.785,
+     "dE00mean": 18.3,
+     "dE00median": 18,
+     "dE00ofMean": 18,
+     "rgbDist": 119.7,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      67,
+      94
+     ],
+     "grayEdge": 0.596,
+     "grayUnder": 0.269,
+     "grayDelta": 0.327,
+     "wcagContrast": 3.78
+    },
+    "overFloor": {
+     "n": 1573,
+     "meanRGB": [
+      214,
+      156,
+      153
+     ],
+     "meanHex": "#D69C99",
+     "hue": 2.6,
+     "sat": 0.283,
+     "val": 0.838,
+     "dE00mean": 20.7,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.6,
+     "rgbDist": 131.7,
+     "shareDE10": 0,
+     "underRGB": [
+      87,
+      89,
+      110
+     ],
+     "grayEdge": 0.658,
+     "grayUnder": 0.354,
+     "grayDelta": 0.304,
+     "wcagContrast": 2.96
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 579,
+     "meanRGB": [
+      196,
+      140,
+      138
+     ],
+     "meanHex": "#C48C8A",
+     "hue": 2,
+     "sat": 0.297,
+     "val": 0.77,
+     "dE00mean": 18.6,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.6,
+     "rgbDist": 119.3,
+     "shareDE10": 0,
+     "underRGB": [
+      18,
+      27,
+      49
+     ],
+     "grayEdge": 0.596,
+     "grayUnder": 0.105,
+     "grayDelta": 0.491,
+     "wcagContrast": 6.05
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.227,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 1581,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 47775,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 8.5,
+    "shareChangedOver24": 0.172,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 11302,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-844-medium",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 59,
+   "tris": 54055,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 228,
+   "roi": {
+    "all": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.9,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      81,
+      96
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.31,
+     "grayDelta": 0.329,
+     "wcagContrast": 3.58
+    },
+    "arc": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.9,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      81,
+      96
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.31,
+     "grayDelta": 0.329,
+     "wcagContrast": 3.58
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1618,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 3.1,
+     "sat": 0.282,
+     "val": 0.824,
+     "dE00mean": 20.6,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.6,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      89,
+      106
+     ],
+     "grayEdge": 0.65,
+     "grayUnder": 0.352,
+     "grayDelta": 0.298,
+     "wcagContrast": 2.95
+    },
+    "overCrystalGlow": {
+     "n": 304,
+     "meanRGB": [
+      214,
+      175,
+      167
+     ],
+     "meanHex": "#D6AFA7",
+     "hue": 10.5,
+     "sat": 0.219,
+     "val": 0.839,
+     "dE00mean": 26,
+     "dE00median": 26,
+     "dE00ofMean": 25.9,
+     "rgbDist": 154.4,
+     "shareDE10": 0,
+     "underRGB": [
+      100,
+      169,
+      165
+     ],
+     "grayEdge": 0.717,
+     "grayUnder": 0.603,
+     "grayDelta": 0.114,
+     "wcagContrast": 1.39
+    },
+    "overDark": {
+     "n": 860,
+     "meanRGB": [
+      193,
+      139,
+      137
+     ],
+     "meanHex": "#C18B89",
+     "hue": 2.4,
+     "sat": 0.294,
+     "val": 0.758,
+     "dE00mean": 18.9,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.7,
+     "rgbDist": 119.8,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      34,
+      52
+     ],
+     "grayEdge": 0.591,
+     "grayUnder": 0.128,
+     "grayDelta": 0.463,
+     "wcagContrast": 5.53
+    },
+    "overVfx": {
+     "n": 329,
+     "meanRGB": [
+      215,
+      176,
+      167
+     ],
+     "meanHex": "#D7B0A7",
+     "hue": 10.9,
+     "sat": 0.221,
+     "val": 0.842,
+     "dE00mean": 26.2,
+     "dE00median": 26.2,
+     "dE00ofMean": 26.2,
+     "rgbDist": 155,
+     "shareDE10": 0,
+     "underRGB": [
+      103,
+      172,
+      166
+     ],
+     "grayEdge": 0.72,
+     "grayUnder": 0.614,
+     "grayDelta": 0.106,
+     "wcagContrast": 1.36
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.5,
+    "roiCp10": 16.8,
+    "sceneWarmOtherN": 1515,
+    "sceneWarmOtherSVp99": 0.62,
+    "sceneWarmOtherSVmax": 0.678,
+    "sceneWarmOtherCp99": 60.1,
+    "sceneWarmOtherCmax": 64.5,
+    "telegraphFootprintPx": 38784,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 25.9,
+    "shareChangedOver24": 0.87,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12466,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-1672-medium",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 56,
+   "tris": 53479,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1541,
+   "roi": {
+    "all": {
+     "n": 16123,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.6,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.2,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.6,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      89
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.232,
+     "wcagContrast": 2.43
+    },
+    "arc": {
+     "n": 16123,
+     "meanRGB": [
+      156,
+      122,
+      127
+     ],
+     "meanHex": "#9C7A7F",
+     "hue": 351.6,
+     "sat": 0.233,
+     "val": 0.612,
+     "dE00mean": 23.2,
+     "dE00median": 22.3,
+     "dE00ofMean": 21.9,
+     "rgbDist": 131.6,
+     "shareDE10": 0,
+     "underRGB": [
+      64,
+      70,
+      89
+     ],
+     "grayEdge": 0.507,
+     "grayUnder": 0.275,
+     "grayDelta": 0.232,
+     "wcagContrast": 2.43
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 10917,
+     "meanRGB": [
+      166,
+      130,
+      134
+     ],
+     "meanHex": "#A68286",
+     "hue": 352.8,
+     "sat": 0.226,
+     "val": 0.65,
+     "dE00mean": 22,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.4,
+     "rgbDist": 129.5,
+     "shareDE10": 0,
+     "underRGB": [
+      83,
+      86,
+      103
+     ],
+     "grayEdge": 0.541,
+     "grayUnder": 0.339,
+     "grayDelta": 0.202,
+     "wcagContrast": 2.14
+    },
+    "overCrystalGlow": {
+     "n": 269,
+     "meanRGB": [
+      160,
+      152,
+      176
+     ],
+     "meanHex": "#A098B0",
+     "hue": 260.7,
+     "sat": 0.241,
+     "val": 0.707,
+     "dE00mean": 36,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.9,
+     "rgbDist": 166.7,
+     "shareDE10": 0,
+     "underRGB": [
+      73,
+      128,
+      184
+     ],
+     "grayEdge": 0.61,
+     "grayUnder": 0.472,
+     "grayDelta": 0.138,
+     "wcagContrast": 1.53
+    },
+    "overDark": {
+     "n": 4937,
+     "meanRGB": [
+      133,
+      102,
+      107
+     ],
+     "meanHex": "#85666B",
+     "hue": 350.7,
+     "sat": 0.249,
+     "val": 0.523,
+     "dE00mean": 25.1,
+     "dE00median": 25.1,
+     "dE00ofMean": 24.4,
+     "rgbDist": 134.4,
+     "shareDE10": 0,
+     "underRGB": [
+      21,
+      33,
+      51
+     ],
+     "grayEdge": 0.428,
+     "grayUnder": 0.123,
+     "grayDelta": 0.305,
+     "wcagContrast": 3.12
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.137,
+    "roiSVp10": 0.125,
+    "roiCmedian": 14.6,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 5488,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.1,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 226955,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 19.9,
+    "shareChangedOver24": 0.578,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 46686,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-1672-medium",
+   "attack": "sweep",
+   "size": "1672x941",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 56,
+   "tris": 53479,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF7A1A",
+   "maskPx": 18333,
+   "hiddenByLaterPx": 2847,
+   "roi": {
+    "all": {
+     "n": 15486,
+     "meanRGB": [
+      160,
+      129,
+      125
+     ],
+     "meanHex": "#A0817D",
+     "hue": 6,
+     "sat": 0.217,
+     "val": 0.626,
+     "dE00mean": 26.4,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.4,
+     "rgbDist": 140.2,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.529,
+     "grayUnder": 0.295,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "arc": {
+     "n": 14869,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.628,
+     "dE00mean": 26.3,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.7,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.531,
+     "grayUnder": 0.297,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "side": {
+     "n": 617,
+     "meanRGB": [
+      148,
+      117,
+      113
+     ],
+     "meanHex": "#947571",
+     "hue": 5.4,
+     "sat": 0.243,
+     "val": 0.579,
+     "dE00mean": 28.8,
+     "dE00median": 26.8,
+     "dE00ofMean": 27,
+     "rgbDist": 141.6,
+     "shareDE10": 0,
+     "underRGB": [
+      62,
+      65,
+      83
+     ],
+     "grayEdge": 0.482,
+     "grayUnder": 0.259,
+     "grayDelta": 0.224,
+     "wcagContrast": 2.36
+    },
+    "end": null,
+    "overFloor": {
+     "n": 11759,
+     "meanRGB": [
+      169,
+      136,
+      133
+     ],
+     "meanHex": "#A98885",
+     "hue": 6.3,
+     "sat": 0.217,
+     "val": 0.663,
+     "dE00mean": 24.9,
+     "dE00median": 24.2,
+     "dE00ofMean": 24.9,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      92,
+      89,
+      107
+     ],
+     "grayEdge": 0.561,
+     "grayUnder": 0.355,
+     "grayDelta": 0.206,
+     "wcagContrast": 2.13
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3727,
+     "meanRGB": [
+      130,
+      104,
+      102
+     ],
+     "meanHex": "#826866",
+     "hue": 5,
+     "sat": 0.218,
+     "val": 0.51,
+     "dE00mean": 31,
+     "dE00median": 30.6,
+     "dE00ofMean": 31,
+     "rgbDist": 147.4,
+     "shareDE10": 0,
+     "underRGB": [
+      17,
+      28,
+      49
+     ],
+     "grayEdge": 0.429,
+     "grayUnder": 0.107,
+     "grayDelta": 0.323,
+     "wcagContrast": 3.32
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.129,
+    "roiSVp10": 0.11,
+    "roiCmedian": 12.9,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 9109,
+    "sceneWarmOtherSVp99": 0.608,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 59.6,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 179516,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 27.1,
+    "shareChangedOver24": 0.505,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 46419,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-1672-medium",
+   "attack": "charge",
+   "size": "1672x941",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 56,
+   "tris": 53479,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 12549,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 12549,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.4,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.4,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      94
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.288,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.78
+    },
+    "arc": null,
+    "side": {
+     "n": 12371,
+     "meanRGB": [
+      209,
+      152,
+      149
+     ],
+     "meanHex": "#D19895",
+     "hue": 2.5,
+     "sat": 0.287,
+     "val": 0.82,
+     "dE00mean": 20.1,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.1,
+     "rgbDist": 128.5,
+     "shareDE10": 0,
+     "underRGB": [
+      69,
+      73,
+      94
+     ],
+     "grayEdge": 0.642,
+     "grayUnder": 0.288,
+     "grayDelta": 0.354,
+     "wcagContrast": 3.78
+    },
+    "end": {
+     "n": 178,
+     "meanRGB": [
+      197,
+      135,
+      138
+     ],
+     "meanHex": "#C5878A",
+     "hue": 357.6,
+     "sat": 0.316,
+     "val": 0.771,
+     "dE00mean": 18.4,
+     "dE00median": 18.3,
+     "dE00ofMean": 17.4,
+     "rgbDist": 118.9,
+     "shareDE10": 0,
+     "underRGB": [
+      63,
+      66,
+      93
+     ],
+     "grayEdge": 0.583,
+     "grayUnder": 0.264,
+     "grayDelta": 0.319,
+     "wcagContrast": 3.7
+    },
+    "overFloor": {
+     "n": 9256,
+     "meanRGB": [
+      214,
+      156,
+      153
+     ],
+     "meanHex": "#D69C99",
+     "hue": 2.6,
+     "sat": 0.283,
+     "val": 0.838,
+     "dE00mean": 20.6,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.6,
+     "rgbDist": 131.7,
+     "shareDE10": 0,
+     "underRGB": [
+      88,
+      89,
+      110
+     ],
+     "grayEdge": 0.658,
+     "grayUnder": 0.354,
+     "grayDelta": 0.304,
+     "wcagContrast": 2.96
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3293,
+     "meanRGB": [
+      196,
+      140,
+      138
+     ],
+     "meanHex": "#C48C8A",
+     "hue": 2,
+     "sat": 0.297,
+     "val": 0.769,
+     "dE00mean": 18.5,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.6,
+     "rgbDist": 119.1,
+     "shareDE10": 0,
+     "underRGB": [
+      17,
+      26,
+      49
+     ],
+     "grayEdge": 0.595,
+     "grayUnder": 0.102,
+     "grayDelta": 0.492,
+     "wcagContrast": 6.08
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.227,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 9263,
+    "sceneWarmOtherSVp99": 0.608,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 59.6,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 278140,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 8.9,
+    "shareChangedOver24": 0.177,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 39424,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-1672-medium",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "medium",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 57,
+   "tris": 53615,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1400,
+   "roi": {
+    "all": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      80,
+      95
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.309,
+     "grayDelta": 0.33,
+     "wcagContrast": 3.59
+    },
+    "arc": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      152,
+      148
+     ],
+     "meanHex": "#CD9894",
+     "hue": 3.5,
+     "sat": 0.279,
+     "val": 0.805,
+     "dE00mean": 20.7,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 129.8,
+     "shareDE10": 0,
+     "underRGB": [
+      68,
+      80,
+      95
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.309,
+     "grayDelta": 0.33,
+     "wcagContrast": 3.59
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 9503,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 3.1,
+     "sat": 0.282,
+     "val": 0.824,
+     "dE00mean": 20.6,
+     "dE00median": 20.6,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.6,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      89,
+      106
+     ],
+     "grayEdge": 0.65,
+     "grayUnder": 0.352,
+     "grayDelta": 0.298,
+     "wcagContrast": 2.95
+    },
+    "overCrystalGlow": {
+     "n": 1761,
+     "meanRGB": [
+      214,
+      175,
+      167
+     ],
+     "meanHex": "#D6AFA7",
+     "hue": 10.6,
+     "sat": 0.219,
+     "val": 0.839,
+     "dE00mean": 26,
+     "dE00median": 26,
+     "dE00ofMean": 25.9,
+     "rgbDist": 154.4,
+     "shareDE10": 0,
+     "underRGB": [
+      100,
+      169,
+      165
+     ],
+     "grayEdge": 0.717,
+     "grayUnder": 0.603,
+     "grayDelta": 0.114,
+     "wcagContrast": 1.39
+    },
+    "overDark": {
+     "n": 5000,
+     "meanRGB": [
+      193,
+      139,
+      137
+     ],
+     "meanHex": "#C18B89",
+     "hue": 2.3,
+     "sat": 0.294,
+     "val": 0.757,
+     "dE00mean": 18.9,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.7,
+     "rgbDist": 119.7,
+     "shareDE10": 0,
+     "underRGB": [
+      21,
+      33,
+      51
+     ],
+     "grayEdge": 0.59,
+     "grayUnder": 0.123,
+     "grayDelta": 0.466,
+     "wcagContrast": 5.58
+    },
+    "overVfx": {
+     "n": 1912,
+     "meanRGB": [
+      215,
+      176,
+      167
+     ],
+     "meanHex": "#D7B0A7",
+     "hue": 11,
+     "sat": 0.221,
+     "val": 0.842,
+     "dE00mean": 26.2,
+     "dE00median": 26.2,
+     "dE00ofMean": 26.2,
+     "rgbDist": 155,
+     "shareDE10": 0,
+     "underRGB": [
+      103,
+      172,
+      166
+     ],
+     "grayEdge": 0.72,
+     "grayUnder": 0.615,
+     "grayDelta": 0.105,
+     "wcagContrast": 1.36
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.4,
+    "roiCp10": 16.8,
+    "sceneWarmOtherN": 8874,
+    "sceneWarmOtherSVp99": 0.62,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.1,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 225907,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 26,
+    "shareChangedOver24": 0.868,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 41100,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-844-high",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 99,
+   "tris": 122091,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 253,
+   "roi": {
+    "all": {
+     "n": 2757,
+     "meanRGB": [
+      154,
+      120,
+      126
+     ],
+     "meanHex": "#9A787E",
+     "hue": 350.5,
+     "sat": 0.233,
+     "val": 0.607,
+     "dE00mean": 23.2,
+     "dE00median": 22.3,
+     "dE00ofMean": 22.1,
+     "rgbDist": 131.6,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      67,
+      87
+     ],
+     "grayEdge": 0.502,
+     "grayUnder": 0.265,
+     "grayDelta": 0.237,
+     "wcagContrast": 2.47
+    },
+    "arc": {
+     "n": 2757,
+     "meanRGB": [
+      154,
+      120,
+      126
+     ],
+     "meanHex": "#9A787E",
+     "hue": 350.5,
+     "sat": 0.233,
+     "val": 0.607,
+     "dE00mean": 23.2,
+     "dE00median": 22.3,
+     "dE00ofMean": 22.1,
+     "rgbDist": 131.6,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      67,
+      87
+     ],
+     "grayEdge": 0.502,
+     "grayUnder": 0.265,
+     "grayDelta": 0.237,
+     "wcagContrast": 2.47
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1790,
+     "meanRGB": [
+      165,
+      129,
+      134
+     ],
+     "meanHex": "#A58186",
+     "hue": 351.2,
+     "sat": 0.226,
+     "val": 0.647,
+     "dE00mean": 22.1,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.5,
+     "rgbDist": 129.6,
+     "shareDE10": 0,
+     "underRGB": [
+      82,
+      84,
+      103
+     ],
+     "grayEdge": 0.537,
+     "grayUnder": 0.332,
+     "grayDelta": 0.205,
+     "wcagContrast": 2.17
+    },
+    "overCrystalGlow": {
+     "n": 38,
+     "meanRGB": [
+      162,
+      150,
+      176
+     ],
+     "meanHex": "#A296B0",
+     "hue": 267.3,
+     "sat": 0.243,
+     "val": 0.707,
+     "dE00mean": 35.2,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.2,
+     "rgbDist": 164.7,
+     "shareDE10": 0,
+     "underRGB": [
+      76,
+      124,
+      184
+     ],
+     "grayEdge": 0.605,
+     "grayUnder": 0.464,
+     "grayDelta": 0.142,
+     "wcagContrast": 1.56
+    },
+    "overDark": {
+     "n": 929,
+     "meanRGB": [
+      134,
+      103,
+      107
+     ],
+     "meanHex": "#86676B",
+     "hue": 350.7,
+     "sat": 0.246,
+     "val": 0.525,
+     "dE00mean": 25,
+     "dE00median": 24.9,
+     "dE00ofMean": 24.1,
+     "rgbDist": 134.3,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      34,
+      52
+     ],
+     "grayEdge": 0.43,
+     "grayUnder": 0.127,
+     "grayDelta": 0.303,
+     "wcagContrast": 3.11
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.137,
+    "roiSVp10": 0.122,
+    "roiCmedian": 14.7,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 979,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.2,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 38971,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 19.6,
+    "shareChangedOver24": 0.569,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12415,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-844-high",
+   "attack": "sweep",
+   "size": "844x390",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 99,
+   "tris": 122091,
+   "W": 844,
+   "H": 390,
+   "target": "#FF7A1A",
+   "maskPx": 3146,
+   "hiddenByLaterPx": 480,
+   "roi": {
+    "all": {
+     "n": 2666,
+     "meanRGB": [
+      160,
+      129,
+      125
+     ],
+     "meanHex": "#A0817D",
+     "hue": 5.9,
+     "sat": 0.217,
+     "val": 0.627,
+     "dE00mean": 26.4,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.4,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.529,
+     "grayUnder": 0.296,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "arc": {
+     "n": 2558,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.629,
+     "dE00mean": 26.2,
+     "dE00median": 25.3,
+     "dE00ofMean": 25.7,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      75,
+      74,
+      94
+     ],
+     "grayEdge": 0.532,
+     "grayUnder": 0.298,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "side": {
+     "n": 108,
+     "meanRGB": [
+      147,
+      116,
+      113
+     ],
+     "meanHex": "#937471",
+     "hue": 4.4,
+     "sat": 0.245,
+     "val": 0.575,
+     "dE00mean": 29.1,
+     "dE00median": 27.4,
+     "dE00ofMean": 27.5,
+     "rgbDist": 141.8,
+     "shareDE10": 0,
+     "underRGB": [
+      59,
+      63,
+      82
+     ],
+     "grayEdge": 0.479,
+     "grayUnder": 0.25,
+     "grayDelta": 0.229,
+     "wcagContrast": 2.41
+    },
+    "end": null,
+    "overFloor": {
+     "n": 2022,
+     "meanRGB": [
+      169,
+      136,
+      133
+     ],
+     "meanHex": "#A98885",
+     "hue": 6.2,
+     "sat": 0.217,
+     "val": 0.663,
+     "dE00mean": 24.9,
+     "dE00median": 24.4,
+     "dE00ofMean": 24.9,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      92,
+      88,
+      107
+     ],
+     "grayEdge": 0.561,
+     "grayUnder": 0.355,
+     "grayDelta": 0.206,
+     "wcagContrast": 2.13
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 644,
+     "meanRGB": [
+      131,
+      105,
+      102
+     ],
+     "meanHex": "#836966",
+     "hue": 5.1,
+     "sat": 0.219,
+     "val": 0.512,
+     "dE00mean": 30.9,
+     "dE00median": 30.8,
+     "dE00ofMean": 30.4,
+     "rgbDist": 147.1,
+     "shareDE10": 0,
+     "underRGB": [
+      19,
+      29,
+      50
+     ],
+     "grayEdge": 0.431,
+     "grayUnder": 0.11,
+     "grayDelta": 0.321,
+     "wcagContrast": 3.31
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.133,
+    "roiSVp10": 0.11,
+    "roiCmedian": 13,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 1574,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 30844,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 27.2,
+    "shareChangedOver24": 0.499,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12325,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-844-high",
+   "attack": "charge",
+   "size": "844x390",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 99,
+   "tris": 122091,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 2152,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 2152,
+     "meanRGB": [
+      208,
+      151,
+      149
+     ],
+     "meanHex": "#D09795",
+     "hue": 2.2,
+     "sat": 0.287,
+     "val": 0.817,
+     "dE00mean": 20,
+     "dE00median": 20.7,
+     "dE00ofMean": 20,
+     "rgbDist": 127.9,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      70,
+      92
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.276,
+     "grayDelta": 0.363,
+     "wcagContrast": 3.92
+    },
+    "arc": null,
+    "side": {
+     "n": 2128,
+     "meanRGB": [
+      208,
+      151,
+      149
+     ],
+     "meanHex": "#D09795",
+     "hue": 2.2,
+     "sat": 0.287,
+     "val": 0.817,
+     "dE00mean": 20,
+     "dE00median": 20.7,
+     "dE00ofMean": 20,
+     "rgbDist": 128,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      70,
+      92
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.276,
+     "grayDelta": 0.363,
+     "wcagContrast": 3.92
+    },
+    "end": {
+     "n": 24,
+     "meanRGB": [
+      199,
+      138,
+      140
+     ],
+     "meanHex": "#C78A8C",
+     "hue": 357.8,
+     "sat": 0.31,
+     "val": 0.781,
+     "dE00mean": 18.2,
+     "dE00median": 17.7,
+     "dE00ofMean": 17.9,
+     "rgbDist": 119.3,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      64,
+      92
+     ],
+     "grayEdge": 0.592,
+     "grayUnder": 0.256,
+     "grayDelta": 0.336,
+     "wcagContrast": 3.87
+    },
+    "overFloor": {
+     "n": 1561,
+     "meanRGB": [
+      213,
+      155,
+      153
+     ],
+     "meanHex": "#D59B99",
+     "hue": 2.3,
+     "sat": 0.283,
+     "val": 0.835,
+     "dE00mean": 20.6,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.5,
+     "rgbDist": 131.2,
+     "shareDE10": 0,
+     "underRGB": [
+      84,
+      86,
+      108
+     ],
+     "grayEdge": 0.656,
+     "grayUnder": 0.343,
+     "grayDelta": 0.313,
+     "wcagContrast": 3.09
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 591,
+     "meanRGB": [
+      196,
+      140,
+      138
+     ],
+     "meanHex": "#C48C8A",
+     "hue": 1.7,
+     "sat": 0.296,
+     "val": 0.769,
+     "dE00mean": 18.5,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.6,
+     "rgbDist": 119.1,
+     "shareDE10": 0,
+     "underRGB": [
+      16,
+      25,
+      49
+     ],
+     "grayEdge": 0.594,
+     "grayUnder": 0.098,
+     "grayDelta": 0.496,
+     "wcagContrast": 6.11
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.224,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 1594,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.8,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 47742,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 8.5,
+    "shareChangedOver24": 0.172,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 11300,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-844-high",
+   "attack": "slam",
+   "size": "844x390",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 100,
+   "tris": 122227,
+   "W": 844,
+   "H": 390,
+   "target": "#FF3355",
+   "maskPx": 3010,
+   "hiddenByLaterPx": 228,
+   "roi": {
+    "all": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      151,
+      148
+     ],
+     "meanHex": "#CD9794",
+     "hue": 3.2,
+     "sat": 0.278,
+     "val": 0.803,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.3,
+     "rgbDist": 129.5,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      79,
+      94
+     ],
+     "grayEdge": 0.637,
+     "grayUnder": 0.302,
+     "grayDelta": 0.335,
+     "wcagContrast": 3.66
+    },
+    "arc": {
+     "n": 2782,
+     "meanRGB": [
+      205,
+      151,
+      148
+     ],
+     "meanHex": "#CD9794",
+     "hue": 3.2,
+     "sat": 0.278,
+     "val": 0.803,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.3,
+     "rgbDist": 129.5,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      79,
+      94
+     ],
+     "grayEdge": 0.637,
+     "grayUnder": 0.302,
+     "grayDelta": 0.335,
+     "wcagContrast": 3.66
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 1546,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 2.7,
+     "sat": 0.281,
+     "val": 0.824,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.5,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      88,
+      106
+     ],
+     "grayEdge": 0.65,
+     "grayUnder": 0.349,
+     "grayDelta": 0.3,
+     "wcagContrast": 2.97
+    },
+    "overCrystalGlow": {
+     "n": 312,
+     "meanRGB": [
+      212,
+      174,
+      166
+     ],
+     "meanHex": "#D4AEA6",
+     "hue": 10,
+     "sat": 0.218,
+     "val": 0.833,
+     "dE00mean": 25.8,
+     "dE00median": 25.8,
+     "dE00ofMean": 25.9,
+     "rgbDist": 153.4,
+     "shareDE10": 0,
+     "underRGB": [
+      94,
+      164,
+      162
+     ],
+     "grayEdge": 0.712,
+     "grayUnder": 0.583,
+     "grayDelta": 0.128,
+     "wcagContrast": 1.46
+    },
+    "overDark": {
+     "n": 924,
+     "meanRGB": [
+      193,
+      139,
+      137
+     ],
+     "meanHex": "#C18B89",
+     "hue": 2.4,
+     "sat": 0.293,
+     "val": 0.757,
+     "dE00mean": 19,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.7,
+     "rgbDist": 119.9,
+     "shareDE10": 0,
+     "underRGB": [
+      22,
+      33,
+      52
+     ],
+     "grayEdge": 0.591,
+     "grayUnder": 0.127,
+     "grayDelta": 0.464,
+     "wcagContrast": 5.54
+    },
+    "overVfx": {
+     "n": 329,
+     "meanRGB": [
+      213,
+      174,
+      166
+     ],
+     "meanHex": "#D5AEA6",
+     "hue": 10.3,
+     "sat": 0.219,
+     "val": 0.836,
+     "dE00mean": 25.9,
+     "dE00median": 25.9,
+     "dE00ofMean": 25.8,
+     "rgbDist": 153.8,
+     "shareDE10": 0,
+     "underRGB": [
+      97,
+      166,
+      163
+     ],
+     "grayEdge": 0.714,
+     "grayUnder": 0.592,
+     "grayDelta": 0.122,
+     "wcagContrast": 1.44
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.5,
+    "roiCp10": 16.8,
+    "sceneWarmOtherN": 1528,
+    "sceneWarmOtherSVp99": 0.639,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 61.4,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 38784,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     385,
+     151,
+     73,
+     56
+    ],
+    "px": 4144,
+    "meanAbsDiff": 25.5,
+    "shareChangedOver24": 0.87,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.773,
+    "warmOtherCmax": 74.3,
+    "hudWarmSVmax": 0.773,
+    "hudWarmCmax": 74.3,
+    "hudWarmN": 12458,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-1672-high",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "slam"
+   },
+   "calls": 97,
+   "tris": 121651,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1541,
+   "roi": {
+    "all": {
+     "n": 16123,
+     "meanRGB": [
+      154,
+      121,
+      126
+     ],
+     "meanHex": "#9A797E",
+     "hue": 350.5,
+     "sat": 0.233,
+     "val": 0.607,
+     "dE00mean": 23.3,
+     "dE00median": 22.3,
+     "dE00ofMean": 22.1,
+     "rgbDist": 131.9,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      68,
+      87
+     ],
+     "grayEdge": 0.502,
+     "grayUnder": 0.266,
+     "grayDelta": 0.237,
+     "wcagContrast": 2.47
+    },
+    "arc": {
+     "n": 16123,
+     "meanRGB": [
+      154,
+      121,
+      126
+     ],
+     "meanHex": "#9A797E",
+     "hue": 350.5,
+     "sat": 0.233,
+     "val": 0.607,
+     "dE00mean": 23.3,
+     "dE00median": 22.3,
+     "dE00ofMean": 22.1,
+     "rgbDist": 131.9,
+     "shareDE10": 0,
+     "underRGB": [
+      61,
+      68,
+      87
+     ],
+     "grayEdge": 0.502,
+     "grayUnder": 0.266,
+     "grayDelta": 0.237,
+     "wcagContrast": 2.47
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 10515,
+     "meanRGB": [
+      165,
+      129,
+      134
+     ],
+     "meanHex": "#A58186",
+     "hue": 351.2,
+     "sat": 0.226,
+     "val": 0.647,
+     "dE00mean": 22.1,
+     "dE00median": 21.9,
+     "dE00ofMean": 21.5,
+     "rgbDist": 129.6,
+     "shareDE10": 0,
+     "underRGB": [
+      82,
+      84,
+      103
+     ],
+     "grayEdge": 0.537,
+     "grayUnder": 0.332,
+     "grayDelta": 0.205,
+     "wcagContrast": 2.16
+    },
+    "overCrystalGlow": {
+     "n": 269,
+     "meanRGB": [
+      160,
+      152,
+      176
+     ],
+     "meanHex": "#A098B0",
+     "hue": 260.7,
+     "sat": 0.241,
+     "val": 0.707,
+     "dE00mean": 36,
+     "dE00median": 31.2,
+     "dE00ofMean": 30.9,
+     "rgbDist": 166.7,
+     "shareDE10": 0,
+     "underRGB": [
+      73,
+      128,
+      184
+     ],
+     "grayEdge": 0.61,
+     "grayUnder": 0.472,
+     "grayDelta": 0.138,
+     "wcagContrast": 1.53
+    },
+    "overDark": {
+     "n": 5339,
+     "meanRGB": [
+      133,
+      102,
+      107
+     ],
+     "meanHex": "#85666B",
+     "hue": 350.6,
+     "sat": 0.247,
+     "val": 0.522,
+     "dE00mean": 25.1,
+     "dE00median": 25.1,
+     "dE00ofMean": 24.4,
+     "rgbDist": 134.5,
+     "shareDE10": 0,
+     "underRGB": [
+      20,
+      33,
+      51
+     ],
+     "grayEdge": 0.428,
+     "grayUnder": 0.123,
+     "grayDelta": 0.305,
+     "wcagContrast": 3.11
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.137,
+    "roiSVp10": 0.122,
+    "roiCmedian": 14.6,
+    "roiCp10": 13.4,
+    "sceneWarmOtherN": 5490,
+    "sceneWarmOtherSVp99": 0.647,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 62.1,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 226955,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 19.6,
+    "shareChangedOver24": 0.576,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 41224,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-fan-1672-high",
+   "attack": "sweep",
+   "size": "1672x941",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "sweep"
+   },
+   "calls": 97,
+   "tris": 121651,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF7A1A",
+   "maskPx": 18333,
+   "hiddenByLaterPx": 2847,
+   "roi": {
+    "all": {
+     "n": 15486,
+     "meanRGB": [
+      160,
+      129,
+      125
+     ],
+     "meanHex": "#A0817D",
+     "hue": 6,
+     "sat": 0.217,
+     "val": 0.626,
+     "dE00mean": 26.4,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.4,
+     "rgbDist": 140.2,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.529,
+     "grayUnder": 0.295,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "arc": {
+     "n": 14869,
+     "meanRGB": [
+      160,
+      129,
+      126
+     ],
+     "meanHex": "#A0817E",
+     "hue": 6,
+     "sat": 0.216,
+     "val": 0.628,
+     "dE00mean": 26.3,
+     "dE00median": 25.4,
+     "dE00ofMean": 25.7,
+     "rgbDist": 140.1,
+     "shareDE10": 0,
+     "underRGB": [
+      74,
+      74,
+      93
+     ],
+     "grayEdge": 0.531,
+     "grayUnder": 0.297,
+     "grayDelta": 0.234,
+     "wcagContrast": 2.42
+    },
+    "side": {
+     "n": 617,
+     "meanRGB": [
+      146,
+      115,
+      112
+     ],
+     "meanHex": "#927370",
+     "hue": 4.2,
+     "sat": 0.244,
+     "val": 0.572,
+     "dE00mean": 29.3,
+     "dE00median": 27.4,
+     "dE00ofMean": 27.7,
+     "rgbDist": 142.4,
+     "shareDE10": 0,
+     "underRGB": [
+      59,
+      63,
+      82
+     ],
+     "grayEdge": 0.476,
+     "grayUnder": 0.248,
+     "grayDelta": 0.228,
+     "wcagContrast": 2.4
+    },
+    "end": null,
+    "overFloor": {
+     "n": 11755,
+     "meanRGB": [
+      169,
+      136,
+      132
+     ],
+     "meanHex": "#A98884",
+     "hue": 6.3,
+     "sat": 0.217,
+     "val": 0.663,
+     "dE00mean": 24.9,
+     "dE00median": 24.2,
+     "dE00ofMean": 24.6,
+     "rgbDist": 137.9,
+     "shareDE10": 0,
+     "underRGB": [
+      92,
+      88,
+      107
+     ],
+     "grayEdge": 0.561,
+     "grayUnder": 0.355,
+     "grayDelta": 0.206,
+     "wcagContrast": 2.13
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3731,
+     "meanRGB": [
+      130,
+      104,
+      102
+     ],
+     "meanHex": "#826866",
+     "hue": 4.9,
+     "sat": 0.218,
+     "val": 0.51,
+     "dE00mean": 31,
+     "dE00median": 30.6,
+     "dE00ofMean": 31,
+     "rgbDist": 147.4,
+     "shareDE10": 0,
+     "underRGB": [
+      17,
+      28,
+      49
+     ],
+     "grayEdge": 0.429,
+     "grayUnder": 0.106,
+     "grayDelta": 0.323,
+     "wcagContrast": 3.32
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.129,
+    "roiSVp10": 0.11,
+    "roiCmedian": 12.9,
+    "roiCp10": 11.2,
+    "sceneWarmOtherN": 9111,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.6,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 179516,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 27.4,
+    "shareChangedOver24": 0.505,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 41224,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-dash-1672-high",
+   "attack": "charge",
+   "size": "1672x941",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "charge"
+   },
+   "calls": 97,
+   "tris": 121651,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 12549,
+   "hiddenByLaterPx": 0,
+   "roi": {
+    "all": {
+     "n": 12549,
+     "meanRGB": [
+      208,
+      151,
+      149
+     ],
+     "meanHex": "#D09795",
+     "hue": 2.1,
+     "sat": 0.287,
+     "val": 0.817,
+     "dE00mean": 20,
+     "dE00median": 20.7,
+     "dE00ofMean": 20,
+     "rgbDist": 127.9,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      70,
+      92
+     ],
+     "grayEdge": 0.639,
+     "grayUnder": 0.276,
+     "grayDelta": 0.362,
+     "wcagContrast": 3.91
+    },
+    "arc": null,
+    "side": {
+     "n": 12371,
+     "meanRGB": [
+      208,
+      151,
+      149
+     ],
+     "meanHex": "#D09795",
+     "hue": 2.2,
+     "sat": 0.287,
+     "val": 0.817,
+     "dE00mean": 20,
+     "dE00median": 20.7,
+     "dE00ofMean": 20,
+     "rgbDist": 128,
+     "shareDE10": 0,
+     "underRGB": [
+      66,
+      70,
+      92
+     ],
+     "grayEdge": 0.64,
+     "grayUnder": 0.277,
+     "grayDelta": 0.363,
+     "wcagContrast": 3.91
+    },
+    "end": {
+     "n": 178,
+     "meanRGB": [
+      196,
+      134,
+      137
+     ],
+     "meanHex": "#C48689",
+     "hue": 357.1,
+     "sat": 0.318,
+     "val": 0.768,
+     "dE00mean": 18.3,
+     "dE00median": 18,
+     "dE00ofMean": 17.3,
+     "rgbDist": 118.6,
+     "shareDE10": 0,
+     "underRGB": [
+      60,
+      63,
+      91
+     ],
+     "grayEdge": 0.579,
+     "grayUnder": 0.252,
+     "grayDelta": 0.327,
+     "wcagContrast": 3.79
+    },
+    "overFloor": {
+     "n": 9207,
+     "meanRGB": [
+      213,
+      155,
+      153
+     ],
+     "meanHex": "#D59B99",
+     "hue": 2.3,
+     "sat": 0.283,
+     "val": 0.834,
+     "dE00mean": 20.6,
+     "dE00median": 20.8,
+     "dE00ofMean": 20.5,
+     "rgbDist": 131.1,
+     "shareDE10": 0,
+     "underRGB": [
+      84,
+      86,
+      108
+     ],
+     "grayEdge": 0.655,
+     "grayUnder": 0.342,
+     "grayDelta": 0.313,
+     "wcagContrast": 3.1
+    },
+    "overCrystalGlow": null,
+    "overDark": {
+     "n": 3342,
+     "meanRGB": [
+      196,
+      139,
+      138
+     ],
+     "meanHex": "#C48B8A",
+     "hue": 1.7,
+     "sat": 0.297,
+     "val": 0.767,
+     "dE00mean": 18.5,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.3,
+     "rgbDist": 118.9,
+     "shareDE10": 0,
+     "underRGB": [
+      15,
+      25,
+      48
+     ],
+     "grayEdge": 0.593,
+     "grayUnder": 0.095,
+     "grayDelta": 0.498,
+     "wcagContrast": 6.14
+    },
+    "overVfx": null
+   },
+   "vivid": {
+    "roiSVmedian": 0.231,
+    "roiSVp10": 0.224,
+    "roiCmedian": 23,
+    "roiCp10": 22.9,
+    "sceneWarmOtherN": 9265,
+    "sceneWarmOtherSVp99": 0.608,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 59.6,
+    "sceneWarmOtherCmax": 64.8,
+    "telegraphFootprintPx": 277955,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 8.8,
+    "shareChangedOver24": 0.177,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "tick": 80,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 34540,
+    "edgeMostVividOnScreen": false
+   }
+  },
+  {
+   "name": "boss-circle-vfx-1672-high",
+   "attack": "slam",
+   "size": "1672x941",
+   "tier": "high",
+   "setup": {
+    "n": 67,
+    "atk": "slam",
+    "vfx": {
+     "tick": 94,
+     "tele": 1,
+     "cast": null
+    }
+   },
+   "calls": 98,
+   "tris": 121787,
+   "W": 1672,
+   "H": 941,
+   "target": "#FF3355",
+   "maskPx": 17664,
+   "hiddenByLaterPx": 1400,
+   "roi": {
+    "all": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      151,
+      148
+     ],
+     "meanHex": "#CD9794",
+     "hue": 3.2,
+     "sat": 0.278,
+     "val": 0.803,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.3,
+     "rgbDist": 129.5,
+     "shareDE10": 0,
+     "underRGB": [
+      65,
+      78,
+      94
+     ],
+     "grayEdge": 0.637,
+     "grayUnder": 0.301,
+     "grayDelta": 0.336,
+     "wcagContrast": 3.67
+    },
+    "arc": {
+     "n": 16264,
+     "meanRGB": [
+      205,
+      151,
+      148
+     ],
+     "meanHex": "#CD9794",
+     "hue": 3.2,
+     "sat": 0.278,
+     "val": 0.803,
+     "dE00mean": 20.6,
+     "dE00median": 20.4,
+     "dE00ofMean": 20.3,
+     "rgbDist": 129.5,
+     "shareDE10": 0,
+     "underRGB": [
+      65,
+      78,
+      94
+     ],
+     "grayEdge": 0.637,
+     "grayUnder": 0.301,
+     "grayDelta": 0.336,
+     "wcagContrast": 3.67
+    },
+    "side": null,
+    "end": null,
+    "overFloor": {
+     "n": 9095,
+     "meanRGB": [
+      210,
+      154,
+      151
+     ],
+     "meanHex": "#D29A97",
+     "hue": 2.8,
+     "sat": 0.281,
+     "val": 0.824,
+     "dE00mean": 20.6,
+     "dE00median": 20.5,
+     "dE00ofMean": 20.5,
+     "rgbDist": 130.5,
+     "shareDE10": 0,
+     "underRGB": [
+      86,
+      88,
+      106
+     ],
+     "grayEdge": 0.65,
+     "grayUnder": 0.35,
+     "grayDelta": 0.3,
+     "wcagContrast": 2.97
+    },
+    "overCrystalGlow": {
+     "n": 1794,
+     "meanRGB": [
+      212,
+      174,
+      166
+     ],
+     "meanHex": "#D4AEA6",
+     "hue": 9.9,
+     "sat": 0.218,
+     "val": 0.833,
+     "dE00mean": 25.8,
+     "dE00median": 25.8,
+     "dE00ofMean": 25.9,
+     "rgbDist": 153.4,
+     "shareDE10": 0,
+     "underRGB": [
+      94,
+      164,
+      162
+     ],
+     "grayEdge": 0.711,
+     "grayUnder": 0.583,
+     "grayDelta": 0.129,
+     "wcagContrast": 1.47
+    },
+    "overDark": {
+     "n": 5375,
+     "meanRGB": [
+      193,
+      139,
+      137
+     ],
+     "meanHex": "#C18B89",
+     "hue": 2.3,
+     "sat": 0.294,
+     "val": 0.756,
+     "dE00mean": 18.9,
+     "dE00median": 18.6,
+     "dE00ofMean": 18.7,
+     "rgbDist": 119.8,
+     "shareDE10": 0,
+     "underRGB": [
+      21,
+      33,
+      51
+     ],
+     "grayEdge": 0.59,
+     "grayUnder": 0.123,
+     "grayDelta": 0.466,
+     "wcagContrast": 5.57
+    },
+    "overVfx": {
+     "n": 1912,
+     "meanRGB": [
+      213,
+      174,
+      166
+     ],
+     "meanHex": "#D5AEA6",
+     "hue": 10.3,
+     "sat": 0.219,
+     "val": 0.836,
+     "dE00mean": 25.9,
+     "dE00median": 25.9,
+     "dE00ofMean": 25.8,
+     "rgbDist": 153.9,
+     "shareDE10": 0,
+     "underRGB": [
+      97,
+      166,
+      163
+     ],
+     "grayEdge": 0.714,
+     "grayUnder": 0.593,
+     "grayDelta": 0.121,
+     "wcagContrast": 1.44
+    }
+   },
+   "vivid": {
+    "roiSVmedian": 0.224,
+    "roiSVp10": 0.2,
+    "roiCmedian": 22.4,
+    "roiCp10": 16.8,
+    "sceneWarmOtherN": 8876,
+    "sceneWarmOtherSVp99": 0.627,
+    "sceneWarmOtherSVmax": 0.682,
+    "sceneWarmOtherCp99": 60.6,
+    "sceneWarmOtherCmax": 64.7,
+    "telegraphFootprintPx": 225907,
+    "edgeMostVividInScene": false
+   },
+   "bossFace": {
+    "box": [
+     747,
+     365,
+     177,
+     135
+    ],
+    "px": 24030,
+    "meanAbsDiff": 25.6,
+    "shareChangedOver24": 0.866,
+    "shareEdgePx": 0
+   },
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "tick": 94,
+   "screen": {
+    "warmOtherSVmax": 0.784,
+    "warmOtherCmax": 74.7,
+    "hudWarmSVmax": 0.784,
+    "hudWarmCmax": 74.7,
+    "hudWarmN": 41075,
+    "edgeMostVividOnScreen": false
+   }
+  }
+ ],
+ "errors": []
+}

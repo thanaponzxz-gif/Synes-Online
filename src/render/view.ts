@@ -336,12 +336,14 @@ export class View {
     this.time += dt;
     // telegraphs
     const alive = new Set<number>();
+    const boss = world.tele.length ? this.actors.get(this.findBossId()) : undefined; // DES-006 §2: telegraph edge fades under the boss body
     for (const t of world.tele) {
       alive.add(t.id);
       let tv = this.teles.get(t.id);
       if (!tv) tv = this.makeTele(t);
       tv.mat.uniforms.uProg.value = 1 - Math.max(0, t.t) / t.total;
       tv.mat.uniforms.uTime.value = this.time;
+      if (boss?.a.alive) tv.mat.uniforms.uBoss.value.set(boss.root.position.x, boss.root.position.z, boss.a.r); else tv.mat.uniforms.uBoss.value.set(0, 0, 0);
     }
     for (const [id, tv] of this.teles) {
       if (alive.has(id)) continue;
