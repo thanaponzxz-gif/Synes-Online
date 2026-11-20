@@ -16,6 +16,7 @@
 
 ไฟล์ของทีม A: `docs/design/DES-NNN-<หัวข้อ>.md` และบรีฟ asset `docs/handoff/<asset>.md` · ทำงานบน branch `design/<หัวข้อ>` · ขั้นตอนเต็มใน `docs/design/README.md` และ `docs/ASSET_PIPELINE.md`
 ห้ามแก้โค้ดเกม (`shared/`, `src/`, `server/`, `tests/`) และไฟล์ของสายอื่นตาม `docs/OWNERSHIP.md`
+ไฟล์ใน `docs/design/drafts/` เป็น **ร่างทดลองของทีม B** ที่เจ้าของสั่งให้ลองทำ (ADR-009) ใช้ประกอบการออกแบบได้ แต่ไม่ผูกมัด ดีไซน์จริงยังเป็น DES ของทีม A
 
 ## 3. ข้อจำกัดที่ดีไซน์ต้องเคารพ
 - เอนจินคือ Three.js (ADR-001) ไม่ใช่ Godot · server ตัดสินผลต่อสู้และรางวัลด้วย sim แบบ deterministic 30 Hz (ADR-002)
