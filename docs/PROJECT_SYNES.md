@@ -57,7 +57,7 @@
 | อนุมัติลำดับรอบ 2-A → 2-B → 3 | รอ (2-A ทำแล้ว) |
 | อนุมัติแผนรอบ 2-B + ใบสั่งงาน 3 ใบ + ภาพจากโค้ดต้องอนุมัติจากภาพเทียบไหม (`docs/team/round-2B-plan.md` หัวข้อ 4) | รอ |
 | ตัดสิน 3 ข้อที่ขัดกันใน Hybrid Asset Pipeline | **เสร็จ 2026-11-20** (ดู ADR-006) |
-| เล่นบิลด์ล่าสุดบน iPhone แบบเวลาจริงด้วย `#debug` หนึ่งรอบ | **ติด 2026-11-20:** แอป Claude บน iPhone ของเจ้าของขึ้น "This browser isn't supported · Update iOS to open this artifact" (หน้าของ claude.ai เอง เกมยังไม่ถูกโหลด) ทางเลือก: อัปเดต iOS / โฮสต์ static เช่น GitHub Pages (ต้องอนุมัติ) |
+| เล่นบิลด์ล่าสุดบน iPhone แบบเวลาจริงด้วย `#debug` หนึ่งรอบ | **ติด 2026-11-20:** แอป Claude บน iPhone ของเจ้าของขึ้น "This browser isn't supported · Update iOS to open this artifact" (หน้าของ claude.ai เอง เกมยังไม่ถูกโหลด) เปิดใน Safari ก็ขึ้นข้อความเดียวกัน ทางเลือก: อัปเดต iOS / โฮสต์ static เช่น GitHub Pages (ต้องอนุมัติ) |
 | เปิด Share สาธารณะ / ตั้งโฮสต์ (ต้องอนุมัติแยก) | รอ |
 | นำร่อง pipeline: ส่ง prompt ใน `docs/handoff/ui_potion_v01.md` ให้ GPT Image แล้ววางผลใน `assets/_inbox/` | รอ |
 | เลือกโทนภาพจากแกลเลอรี 10 โทน | รอ |
