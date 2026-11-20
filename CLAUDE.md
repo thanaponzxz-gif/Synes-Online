@@ -39,6 +39,8 @@ PM ทำทุกต้นรอบ แล้วบันทึกผลใน�
 - **บีบอัดอัตโนมัติที่ 450,000 token:** ตั้งไว้ใน `.claude/settings.json` (`autoCompactWindow: 450000`)
   มีผลกับทุกเซสชันที่เปิดจาก repo นี้ ทั้งบนคลาวด์และบนเครื่องเจ้าของ
   เซสชันที่ไม่ได้เปิดจาก repo ให้เจ้าของพิมพ์ `/autocompact 450k` หรือตั้ง `CLAUDE_CODE_AUTO_COMPACT_WINDOW=450000` ใน Settings ของ environment
+- **hook หลังบีบอัด:** `.claude/settings.json` → `SessionStart` (matcher `compact`) รัน `tools/hooks/after-compact.cjs`
+  เพื่อใส่กฎ rollover และสถานะ repo กลับเข้า context ทุกครั้งที่ถูกบีบอัด
 - **ขึ้นเซสชันใหม่เมื่อเข้าเงื่อนไขข้อใดข้อหนึ่ง:**
   (ก) เกิดการบีบอัดแล้ว หรือ context เกิน 450k (ดูได้จาก `get_session` → `context_usage`) · (ข) จบรอบงาน · (ค) เริ่มงานกลุ่มใหม่ · (ง) เจ้าของสั่ง
 - **ขั้นตอน** (skill `synes-pm` หัวข้อ D):
