@@ -87,7 +87,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-20 | 🟢 MAIN · Synes Online · รอบ 2-B `session_01A1roa3XQQ2CGqTkeyLjTgy` | ปิดแชตเก่า, เพลย์เทสต์รอบ 3 + ตรวจซ้ำด้วย replay, แก้ 3 เรื่อง, แผน 2-B + ใบสั่งงาน 3 ใบ, Artifact เกม V4, GitHub Pages (iPhone เล่นได้), **กฎเหล็ก ADR-007** + ใบขอออกแบบ REQ-001/002 | `c1a1033`, `b601d38`, `3389f98`, `b142dfa` (gh-pages) และ commit ADR-007 |
+| 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 2-B) `session_01A1roa3XQQ2CGqTkeyLjTgy` | ปิดแชตเก่า, เพลย์เทสต์รอบ 3, แก้ 3 เรื่อง, Artifact V4, GitHub Pages (iPhone เล่นได้), **กฎเหล็ก ADR-007**, REQ-001/002, รับ DES-001, ต้นแบบ 3 สกิล + อัลติล็อก + VFX + คลิป, เทียบคูลดาวน์หลบ, baseline ภาพ/perf | `3389f98`, `b142dfa` (gh-pages), `25faaad`, `d8de018`, `928f12e`, `77f4e18` |
 | 2026-11-20 | ⚪ OLD · Synes · รอบ 2 `session_01A1roa35UvNrsYrEdS6gS8j` (สร้างโดย rollover) | รอบ 2-A (ความชัด) เสร็จ, เพลย์เทสต์รอบ 2, แก้บั๊กจากเพลย์เทสต์, รับกฎ Hybrid Asset Pipeline + มติ 3 ข้อ, ใบสั่งงานนำร่อง, อัปเดต Artifact เกม | `0505958`, `446f21c`, `bc20eb1` และ commit rollover |
 | 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 1–2) `session_01A1roa5LGxnKhAviAP9VGZk` | เพลย์เทสต์ agent, ต้นแบบปรับภาพ, ประชุมทีม, ตั้งกฎ + agent project-synes, บีบอัดที่ 450k, สคริปต์ Remote Control | `main` ล่าสุด, `art/visual-pass-poc` |
 | 2026-11-19 | เซสชันแรก | scaffold, spike, sim/server, slice, QA, ชุดโมเดล Blender, โทน 10 แบบ, Artifact | `f404bac` |
