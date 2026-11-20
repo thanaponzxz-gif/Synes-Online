@@ -10,6 +10,7 @@ import { TIERS, guessTier, loadPref, savePref, AdaptiveResolution, type QualityP
 import { toneById } from './render/tones.ts';
 import { Input } from './input.ts';
 import { Hud } from './ui/hud.ts';
+import { ButtonFade } from './ui/buttonFade.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
 import { Bot } from '../tests/bot.ts';
@@ -25,6 +26,7 @@ const sfx = new Sfx();
 const net = new Net();
 const view = new View(canvas);
 const hud = new Hud();
+const btnFade = new ButtonFade((x, y, z, out) => view.project(x, y, z, out));
 const input = new Input($('#stick-zone'), $('#stick-base'), $('#stick-knob'));
 input.bindButton($('#btn-attack'), 'attack', true);
 input.bindButton($('#btn-dodge'), 'dodge');
@@ -127,6 +129,7 @@ function frame(now: number) {
   try { view.render(world, state === 'playing' ? Math.min(1, acc / TICK) : 1, state === 'paused' ? 0 : dt); }
   catch (err) { if (qaLog.length < 400) qaLog.push({ t: +(world.tick / 30).toFixed(1), e: 'render-error ' + String((err as Error)?.message || err) }); console.error(err); }
   hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out));
+  if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
   if (pref === 'auto' && state === 'playing') { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
   if (Q.has('debug')) {

@@ -132,3 +132,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   #start .card { padding: 8px 18px; }
 }
 @media (prefers-reduced-motion: reduce) { .floater { animation-duration: 0.5s; } }
+/* controls fade while a telegraph / boss / pillar is drawn underneath (see ui/buttonFade.ts); still fully tappable */
+.act, #stick-base { transition: opacity 0.15s; }
+.seethru { opacity: 0.35 !important; }

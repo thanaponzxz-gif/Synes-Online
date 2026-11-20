@@ -31,37 +31,51 @@ async function shot(tag) {
   n++; const file = path.resolve(outDir, `step-${String(n).padStart(3, '0')}${tag ? '-' + tag : ''}.png`);
   await page.waitForTimeout(120); // let the frozen frame render
   await page.screenshot({ path: file });
-  const st = await page.evaluate(() => window.__synes ? { state: window.__synes.state, time: +(window.__synes.world.tick / 30).toFixed(1) } : { state: 'menu' });
+  const st = await page.evaluate(() => window.__synes ? { state: window.__synes.state, time: +(window.__synes.world.tick / 30).toFixed(1), tick: window.__synes.world.tick } : { state: 'menu' });
   // render diagnostics per step (for blank-scene bugs): kept in diag.jsonl only, not shown to the tester
   const d = await page.evaluate(() => { const v = window.__synes?.view; const r = v?.renderer; if (!r) return null; const c = r.domElement, gl = r.getContext();
     return { calls: r.info.render.calls, tris: r.info.render.triangles, px: v.pixelRatio, cw: c.width, ch: c.height, lost: gl.isContextLost(), err: gl.getError(), qaErrors: window.__synesQA.log.filter((x) => x.e.startsWith('render-error')).length }; }).catch((e) => ({ diagError: String(e) }));
   diag.write(JSON.stringify({ step: n, t: st.time, ...d }) + '\n');
-  return { step: n, screenshot: file, gameTime: st.time, overlay: await visibleOverlay() };
+  return { step: n, screenshot: file, gameTime: st.time, tick: st.tick, overlay: await visibleOverlay() };
 }
 async function visibleOverlay() {
   return page.evaluate(() => ['#defeat', '#victory', '#resume-tap', '#rotate', '#paused'].filter((s) => document.querySelector(s)?.classList.contains('show')).map((s) => s.slice(1)));
 }
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Button centers never move: look them up once (before unfreeze) so a tap at t=0 needs no awaited DOM query.
+const btnCache = {};
+async function btnCenters() {
+  for (const [k, sel] of Object.entries(BTN)) if (!btnCache[k]) { const c = await center(sel); if (c) btnCache[k] = c; }
+  return btnCache;
+}
+
 async function act({ move, ms = 500, taps = [] }) {
   ms = Math.max(100, Math.min(3000, ms | 0));
   const stick = { x: W * 0.17, y: H * 0.74 };
   const active = [];
   const send = (type, pts) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: pts });
+  const centers = await btnCenters(); // before unfreeze: lookups must not cost game time
+  const plan = taps.map((b, i) => ({ b, at: taps.length === 1 ? 0 : Math.round((ms * i) / taps.length) }));
+  const tapNow = async (b) => {
+    const c = centers[b]; if (!c) return;
+    const pt = { x: c.x, y: c.y, id: 2 };
+    await send('touchStart', [...active, pt]); await sleep(40); await send('touchEnd', [pt]); // touchEnd lists the points being RELEASED (the old code released the stick instead)
+  };
+  // The page still handles pointer events while the sim is frozen, so set the stick and queue any tap scheduled at t=0
+  // BEFORE unfreezing: the first sim tick then already sees them (CDP touch calls cost ~70 ms each under SwiftShader).
+  if (move && (move[0] || move[1])) {
+    // floating stick: the origin is the touchStart point, so start at `stick` and make ONE move to the target
+    const l = Math.hypot(move[0], move[1]) || 1, R = 52;
+    active.push({ x: stick.x, y: stick.y, id: 1 }); await send('touchStart', [...active]);
+    active[0] = { x: stick.x + (move[0] / l) * R, y: stick.y + (move[1] / l) * R, id: 1 }; await send('touchMove', [...active]);
+  }
+  while (plan.length && plan[0].at === 0) await tapNow(plan.shift().b);
   await unfreeze();
   const t0 = Date.now();
-  if (move && (move[0] || move[1])) {
-    const l = Math.hypot(move[0], move[1]) || 1, R = 52;
-    const tx = stick.x + (move[0] / l) * R, ty = stick.y + (move[1] / l) * R;
-    active.push({ x: stick.x, y: stick.y, id: 1 }); await send('touchStart', [...active]);
-    for (let i = 1; i <= 4; i++) { active[0] = { x: stick.x + (tx - stick.x) * i / 4, y: stick.y + (ty - stick.y) * i / 4, id: 1 }; await send('touchMove', [...active]); }
-  }
-  const plan = taps.map((b, i) => ({ b, at: taps.length === 1 ? 0 : Math.round((ms * i) / taps.length) }));
   for (const p of plan) {
     const wait = p.at - (Date.now() - t0); if (wait > 0) await sleep(wait);
-    const c = BTN[p.b] && await center(BTN[p.b]); if (!c) continue;
-    const pt = { x: c.x, y: c.y, id: 2 };
-    await send('touchStart', [...active, pt]); await sleep(40); await send('touchEnd', [...active]);
+    await tapNow(p.b);
   }
   const rest = ms - (Date.now() - t0); if (rest > 0) await sleep(rest);
   if (active.length) await send('touchEnd', []);

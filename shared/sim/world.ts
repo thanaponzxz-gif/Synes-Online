@@ -1,6 +1,6 @@
 // Synes Online — deterministic gameplay simulation (runs identically on client and server).
 // Rules: no engine/DOM imports, no Math.random/Date, no trig. Fixed tick = 1/30 s.
-import { PLAYER, ENEMIES, TICK, type AttackDef, type EnemyKind } from '../data/tuning.ts';
+import { PLAYER, ENEMIES, TICK, CONE_INNER_R, type AttackDef, type EnemyKind } from '../data/tuning.ts';
 import { LEVEL, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
@@ -484,7 +484,7 @@ export class World {
     if (t.shape === 'cone') {
       const d = len(dx, dz);
       if (d > t.r + pad) return false;
-      if (d < 1.2) return true;
+      if (d < CONE_INNER_R) return true;
       return (dx * t.dx + dz * t.dz) / d >= t.cos;
     }
     const along = dx * t.dx + dz * t.dz;

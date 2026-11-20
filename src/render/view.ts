@@ -6,7 +6,7 @@ import {
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
 import { LEVEL, type Shape } from '../../shared/data/level.ts';
-import { PLAYER } from '../../shared/data/tuning.ts';
+import { PLAYER, CONE_INNER_R } from '../../shared/data/tuning.ts';
 import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenPropMerged, PAL } from './models.ts';
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
@@ -302,7 +302,7 @@ export class View {
     let geo: PlaneGeometry, shape = 0;
     if (t.shape === 'line') { geo = new PlaneGeometry(t.w, t.r); geo.rotateX(-Math.PI / 2); geo.translate(0, 0, -t.r / 2); shape = 2; }
     else { geo = new PlaneGeometry(t.r * 2, t.r * 2); geo.rotateX(-Math.PI / 2); shape = t.shape === 'cone' ? 1 : 0; }
-    const mat = telegraphMaterial(color, shape, t.cos);
+    const mat = telegraphMaterial(color, shape, t.cos, CONE_INNER_R / t.r);
     const m = new Mesh(geo, mat);
     m.position.set(t.x, 0.06 + this.teles.size * 0.004, t.z);
     if (t.shape !== 'circle') m.rotation.y = Math.atan2(-t.dx, -t.dz);

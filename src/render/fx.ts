@@ -72,13 +72,13 @@ export class Rings {
 }
 
 /** Telegraph material: fills with progress, bright pulsing edge. Shape: 0 circle, 1 cone, 2 line. */
-export function telegraphMaterial(color: number, shape: number, cos = 0.5): ShaderMaterial {
+export function telegraphMaterial(color: number, shape: number, cos = 0.5, inner = 0.12): ShaderMaterial {
   return new ShaderMaterial({
     transparent: true, depthWrite: false, depthTest: false, side: DoubleSide,
-    uniforms: { uColor: { value: new Color(color) }, uProg: { value: 0 }, uShape: { value: shape }, uCos: { value: cos }, uTime: { value: 0 }, uAlpha: { value: 1 } },
+    uniforms: { uColor: { value: new Color(color) }, uProg: { value: 0 }, uShape: { value: shape }, uCos: { value: cos }, uInner: { value: inner }, uTime: { value: 0 }, uAlpha: { value: 1 } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: `
-      uniform vec3 uColor; uniform float uProg; uniform float uShape; uniform float uCos; uniform float uTime; uniform float uAlpha; varying vec2 vUv;
+      uniform vec3 uColor; uniform float uProg; uniform float uShape; uniform float uCos; uniform float uInner; uniform float uTime; uniform float uAlpha; varying vec2 vUv;
       void main(){
         float pulse = 0.75 + 0.25 * sin(uTime * (8.0 + 22.0 * uProg));
         float a = 0.0; float edge = 0.0; float fill = 0.0;
@@ -87,7 +87,7 @@ export function telegraphMaterial(color: number, shape: number, cos = 0.5): Shad
           edge = smoothstep(0.86, 0.95, d); fill = step(d, uProg);
         } else if (uShape < 1.5) {
           vec2 p = vUv * 2.0 - 1.0; float d = length(p); if (d > 1.0) discard;
-          float c = d > 0.001 ? p.y / d : 1.0; if (c < uCos && d > 0.12) discard;
+          float c = d > 0.001 ? p.y / d : 1.0; if (c < uCos && d > uInner) discard;
           float ang = clamp((c - uCos) / max(0.0001, 1.0 - uCos), 0.0, 1.0);
           edge = max(smoothstep(0.88, 0.96, d), 1.0 - smoothstep(0.0, 0.07, ang)); fill = step(d, uProg);
         } else {

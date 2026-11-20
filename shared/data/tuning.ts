@@ -16,6 +16,9 @@ export const PLAYER = {
   potion: { charges: 2, heal: 45, dur: 0.6 },
 };
 
+/** Cone telegraphs also hit everything within this radius (m) of the origin, whatever the angle. Renderer draws the same disc. */
+export const CONE_INNER_R = 1.2;
+
 export type AttackShape = 'circle' | 'cone' | 'line';
 export interface AttackDef { id: string; nameTh: string; shape: AttackShape; windup: number; dmg: number; r: number; w?: number; tipTh: string; }
 
