@@ -1,0 +1,4 @@
+{"profile":"android-low","tier":"low","readyMs":2982,"firstPlayMs":3755,"transferKB":839,"requests":12,"fpsAvg":23,"endPixelRatio":0.6,"drawCalls":41,"tris":40169,"heapMB":17.8,"kit":true,"errors":0}
+{"profile":"android-mid","tier":"low","readyMs":865,"firstPlayMs":1420,"transferKB":839,"requests":12,"fpsAvg":20.9,"endPixelRatio":0.6,"drawCalls":41,"tris":40169,"heapMB":15,"kit":true,"errors":0}
+{"profile":"iphone-class","tier":"low","readyMs":783,"firstPlayMs":1137,"transferKB":839,"requests":12,"fpsAvg":26.6,"endPixelRatio":0.6,"drawCalls":41,"tris":40169,"heapMB":16.4,"kit":true,"errors":0}
+{"profile":"pc","tier":"medium","readyMs":193,"firstPlayMs":426,"transferKB":839,"requests":12,"fpsAvg":16.5,"endPixelRatio":0.6,"drawCalls":43,"tris":59129,"heapMB":16,"kit":true,"errors":0}

@@ -2,7 +2,7 @@
 // otherwise builds procedural stand-ins with the same part names so animation code is identical.
 import {
   Group, Mesh, Object3D, MeshLambertMaterial, MeshBasicMaterial, SphereGeometry, CylinderGeometry, ConeGeometry, BoxGeometry,
-  IcosahedronGeometry, OctahedronGeometry, TorusGeometry, CapsuleGeometry, DodecahedronGeometry, Color, type Material, BufferGeometry,
+  IcosahedronGeometry, OctahedronGeometry, TorusGeometry, CapsuleGeometry, DodecahedronGeometry, Color, type Material, BufferGeometry, BufferAttribute,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -44,6 +44,7 @@ export async function loadKit(url: string, onProgress?: (f: number) => void): Pr
       }
       m.material = swap.get(src)!;
     });
+    bakeKit(kit);
     return true;
   } catch (e) {
     console.warn('[synes] kit GLB unavailable, using procedural models', e);
@@ -52,6 +53,73 @@ export async function loadKit(url: string, onProgress?: (f: number) => void): Pr
   }
 }
 export const kitLoaded = () => !!kit;
+
+// Draw-call batching of kit meshes (perf only, the image must not change).
+// Sibling meshes under one node are merged into one mesh. Colour and emissive light are baked per vertex (`aCol`, `aEm`) and
+// drawn by one shared Lambert material: diffuse * vColor and emissive = aEm, with aEm = emissive * emissiveIntensity, which are
+// the same numbers the per-mesh materials fed the shader. Vertices are not moved: every kit mesh has an identity local
+// transform, so the merged geometry sits in the same parent space as the originals.
+/** Lambert with per-vertex emissive (`aEm`, already multiplied by the intensity). `emissive` is white so the uniform is 1. */
+class BakedLambert extends MeshLambertMaterial {
+  constructor() { super({ color: 0xffffff, flatShading: true, emissive: 0xffffff }); }
+  onBeforeCompile(sh: any) {
+    // `flat`: every vertex of a triangle carries the same value, so no interpolation rounding (the result equals the uniform path)
+    sh.vertexShader = 'attribute vec3 aCol;\nattribute vec3 aEm;\nflat varying vec3 vCol;\nflat varying vec3 vEm;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n\tvCol = aCol; vEm = aEm;');
+    sh.fragmentShader = 'flat varying vec3 vCol;\nflat varying vec3 vEm;\n' + sh.fragmentShader
+      .replace('vec4 diffuseColor = vec4( diffuse, opacity );', 'vec4 diffuseColor = vec4( diffuse * vCol, opacity );')
+      .replace('vec3 totalEmissiveRadiance = emissive;', 'vec3 totalEmissiveRadiance = emissive * vEm;');
+  }
+  customProgramCacheKey() { return 'bakedLambert'; }
+}
+const BAKED_NAME = /_geo(_\d+)?$/;
+let bakedMat: BakedLambert | null = null;
+/** merged geometry -> the original parts (Object3D.clone copies userData through JSON, so this cannot live there) */
+const bakedParts = new WeakMap<BufferGeometry, { geometry: BufferGeometry; mat: Material; order: number }[]>();
+function bakeEligible(o: Object3D): o is Mesh {
+  const m = o as Mesh;
+  if (!m.isMesh || (m as any).isInstancedMesh || (m as any).isSkinnedMesh || o.children.length || !BAKED_NAME.test(o.name)) return false;
+  const mat = m.material as MeshLambertMaterial;
+  if (Array.isArray(mat) || !mat.isMeshLambertMaterial || mat.map || mat instanceof BakedLambert || mat.transparent || mat.opacity !== 1 || mat.side !== 0) return false;
+  return o.position.lengthSq() === 0 && o.quaternion.w === 1 && o.scale.x === 1 && o.scale.y === 1 && o.scale.z === 1;
+}
+// The boss is faded and its crystals pulse through emissiveIntensity (View.animateActor): it keeps its separate meshes.
+const KEEP_SEPARATE = new Set(['prismback']);
+// Pillars and gates are faded by View.addOccluder with per-mesh transparency, which blends overlapping parts of one merged mesh
+// differently: they keep their separate meshes and get a hidden merged twin that the view shows while they are opaque.
+const TWIN = new Set(['crystal_pillar', 'crystal_gate']);
+function bakeKit(root: Object3D) {
+  let seq = 0; root.traverse((o) => { if ((o as Mesh).isMesh) o.userData.seq = seq++; }); // original mesh order, see flattenPropMerged
+  bakedMat ??= new BakedLambert();
+  root.traverse((parent) => {
+    let twin = false;
+    for (let p: Object3D | null = parent; p; p = p.parent) { if (KEEP_SEPARATE.has(p.name)) return; if (TWIN.has(p.name)) twin = true; }
+    const list = parent.children.filter(bakeEligible);
+    if (list.length < 2) return;
+    // Triangles of one mesh are drawn in index order, separate meshes in material.id order: keep that order inside the merged
+    // mesh so exactly coplanar faces of different parts (e.g. a rock and its moss cap) resolve the same way as before.
+    // (Pillars and gates are drawn with one cloned material per mesh, made in traversal order: that is their order.)
+    list.sort((a, b) => (twin ? 0 : (a.material as Material).id - (b.material as Material).id) || a.userData.seq - b.userData.seq);
+    const geos = list.map((m) => {
+      const g = m.geometry.index ? m.geometry.toNonIndexed() : m.geometry.clone();
+      for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal') g.deleteAttribute(k);
+      const mat = m.material as MeshLambertMaterial, col = mat.color, e = mat.emissive, k = mat.emissiveIntensity;
+      const n = g.getAttribute('position').count, c = new Float32Array(n * 3), em = new Float32Array(n * 3);
+      for (let i = 0; i < n; i++) {
+        c[i * 3] = col.r; c[i * 3 + 1] = col.g; c[i * 3 + 2] = col.b;
+        em[i * 3] = e.r * k; em[i * 3 + 1] = e.g * k; em[i * 3 + 2] = e.b * k;
+      }
+      g.setAttribute('aCol', new BufferAttribute(c, 3)); g.setAttribute('aEm', new BufferAttribute(em, 3));
+      return g;
+    });
+    const merged = mergeGeometries(geos, false);
+    if (!merged) return;
+    const out = new Mesh(merged, bakedMat!); out.name = list[0].name; out.castShadow = true; out.receiveShadow = false;
+    bakedParts.set(merged, list.map((m, i) => ({ geometry: geos[i], mat: m.material as Material, order: m.userData.seq as number })));
+    if (twin) { out.name += '_baked'; out.userData.twin = true; out.visible = false; }
+    else for (const m of list) parent.remove(m);
+    parent.add(out);
+  });
+}
 function fromKit(name: string): Object3D | null {
   if (!kit) return null;
   const n = kit.getObjectByName(name);
@@ -186,30 +254,47 @@ export function makeProp(name: string): Object3D {
 }
 
 /** Collect (geometry, material, local matrix) for every mesh under a prop — used to build InstancedMesh batches. */
-export function flattenProp(name: string): { geometry: BufferGeometry; material: Material; matrix: import('three').Matrix4 }[] {
+export interface OrigMat { mat: Material; order: number }
+/** One entry per original (pre-batching) mesh of a prop: kit meshes that bakeKit merged are expanded back into their parts. */
+export function flattenProp(name: string): { geometry: BufferGeometry; material: Material; matrix: Matrix4; orig: OrigMat }[] {
   const root = makeProp(name);
   root.updateMatrixWorld(true);
-  const out: { geometry: BufferGeometry; material: Material; matrix: import('three').Matrix4 }[] = [];
-  root.traverse((o) => { const m = o as Mesh; if (m.isMesh) out.push({ geometry: m.geometry, material: m.material as Material, matrix: m.matrixWorld.clone() }); });
+  const out: { geometry: BufferGeometry; material: Material; matrix: Matrix4; orig: OrigMat }[] = [];
+  let i = 0;
+  root.traverse((o) => {
+    const m = o as Mesh;
+    if (!m.isMesh) return;
+    const members = bakedParts.get(m.geometry);
+    if (members) for (const p of members) out.push({ geometry: p.geometry, material: m.material as Material, matrix: m.matrixWorld.clone(), orig: { mat: p.mat, order: p.order } });
+    else out.push({ geometry: m.geometry, material: m.material as Material, matrix: m.matrixWorld.clone(), orig: { mat: m.material as Material, order: (m.userData.seq as number | undefined) ?? i } });
+    i++;
+  });
   return out;
 }
 
-/** Same as flattenProp but merges all parts that share a material into one geometry → one draw call per material per prop type. */
-export function flattenPropMerged(name: string): { geometry: BufferGeometry; material: Material; matrix: Matrix4 }[] {
-  const byMat = new Map<Material, BufferGeometry[]>();
-  for (const p of flattenProp(name)) {
+/**
+ * Same as flattenProp but merges all parts that share a material into one geometry → one draw call per material per prop type.
+ * `rank` (shared across props, filled here) numbers the original materials in order of first use; the parts of a merged
+ * geometry are laid out in that order, which is the order the separate per-material meshes used to be drawn in.
+ */
+export function flattenPropMerged(name: string, rank: Map<Material, number> = new Map()): { geometry: BufferGeometry; material: Material; matrix: Matrix4; rank: number }[] {
+  const parts = flattenProp(name);
+  for (const p of [...parts].sort((x, y) => x.orig.order - y.orig.order)) if (!rank.has(p.orig.mat)) rank.set(p.orig.mat, rank.size);
+  parts.sort((x, y) => rank.get(x.orig.mat)! - rank.get(y.orig.mat)!);
+  const byMat = new Map<Material, { gs: BufferGeometry[]; rank: number }>();
+  for (const p of parts) {
     let g = p.geometry.clone(); g.applyMatrix4(p.matrix);
     if (g.index) g = g.toNonIndexed();
-    for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal') g.deleteAttribute(k);
+    for (const k of Object.keys(g.attributes)) if (k !== 'position' && k !== 'normal' && k !== 'aCol' && k !== 'aEm') g.deleteAttribute(k);
     g.morphAttributes = {};
-    if (!byMat.has(p.material)) byMat.set(p.material, []);
-    byMat.get(p.material)!.push(g);
+    let e = byMat.get(p.material); if (!e) byMat.set(p.material, (e = { gs: [], rank: rank.get(p.orig.mat)! }));
+    e.gs.push(g);
   }
-  const out: { geometry: BufferGeometry; material: Material; matrix: Matrix4 }[] = [];
-  for (const [material, gs] of byMat) {
+  const out: { geometry: BufferGeometry; material: Material; matrix: Matrix4; rank: number }[] = [];
+  for (const [material, { gs, rank: r }] of byMat) {
     const merged = gs.length === 1 ? gs[0] : mergeGeometries(gs, false);
-    if (merged) out.push({ geometry: merged, material, matrix: new Matrix4() });
-    else for (const g of gs) out.push({ geometry: g, material, matrix: new Matrix4() }); // attribute mismatch fallback
+    if (merged) out.push({ geometry: merged, material, matrix: new Matrix4(), rank: r });
+    else for (const g of gs) out.push({ geometry: g, material, matrix: new Matrix4(), rank: r }); // attribute mismatch fallback
   }
   return out;
 }
