@@ -72,3 +72,14 @@ FPS บน GPU ซอฟต์แวร์สูงกว่า 1.25–2× แ�
   - บรีฟ DRAFT ที่ Claude เขียน 4 ใบ (`ui_potion_v01`, `char_kit_outline_v01`, `fx_boss_defeat_v01`, `fx_dodge_trail_v01`)
   - ส่วนดีไซน์ในแผนรอบ 2-B
 - **ขั้นตอนและไฟล์:** `docs/design/README.md`
+
+## ADR-008: ระบบเรียนรู้ต่อเนื่องและองค์ความรู้ร่วมของ agent · 2026-11-21
+- **ที่มา:** คำสั่งเจ้าของ "AI Continuous Learning & Workflow Optimization"
+- **กฎ:** เทคนิคหรือเครื่องมือใหม่ต้องผ่านวงจร 7 ขั้น (ตรวจแหล่งทางการ → เทียบของเดิม → ทดลองบน branch `exp/<หัวข้อ>` → วัดคุณภาพ/เวลา/เงิน/token → QA → ใช้จริงเมื่อได้รับอนุมัติ → บันทึกบทเรียน)
+  ความรู้เก็บใน `docs/knowledge/` 4 ไฟล์ (PLAYBOOK, TOOL_REGISTRY, EXPERIMENT_RESULTS, LESSONS_LEARNED) และอ้างอิงจาก CLAUDE.md ข้อ 7 และ `AGENTS.md` (ไฟล์ใหม่สำหรับ Codex)
+- **การปรับให้ตรงกับ Synes:**
+  - pipeline ในคำสั่งที่จบที่ Godot ใช้ Three.js แทน (ADR-001, มติ ข-1) ไม่เปลี่ยนเอนจิน
+  - "Art Director" ในคำสั่ง = ทีม A + เจ้าของ (ADR-007) ทีม B ประเมินเครื่องมือได้เฉพาะด้านเทคนิคและ license
+  - ไฟล์ความรู้**ไม่ `@import`** เข้า CLAUDE.md เพื่อไม่เพิ่ม token ทุกเซสชัน
+  - ไม่ใช้ agent teams (ใช้ token ราว 7 เท่า) และไม่เปิด agent แยกทุกบทบาท บทบาทเป็นหมวกงาน
+- **ยังไม่ได้ใช้ (รอเจ้าของ):** asset สำเร็จรูปในเกม (ขัด PROJECT_SYNES ข้อ 1), Tripo แบบเสียเงิน, Hunyuan3D (ต้องมี GPU + เรื่องพื้นที่ใน license), Mixamo (บัญชีภายนอก + ห้ามแจกไฟล์ดิบใน repo สาธารณะ), meshopt (ติดตั้งเครื่องมือ), ลดขนาด CLAUDE.md (EXP-101)

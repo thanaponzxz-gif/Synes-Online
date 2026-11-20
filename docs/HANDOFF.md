@@ -1,5 +1,16 @@
 # Handoff: Synes Online
 
+## ระบบเรียนรู้ต่อเนื่อง ADR-008 · 2026-11-21 · แชตโปรเจค Synes
+**คำสั่งเจ้าของ:** "AI Continuous Learning & Workflow Optimization" (ให้ทุกฝ่ายศึกษาเทคนิคจากชุมชน แล้วนำมาใช้อย่างเป็นระบบ)
+**ทำแล้ว (เอกสารอย่างเดียว ไม่แตะโค้ดเกม):**
+- `docs/knowledge/AI_DEVELOPMENT_PLAYBOOK.md` (วงจร 7 ขั้น, บทบาท → ใครทำจริง, โมเดล/effort, ข้อเท็จจริงเรื่อง token, pipeline asset ที่แปลงเป็น Three.js, DevOps, ด่านลิขสิทธิ์, infra แบบศึกษาอย่างเดียว)
+- `docs/knowledge/TOOL_REGISTRY.md` (สถานะ + license/ราคาที่ตรวจจากแหล่งทางการ 2026-11-21), `EXPERIMENT_RESULTS.md` (EXP-001–005 ย้อนหลัง + EXP-101–105 ที่เสนอ), `LESSONS_LEARNED.md` (L-001–L-019)
+- `AGENTS.md` ใหม่ (สำหรับ Codex/ทีม A), CLAUDE.md ข้อ 1.5 + ข้อ 7, ADR-008, OWNERSHIP 2 แถว, PROJECT_SYNES ข้อ 3/5/7, skill `synes-pm` (อ่านบทเรียนต้นรอบ/เขียนท้ายรอบ)
+**ผลทดสอบ:** `npm test` 62/62 (ไม่มีโค้ดเปลี่ยน) · typecheck ผ่าน
+**พบระหว่างตรวจ:** merge `b5d20dc` (DES-002 HUD skin) ยังไม่มีส่วน handoff ของตัวเองในไฟล์นี้ รายละเอียดอยู่ใน `docs/design/DES-002-teamB.md`
+**รอเจ้าของ:** asset สำเร็จรูป CC0 ใช้ได้แค่ไหน · EXP-102 (Tripo แบบเสียเงิน หรือรุ่น GPU) · EXP-101 ลดขนาดไฟล์ที่โหลดทุกเซสชัน · EXP-103 ติดตั้ง meshopt
+**ขั้นถัดไปควรใช้โมเดล:** ตัดสิน/วางแผนการทดลอง **Opus** · ลงมือ EXP-101/103/105 **Sonnet**
+
 ## Rollover รอบ 2-B → รอบ 2-B (ต่อ) · 2026-11-20
 **เหตุผล:** context ของแชตนี้ 494k เกินเกณฑ์ 450k (CLAUDE.md ข้อ 5 ก)
 แชตนี้เริ่มที่ `/home/user` ไม่ใช่โฟลเดอร์ repo เลยน่าจะไม่ได้อ่าน `autoCompactWindow` จาก `.claude/settings.json` (get_session แสดง `source: model-default`, 980k) ยังไม่ยืนยันสาเหตุ

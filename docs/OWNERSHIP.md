@@ -10,6 +10,8 @@
 | ผู้จัดการโปรเจค Synes (PM) | `main` | `CLAUDE.md`, `docs/PROJECT_SYNES.md`, `docs/HANDOFF.md`, `docs/team/**`, `docs/ASSET_PIPELINE.md`, `docs/handoff/**`, `.claude/agents/**`, `.claude/skills/**` และเป็นคนเดียวที่ merge เข้า `main` |
 | **ทีม A: GPT Codex** (ADR-007, เจ้าของส่งต่อ หรือ commit บน branch `design/<หัวข้อ>`) | `design/<หัวข้อ>` | `docs/design/DES-*.md` และบรีฟ asset ใน `docs/handoff/<asset>.md` (PM ดูแลเฉพาะ README และตารางสถานะ) |
 | inbox asset (เจ้าของ / GPT / Tripo วางไฟล์) | `main` | `assets/_inbox/**` (Claude ย้ายออกเมื่อ APPROVED) |
+| องค์ความรู้ร่วม (ADR-008) | `main` | `docs/knowledge/**`, `AGENTS.md` เป็นของ PM · สายอื่นเพิ่มบทเรียน/ผลทดลองของตัวเองได้ทีละบรรทัด แล้ว PM merge |
+| การทดลอง (ADR-008) | `exp/<หัวข้อ>` | เฉพาะไฟล์ที่ระบุในแผน EXP ห้าม merge จนกว่าผ่าน QA และได้รับอนุมัติ |
 
 ไฟล์ที่ใช้ร่วมกัน (`docs/ASSETS.md`, `docs/HANDOFF.md`, `package.json`) ให้แก้เฉพาะส่วนของตัวเอง แล้ว merge เข้า `main` ทีละสายงาน
 ทุกเซสชันต้องเริ่มด้วย `git fetch && git status && git log --oneline -5` และจบด้วย handoff ใน `docs/HANDOFF.md`
