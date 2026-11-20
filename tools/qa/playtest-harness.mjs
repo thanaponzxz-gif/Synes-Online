@@ -69,6 +69,7 @@ async function handle(route, body) {
     browser = await chromium.launch({ args: LAUNCH_ARGS });
     ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
     page = await ctx.newPage(); cdp = await ctx.newCDPSession(page); n = 0;
+    page.on('pageerror', (e) => actions.write(JSON.stringify({ at: new Date().toISOString(), pageerror: String(e.message || e) }) + '\n'));
     await page.goto(url, { waitUntil: 'load' });
     await page.waitForSelector('#btn-start:not([disabled])', { timeout: 30000 });
     const title = await shot('title');

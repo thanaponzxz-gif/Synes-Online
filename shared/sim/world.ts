@@ -533,7 +533,7 @@ export class World {
         if (e.kind === 'prismback') { p.x += (dx / d) * push; p.z += (dz / d) * push; }
         else { p.x += (dx / d) * push * 0.5; p.z += (dz / d) * push * 0.5; e.x -= (dx / d) * push * 0.5; e.z -= (dz / d) * push * 0.5; }
       }
-      if (e.kind === 'prismback') { [e.x, e.z] = this.clampArena(e.x, e.z, e.r); this.pushFromPillars(e); }
+      if (e.kind === 'prismback') { this.pushFromPillars(e); [e.x, e.z] = this.clampArena(e.x, e.z, e.r); }
       else [e.x, e.z] = this.clampWalk(e.x, e.z, e.r);
     }
     this.pushFromPillars(p);

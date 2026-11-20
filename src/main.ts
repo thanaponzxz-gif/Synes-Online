@@ -124,7 +124,8 @@ function frame(now: number) {
     }
     if (steps === 8) acc = 0; // spiral-of-death guard on very slow frames
   }
-  view.render(world, state === 'playing' ? Math.min(1, acc / TICK) : 1, state === 'paused' ? 0 : dt);
+  try { view.render(world, state === 'playing' ? Math.min(1, acc / TICK) : 1, state === 'paused' ? 0 : dt); }
+  catch (err) { if (qaLog.length < 400) qaLog.push({ t: +(world.tick / 30).toFixed(1), e: 'render-error ' + String((err as Error)?.message || err) }); console.error(err); }
   hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out));
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
   if (pref === 'auto' && state === 'playing') { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }

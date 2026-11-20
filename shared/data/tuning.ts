@@ -36,7 +36,8 @@ export const ENEMIES = {
     attacks: {
       sweep: { id: 'sweep', nameTh: 'กวาดเขา', shape: 'cone', windup: 0.95, dmg: 18, r: 5.2, w: 0.5, tipTh: 'รูปพัดด้านหน้าบอส ให้หลบไปด้านข้างหรือด้านหลังบอส' } as AttackDef,
       slam: { id: 'slam', nameTh: 'กระแทกปริซึม', shape: 'circle', windup: 1.25, dmg: 26, r: 4.6, tipTh: 'วงทองรอบตัวบอส ให้วิ่งออกนอกวง หรือกด ↯ ตอนวงเต็ม' } as AttackDef,
-      charge: { id: 'charge', nameTh: 'พุ่งคริสตัล', shape: 'line', windup: 1.0, dmg: 24, r: 18, w: 3.0, tipTh: 'ยืนหน้าเสาคริสตัลแล้วหลบด้านข้าง บอสจะชนเสาและมึนนาน' } as AttackDef,
+      charge: { id: 'charge', nameTh: 'พุ่งคริสตัล', shape: 'line', windup: 1.0, dmg: 24, r: 18, w: 4.64, // = 2×(boss r 1.9 + player r 0.42): drawn width == hit width
+        tipTh: 'ยืนหน้าเสาคริสตัลแล้วหลบด้านข้าง บอสจะชนเสาและมึนนาน' } as AttackDef,
       shard: { id: 'shard', nameTh: 'ฝนผลึก', shape: 'circle', windup: 1.0, dmg: 12, r: 1.5, tipTh: 'วงเล็กตกตามตำแหน่งคุณ ให้เคลื่อนที่ต่อเนื่อง อย่ายืนนิ่ง' } as AttackDef,
     },
   },

@@ -85,6 +85,10 @@ describe('fairness constraints (mobile reaction budget)', () => {
   it('phase-2 follow-up charge warns longer than a normal charge', () => {
     expect(ENEMIES.prismback.followChargeWindup).toBeGreaterThan(ENEMIES.prismback.attacks.charge.windup);
   });
+  it('boss charge: the drawn line is as wide as the body that actually hits (round-2 playtest, step 107–108)', () => {
+    const P = ENEMIES.prismback;
+    expect(P.attacks.charge.w! / 2).toBeGreaterThanOrEqual(P.radius + PLAYER.radius - 0.01);
+  });
   it('dodge cooldown is shorter than the shortest windup (always possible to react)', () => {
     expect(PLAYER.dodge.cooldown).toBeLessThan(0.65);
   });

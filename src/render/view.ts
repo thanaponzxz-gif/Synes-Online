@@ -159,6 +159,12 @@ export class View {
         else if (r < 0.245) add('mushroom_glow', x, z, 0.8 + rnd() * 0.6, rot);
       } else if (d >= 16 && r < 0.05) add('tree_pine', x, z, 1 + rnd() * 0.5, rot);
     }
+    // arena rim: a ring of rocks/crystals just outside the walkable edge so the boundary reads as a wall (render only; entry gap to the south)
+    { const A2 = LEVEL.walkable.find((s) => s.id === 'arena')! as Extract<Shape, { type: 'circle' }>;
+      const n = 30;
+      for (let i = 0; i < n; i++) { const ang = (i / n) * Math.PI * 2, x = A2.x + Math.cos(ang) * (A2.r + 0.7), z = A2.z + Math.sin(ang) * (A2.r + 0.7);
+        if (Math.abs(x - A2.x) < 3.6 && z > A2.z) continue;
+        add(i % 3 === 0 ? 'crystal_cluster' : 'rock_a', x, z, 0.9 + rnd() * 0.4, rnd() * 6.28); } }
     const faded = new Map<Material, Material>();
     for (const [name, mats] of Object.entries(place)) {
       for (const part of flattenPropMerged(name)) {
@@ -210,6 +216,9 @@ export class View {
       parts.prismback_shell?.traverse((o) => { const m = o as Mesh; if (m.isMesh) m.material = (m.material as Material).clone(); });
     }
     if (a.kind === 'prismback') this.addOccluder(root, a.r, 3.6, a);
+    if (a.kind === 'player') { // transparent pass after telegraphs (opacity 1): the player is never tinted/hidden by a warning area
+      model.traverse((o) => { const m = o as Mesh; if (!m.isMesh) return; const own = (m.material as Material).clone(); own.transparent = true; own.depthWrite = true; m.material = own; m.renderOrder = 13; });
+    }
     const shadow = blobShadow(a.r); root.add(shadow);
     const stars = new Group();
     for (let i = 0; i < 3; i++) { const s = new Mesh(starGeo(), new MeshBasicMaterial({ color: PAL.gold, transparent: true, depthWrite: false, depthTest: false })); s.renderOrder = 11; stars.add(s); }
@@ -389,9 +398,11 @@ export class View {
     const px = pv.root.position.x, pz = pv.root.position.z;
     const boss = world.bossStarted && world.boss.alive;
     // keep the player in the lower-middle of the frame: look ahead (−z) rather than at the boss, which can be behind the player
-    const tx = boss ? px + (world.boss.x - px) * 0.18 : px, tz = pz - (boss ? 2.6 : 2.4);
+    // when the boss is south of the player (toward the camera) shift the frame toward it, and pull back with distance, so boss + its telegraph stay on screen
+    const bdz = boss ? world.boss.z - pz : 0, bd = boss ? Math.hypot(world.boss.x - px, bdz) : 0;
+    const tx = boss ? px + (world.boss.x - px) * 0.18 : px, tz = pz - (boss ? 2.6 : 2.4) + Math.max(0, bdz) * 0.6;
     const portrait = this.camera.aspect < 1;
-    const dist = (boss ? 1.18 : 0.86) * (portrait ? 1.35 : 1);
+    const dist = (boss ? 1.18 + Math.min(0.22, Math.max(0, bd - 5) * 0.03) : 0.86) * (portrait ? 1.35 : 1);
     const ox = 0, oy = 10.5 * dist, oz = 9.0 * dist;
     const k = 1 - Math.exp(-dt * 6);
     if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, 0, tz); this.camPos.set(tx + ox, oy, tz + oz); }
