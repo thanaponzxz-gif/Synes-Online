@@ -1,7 +1,7 @@
 {
- "tag": "after",
+ "tag": "after-merged",
  "seed": 1,
- "generatedAt": "2026-11-20T22:27:25.347Z",
+ "generatedAt": "2026-11-20T22:55:10.746Z",
  "note": "Chromium headless + SwiftShader, not a real device",
  "shots": [
   {
@@ -10,8 +10,8 @@
    "part": "",
    "size": "844x390",
    "tier": "low",
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "tick": 80,
    "tele": [
     "slam:circle:0.35"
@@ -25,7 +25,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "low",
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "tick": 80,
    "tele": [
@@ -40,8 +40,8 @@
    "part": "",
    "size": "844x390",
    "tier": "low",
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "tick": 80,
    "tele": [
     "sweep:cone:0.46"
@@ -55,7 +55,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "low",
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "tick": 80,
    "tele": [
@@ -70,8 +70,8 @@
    "part": "",
    "size": "844x390",
    "tier": "low",
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "tick": 80,
    "tele": [
     "charge:line:0.32"
@@ -85,7 +85,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "low",
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "tick": 80,
    "tele": [
@@ -100,8 +100,8 @@
    "part": "",
    "size": "844x390",
    "tier": "medium",
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "tick": 80,
    "tele": [
     "slam:circle:0.35"
@@ -115,7 +115,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "medium",
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "tick": 80,
    "tele": [
@@ -130,8 +130,8 @@
    "part": "",
    "size": "844x390",
    "tier": "medium",
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "tick": 80,
    "tele": [
     "sweep:cone:0.46"
@@ -145,7 +145,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "medium",
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "tick": 80,
    "tele": [
@@ -160,8 +160,8 @@
    "part": "",
    "size": "844x390",
    "tier": "medium",
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "tick": 80,
    "tele": [
     "charge:line:0.32"
@@ -175,7 +175,7 @@
    "part": "",
    "size": "1672x941",
    "tier": "medium",
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "tick": 80,
    "tele": [
@@ -187,6 +187,6 @@
  ],
  "notes": [],
  "errors": [],
- "pngBytes": 8855181,
- "finalBytes": 8855181
+ "pngBytes": 8903854,
+ "finalBytes": 8903854
 }

@@ -1,8 +1,8 @@
 {
- "tag": "after",
+ "tag": "after-merged",
  "dist": "dist",
  "seed": 1,
- "generatedAt": "2026-11-20T22:39:22.553Z",
+ "generatedAt": "2026-11-20T22:52:03.215Z",
  "note": "Chromium headless + SwiftShader, not a real device",
  "shots": [
   {
@@ -14,8 +14,8 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -187,10 +187,10 @@
    "tick": 80,
    "screen": {
     "warmOtherSVmax": 0.773,
-    "warmOtherCmax": 74.3,
+    "warmOtherCmax": 74.1,
     "hudWarmSVmax": 0.773,
-    "hudWarmCmax": 74.3,
-    "hudWarmN": 12425,
+    "hudWarmCmax": 74.1,
+    "hudWarmN": 12379,
     "edgeMostVividOnScreen": false
    }
   },
@@ -203,8 +203,8 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "W": 844,
    "H": 390,
    "target": "#FF7A1A",
@@ -379,7 +379,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 12335,
+    "hudWarmN": 12373,
     "edgeMostVividOnScreen": true
    }
   },
@@ -392,8 +392,8 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 97,
-   "tris": 34347,
+   "calls": 54,
+   "tris": 34569,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -568,7 +568,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 11308,
+    "hudWarmN": 11307,
     "edgeMostVividOnScreen": false
    }
   },
@@ -586,8 +586,8 @@
      "cast": null
     }
    },
-   "calls": 98,
-   "tris": 34419,
+   "calls": 55,
+   "tris": 34641,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -787,7 +787,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 12464,
+    "hudWarmN": 12468,
     "edgeMostVividOnScreen": false
    }
   },
@@ -800,7 +800,7 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "W": 1672,
    "H": 941,
@@ -976,7 +976,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41199,
+    "hudWarmN": 46617,
     "edgeMostVividOnScreen": false
    }
   },
@@ -989,7 +989,7 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "W": 1672,
    "H": 941,
@@ -1165,7 +1165,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41199,
+    "hudWarmN": 46419,
     "edgeMostVividOnScreen": true
    }
   },
@@ -1178,7 +1178,7 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 93,
+   "calls": 52,
    "tris": 34129,
    "W": 1672,
    "H": 941,
@@ -1351,10 +1351,10 @@
    "tick": 80,
    "screen": {
     "warmOtherSVmax": 0.784,
-    "warmOtherCmax": 74.7,
+    "warmOtherCmax": 74.4,
     "hudWarmSVmax": 0.784,
-    "hudWarmCmax": 74.7,
-    "hudWarmN": 34447,
+    "hudWarmCmax": 74.4,
+    "hudWarmN": 38874,
     "edgeMostVividOnScreen": false
    }
   },
@@ -1372,7 +1372,7 @@
      "cast": null
     }
    },
-   "calls": 94,
+   "calls": 53,
    "tris": 34201,
    "W": 1672,
    "H": 941,
@@ -1573,7 +1573,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41020,
+    "hudWarmN": 41018,
     "edgeMostVividOnScreen": false
    }
   },
@@ -1586,8 +1586,8 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -1759,10 +1759,10 @@
    "tick": 80,
    "screen": {
     "warmOtherSVmax": 0.773,
-    "warmOtherCmax": 74.3,
+    "warmOtherCmax": 74.1,
     "hudWarmSVmax": 0.773,
-    "hudWarmCmax": 74.3,
-    "hudWarmN": 12421,
+    "hudWarmCmax": 74.1,
+    "hudWarmN": 12388,
     "edgeMostVividOnScreen": false
    }
   },
@@ -1775,8 +1775,8 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "W": 844,
    "H": 390,
    "target": "#FF7A1A",
@@ -1948,10 +1948,10 @@
    "tick": 80,
    "screen": {
     "warmOtherSVmax": 0.773,
-    "warmOtherCmax": 74.3,
+    "warmOtherCmax": 74.1,
     "hudWarmSVmax": 0.773,
-    "hudWarmCmax": 74.3,
-    "hudWarmN": 12331,
+    "hudWarmCmax": 74.1,
+    "hudWarmN": 12293,
     "edgeMostVividOnScreen": true
    }
   },
@@ -1964,8 +1964,8 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 108,
-   "tris": 53697,
+   "calls": 58,
+   "tris": 53919,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -2140,7 +2140,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 11303,
+    "hudWarmN": 11302,
     "edgeMostVividOnScreen": false
    }
   },
@@ -2158,8 +2158,8 @@
      "cast": null
     }
    },
-   "calls": 109,
-   "tris": 53833,
+   "calls": 59,
+   "tris": 54055,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -2359,7 +2359,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 12461,
+    "hudWarmN": 12466,
     "edgeMostVividOnScreen": false
    }
   },
@@ -2372,7 +2372,7 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "W": 1672,
    "H": 941,
@@ -2548,7 +2548,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41267,
+    "hudWarmN": 46686,
     "edgeMostVividOnScreen": false
    }
   },
@@ -2561,7 +2561,7 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "W": 1672,
    "H": 941,
@@ -2737,7 +2737,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41267,
+    "hudWarmN": 46421,
     "edgeMostVividOnScreen": true
    }
   },
@@ -2750,7 +2750,7 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 104,
+   "calls": 56,
    "tris": 53479,
    "W": 1672,
    "H": 941,
@@ -2926,7 +2926,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 34512,
+    "hudWarmN": 39678,
     "edgeMostVividOnScreen": false
    }
   },
@@ -2944,7 +2944,7 @@
      "cast": null
     }
    },
-   "calls": 105,
+   "calls": 57,
    "tris": 53615,
    "W": 1672,
    "H": 941,
@@ -3145,7 +3145,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41034,
+    "hudWarmN": 41100,
     "edgeMostVividOnScreen": false
    }
   },
@@ -3158,8 +3158,8 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 208,
-   "tris": 121869,
+   "calls": 99,
+   "tris": 122091,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -3347,8 +3347,8 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 208,
-   "tris": 121869,
+   "calls": 99,
+   "tris": 122091,
    "W": 844,
    "H": 390,
    "target": "#FF7A1A",
@@ -3536,8 +3536,8 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 208,
-   "tris": 121869,
+   "calls": 99,
+   "tris": 122091,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -3730,8 +3730,8 @@
      "cast": null
     }
    },
-   "calls": 209,
-   "tris": 122005,
+   "calls": 100,
+   "tris": 122227,
    "W": 844,
    "H": 390,
    "target": "#FF3355",
@@ -3931,7 +3931,7 @@
     "warmOtherCmax": 74.3,
     "hudWarmSVmax": 0.773,
     "hudWarmCmax": 74.3,
-    "hudWarmN": 10357,
+    "hudWarmN": 11165,
     "edgeMostVividOnScreen": false
    }
   },
@@ -3944,7 +3944,7 @@
     "n": 67,
     "atk": "slam"
    },
-   "calls": 204,
+   "calls": 97,
    "tris": 121651,
    "W": 1672,
    "H": 941,
@@ -4120,7 +4120,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41224,
+    "hudWarmN": 41226,
     "edgeMostVividOnScreen": false
    }
   },
@@ -4133,7 +4133,7 @@
     "n": 67,
     "atk": "sweep"
    },
-   "calls": 204,
+   "calls": 97,
    "tris": 121651,
    "W": 1672,
    "H": 941,
@@ -4309,7 +4309,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41226,
+    "hudWarmN": 41224,
     "edgeMostVividOnScreen": true
    }
   },
@@ -4322,7 +4322,7 @@
     "n": 67,
     "atk": "charge"
    },
-   "calls": 204,
+   "calls": 97,
    "tris": 121651,
    "W": 1672,
    "H": 941,
@@ -4498,7 +4498,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 34502,
+    "hudWarmN": 36033,
     "edgeMostVividOnScreen": false
    }
   },
@@ -4516,7 +4516,7 @@
      "cast": null
     }
    },
-   "calls": 205,
+   "calls": 98,
    "tris": 121787,
    "W": 1672,
    "H": 941,
@@ -4717,7 +4717,7 @@
     "warmOtherCmax": 74.7,
     "hudWarmSVmax": 0.784,
     "hudWarmCmax": 74.7,
-    "hudWarmN": 41077,
+    "hudWarmN": 41075,
     "edgeMostVividOnScreen": false
    }
   }

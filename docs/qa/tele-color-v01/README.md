@@ -1,7 +1,8 @@
 # วงเตือน v01: แยกสีเตือนจากแสง/หมอก/พื้น (DES-006 §2 "วงเตือน: ต้องแก้")
 
 สาย `lane/tele-color` · ทีม B (Technical Art: เลือกวิธี + ต้นทุน perf) · เป้าภาพกำหนดโดยทีม A (DES-006 §2, DES-003, DES-004 §6)
-build ก่อน = `origin/stage1/polish` `d9e6132` · build หลัง = branch นี้ · seed 1 · Chromium headless + SwiftShader
+build ก่อน = `origin/stage1/polish` `eabfc35` (หลัง merge lane/perf-field) · build หลัง = branch นี้ (merge `eabfc35` แล้ว) · seed 1 · Chromium headless + SwiftShader
+วัดรอบแรกบนฐาน `d9e6132` ด้วย: ตัวเลข ROI/ขาวดำ/หน้าบอสตรงกับรอบนี้ทุกค่า ต่างกันแค่ draw calls เพราะ perf-field ลดลง (ดูหัวข้อ 6)
 **สถานะ: รอทีม A ตรวจ** · คลิปมือถือก่อนรับจริง (DES-006 §2): **ยังไม่ตรวจ**
 
 **ข้อจำกัด:** SwiftShader (GPU ซอฟต์แวร์) ไม่ใช่เครื่องจริง · สีวัดจาก framebuffer sRGB 8 บิตของ Chromium จอจริง (P3, HDR, night shift, ความสว่างจอ) ยังไม่ได้วัด
@@ -37,7 +38,7 @@ build ก่อน = `origin/stage1/polish` `d9e6132` · build หลัง = br
 ## 3. วิธีวัด: ROI เฉพาะขอบวง (`tools/qa/tele-roi.mjs`)
 ```
 npm run build                                    # หลัง
-git checkout d9e6132 && npm run build && cp -r dist <dist-before> && git checkout -   # ก่อน
+git archive eabfc35 | tar -x -C <base> && (cd <base> && ln -s <repo>/node_modules && npx vite build)   # ก่อน: <base>/dist
 node tools/qa/tele-roi.mjs <out> --dist <dist>  --tag <before|after> --tiers low,medium,high --only circle,fan,dash,circle-vfx
 node tools/qa/stage1-shots.mjs <out> --tag <tag> --only boss-circle,boss-fan,boss-dash          # ภาพมาตรฐาน + draw calls
 ```
@@ -82,7 +83,7 @@ hex เป้า: #FF3355 hue 350° S 0.80 V 1.00 · #FF7A1A hue 25° S 0.90 V 1
 **สีอุ่นที่สดที่สุด** (S·V = max−min, C* = chroma CIELAB; สีอุ่น = hue 320–50° และ V > 0.35; ไม่นับพื้นที่ของวงเตือน)
 | ท่า | ขอบ S·V มัธยฐาน ก่อน → หลัง | สีอุ่นอื่นในฉาก S·V สูงสุด | ขอบ C* ก่อน → หลัง | สีอุ่นอื่นในฉาก C* สูงสุด | สดที่สุดในฉาก 3D | HUD S·V (C*) สูงสุด | สดที่สุดบนจอรวม HUD |
 |---|---|---|---|---|---|---|---|
-| slam | 0.14 → **0.72** | 0.68 | 14.6 → **74.4** | 64.8 | ไม่ → **ใช่** (ทั้ง 6 ภาพ) | 0.77–0.78 (74.3–74.7) | **ไม่** (แถบ HP บอส) |
+| slam | 0.14 → **0.72** | 0.68 | 14.6 → **74.4** | 64.8 | ไม่ → **ใช่** (ทั้ง 6 ภาพ) | 0.77–0.78 (74.1–74.7) | **ไม่** (แถบ HP บอส) |
 | sweep | 0.13 → **0.80** | 0.68 | 13.0 → **75.1** | 64.8 | ไม่ → **ใช่** (6/6) | 0.77–0.78 | **ใช่** |
 | charge | 0.23 → **0.77** | 0.68 | 23.0 → **78.4** | 64.8 | ไม่ → **ใช่** (6/6) | 0.77–0.78 | **ไม่/เสมอ** (แถบ HP บอส) |
 - สีอุ่นอื่นในฉากที่สดที่สุดคือทอง (ขอบเกราะ/แหวนศาล) S·V 0.68
@@ -108,21 +109,22 @@ hex เป้า: #FF3355 hue 350° S 0.80 V 1.00 · #FF7A1A hue 25° S 0.90 V 1
 ## 6. Draw calls / triangles (เฟรมเกม `renderer.info.render`)
 | เฟรม | low ก่อน → หลัง | medium ก่อน → หลัง | high ก่อน → หลัง |
 |---|---|---|---|
-| boss-circle / fan / dash 844 | 97 → **97** (34347 tris เท่ากัน) | 108 → **108** (53697) | 208 → **208** (121869) |
-| boss-circle / fan / dash 1672 | 93 → **93** (34129) | 104 → **104** (53479) | 204 → **204** (121651) |
-| slam + Chime VFX 844 / 1672 | 98 / 94 → **98 / 94** | 109 / 105 → **109 / 105** | 209 / 205 → **209 / 205** |
-| plaza / pathA 844 (วง puffcap + เส้นธอร์นลิง) | 146 / 152 → **146 / 152** | 152 / 155 → **152 / 155** | – |
-ค่าเดียวกันจาก `stage1-shots.mjs` และ `tele-roi.mjs` และตรงกับ R0 baseline ทุกภาพ
+| boss-circle / fan / dash 844 | 54 → **54** (34569 tris เท่ากัน) | 58 → **58** (53919) | 99 → **99** (122091) |
+| boss-circle / fan / dash 1672 | 52 → **52** (34129) | 56 → **56** (53479) | 97 → **97** (121651) |
+| slam + Chime VFX 844 / 1672 | 55 / 53 → **55 / 53** | 59 / 57 → **59 / 57** | 100 / 98 → **100 / 98** |
+| plaza / pathA 844 (วง puffcap + เส้นธอร์นลิง) | 43 / 45 → **43 / 45** | 45 / 46 → **45 / 46** | – |
+ได้ค่าเดียวกันจากทั้ง `stage1-shots.mjs` และ `tele-roi.mjs` · บนฐานเดิม `d9e6132` (ก่อน perf-field) ก่อน → หลังก็เท่ากันทุกภาพ: boss 844 low/medium/high 97/108/208, 1672 93/104/204, plaza/pathA 146/152 (low) 152/155 (medium)
 
 ## 7. ภาพ (JPEG q85)
 - **หลัง (สีจริง, ขนาดเต็ม):** `shots/boss-{circle,fan,dash}-{844,1672}-{low,medium}.jpg`
-- **ก่อน (สีจริง, เฟรมเดียวกัน):** `../stage1-v01/r0-baseline/shots/boss-{circle,fan,dash}-{844,1672}-{low,medium}.jpg` ไม่ได้คัดลอกซ้ำเพราะเป็น commit, เครื่องมือ, seed และ tick เดียวกัน ตรวจแล้ว draw calls/tris/ความคืบหน้าวงตรงกันทุกภาพ เมื่อเทียบกับรันใหม่ของ build ก่อนได้ PSNR 32–42 dB ส่วนที่ต่างเกินสัญญาณรบกวนจาก JPEG มีแค่ DOM ได้แก่ข้อความแนะนำ แบนเนอร์ชื่อบอส และแถบบอสที่เลื่อนเข้า (CSS ตามเวลาจริง ตามที่ R0 README บันทึกไว้) ฉาก 3D ตรงกัน ส่วนตัวเลข ROI ทั้งก่อนและหลังวัดจากรันใหม่ทั้งคู่
+- **ก่อน (สีจริง, เฟรมเดียวกัน):** `../stage1-v01/r0-baseline/shots/boss-{circle,fan,dash}-{844,1672}-{low,medium}.jpg` ไม่ได้คัดลอกซ้ำ R0 ถ่ายบน `d9e6132` ด้วยเครื่องมือ, seed และ tick เดียวกัน · เทียบ PNG ของ `d9e6132` กับ `eabfc35` แล้ว นอกส่วน DOM ไม่มีพิกเซลใดต่างเกิน 30 ระดับ (ตรงกับที่ perf-field รายงานว่า pixel-identical) ส่วนที่ต่างกันมีแค่ DOM ได้แก่ข้อความแนะนำ แบนเนอร์ชื่อบอส แถบบอสที่เลื่อนเข้า และการจางของปุ่ม (CSS ตามเวลาจริง ตามที่ R0 README บันทึกไว้) · เทียบ R0 กับรันใหม่ได้ PSNR 32–42 dB ซึ่งเป็นสัญญาณรบกวนจาก JPEG บวกส่วน DOM ดังกล่าว · ตัวเลข ROI ทั้งก่อนและหลังวัดจากรันใหม่ทั้งคู่
 - **ขาวดำ ก่อน | หลัง:** `gray/boss-{circle,fan,dash}-{844,1672}-{low,medium}-gray.jpg` (1672 ย่อครึ่ง)
 - **ครอปหน้าบอส ก่อน | หลัง:** `crops/boss-*-1672-medium-face.jpg` (ขนาดจริง), `crops/boss-*-844-medium-face.jpg`
 - **VFX ใต้ขอบ:** `crops/boss-circle-vfx-844-medium.jpg` · **มาสก์ ROI:** `crops/roi-mask-844-medium.jpg`
 
 ## 8. ทดสอบ
-`npm test` 115/115 · `npm run typecheck` ผ่าน · `npm run build` ผ่าน · `node tools/qa/lifecycle.mjs http://localhost:8080` 20/20 · tele-roi 48 เฟรม (ก่อน 24 + หลัง 24) errors 0 · stage1-shots 24 เฟรม errors 0
+หลัง merge `eabfc35`: `npm test` 150/150 · `npm run typecheck` ผ่าน · `npm run build` ผ่าน · `node tools/qa/lifecycle.mjs http://localhost:8080` 20/20 · tele-roi 48 เฟรม (ก่อน 24 + หลัง 24) errors 0 · stage1-shots 24 + 8 (plaza/pathA) เฟรม errors 0
+ก่อน merge (ฐาน `d9e6132`): test 115/115, lifecycle 20/20, ROI และ stage1-shots ครบเหมือนกัน errors 0
 
 ## 9. สิ่งที่ยังไม่ทราบ / งานค้าง
 - **คลิปมือถือจริง (DES-006 §2 ขอให้ส่งก่อนรับจริง): ยังไม่ตรวจ** สีบนจอ OLED/P3 และในแดดยังไม่ทราบ
