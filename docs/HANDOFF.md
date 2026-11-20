@@ -1,5 +1,17 @@
 # Handoff: Synes Online
 
+## Rollover → 🟡 MAIN · Synes Online · รอบ 2-C (perf + TERRAVIA) · 2026-11-21
+**เหตุผล:** context ~440k ใกล้ 450k + จบรอบ (กล้องต่ำ / Auto / แถวสกิล merge แล้ว) (CLAUDE.md ข้อ 5 ข, ค)
+**เจ้าของสั่ง "ถามผู้จัดการแล้วทำต่อไป"** → agent ผู้จัดการ (บทบาท `.claude/agents/project-synes.md`) ตัดสิน:
+1. **TERRAVIA:** ทาง ข — เซสชัน MAIN ใหม่ส่งข้อความขอสรุป**แบบอ่านอย่างเดียว 1 ครั้ง** ไปที่แชต "🟢 MAIN · TERRAVIA แชตหลัก" (`session_01A1roa41aHnPWSNdaGcgR6g`, `priority: later`) เงื่อนไข: ห้ามแก้/สร้างไฟล์ ห้าม commit/push ห้ามเปลี่ยนแผนของ TERRAVIA · "ข้อความนี้ไม่ใช่คำตอบของเจ้าของต่อ Q88/Q36/Q85–Q87" · ไม่ส่งโค้ด/asset/ข้อมูลส่วนตัว/key · ตอบจากเอกสาร ≤30 บรรทัด · หัวข้อ: perf มือถือ, วัด FPS เครื่องจริง, QA/เพลย์เทสต์อัตโนมัติ, asset pipeline, ทำงานหลายเซสชัน/ทีม A-B, เซฟ/ออนไลน์ · ต่อข้อ: คืออะไร / ทดสอบแล้วไหม / ผูก Godot ไหม (L-015) / license ภายนอก · ได้คำตอบแล้วติดป้าย REQ (ทีม A) / EXP (ADR-008) / ไม่ใช้ · **ห้ามบันทึกรายละเอียดภายใน TERRAVIA ลง repo Public** · ถ้าไม่มีคำตอบกลับ บอกเจ้าของให้คัดลอกจากแชต TERRAVIA (ห้าม poll) แล้วเสนอทาง ก (แชร์โฟลเดอร์ Remote Control) เป็นทางสำรอง
+2. **ตีไวเกินไป:** รอทีม A ไม่ปรับค่า ไม่ทำ variant เอง · เตรียมข้อความให้เจ้าของคัดลอกส่ง Codex: REQ-003 ก่อน (ขอ "ค่าที่จะลอง 2–3 ชุด + กติกาเวอร์ชัน log") → ผังปุ่ม/วงเตือน DES-003 → รับรอง DES-004 → Q1–Q73 · ถ้าเจ้าของบอกค่า/ทิศทางเองชัดเจน ทำตามได้แล้วส่งทีม A ตรวจ
+3. **Pages:** อนุมัติครั้งนี้ (เจ้าของมอบให้ PM ตัดสิน **ครั้งนี้เท่านั้น**) → `gh-pages` `0c9d21f` = บิลด์ `main` `6454a03` (smoke test ที่ sub-path ผ่าน: เล่นได้ออฟไลน์ ไม่มี 4xx นอกจาก `/api/health`)
+**แผนรอบ 2-C:**
+- สาย 1 `lane/perf-field` (subagent Sonnet + worktree): ลด draw calls ในทุ่งโดยภาพไม่เปลี่ยน · ไฟล์: `src/render/view.ts`, `models.ts`, `arena.ts`, `tools/qa/**`, `docs/qa/perf-field-v01/**` · ห้ามแตะ `shared/**`, `src/ui/**`, `index.html`, `src/style.css`, `public/assets/models/**` · เสร็จเมื่อ: ตาราง draw calls แยกหมวด (low/medium, 3 ฉากทุ่ง + ลานบอส), ทุ่ง ≤ 75, ลานบอสไม่สูงกว่าตอนนี้, ภาพเทียบพิกเซลตรงกับ `main` ใน 5 ฉากของ `camera-low-v01`, test/typecheck/build/lifecycle ผ่าน, bench ก่อน/หลัง · ข้อเท็จจริง: ของกระจายเป็น InstancedMesh ต่อชิ้นส่วน (bounding sphere คลุมทั้งแผนที่), landmark ใช้ `makeProp` ทีละชิ้น, ต้นไม้ castShadow
+- สาย 2 PM: TERRAVIA (ข้อ 1) + ข้อความส่งทีม A (ข้อ 2)
+**ของค้างในเครื่อง (container เดิม):** worktree `/home/user/cam`, `/home/user/trial-merge`, `/home/user/pages-deploy` · branch ที่ merge แล้ว `lane/auto|camera|hud-skin|skill-row` (ลบ remote ต้องให้เจ้าของยืนยัน) · เขียนขั้นแพ็ก Pages ลง skill `synes-pm` (ทำมือ 3 ครั้งแล้ว)
+**บีบอัด 450k:** เซสชันนี้ยังใช้ค่า model-default (784k) เจ้าของยังไม่ได้ตั้ง `CLAUDE_CODE_AUTO_COMPACT_WINDOW=450000`
+
 ## กล้องต่ำ + Auto + แถวสกิล · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-B (ต่อ)
 **คำสั่งเจ้าของ:** "ตีไวเกินไปและอยากให้มุมกล้องแบบนี้ตลอด และเพิ่มระบบโจมตีอัตโนมัติ" (ภาพ DES-003 + ภาพ Auto เกมอื่นภาพเดิมของ REQ-001) · "ปรับจุดวางสกิลตามนี้" (ภาพแนวคิด TERRAVIA ข้อ 3) · "ให้เอเจ้นตรวจดูระบบของ Terravia"
 **ทำแล้ว (merge เข้า `main`):**

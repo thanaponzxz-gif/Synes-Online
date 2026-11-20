@@ -52,7 +52,7 @@
   เครื่องมือแล้ว: `?start=boss`, `?dodgecd=17|26`, `?offline&seed=N`, ตัวเทียบ `docs/qa/dodge-cd-compare.md`, baseline ภาพ/perf `docs/qa/baseline-2b.md`
 - **iPhone: เล่นได้แล้วผ่าน GitHub Pages** (เจ้าของยืนยัน 2026-11-20) FPS ยังไม่ทราบ · หน้า Artifact ของ claude.ai เปิดบน iPhone เครื่องนี้ไม่ได้ (ต้องอัปเดต iOS)
 - GitHub: https://github.com/thanaponzxz-gif/Synes-Online (**Public** ห้าม commit ข้อมูลส่วนตัว อีเมล หรือ key) · branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
-- **GitHub Pages (สาธารณะ):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` = `260d107` (บิลด์จาก `main` `4fdc1b3`: สกิล DES-001 + HUD DES-002 + ลานปริซึม DES-003/004 ขั้น 1) โหมดออฟไลน์ · เจ้าของขอลิงก์เล่นเวอร์ชันใหม่ 2026-11-21 · บิลด์ก่อนหน้า `b142dfa` (V4) · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
+- **GitHub Pages (สาธารณะ):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` = `0c9d21f` (บิลด์จาก `main` `6454a03`: + กล้องต่ำตลอด, Auto, แถวสกิลล่าง) โหมดออฟไลน์ · อัปเดตเพราะเจ้าของมอบให้ PM ตัดสิน (ครั้งนี้เท่านั้น) · ก่อนหน้า `260d107`, `b142dfa` (V4) · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
 - ลิงก์ Artifact (ส่วนตัว): เกม https://claude.ai/artifact/5jsDtTKaLN22JGykznhNnA · โทน 10 แบบ https://claude.ai/artifact/B512M87CqpnicvUrNCrCvT · เทียบเอนจิน https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8
 
 ## 5. รอเจ้าของตัดสินใจหรือดำเนินการ
@@ -91,7 +91,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002 (merge `b5d20dc`), ตรวจรับ + merge `lane/prismatic-graphics` (`4fdc1b3`) หลังเจ้าของอนุมัติโมเดลใหม่, ขึ้น Pages `260d107` | `e9a50de`, `b5d20dc`, `4fdc1b3`, gh-pages `260d107` |
+| 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002, merge prismatic (เจ้าของอนุมัติโมเดลใหม่), กล้องต่ำตลอด, Auto ตาม DES-001 §4 (log v2), แถวสกิลล่าง, REQ-003, Pages 2 ครั้ง | `b5d20dc`, `4fdc1b3`, `e4e59e1`, `6edb182`, `c0af790`, gh-pages `0c9d21f` |
 | 2026-11-21 | แชตโปรเจค Synes `session_01A1roa5V1LencXdcrbPpfsW` | ADR-008 ระบบเรียนรู้ต่อเนื่อง: `docs/knowledge/` 4 ไฟล์, `AGENTS.md`, CLAUDE.md ข้อ 7 (ตรวจ license/ราคาเครื่องมือจากแหล่งทางการ) | `main` (ดู git log) |
 | 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 2-B) `session_01A1roa3XQQ2CGqTkeyLjTgy` | ปิดแชตเก่า, เพลย์เทสต์รอบ 3, แก้ 3 เรื่อง, Artifact V4, GitHub Pages (iPhone เล่นได้), **กฎเหล็ก ADR-007**, REQ-001/002, รับ DES-001, ต้นแบบ 3 สกิล + อัลติล็อก + VFX + คลิป, เทียบคูลดาวน์หลบ, baseline ภาพ/perf | `3389f98`, `b142dfa` (gh-pages), `25faaad`, `d8de018`, `928f12e`, `77f4e18` |
 | 2026-11-20 | ⚪ OLD · Synes · รอบ 2 `session_01A1roa35UvNrsYrEdS6gS8j` (สร้างโดย rollover) | รอบ 2-A (ความชัด) เสร็จ, เพลย์เทสต์รอบ 2, แก้บั๊กจากเพลย์เทสต์, รับกฎ Hybrid Asset Pipeline + มติ 3 ข้อ, ใบสั่งงานนำร่อง, อัปเดต Artifact เกม | `0505958`, `446f21c`, `bc20eb1` และ commit rollover |
