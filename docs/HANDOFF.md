@@ -1,5 +1,26 @@
 # Handoff: Synes Online
 
+## รอบ stage1 (ด่านแรก) · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-C (`session_01A1roa2KGrJBDidSksZdrwK`)
+**คำสั่งเจ้าของ:** ทำงานต่อเนื่องไม่หยุดรออนุมัติ เฉพาะงานปรับปรุงด่านแรก บน branch งาน · หยุดเมื่อ: จ่ายเงิน/สมัคร, เปิดเผย secret, ลบงานต้นฉบับ, เขียนทับที่กู้ไม่ได้, เปลี่ยนกฎความปลอดภัย, **merge เข้า `main`**, เผยแพร่สาธารณะ · แผน `docs/stage1/PLAN.md`
+**ทีม A ส่ง DES-006 แล้ว** (`main` `90d3b4d`): ตัดสิน REQ-003, กล้อง, ผังปุ่ม/วงเตือน, DES-004 และ Q1–Q73 → ข้อความส่ง Codex ที่เตรียมไว้ก่อนหน้า**ไม่ต้องส่งแล้ว**
+**branch รวม `stage1/polish`** (ยังไม่ merge `main` — ต้องให้เจ้าของสั่ง) มีแล้ว:
+| งาน | branch | ผล (Chromium headless) |
+|---|---|---|
+| baseline มุมกล้องจริง + เครื่องมือถ่ายซ้ำ `tools/qa/stage1-shots.mjs` | `qa/stage1-baseline` | `docs/qa/stage1-v01/r0-baseline/` |
+| ลด draw calls ภาพไม่เปลี่ยน | `lane/perf-field` | ทุ่ง 149→45 (low), 152→46 (med) · ลานบอส ~105→53 · พิกเซลตรง main |
+| จังหวะตี A/B/C (DES-006 §1) เป็น `?combo=A|B|C` + `rulesetVersion`/`tuningHash` | `lane/combo` | ค่าเริ่ม `combat-1` เหมือนเดิมทุกไบต์ · test 150 · **พบ REQ-003 ผิด: รอบคอมโบจริง 0.73 s ไม่ใช่ 1.14 s** → A/B/C ช้ากว่าเดิม 1.9–2.4× (คลิป `docs/qa/combo-v01/`) |
+| สีวงเตือนแยกจาก fog/แสง (DES-006 §2) | `lane/tele-color` | ขอบ ΔE00 23→4 · สาเหตุ: shader ไม่แปลง sRGB + ผสมขาว 70% · +0 draw call |
+| กล้องถอยชั่วคราว (DES-006 §1) | `lane/camera-pullback` | กลางเวลาเตือนเห็นครบ 23/23 (เดิม 8/23) · tick แรกยัง 14/23 · calls ≤ 67 |
+| ตัวละคร DES-004 ขั้น 3–4 ตัวเลือก A (PM เลือก) / B เก็บไว้ | `exp/stage1-chars` | GLB 585.8 KB · ฮีโร่ +194 tris, บอส +190 · บอส 28→20 calls · **placeholder ยังไม่ APPROVED** |
+| HUD ตาม DES-006 (ขนาด, ตัวอักษร, Q29–33, Q46, Q48, Q72) | `lane/hud-fixes` | แก้บั๊กปุ่มไม่จางเหนือวงเตือน 5/8 กรณี · Q17 ยังไม่ทำ |
+| เอกสารโครงสร้างด่านใหญ่ + มอนสเตอร์ 15 แบบ (เอกสารอย่างเดียว) | `docs/world-structure` | `docs/stage1/WORLD_STRUCTURE.md` คำถาม S1–S16 |
+**ผลทดสอบหลัง merge ล่าสุด (`a31ce02`):** test 150/150 · typecheck · build · lifecycle 20/20 · **Android / iPhone: ยังไม่ได้ทดสอบ**
+**กำลังทำ/ค้าง:** ลานบอส A/B (`exp/stage1-arena`), VFX A/B (`exp/stage1-vfx`), เป้าภาพฉากเปิด (`docs/art-target-opening`) → แล้วทำฉากเปิด A/B · Blender `crystal_spire`/`ruin_arch_shrine` หลังลานบอส · Q17
+**รอทีม A:** combo คงช่วงต่อท่า 62% หรือไม่ (`DES-006-teamB.md` §1 combo) · กล้อง C1–C4 · สีวงเตือน: 4 จุดภาพที่เปลี่ยน + แดงในขาวดำ + แถบ HP บอสสดเท่าขอบแดง · ตัวละคร: สีที่ทีม B เลือกเอง · HUD B1–B11 · โลก S1–S16
+**รอเจ้าของ:** เลือก combo A/B/C จากคลิป · อนุมัติโมเดลตัวละคร A · merge `stage1/polish` เข้า `main` · Pages (ห้ามอัปเดตเอง)
+**หมายเหตุ:** GLB สร้างด้วย Blender 5.3 แล้ว (เดิม 4.5.3) ลำดับ node ในไฟล์ต่าง เนื้อหาเท่ากัน · มีไฟล์ค้าง `/v_puff.png` (รูปเทียบ 65 KB ที่ agent เขียนผิดที่) ลบไม่ได้เพราะ safety check — เจ้าของลบเองได้
+**ขั้นถัดไปควรใช้โมเดล:** ตรวจ/เลือกตัวเลือกภาพ **Opus** · งานกราฟิก **Opus** · โค้ดที่ไม่เปลี่ยนภาพ (Q17, เครื่องมือ QA) **Sonnet**
+
 ## Rollover → 🟡 MAIN · Synes Online · รอบ 2-C (perf + TERRAVIA) · 2026-11-21
 **เหตุผล:** context ~440k ใกล้ 450k + จบรอบ (กล้องต่ำ / Auto / แถวสกิล merge แล้ว) (CLAUDE.md ข้อ 5 ข, ค)
 **เจ้าของสั่ง "ถามผู้จัดการแล้วทำต่อไป"** → agent ผู้จัดการ (บทบาท `.claude/agents/project-synes.md`) ตัดสิน:
