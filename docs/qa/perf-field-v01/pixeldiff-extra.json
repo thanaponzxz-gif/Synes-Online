@@ -1,0 +1,56 @@
+{
+ "high-boss-flank.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "high-boss.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "high-camp.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "high-gate-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "high-pillar-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-gate-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-pillar-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-gate-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-pillar-fade.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ }
+}

@@ -1,0 +1,96 @@
+{
+ "generatedAt": "2026-11-20T22:45:51.336Z",
+ "base": "http://localhost:8191",
+ "rows": [
+  {
+   "tier": "low",
+   "scene": "pillar-fade",
+   "tick": 40,
+   "bossStarted": true,
+   "tele": [],
+   "total": 100,
+   "counted": 100,
+   "tris": 34347,
+   "cats": {
+    "terrain": 3,
+    "arena ruins": 6,
+    "atmosphere (glow/rays)": 1,
+    "scatter": 16,
+    "landmarks": 24,
+    "characters": 47,
+    "blob shadows": 2,
+    "fx/other": 1
+   },
+   "shadowsOn": false,
+   "far": 54,
+   "errors": []
+  },
+  {
+   "tier": "low",
+   "scene": "gate-fade",
+   "tick": 40,
+   "bossStarted": false,
+   "tele": [],
+   "total": 100,
+   "counted": 100,
+   "tris": 33333,
+   "cats": {
+    "terrain": 3,
+    "arena ruins": 6,
+    "scatter": 20,
+    "landmarks": 50,
+    "characters": 19,
+    "blob shadows": 1,
+    "fx/other": 1
+   },
+   "shadowsOn": false,
+   "far": 62,
+   "errors": []
+  },
+  {
+   "tier": "medium",
+   "scene": "pillar-fade",
+   "tick": 40,
+   "bossStarted": true,
+   "tele": [],
+   "total": 111,
+   "counted": 111,
+   "tris": 53697,
+   "cats": {
+    "terrain": 3,
+    "arena ruins": 6,
+    "atmosphere (glow/rays)": 2,
+    "scatter": 26,
+    "landmarks": 24,
+    "characters": 47,
+    "blob shadows": 2,
+    "fx/other": 1
+   },
+   "shadowsOn": false,
+   "far": 54,
+   "errors": []
+  },
+  {
+   "tier": "medium",
+   "scene": "gate-fade",
+   "tick": 40,
+   "bossStarted": false,
+   "tele": [],
+   "total": 106,
+   "counted": 106,
+   "tris": 52293,
+   "cats": {
+    "terrain": 3,
+    "arena ruins": 6,
+    "scatter": 26,
+    "landmarks": 50,
+    "characters": 19,
+    "blob shadows": 1,
+    "fx/other": 1
+   },
+   "shadowsOn": false,
+   "far": 62,
+   "errors": []
+  }
+ ]
+}

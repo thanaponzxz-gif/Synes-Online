@@ -1,0 +1,74 @@
+{
+ "low-boss-behind.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-boss-flank.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-boss.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-camp.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-clearing.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "low-spring.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-boss-behind.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-boss-flank.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-boss.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-camp.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-clearing.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ },
+ "medium-spring.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1316640
+ }
+}
