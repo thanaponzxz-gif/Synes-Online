@@ -44,6 +44,13 @@ let state: 'menu' | 'playing' | 'paused' | 'done' = 'menu';
 let acc = 0, last = performance.now();
 let bot: Bot | null = null;
 let portraitOk = false;
+let qaFrozen = false;
+const qaLog: { t: number; e: string }[] = [];
+(window as any).__synesQA = {
+  freeze() { qaFrozen = true; },
+  unfreeze() { qaFrozen = false; last = performance.now(); acc = 0; },
+  log: qaLog,
+};
 
 // ------------------------------------------------------------------ boot
 (async () => {
@@ -104,7 +111,7 @@ function frame(now: number) {
   requestAnimationFrame(frame);
   const dt = Math.min(0.25, (now - last) / 1000); last = now;
   if (!world) return;
-  if (state === 'playing') {
+  if (state === 'playing' && !qaFrozen) {
     acc += dt;
     let steps = 0;
     while (acc >= TICK && steps < 8) {
@@ -133,6 +140,9 @@ function handleEvents(evts: SimEvent[]) {
   view.onEvents(evts, world);
   hud.onEvents(evts, world, (id, h, out) => view.actorScreenPos(id, h, out));
   for (const e of evts) {
+    const tt = +(world.tick / 30).toFixed(1);
+    if (e.t === 'hit' && !e.byPlayer) { const c = world.ps.cause; qaLog.push({ t: tt, e: `hurt ${e.amount} by ${c?.enemyTh}/${c?.attackTh}` }); }
+    else if (['player-down', 'perfect', 'boss-start', 'boss-phase', 'victory', 'checkpoint', 'respawn', 'gate', 'stun', 'hint', 'interrupt', 'potion', 'skill'].includes(e.t)) qaLog.push({ t: tt, e: e.t + ('id' in e ? ' ' + e.id : '') + ('cause' in e ? ' ' + e.cause.attackTh : '') + ('long' in e ? (e.long ? ' long' : ' short') : '') });
     switch (e.t) {
       case 'swing': sfx.swing(e.step); hud.dismissHintIf('attack'); break;
       case 'hit': if (e.byPlayer) sfx.hit(e.crit); else sfx.hurt(); break;
