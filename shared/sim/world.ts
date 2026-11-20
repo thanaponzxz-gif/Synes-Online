@@ -4,6 +4,7 @@ import { PLAYER, ENEMIES, TICK, CONE_INNER_R, type AttackDef, type EnemyKind } f
 import { LEVEL, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
+import { DEFAULT_VARIANT, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
@@ -72,8 +73,10 @@ export class World {
   private hints = new Set<string>();
 
   seed: number;
-  constructor(seed: number) {
+  variant: RunVariant;
+  constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT) {
     this.seed = seed;
+    this.variant = variant;
     this.rng = new Rng(seed);
     for (const g of LEVEL.gates) this.gates[g.id] = g.startsOpen;
     this.player = this.mkActor('player', LEVEL.start.x, LEVEL.start.z, P.radius, P.maxHp, 'player');
@@ -82,7 +85,19 @@ export class World {
     const b = ENEMIES.prismback;
     this.boss = this.mkActor('prismback', LEVEL.boss.x, LEVEL.boss.z, b.radius, b.maxHp, 'boss');
     this.boss.fz = 1;
+    if (variant.start === 'boss') this.startAtBoss();
     this.hint('move');
+  }
+
+  /** 'boss' variant: the state a player is in when respawning at the spring checkpoint after clearing the trail and clearing
+   *  (the real pre-boss checkpoint; same mechanism as respawn()). Earlier enemies are dead, the clearing exit gate is open. */
+  private startAtBoss() {
+    for (const e of this.actors) if (e.kind !== 'player' && e.kind !== 'prismback') { e.alive = false; e.hp = 0; }
+    this.clearingTriggered = true;
+    this.gates.clearingExit = true;
+    const s = LEVEL.spring;
+    this.checkpoint = { id: 'spring', x: s.x, z: s.z + 1.2 };
+    this.player.x = this.checkpoint.x; this.player.z = this.checkpoint.z; this.player.fx = 0; this.player.fz = -1;
   }
 
   private mkActor(kind: Actor['kind'], x: number, z: number, r: number, hp: number, group: string): Actor {
@@ -138,7 +153,7 @@ export class World {
     // dodge (highest priority, cancels swing/drink)
     if (ps.bufDodge > 0 && ps.dodgeCd <= 0 && ps.castT <= 0) {
       const [dx, dz] = ps.moving ? norm(mx, mz) : [p.fx, p.fz];
-      ps.dashx = dx; ps.dashz = dz; ps.dodgeT = P.dodge.dur; ps.iframes = P.dodge.iframes; ps.dodgeCd = P.dodge.cooldown;
+      ps.dashx = dx; ps.dashz = dz; ps.dodgeT = P.dodge.dur; ps.iframes = P.dodge.iframes; ps.dodgeCd = this.variant.dodgeCd;
       ps.swingT = 0; ps.drinkT = 0; ps.bufDodge = 0; p.fx = dx; p.fz = dz;
       this.stats.dodges++; this.events.push({ t: 'dodge' });
     }

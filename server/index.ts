@@ -7,12 +7,13 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import { replayRun } from '../shared/rules/validate.ts';
+import { parseVariant, type RunVariant } from '../shared/sim/variant.ts';
 import { rewardFor } from '../shared/rules/reward.ts';
 
 const PORT = +(process.env.PORT || 8080);
 const SECRET = process.env.SYNES_SECRET || crypto.randomBytes(32).toString('hex');
 const ROOT = path.resolve(process.env.SYNES_STATIC || 'dist');
-const runs = new Map<string, { seed: number; startedAt: number; done: boolean; ip: string }>();
+const runs = new Map<string, { seed: number; startedAt: number; done: boolean; ip: string; variant: RunVariant }>();
 const hits = new Map<string, { n: number; t: number }>();
 
 function rateLimited(ip: string, max = 30) {
@@ -58,9 +59,12 @@ export const server = http.createServer(async (req, res) => {
     if (url.pathname === '/api/health') return json(res, 200, { ok: true, game: 'synes-online', build: 'slice-1' });
     if (url.pathname === '/api/run/start' && req.method === 'POST') {
       if (rateLimited(ip)) return json(res, 429, { error: 'rate-limited' });
+      const body = await readBody(req, 10_000);
+      const variant = parseVariant(body?.variant); // missing (old client) -> default; anything off-whitelist -> reject
+      if (!variant) return json(res, 422, { error: 'bad-variant' });
       const runId = crypto.randomUUID(), seed = crypto.randomBytes(4).readUInt32BE(0);
-      runs.set(runId, { seed, startedAt: Date.now(), done: false, ip });
-      return json(res, 200, { runId, seed });
+      runs.set(runId, { seed, startedAt: Date.now(), done: false, ip, variant });
+      return json(res, 200, { runId, seed, variant });
     }
     if (url.pathname === '/api/run/finish' && req.method === 'POST') {
       if (rateLimited(ip)) return json(res, 429, { error: 'rate-limited' });
@@ -68,7 +72,7 @@ export const server = http.createServer(async (req, res) => {
       const run = runs.get(String(body.runId));
       if (!run) return json(res, 404, { error: 'unknown-run' });
       if (run.done) return json(res, 409, { error: 'already-finished' });
-      const verdict = replayRun(run.seed, body.log, Date.now() - run.startedAt);
+      const verdict = replayRun(run.seed, body.log, Date.now() - run.startedAt, run.variant);
       if (!verdict.ok) return json(res, 422, { error: verdict.reason });
       run.done = true;
       const s = verdict.summary!;

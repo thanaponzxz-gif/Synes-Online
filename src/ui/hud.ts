@@ -48,7 +48,7 @@ export class Hud {
     this.potionBtn.classList.toggle('empty', ps.potions <= 0);
     this.potionBtn.querySelector('.count')!.textContent = String(ps.potions);
     cd(this.skillBtn, Math.max(0, ps.skillCd) / PLAYER.skill.cooldown);
-    cd(this.dodgeBtn, Math.max(0, ps.dodgeCd) / PLAYER.dodge.cooldown);
+    cd(this.dodgeBtn, Math.max(0, ps.dodgeCd) / w.variant.dodgeCd);
     this.skillBtn.classList.toggle('empowered', ps.empowered);
     $('#btn-attack').classList.toggle('empowered', ps.empowered);
     this.timer.textContent = fmt(w.tick / 30);
