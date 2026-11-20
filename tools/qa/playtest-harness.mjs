@@ -20,6 +20,7 @@ fs.mkdirSync(outDir, { recursive: true });
 const W = 844, H = 390;
 let browser, ctx, page, cdp, n = 0;
 const actions = fs.createWriteStream(path.join(outDir, 'actions.jsonl'), { flags: 'a' });
+const diag = fs.createWriteStream(path.join(outDir, 'diag.jsonl'), { flags: 'a' });
 
 const BTN = { attack: '#btn-attack', dodge: '#btn-dodge', skill: '#btn-skill', potion: '#btn-potion' };
 const UI = { retry: '#defeat button', replay: '#victory .replay', resume: '#btn-resume2', portrait: '#btn-portrait', start: '#btn-start' };
@@ -31,6 +32,10 @@ async function shot(tag) {
   await page.waitForTimeout(120); // let the frozen frame render
   await page.screenshot({ path: file });
   const st = await page.evaluate(() => window.__synes ? { state: window.__synes.state, time: +(window.__synes.world.tick / 30).toFixed(1) } : { state: 'menu' });
+  // render diagnostics per step (for blank-scene bugs): kept in diag.jsonl only, not shown to the tester
+  const d = await page.evaluate(() => { const v = window.__synes?.view; const r = v?.renderer; if (!r) return null; const c = r.domElement, gl = r.getContext();
+    return { calls: r.info.render.calls, tris: r.info.render.triangles, px: v.pixelRatio, cw: c.width, ch: c.height, lost: gl.isContextLost(), err: gl.getError(), qaErrors: window.__synesQA.log.filter((x) => x.e.startsWith('render-error')).length }; }).catch((e) => ({ diagError: String(e) }));
+  diag.write(JSON.stringify({ step: n, t: st.time, ...d }) + '\n');
   return { step: n, screenshot: file, gameTime: st.time, overlay: await visibleOverlay() };
 }
 async function visibleOverlay() {
