@@ -1,6 +1,6 @@
 // DES-006 §2 telegraph colour QA: ROI of the telegraph EDGE only (not whole-screen pixel counts), same frames as
 // tools/qa/stage1-shots.mjs (seed 1, ?q=<tier>&autostart&qafreeze, boss telegraph + 12 ticks, tick 80).
-//   node tools/qa/tele-roi.mjs [outDir] [--dist dir] [--tag name] [--only circle,fan,dash,circle-vfx] [--tiers low,medium] [--sizes 844,1672]
+//   node tools/qa/tele-roi.mjs [outDir] [--dist dir] [--tag name] [--only circle,fan,dash,circle-vfx] [--tiers low,medium] [--sizes 844,1672] [--qs 'arena=A']
 // circle-vfx = the slam frame 14 ticks later with Chime Burst (skill 1) crossing the slam edge: "edge over VFX" stats.
 // Serves <dist> (default dist/) in-process. For every shot, five renders of the SAME state are read back with gl.readPixels
 // (canvas only, no DOM HUD), right after the frame the game itself drew:
@@ -21,7 +21,7 @@ import { LAUNCH_ARGS } from './profiles.mjs';
 
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
-const valued = new Set(['--tag', '--only', '--dist', '--tiers', '--sizes']);
+const valued = new Set(['--tag', '--only', '--dist', '--tiers', '--sizes', '--qs']);
 const pos = args.filter((a, i) => !a.startsWith('--') && !valued.has(args[i - 1]));
 const outDir = pos[0] || 'tools/qa/out/tele-roi';
 const tag = opt('tag', 'run');
@@ -29,6 +29,8 @@ const distDir = path.resolve(opt('dist', 'dist'));
 const ONLY = opt('only', 'circle,fan,dash').split(',');
 const TIERS = opt('tiers', 'low,medium').split(',');
 const SIZES = opt('sizes', '844,1672').split(',').map((s) => (s === '844' ? [844, 390] : [1672, 941]));
+/** --qs 'k=v': extra URL params (e.g. --qs arena=B); default none */
+const QS = opt('qs', '') ? '&' + opt('qs').replace(/^[?&]/, '') : '';
 const SEED = 1;
 const ATK = { circle: 'slam', fan: 'sweep', dash: 'charge', 'circle-vfx': 'slam' }; // circle-vfx: slam + Chime Burst VFX over its edge
 const TARGET = { slam: [255, 51, 85], charge: [255, 51, 85], sweep: [255, 122, 26] }; // HEAVY (slam, charge) = #FF3355, normal = #FF7A1A
@@ -53,7 +55,7 @@ async function open(size, tier) {
   const page = await ctx.newPage();
   page.on('pageerror', (e) => report.errors.push(`${width} ${tier}: ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error') report.errors.push(`console ${width} ${tier}: ${m.text()}`); });
-  await page.goto(`${base}/?offline&seed=${SEED}&q=${tier}&autostart&qafreeze&start=boss`, { waitUntil: 'load' });
+  await page.goto(`${base}/?offline&seed=${SEED}&q=${tier}&autostart&qafreeze&start=boss${QS}`, { waitUntil: 'load' });
   await page.waitForFunction(() => window.__synes?.state === 'playing' && window.__synes.world, null, { timeout: 60000 });
   await page.evaluate(() => window.__synesQA.stepTicks(0));
   return { ctx, page };
