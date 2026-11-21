@@ -1,5 +1,15 @@
 # Handoff: Synes Online
 
+## รอบ stage1 ต่อ: spire + shrine · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D (`session_01A1roa4t58WN2ZvXKFKGAPa`)
+**ทีม A:** ยังไม่มีคำตอบใหม่บน `main` (ล่าสุด `90d3b4d` ซึ่งทำตามแล้ว) · ปัญหาค้างใน r1-final ทุกข้อรอทีม A (C1 กล้องถอยล่วงหน้า, ลานบอสมืด, ต้นไม้ลายตาข่าย, แถบ HP บอส) · DES-006 §3 ชื่อบอส 14 px / ผลึกซ้าย 0.39 ทำแล้วรอบก่อน
+**ทำแล้ว:** DES-004 ขั้น 2 ส่วน Blender `crystal_spire` + `ruin_arch_shrine` A/B (subagent Opus, `exp/stage1-spire-shrine` `291bda5`) → merge เข้า `stage1/polish` เลือก A เป็นค่าเริ่ม (`?spire=B`, `?spire=0` ภาพเดิม)
+- tris A +1,149 / B +1,318 (งบ +6k) · GLB 585.8 → 631.8 KB (งบ 700) · draw calls ลานบอส +1 ทุกช็อต · วงเตือน: พิกเซลอุ่นไม่เปลี่ยน · verify_kit ผ่าน, build ซ้ำไบต์ตรง
+- PM ตรวจซ้ำหลัง merge: test 154/154 · typecheck · build · lifecycle 20/20 · ภาพ `docs/qa/spire-shrine-v01/ingame/` · **placeholder ยังไม่ APPROVED** · ไฟล์เสริม `public/assets/models/spire_shrine_B.glb` 54.7 KB โหลดเฉพาะ `?spire=B`
+- **ถามทีม A:** S1–S10 ใน `docs/qa/spire-shrine-v01/README.md` (เด่น: S4 ศาลถูกกล้องต่ำตัดครึ่งบน, S1 จำนวน spire 4 ต้น)
+**Android / iPhone: ยังไม่ได้ทดสอบ · PC: headless เท่านั้น**
+**งานถัดไป:** ไม่มีงานด่านแรกที่ทำได้โดยไม่ต้องรอทีม A/เจ้าของ → รอคำตอบ (DES-006-teamB, DES-004 §8, `docs/qa/*-v01`) แล้วทำตาม · เจ้าของ: เลือก combo A/B/C, อนุมัติโมเดล, merge `stage1/polish` → `main`
+**ขั้นถัดไปควรใช้โมเดล:** ตรวจคำตอบทีม A / ปรับภาพ **Opus** · QA ซ้ำ / โค้ดไม่เปลี่ยนภาพ **Sonnet**
+
 ## รอบ stage1 (ด่านแรก) จบรอบ · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-C (`session_01A1roa2KGrJBDidSksZdrwK`)
 **คำสั่งเจ้าของ:** ทำต่อเนื่องไม่หยุดรออนุมัติ เฉพาะงานปรับปรุงด่านแรก บน branch งาน · หยุดเมื่อ: จ่ายเงิน/สมัคร, เปิดเผย secret, ลบงานต้นฉบับ, เขียนทับที่กู้ไม่ได้, เปลี่ยนกฎความปลอดภัย, **merge เข้า `main`**, เผยแพร่สาธารณะ · แผน `docs/stage1/PLAN.md`
 **ทีม A ส่ง DES-006 แล้ว** (`main` `90d3b4d`) → ข้อความส่ง Codex ที่เตรียมไว้ก่อนหน้าไม่ต้องส่งแล้ว
