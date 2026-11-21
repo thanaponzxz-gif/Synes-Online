@@ -1,0 +1,295 @@
+{
+ "tag": "B",
+ "qs": "&opening=B",
+ "seed": 1,
+ "generatedAt": "2026-11-21T01:16:47.364Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "opening-start-844-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.568,
+    "p5": 54,
+    "p95": 190,
+    "bands": {
+     "top": 0.546,
+     "mid": 0.564,
+     "bottom": 0.595
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 42371,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.544,
+    "p5": 58,
+    "p95": 190,
+    "bands": {
+     "top": 0.552,
+     "mid": 0.544,
+     "bottom": 0.537
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.578,
+    "p5": 58,
+    "p95": 190,
+    "bands": {
+     "top": 0.554,
+     "mid": 0.579,
+     "bottom": 0.601
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 42371,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.555,
+    "p5": 62,
+    "p95": 190,
+    "bands": {
+     "top": 0.565,
+     "mid": 0.553,
+     "bottom": 0.548
+    }
+   }
+  },
+  {
+   "name": "pathA-844-low",
+   "scene": "pathA",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 47,
+   "tris": 41933,
+   "tick": 51,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "n": 41,
+   "teleCount": 1
+  },
+  {
+   "name": "plaza-844-low",
+   "scene": "plaza",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40729,
+   "tick": 46,
+   "tele": [
+    "rush:line:0.89",
+    "hop:circle:0.14"
+   ],
+   "n": 41,
+   "both": true,
+   "teleShapes": [
+    "line",
+    "circle"
+   ],
+   "enemies": 6
+  },
+  {
+   "name": "pool-844-low",
+   "scene": "pool",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 50,
+   "tris": 36423,
+   "tick": 20,
+   "tele": [],
+   "hp": 100,
+   "note": "hp preset to 60 and potions 0 before 20 ticks on the spring"
+  },
+  {
+   "name": "opening-start-844-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.551,
+    "p5": 54,
+    "p95": 190,
+    "bands": {
+     "top": 0.504,
+     "mid": 0.553,
+     "bottom": 0.596
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 61923,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.529,
+    "p5": 54,
+    "p95": 190,
+    "bands": {
+     "top": 0.517,
+     "mid": 0.532,
+     "bottom": 0.538
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.564,
+    "p5": 57,
+    "p95": 190,
+    "bands": {
+     "top": 0.518,
+     "mid": 0.57,
+     "bottom": 0.602
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 61923,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.539,
+    "p5": 58,
+    "p95": 190,
+    "bands": {
+     "top": 0.529,
+     "mid": 0.538,
+     "bottom": 0.549
+    }
+   }
+  },
+  {
+   "name": "pathA-844-medium",
+   "scene": "pathA",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 61485,
+   "tick": 51,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "n": 41,
+   "teleCount": 1
+  },
+  {
+   "name": "plaza-844-medium",
+   "scene": "plaza",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 48,
+   "tris": 60425,
+   "tick": 46,
+   "tele": [
+    "rush:line:0.89",
+    "hop:circle:0.14"
+   ],
+   "n": 41,
+   "both": true,
+   "teleShapes": [
+    "line",
+    "circle"
+   ],
+   "enemies": 6
+  },
+  {
+   "name": "pool-844-medium",
+   "scene": "pool",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 56119,
+   "tick": 20,
+   "tele": [],
+   "hp": 100,
+   "note": "hp preset to 60 and potions 0 before 20 ticks on the spring"
+  }
+ ],
+ "notes": [],
+ "errors": [],
+ "pngBytes": 9986305,
+ "finalBytes": 9986305
+}
