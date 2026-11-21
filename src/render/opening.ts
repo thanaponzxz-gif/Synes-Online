@@ -48,12 +48,13 @@ const GATE_GLOW: Glow = { core: [0.7, 1.0], white: 0.25, body: 1.0, tipY: [2.2, 
 const LOOKS: Record<OpeningId, OpeningLook> = {
   A: {
     id: 'A',
-    // camp and near trail a touch deeper than tone.path #EAD1A4, the far trail / clearing lighter and a little warmer ("light at the end")
-    path: [[8, 0xe3c89b], [-4, 0xe5ca9e], [-16, 0xead2a6], [-28, 0xf6e3bd], [-40, 0xfbebc8]],
+    // camp and near trail a touch deeper than tone.path #EAD1A4, the far trail / clearing lighter and a little warmer ("light at the end");
+    // past the clearing gate it goes back to tone.path, so the spring / arena approach keeps today's path
+    path: [[8, 0xe3c89b], [-4, 0xe5ca9e], [-16, 0xead2a6], [-28, 0xf6e3bd], [-40, 0xfbebc8], [-46, 0xfbebc8], [-56, 0xead1a4]],
     guides: GUIDES, crystal: CRYSTAL_GLOW,
     gate: { fogK: 0.35, stoneFar: 0.72, glow: GATE_GLOW },
     halo: { w: 1.5, h: 2.1, i: 0.55 },
-    rim: { color: 0xfff0d2, k: 1.1, pow: 1.6 },
+    rim: { color: 0xfff0d2, k: 1.5, pow: 2.2 },
     warmSatCap: 0.72,
   },
   B: {
@@ -64,7 +65,7 @@ const LOOKS: Record<OpeningId, OpeningLook> = {
     guides: GUIDES, crystal: CRYSTAL_GLOW,
     gate: { fogK: 0.35, stoneFar: 0.75, glow: GATE_GLOW },
     halo: { w: 1.5, h: 2.1, i: 0.6 },
-    rim: { color: 0xfff0d2, k: 1.3, pow: 1.6 },
+    rim: { color: 0xfff0d2, k: 1.8, pow: 2.2 },
     warmSatCap: 0.72,
   },
 };
@@ -186,13 +187,14 @@ function capWarmProps(env: Object3D, o: OpeningLook, disposables: { dispose(): v
   }
 }
 
-/** Guide crystal(s) + one additive halo mesh for all of them + the lantern/campfire saturation cap. Returns per-frame update + dispose. */
-export function addOpeningProps(env: Object3D, o: OpeningLook) {
+/** Guide crystal(s) + one additive halo mesh for all of them + the lantern/campfire saturation cap. Returns per-frame update + dispose.
+ *  nearFade = View's near-camera dither (as on the scatter the guide replaces); nearU = its shared distance uniform, also used by the halo. */
+export function addOpeningProps(env: Object3D, o: OpeningLook, nearFade: (m: Material) => Material, nearU: { value: number }) {
   const disposables: { dispose(): void }[] = [];
   capWarmProps(env, o, disposables);
   for (const gd of o.guides) {
     const c = makeProp('crystal_cluster'); c.position.set(gd.x, 0, gd.z); c.rotation.y = gd.rot; c.scale.setScalar(gd.s); c.name = 'opening_guide';
-    c.traverse((n) => { const mesh = n as Mesh; if (!mesh.isMesh) return; const own = (mesh.material as Material).clone(); chain(own, 'openingGuide' + o.id, (sh) => patchGlow(sh, o.crystal)); mesh.material = own; disposables.push(own); });
+    c.traverse((n) => { const mesh = n as Mesh; if (!mesh.isMesh) return; const own = nearFade(mesh.material as Material); chain(own, 'openingGuide' + o.id, (sh) => patchGlow(sh, o.crystal)); mesh.material = own; disposables.push(own); });
     env.add(c);
   }
   // halos: camera-facing ellipses (as atmosphere.ts makeGlowHalos), lumen, additive, depth-tested so the hero / props in front hide them
@@ -206,11 +208,12 @@ export function addOpeningProps(env: Object3D, o: OpeningLook) {
   geo.setAttribute('aCenter', new Float32BufferAttribute(center, 3)); geo.setAttribute('aSize', new Float32BufferAttribute(size, 2)); geo.setIndex(index);
   const mat = new ShaderMaterial({
     transparent: true, depthWrite: false, blending: AdditiveBlending, fog: false,
-    uniforms: { uI: { value: o.halo.i }, uTime: { value: 0 }, uColor: { value: new Color(PAL.lumen) } },
-    vertexShader: `attribute vec3 aCenter; attribute vec2 aSize; varying vec2 vUv;
-      void main(){ vUv = uv; vec4 mv = modelViewMatrix * vec4(aCenter, 1.0); mv.xy += position.xy * aSize; gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform float uI; uniform float uTime; uniform vec3 uColor; varying vec2 vUv;
+    uniforms: { uI: { value: o.halo.i }, uTime: { value: 0 }, uColor: { value: new Color(PAL.lumen) }, uNearFade: nearU },
+    vertexShader: `attribute vec3 aCenter; attribute vec2 aSize; varying vec2 vUv; varying float vDist;
+      void main(){ vUv = uv; vec4 mv = modelViewMatrix * vec4(aCenter, 1.0); vDist = length(mv.xyz); mv.xy += position.xy * aSize; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform float uI; uniform float uTime; uniform vec3 uColor; uniform float uNearFade; varying vec2 vUv; varying float vDist;
       void main(){ float d = length(vUv * 2.0 - 1.0); if (d > 1.0) discard; float f = 1.0 - d; f = f * f;
+        f *= smoothstep(uNearFade, uNearFade + 3.0, vDist); // fades with its crystal near the camera
         gl_FragColor = vec4(uColor * f * uI * (0.9 + 0.1 * sin(uTime * 1.6)), 1.0); }`,
   });
   // vertices move in the shader: give the CPU a sphere that holds every halo so it is still culled outside the field view (boss arena)

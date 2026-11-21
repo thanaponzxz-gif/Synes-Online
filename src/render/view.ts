@@ -272,7 +272,7 @@ export class View {
       if (this.opening) patchGate(this.occluders[this.occluders.length - 1].mats, this.opening);
     }
     put('lantern_post', -6, -63.5); put('lantern_post', 2, -63.5);
-    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening);
+    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening, (m) => nearFade(m, this.nearFadeU), this.nearFadeU);
     // actors
     for (const v of this.actors.values()) this.scene.remove(v.root);
     this.actors.clear();
