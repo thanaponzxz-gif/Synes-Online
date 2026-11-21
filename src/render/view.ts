@@ -13,6 +13,7 @@ import { TIERS, type QualitySettings } from './quality.ts';
 import { SkillFx, castPose } from './skillfx.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
 import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
+import { makeArenaDeco, glowPillars, type ArenaDeco } from './arenaDeco.ts';
 import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
 import { openingFromQuery, openingTone, openingPathFill, nearGuide, patchGate, patchHeroRim, addOpeningProps } from './opening.ts';
 
@@ -62,6 +63,8 @@ export class View {
   private flames: Object3D[] = [];
   private arenaFloor: ArenaFloor | null = null;
   private arenaRuins: Group | null = null;
+  /** DES-004 step 2 prototype deco (`?arena=A|B`, null by default) */
+  private arenaDeco: ArenaDeco | null = null;
   /** DES-004 step 1 (arena light + atmosphere); `?atmos=0`, `?glow=0`, `?rays=0` switch parts off for A/B shots */
   private readonly flags = new URLSearchParams(location.search);
   atmosOn = this.flags.get('atmos') !== '0';
@@ -160,6 +163,7 @@ export class View {
     });
     for (const fx of [this.glow, this.shafts]) { fx?.mesh.geometry.dispose(); fx?.mat.dispose(); }
     this.glow = this.shafts = null;
+    this.arenaDeco?.dispose(); this.arenaDeco = null;
     this.openingFx?.dispose(); this.openingFx = null;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
@@ -204,6 +208,7 @@ export class View {
       this.arenaFloor = makeArenaFloor(arena, this.q.groundRes, seed);
       this.arenaRuins = makeArenaRuins(arena, seed);
       this.env.add(this.arenaFloor, this.arenaRuins);
+      this.arenaDeco = makeArenaDeco(arena, this.q, seed); if (this.arenaDeco) this.env.add(this.arenaDeco.group);
       if (this.atmosOn && this.q.glow && this.flags.get('glow') !== '0') { this.glow = makeGlowHalos(arena); this.env.add(this.glow.mesh); }
       if (this.atmosOn && this.q.rays && this.flags.get('rays') !== '0') { this.shafts = makeLightShafts(arena); this.env.add(this.shafts.mesh); }
     }
@@ -263,6 +268,7 @@ export class View {
     const spring = put('lumen_spring', LEVEL.spring.x, LEVEL.spring.z);
     this.springGem = spring.getObjectByName('gem') ?? null;
     for (const pl of LEVEL.pillars) { const o = put('crystal_pillar', pl.x, pl.z, pl.x * 0.3); this.pillars.push(o); this.addOccluder(o, pl.r + 0.2, 4.5); }
+    glowPillars(this.pillars); // DES-006 §3, ?arena=B only
     for (const gd of LEVEL.gates) {
       const gate = put('crystal_gate', gd.x, gd.z, Math.atan2(-gd.dirz, gd.dirx));
       const open = world.gates[gd.id];
@@ -384,6 +390,7 @@ export class View {
     const w = this.atmosW;
     if (this.glow) { this.glow.mesh.visible = w > 0.01; this.glow.mat.uniforms.uI.value = 0.55 * w; this.glow.mat.uniforms.uTime.value = this.time; }
     if (this.shafts) { this.shafts.mesh.visible = w > 0.01; this.shafts.mat.uniforms.uI.value = 0.16 * w; }
+    this.arenaDeco?.update(this.time);
     this.updateCamera(world, dt);
     this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);

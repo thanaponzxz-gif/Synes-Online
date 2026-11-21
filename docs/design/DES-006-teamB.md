@@ -82,3 +82,12 @@ FPS/frame time และการกดบนมือถือจริงข�
 ### หลักฐาน
 - `docs/qa/hud-fixes-v01/` ภาพเทียบก่อน/หลัง 844×390 และ 390×844 (medium, seed 1, tick เดียวกัน) 25 ภาพ + `before/after-measure.json` + `hint-realtime-*.json`
 - เครื่องมือ: `tools/qa/hud-fixes-shots.mjs` (ภาพ + วัด DOM + วงเตือนใต้ปุ่ม), `tools/qa/hud-fixes-compare.mjs`, `tools/qa/hud-fixes-hint-realtime.mjs`
+
+## §Q17 — "หลบเร็วไป" ต้องยืนยันต่อลูกโจมตีเดียวกัน
+
+กฎ (`shared/sim/world.ts`, event `dodge-early`, feedback เท่านั้น ไม่เปลี่ยนความเสียหาย/ผลลัพธ์): ข้อความขึ้นเมื่อครบทั้งสามข้อ
+1. เริ่มหลบ **หลัง** telegraph ของลูกนั้นเริ่มแล้ว (`seenAtk` เก็บเฉพาะ telegraph id ที่มีอยู่ ณ tick ที่เริ่มหลบ; ลูกที่เตือนทีหลังไม่นับ)
+2. i-frame หมดก่อน hit (ถ้ายังมี i-frame จะเป็น `perfect` ไม่ใช่ hit)
+3. ผู้เล่นถูก **ลูกเดียวกัน** ตี — เทียบด้วย telegraph id ของลูกที่ตี (วงซ้อนจากหลายตัวแยกกันด้วย id จึงไม่ข้ามลูก)
+
+การแก้ในรอบนี้: ล้าง `atkToken` ของผู้โจมตีเมื่อ rush/charge จบ (ชน/พลาด/ชนเสา) กัน token เก่าค้างไปผูกกับลูกถัดไป. เพิ่มเทสต์ 4 เคสใน `tests/skills.test.ts`. golden digests (รวม events) ไม่เปลี่ยน; payload ของ event ไม่เปลี่ยน จึงไม่แตะ `src/ui/hud.ts`.
