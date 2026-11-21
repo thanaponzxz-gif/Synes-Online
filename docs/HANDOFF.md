@@ -1,5 +1,14 @@
 # Handoff: Synes Online
 
+## merge stage1 → main + จังหวะตี A + Pages · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D
+**เจ้าของอนุมัติ:** merge `stage1/polish` เข้า `main` และขึ้น GitHub Pages · เลือกจังหวะตี **ชุด A** (ตอบผ่านคำถามในแชต เพราะข้อความเดิมเว้นช่องว่างไว้)
+- `main` `7a52680` = merge `stage1/polish` (test 154/154, typecheck, build, lifecycle 20/20)
+- `main` `b46ca7f`: ruleset ถาวร `combat-2` = ตัวเลขชุด A เป็นค่าเริ่มของ client · `?combo=1` = `combat-1` เดิม · `?combo=A|B|C` ยังเทียบได้ · server อ่าน field ที่หายเป็น `combat-1` (log เก่าเล่นซ้ำผลเดิม) · ไม่ชดเชยดาเมจ (ADR-009) · test 155/155, lifecycle 20/20
+- เทสต์ server path ข้าม `combo-A` (ตัวเลขเท่า `combat-2` มีเทสต์ระดับ sim ยืนยัน) เพื่อไม่ชน rate limit 30/IP ของ server
+- Pages: `gh-pages` `1aa6088` = บิลด์ `b46ca7f` โหมดออฟไลน์ · smoke test ที่ sub-path: เข้าเกมได้ ไม่มี error ไม่มี 4xx นอกจาก `/api/health`
+**Android / iPhone: ยังไม่ได้ทดสอบ** (ขอเจ้าของเล่นบน iPhone ผ่าน Pages ด้วย `#debug` เพื่อจด FPS และความรู้สึกจังหวะตี A)
+**ขั้นถัดไปควรใช้โมเดล:** ตรวจคำตอบทีม A / ปรับภาพ **Opus** · QA ซ้ำ **Sonnet**
+
 ## รอบ stage1 ต่อ: spire + shrine · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D (`session_01A1roa4t58WN2ZvXKFKGAPa`)
 **ทีม A:** ยังไม่มีคำตอบใหม่บน `main` (ล่าสุด `90d3b4d` ซึ่งทำตามแล้ว) · ปัญหาค้างใน r1-final ทุกข้อรอทีม A (C1 กล้องถอยล่วงหน้า, ลานบอสมืด, ต้นไม้ลายตาข่าย, แถบ HP บอส) · DES-006 §3 ชื่อบอส 14 px / ผลึกซ้าย 0.39 ทำแล้วรอบก่อน
 **ทำแล้ว:** DES-004 ขั้น 2 ส่วน Blender `crystal_spire` + `ruin_arch_shrine` A/B (subagent Opus, `exp/stage1-spire-shrine` `291bda5`) → merge เข้า `stage1/polish` เลือก A เป็นค่าเริ่ม (`?spire=B`, `?spire=0` ภาพเดิม)

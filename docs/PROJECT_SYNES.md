@@ -36,6 +36,7 @@
 | 008 | เรียนรู้ต่อเนื่อง | เทคนิคใหม่ผ่านวงจร 7 ขั้น ทดลองบน `exp/*` ก่อนใช้จริง ความรู้อยู่ใน `docs/knowledge/` (อ่านเมื่อจำเป็น ไม่ @import) และ `AGENTS.md` สำหรับ Codex (CLAUDE.md ข้อ 7) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
+- **ด่านแรก stage1 merge เข้า `main` แล้ว (2026-11-21, เจ้าของอนุมัติ):** `main` `b46ca7f` · จังหวะตีชุด A เป็นค่าเริ่ม (ADR-009) · test 155/155, lifecycle 20/20 · Android/iPhone ยังไม่ได้ทดสอบ · รอทีม A ตอบคำถามใน DES-006-teamB, DES-004 §8, `docs/qa/*-v01` (รวม S1–S10 spire/ศาล)
 - **รอบ 1 เสร็จแล้ว:** vertical slice "ทุ่งน้ำค้างแสง" เล่นจบได้, test 16/16, QA lifecycle 20/20
 - **เพลย์เทสต์ agent รอบ 1** (`docs/qa/playtest-agent-round1.md`): ชนะ 1:17 · คะแนน เข้าใจ 7 / **ชัด 5** / สนุก 7 / ภาพ 7 / เล่นซ้ำ 6
 - **มติทีม 2026-11-20** (`docs/team/2026-11-20-review.md`): ทำความชัดก่อน (รอบ 2-A) → ความสวยราคาถูก (2-B) → art direction ตามโทนที่เจ้าของเลือก (รอบ 3)
@@ -53,7 +54,7 @@
   เครื่องมือแล้ว: `?start=boss`, `?dodgecd=17|26`, `?offline&seed=N`, ตัวเทียบ `docs/qa/dodge-cd-compare.md`, baseline ภาพ/perf `docs/qa/baseline-2b.md`
 - **iPhone: เล่นได้แล้วผ่าน GitHub Pages** (เจ้าของยืนยัน 2026-11-20) FPS ยังไม่ทราบ · หน้า Artifact ของ claude.ai เปิดบน iPhone เครื่องนี้ไม่ได้ (ต้องอัปเดต iOS)
 - GitHub: https://github.com/thanaponzxz-gif/Synes-Online (**Public** ห้าม commit ข้อมูลส่วนตัว อีเมล หรือ key) · branch ที่ยังไม่ merge: `art/visual-pass-poc` (ต้นแบบปรับภาพ; ส่วนที่แทบไม่มีต้นทุน merge ได้, เส้นขอบต้องทำใหม่)
-- **GitHub Pages (สาธารณะ):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` = `0c9d21f` (บิลด์จาก `main` `6454a03`: + กล้องต่ำตลอด, Auto, แถวสกิลล่าง) โหมดออฟไลน์ · อัปเดตเพราะเจ้าของมอบให้ PM ตัดสิน (ครั้งนี้เท่านั้น) · ก่อนหน้า `260d107`, `b142dfa` (V4) · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
+- **GitHub Pages (สาธารณะ):** https://thanaponzxz-gif.github.io/Synes-Online/ · branch `gh-pages` = `1aa6088` (บิลด์จาก `main` `b46ca7f`: stage1 polish + จังหวะตี A `combat-2` + spire/ศาล A) โหมดออฟไลน์ · เจ้าของอนุมัติ 2026-11-21 · ก่อนหน้า `0c9d21f`, `260d107`, `b142dfa` (V4) · **ห้ามอัปเดตบิลด์อื่นขึ้น Pages โดยไม่ถามเจ้าของ**
 - ลิงก์ Artifact (ส่วนตัว): เกม https://claude.ai/artifact/5jsDtTKaLN22JGykznhNnA · โทน 10 แบบ https://claude.ai/artifact/B512M87CqpnicvUrNCrCvT · เทียบเอนจิน https://claude.ai/artifact/8jRQgx5Rp3jNVFznHGkSZ8
 
 ## 5. รอเจ้าของตัดสินใจหรือดำเนินการ
@@ -92,6 +93,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
+| 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002, merge prismatic (เจ้าของอนุมัติโมเดลใหม่), กล้องต่ำตลอด, Auto ตาม DES-001 §4 (log v2), แถวสกิลล่าง, REQ-003, Pages 2 ครั้ง | `b5d20dc`, `4fdc1b3`, `e4e59e1`, `6edb182`, `c0af790`, gh-pages `0c9d21f` |
 | 2026-11-21 | แชตโปรเจค Synes `session_01A1roa5V1LencXdcrbPpfsW` | ADR-008 ระบบเรียนรู้ต่อเนื่อง: `docs/knowledge/` 4 ไฟล์, `AGENTS.md`, CLAUDE.md ข้อ 7 (ตรวจ license/ราคาเครื่องมือจากแหล่งทางการ) | `main` (ดู git log) |
 | 2026-11-20 | ⚪ (เดิม 🟢 MAIN · รอบ 2-B) `session_01A1roa3XQQ2CGqTkeyLjTgy` | ปิดแชตเก่า, เพลย์เทสต์รอบ 3, แก้ 3 เรื่อง, Artifact V4, GitHub Pages (iPhone เล่นได้), **กฎเหล็ก ADR-007**, REQ-001/002, รับ DES-001, ต้นแบบ 3 สกิล + อัลติล็อก + VFX + คลิป, เทียบคูลดาวน์หลบ, baseline ภาพ/perf | `3389f98`, `b142dfa` (gh-pages), `25faaad`, `d8de018`, `928f12e`, `77f4e18` |

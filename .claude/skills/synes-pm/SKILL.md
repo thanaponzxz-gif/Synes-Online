@@ -59,6 +59,12 @@ PM ทำได้แค่เขียนใบขอออกแบบ (`docs/
 4) รายงานเจ้าของเป็นภาษาไทยตามรูปแบบใน CLAUDE.md
 ```
 
+## F. ขึ้น GitHub Pages (เฉพาะเมื่อเจ้าของอนุมัติครั้งนั้น)
+1. `npm run build` จาก `main` ที่ผ่านเทสต์ทั้งชุด (vite `base: './'` ใช้ได้ที่ sub-path)
+2. `git worktree add <scratch>/pages origin/gh-pages` → `git checkout -B gh-pages origin/gh-pages` → `git rm -rq .` → `cp -r dist/. .` → `touch .nojekyll` → `git add -A`
+3. smoke test: เสิร์ฟโฟลเดอร์ที่ `/Synes-Online/` (เช่น `python3 -m http.server`) แล้วใช้ Playwright กด "แตะเพื่อเริ่มผจญภัย" ต้องเข้าเกมได้ ไม่มี pageerror และไม่มี 4xx นอกจาก `/api/health`
+4. commit `pages: Synes test build from main <sha> ...` แล้ว push `gh-pages` (ห้าม force) · อัปเดตบรรทัด Pages ใน PROJECT_SYNES ข้อ 4
+
 ## E. ท้ายรอบ: รายงาน
 - เปลี่ยนอะไร, วิธีเปิดเล่น, ผลทดสอบแยกตามอุปกรณ์, ปัญหาที่เหลือ, branch/commit และงานถัดไป
 - อัปเดตบันทึกเซสชันใน PROJECT_SYNES.md ทุกครั้ง
