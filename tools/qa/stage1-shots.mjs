@@ -1,5 +1,7 @@
 // Stage-1 ("ทุ่งน้ำค้างแสง") deterministic baseline shots from the REAL in-game camera. Re-run after every art round and diff.
 //   node tools/qa/stage1-shots.mjs [outDir] [--tag name] [--only scene,scene] [--base http://host:port] [--jpeg] [--qs 'arena=A']
+
+//   --qs: extra query params appended to every game URL ('arena=B', '&vfx=cur' both work), recorded in report.json
 // Serves dist/ in-process (run `npm run build` first). Same seed (1) + same tick counts every run: ?offline&seed=1&q=<tier>&autostart&qafreeze,
 // the sim is only advanced through window.__synesQA.stepTicks, player is moved by writing world.player (QA teleport, same as atmos-shots/vfx-calls).
 // Scenes: opening, pathA, plaza, pool, boss-open, boss-circle, boss-fan, boss-dash, chars, vfx. Tiers low+medium.
@@ -22,6 +24,7 @@ const tag = opt('tag', 'run');
 const only = opt('only', '') ? opt('only').split(',') : null;
 /** --qs 'k=v&k2=v2': extra URL params for every page (e.g. --qs arena=A for the DES-004 step-2 looks); default none */
 const QS = opt('qs', '') ? '&' + opt('qs').replace(/^[?&]/, '') : '';
+
 const SEED = 1;
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -41,7 +44,7 @@ if (!base) {
   base = `http://127.0.0.1:${port}`;
 }
 const browser = await chromium.launch({ args: LAUNCH_ARGS });
-const report = { tag, qs: QS.slice(1), seed: SEED, generatedAt: new Date().toISOString(), note: 'Chromium headless + SwiftShader, not a real device', shots: [], notes: [], errors: [] };
+const report = { tag, qs: QS, seed: SEED, generatedAt: new Date().toISOString(), note: 'Chromium headless + SwiftShader, not a real device', shots: [], notes: [], errors: [] };
 const TIERS = ['low', 'medium'];
 const S844 = [844, 390], S1672 = [1672, 941];
 
