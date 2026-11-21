@@ -5,7 +5,8 @@ import { InputLog } from '../shared/sim/input.ts';
 import { TICK } from '../shared/data/tuning.ts';
 import { rankFor } from '../shared/rules/reward.ts';
 import { View } from './render/view.ts';
-import { loadKit, kitLoaded } from './render/models.ts';
+import { loadKit, kitLoaded, loadKitExtra } from './render/models.ts';
+import { spireLook } from './render/arena.ts';
 import { TIERS, guessTier, loadPref, savePref, AdaptiveResolution, type QualityPref } from './render/quality.ts';
 import { toneById } from './render/tones.ts';
 import { Input } from './input.ts';
@@ -85,7 +86,9 @@ const qaLog: { t: number; e: string }[] = [];
   $('#chip-q').textContent = `กราฟิก: ${tierLabel(tierName)}${pref === 'auto' ? ' (อัตโนมัติ)' : ''}`;
   const [mode] = await Promise.all([
     net.detect(),
-    Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`)).then((ok) => (perf.kit = ok)),
+    Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`))
+      // ?spire=B: DES-004 step-2 option B landmarks from a small side-car GLB (same node names, overrides the kit's A models)
+      .then(async (ok) => { if (ok && spireLook() === 'B') await loadKitExtra('./assets/models/spire_shrine_B.glb'); return (perf.kit = ok); }),
   ]);
   bar.style.width = '100%';
   $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: บันทึกผลได้' : 'ออฟไลน์: ผลไม่ถูกบันทึก';

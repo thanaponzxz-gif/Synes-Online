@@ -31,19 +31,7 @@ export async function loadKit(url: string, onProgress?: (f: number) => void): Pr
   try {
     const gltf = await new GLTFLoader().loadAsync(url, (e) => { if (e.total) onProgress?.(e.loaded / e.total); });
     kit = gltf.scene;
-    // Swap PBR materials for cheaper Lambert (mobile), keep colors/emissive.
-    const swap = new Map<Material, Material>();
-    kit.traverse((o) => {
-      const m = o as Mesh;
-      if (!m.isMesh) return;
-      m.castShadow = true; m.receiveShadow = false;
-      const src = m.material as any;
-      if (!swap.has(src)) {
-        const em = src.emissive && (src.emissive.r + src.emissive.g + src.emissive.b) > 0.01;
-        swap.set(src, new MeshLambertMaterial({ color: src.color ?? new Color(1, 1, 1), emissive: em ? src.emissive : new Color(0, 0, 0), emissiveIntensity: em ? Math.min(1, src.emissiveIntensity ?? 1) * 0.8 : 0, flatShading: true }));
-      }
-      m.material = swap.get(src)!;
-    });
+    lambertize(kit);
     bakeKit(kit);
     return true;
   } catch (e) {
@@ -53,6 +41,33 @@ export async function loadKit(url: string, onProgress?: (f: number) => void): Pr
   }
 }
 export const kitLoaded = () => !!kit;
+/** Side-car GLB whose nodes override same-named kit nodes (?spire=B, docs/qa/spire-shrine-v01). Only loaded on request. */
+let kitExtra: Group | null = null;
+export async function loadKitExtra(url: string): Promise<boolean> {
+  try {
+    const root = (await new GLTFLoader().loadAsync(url)).scene;
+    lambertize(root); bakeKit(root); kitExtra = root;
+    return true;
+  } catch (e) {
+    console.warn('[synes] side-car GLB unavailable', url, e);
+    return false;
+  }
+}
+/** Swap PBR materials for cheaper Lambert (mobile), keep colors/emissive. */
+function lambertize(root: Object3D) {
+  const swap = new Map<Material, Material>();
+  root.traverse((o) => {
+    const m = o as Mesh;
+    if (!m.isMesh) return;
+    m.castShadow = true; m.receiveShadow = false;
+    const src = m.material as any;
+    if (!swap.has(src)) {
+      const em = src.emissive && (src.emissive.r + src.emissive.g + src.emissive.b) > 0.01;
+      swap.set(src, new MeshLambertMaterial({ color: src.color ?? new Color(1, 1, 1), emissive: em ? src.emissive : new Color(0, 0, 0), emissiveIntensity: em ? Math.min(1, src.emissiveIntensity ?? 1) * 0.8 : 0, flatShading: true }));
+    }
+    m.material = swap.get(src)!;
+  });
+}
 
 // Draw-call batching of kit meshes (perf only, the image must not change).
 // Sibling meshes under one node are merged into one mesh. Colour and emissive light are baked per vertex (`aCol`, `aEm`) and
@@ -122,7 +137,7 @@ function bakeKit(root: Object3D) {
 }
 function fromKit(name: string): Object3D | null {
   if (!kit) return null;
-  const n = kit.getObjectByName(name);
+  const n = kitExtra?.getObjectByName(name) ?? kit.getObjectByName(name);
   if (!n) return null;
   const c = n.clone(true);
   c.position.set(0, 0, 0); c.rotation.set(0, 0, 0);
@@ -245,6 +260,9 @@ const PROCEDURAL: Record<string, PropFn> = {
   weapon_rack: () => { const g = new Group(); g.add(mesh(new BoxGeometry(2.2, 0.15, 0.3), lam(PAL.bark), '', 0, 0.2, 0)); g.add(mesh(new BoxGeometry(2.2, 0.12, 0.2), lam(PAL.bark), '', 0, 1.6, 0)); for (const x of [-0.7, 0, 0.7]) g.add(mesh(new BoxGeometry(0.1, 1.6, 0.05), lam(0xdfe6f2), '', x, 1.0, 0.05)); g.add(mesh(new CylinderGeometry(0.45, 0.45, 0.1, 10), lam(PAL.navy), '', 1.3, 0.9, 0.2)).rotation.x = Math.PI / 2; return g; },
   banner: () => { const g = new Group(); g.add(mesh(new CylinderGeometry(0.05, 0.05, 3.2, 5), lam(0x5a4636), '', 0, 1.6, 0)); g.add(mesh(new BoxGeometry(0.9, 1.4, 0.04), lam(PAL.violet), '', 0.48, 2.4, 0)); g.add(mesh(new OctahedronGeometry(0.16, 0), lam(PAL.gold, PAL.gold, 0.8), '', 0.48, 2.5, 0.04)); return g; },
 };
+
+/** True when the loaded kit (or side-car) has this node, i.e. makeProp(name) returns the GLB model and not a stand-in. */
+export const kitHas = (name: string) => !!(kitExtra?.getObjectByName(name) ?? kit?.getObjectByName(name));
 
 export function makeProp(name: string): Object3D {
   const k = fromKit(name);
