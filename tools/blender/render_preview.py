@@ -25,7 +25,7 @@ SHEET_W, SHEET_H = 1600, 900
 PITCH, YAW = 48.0, 35.0  # degrees: camera looks down 48 deg, from 35 deg left of the front
 LABEL_BAND = 0.25  # fraction of a cell kept for the label
 ROWS = [  # (row height px, asset names); None = legend cell
-    (300, ["hero", "puffcap", "thornling", "prismback"]),
+    (300, ["hero", "puffcap", "thornling", "prismback", "crystal_spire", "ruin_arch_shrine"]),
     (200, ["tree_round", "tree_round_b", "tree_pine", "bush", "rock_a", "rock_b", "crystal_cluster",
            "flower_patch", "mushroom_glow"]),
     (200, ["tent", "campfire", "signpost", "lantern_post", "crystal_pillar", "crystal_gate", "lumen_spring",

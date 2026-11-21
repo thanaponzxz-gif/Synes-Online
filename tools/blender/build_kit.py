@@ -40,6 +40,16 @@ if "--variant" in sys.argv[:-1]:
 CHAR_VARIANT = {"R0": "r0", "CURRENT": "r0"}.get(CHAR_VARIANT.upper(), CHAR_VARIANT.upper())
 if CHAR_VARIANT not in CHAR_VARIANTS:
     raise SystemExit("unknown character variant %r (use one of %s)" % (CHAR_VARIANT, ", ".join(CHAR_VARIANTS)))
+# Arena landmark variant (DES-004 step 2: `crystal_spire` + `ruin_arch_shrine`, exp/stage1-spire-shrine):
+#   A = restrained (default)   B = bolder silhouette.  Env SYNES_SPIRE_VARIANT or `--spire B`.
+SPIRE_VARIANT = os.environ.get("SYNES_SPIRE_VARIANT", "A")
+if "--spire" in sys.argv[:-1]:
+    SPIRE_VARIANT = sys.argv[sys.argv.index("--spire") + 1]
+SPIRE_VARIANT = SPIRE_VARIANT.upper()
+if SPIRE_VARIANT not in ("A", "B"):
+    raise SystemExit("unknown spire/shrine variant %r (use A or B)" % SPIRE_VARIANT)
+# SYNES_KIT_ONLY="crystal_spire,ruin_arch_shrine" builds a side-car GLB with just those nodes (used for ?spire=B in game)
+KIT_ONLY = [n for n in os.environ.get("SYNES_KIT_ONLY", "").split(",") if n]
 KIT_COLLECTION = "synes_kit"
 GLB_RELPATH = os.path.join("public", "assets", "models", "synes_kit.glb")
 
@@ -428,11 +438,16 @@ class Part:
         v = self._mesh(coords, faces)
         return self._tag(v, xform(at), mat, smooth)
 
-    def arch(self, rx, rz, thick, depth, at=(0, 0, 0), seg=10, mat="stone"):
-        """Semi-elliptical band in the XZ plane (gate arches), extruded along Y."""
+    def arch(self, rx, rz, thick, depth, at=(0, 0, 0), seg=10, mat="stone", span=(0.0, 1.0)):
+        """Semi-elliptical band in the XZ plane (gate arches), extruded along Y. `span` keeps only that
+        fraction of the half-ellipse (0 = right springing, 1 = left): a broken arch."""
         def ring(dr):
-            return [((rx + dr) * math.cos(math.pi * i / seg), (rz + dr) * math.sin(math.pi * i / seg))
-                    for i in range(seg + 1)]
+            if span == (0.0, 1.0):  # unchanged maths for the existing gates (byte-identical GLB)
+                return [((rx + dr) * math.cos(math.pi * i / seg), (rz + dr) * math.sin(math.pi * i / seg))
+                        for i in range(seg + 1)]
+            a0, a1 = span
+            return [((rx + dr) * math.cos(math.pi * (a0 + (a1 - a0) * i / seg)),
+                     (rz + dr) * math.sin(math.pi * (a0 + (a1 - a0) * i / seg))) for i in range(seg + 1)]
 
         outer, inner = ring(thick / 2), ring(-thick / 2)
         coords = []
@@ -558,6 +573,40 @@ class Part:
             names.append(edge if edge and i % 3 == 0 else bands[2][i % len(bands[2])])
         v = self._mesh(coords, faces, closed=False)
         self._tag(v, Matrix.Translation(Vector(at)) @ basis(direction, x_hint), names[0], False)
+        for face, name in zip(faces, names):
+            self.bm.faces.get([v[k] for k in face]).material_index = self._slot(name)
+        return v
+
+
+    def broken_spire(self, at, h, r, sides=7, yaw=0.0, direction=(0, 0, 1), sink=0.05, taper=0.7,
+                     slope=0.55, peak=(0.35, 0.1, 0.9), mats=(("lumen", "prism_cyan"), "crystal_mid",
+                     ("prism_edge", "crystal_violet", "crystal_mid"))):
+        """Tall faceted crystal whose tip is snapped off (DES-004 `crystal_spire`): 3-ring tapered prism, the
+        top ring cut along a slanted plane (`slope` = rise per metre across local +X), capped by a low faceted
+        stub whose apex sits off-centre (`peak` = x, y as fractions of r, height above the cut as a fraction
+        of r). Wall bands like `shard`: lower mats[0], upper mats[1], broken cap mats[2]."""
+        rings = ((-sink * h, 1.0), (0.45 * h, 1.0 - (1.0 - taper) * 0.45), (h, taper))
+        coords = []
+        for ri, (z, k) in enumerate(rings):
+            for i in range(sides):
+                a = math.radians(yaw) + 2 * math.pi * i / sides
+                x, y = r * k * math.cos(a), r * k * math.sin(a)
+                coords.append((x, y, z + (slope * x if ri == 2 else 0.0)))
+        coords.append((peak[0] * r, peak[1] * r, h + peak[2] * r))
+        apex = len(coords) - 1
+        bands = [(m,) if isinstance(m, str) else tuple(m) for m in mats]
+        faces, names = [], []
+        for ring_i in range(2):
+            for i in range(sides):
+                j = (i + 1) % sides
+                a, b = ring_i * sides, (ring_i + 1) * sides
+                faces.append((a + i, a + j, b + j, b + i))
+                names.append(bands[ring_i][i % len(bands[ring_i])])
+        for i in range(sides):
+            faces.append((2 * sides + i, 2 * sides + (i + 1) % sides, apex))
+            names.append(bands[2][i % len(bands[2])])
+        v = self._mesh(coords, faces, closed=False)
+        self._tag(v, Matrix.Translation(Vector(at)) @ basis(direction), names[0], False)
         for face, name in zip(faces, names):
             self.bm.faces.get([v[k] for k in face]).material_index = self._slot(name)
         return v
@@ -1538,6 +1587,96 @@ def build_banner():
     finish(p, bevel=0.03)
 
 
+# ----------------------------------------------------------------------------- arena landmarks (DES-004 step 2)
+SPIRE_SIDE_MATS = ("prism_violet", "crystal_violet", "crystal_mid")
+
+
+def build_crystal_spire():
+    """DES-004 step 2 big arena crystal (replaces the icosahedron prisms of the tall arena clusters): ~8 m
+    faceted spire with a snapped, faceted tip on a stone base. A = one spire + side shards; B = a leaning
+    twin spire and the broken-off tip floating above the break."""
+    p = Part("crystal_spire")
+    p.ico(1.0, at=(0, 0, 0.1), scale=(1.45, 1.2, 0.5), sub=1, mat="stone_dark", jitter=0.12, cut=0.0)
+    p.ico(0.55, at=(0.95, -0.55, 0.05), scale=(1.0, 0.9, 0.6), sub=1, mat="stone", jitter=0.15, cut=0.0)
+    if SPIRE_VARIANT == "A":
+        p.broken_spire((0, 0, 0.25), 7.0, 0.72, yaw=8)
+        for az, h, r, lean in ((35, 2.9, 0.34, 0.24), (150, 2.1, 0.28, 0.3), (250, 3.4, 0.36, 0.18)):
+            p.shard(polar(0.62, az, 0.3), h, r, direction=polar(lean, az, 1.0), yaw=az, tip=r * 1.6,
+                    mats=SPIRE_SIDE_MATS, edge="prism_edge")
+        for az in (90, 200, 320):
+            p.crystal(polar(1.05, az, 0.2), 0.45, 0.12, direction=polar(0.35, az, 1.0), mat="lumen", yaw=az)
+    else:
+        p.broken_spire((0, 0, 0.25), 6.6, 0.8, yaw=8, slope=0.75, peak=(0.45, -0.2, 0.7))
+        p.broken_spire((0.5, 0.2, 0.25), 4.3, 0.46, yaw=30, direction=(0.28, 0.1, 1.0), slope=-0.6,
+                       peak=(-0.3, 0.2, 0.8),
+                       mats=(SPIRE_SIDE_MATS[:2], "crystal_violet", ("prism_edge", "crystal_mid")))
+        # the snapped-off tip, point up, hovering above the break
+        p.shard((0.05, 0.0, 7.75), 0.55, 0.42, yaw=20, tip=0.85, sink=0.4, edge="prism_edge",
+                mats=("crystal_mid", "lumen", ("prism_edge", "lumen")))
+        for az, h, r, lean in ((140, 2.4, 0.32, 0.3), (250, 1.8, 0.27, 0.22)):
+            p.shard(polar(0.7, az, 0.3), h, r, direction=polar(lean, az, 1.0), yaw=az, tip=r * 1.6,
+                    mats=SPIRE_SIDE_MATS, edge="prism_edge")
+        for az in (80, 200, 310):
+            p.crystal(polar(1.1, az, 0.2), 0.5, 0.13, direction=polar(0.35, az, 1.0), mat="lumen", yaw=az)
+    finish(p)
+
+
+SHRINE_CRYSTAL_Z = 3.65  # = SHRINE_CRYSTAL_Y in src/render/arena.ts (the glow halo anchor)
+
+
+def build_ruin_arch_shrine():
+    """DES-004 step 2 shrine: steps at the front (-Y here = +Z in glTF) up to a platform, two pillars and an arch,
+    a gold ring inside the arch and a crystal floating in its centre at the old halo height. A = intact, ring
+    inside the arch; B = ruined right side (short pillar, broken arch, fallen blocks), larger ring tilted
+    through the arch, bigger crystal with four orbiting shards, one more step."""
+    p = Part("ruin_arch_shrine")
+    b = SPIRE_VARIANT == "B"
+    steps = 4 if b else 3
+    top = 0.24 * (steps + 1)  # platform one rise above the last step (no coplanar tops)
+    for i in range(steps):  # solid blocks down to the ground
+        p.box((5.6 - i * 0.35, 0.95, 0.24 * (i + 1)), at=(0, -1.9 + i * 0.42, 0.12 * (i + 1)), mat="stone", bevel=True)
+    p.box((5.6, 2.2, top), at=(0, 0.35, top / 2), mat="stone_dark", bevel=True)
+    px, ph = 2.45, SHRINE_CRYSTAL_Z - top + 0.1
+    for s in (-1, 1):
+        broken = b and s > 0
+        h = ph * (0.55 if broken else 1.0)
+        p.box((0.95, 0.95, 0.3), at=(px * s, 0.35, top + 0.15), mat="stone_dark", bevel=True)
+        p.box((0.75, 0.75, h), at=(px * s, 0.35, top + 0.3 + h / 2), mat="stone", bevel=True)
+        if not broken:
+            p.box((0.95, 0.95, 0.22), at=(px * s, 0.35, top + 0.3 + h + 0.11), mat="stone_dark", bevel=True)
+    spring = top + 0.3 + ph + 0.22
+    if b:
+        p.arch(px, 1.55, 0.6, 0.8, at=(0, 0.35, spring), seg=8, mat="stone", span=(0.42, 1.0))
+        p.box((1.1, 0.8, 0.55), at=(3.35, -0.7, 0.27), rot=(6, 10, 32), mat="stone", bevel=True)
+        p.box((0.6, 0.55, 0.4), at=(2.6, -1.4, 0.2), rot=(0, -8, -20), mat="stone_dark", bevel=True)
+        p.ico(0.3, at=(px, 0.35, top + 0.3 + ph * 0.55), scale=(1.3, 1.3, 0.45), sub=1, mat="leaf", jitter=0.12)
+    else:
+        p.arch(px, 1.4, 0.6, 0.8, at=(0, 0.35, spring), seg=10, mat="stone")
+        p.box((0.7, 0.55, 0.42), at=(0, 0.35, spring + 1.55), mat="stone_dark", bevel=True)  # keystone
+    p.ico(0.35, at=(-1.4, 0.35, spring + 1.15), scale=(1.5, 1.0, 0.4), sub=1, mat="leaf", jitter=0.12)
+    # gold ring (A: two struts to the pillars) and the floating crystal at the halo anchor
+    ring_r = 2.2 if b else 1.75
+    p.torus(ring_r, 0.12, at=(0, 0.35, SHRINE_CRYSTAL_Z), rot=(90, 8 if b else 0, 0), seg=24 if b else 20,
+            seg2=5, mat="gold", smooth=False)
+    if not b:
+        gap = px - 0.375 - ring_r
+        for s in (-1, 1):
+            p.box((gap + 0.1, 0.14, 0.14), at=(s * (ring_r + gap / 2), 0.35, SHRINE_CRYSTAL_Z), mat="gold")
+    cz, ch, cr = SHRINE_CRYSTAL_Z, (0.75 if b else 0.6), (0.42 if b else 0.34)
+    p.shard((0, 0.35, cz), ch, cr, yaw=15, tip=cr * 1.9, sink=0.0, edge="prism_edge",
+            mats=("lumen", ("prism_cyan", "lumen"), ("prism_edge", "lumen")))
+    p.shard((0, 0.35, cz), ch * 0.6, cr, direction=(0, 0, -1), yaw=15, tip=cr * 1.7, sink=0.0,
+            mats=("lumen", "crystal_mid", ("crystal_mid", "crystal_violet")))
+    if b:
+        for az, z in ((20, 0.6), (140, -0.4), (260, 0.2), (330, -0.7)):
+            q = polar(1.05, az, cz + z) + Vector((0, 0.35, 0))
+            p.crystal(q, 0.22, 0.1, direction=polar(0.5, az + 90, 1.0), mat="crystal_violet", yaw=az, sink=0.3)
+    for (x, y), d, h in (((-2.95, -0.6), (-0.5, -0.3, 1), 0.55), ((-2.7, -1.0), (-0.1, -0.6, 1), 0.38),
+                         ((2.95, 1.1), (0.6, 0.2, 1), 0.42)):
+        p.crystal((x, y, 0.05), h, 0.12, direction=d, mat="crystal_violet")
+    finish(p, bevel=0.05)
+
+
 # ============================================================================= registry
 ASSETS = [
     ("hero", build_hero), ("puffcap", build_puffcap), ("thornling", build_thornling),
@@ -1551,6 +1690,7 @@ ASSETS = [
     ("house_a", build_house_a), ("house_b", build_house_b), ("market_stall", build_market_stall),
     ("fountain", build_fountain), ("ruin_arch", build_ruin_arch), ("ruin_column", build_ruin_column),
     ("shop_counter", build_shop_counter), ("weapon_rack", build_weapon_rack), ("banner", build_banner),
+    ("crystal_spire", build_crystal_spire), ("ruin_arch_shrine", build_ruin_arch_shrine),  # DES-004 step 2 (not in the contract yet)
 ]
 CHARACTER_PARTS = {
     "hero": ("hero_body", "hero_head", "hero_sword"),
@@ -1637,13 +1777,15 @@ def export_glb(path):
 def main(factory_reset=None):
     reset_scene(bpy.app.background if factory_reset is None else factory_reset)
     kit_collection()
-    print("character variant: %s" % CHAR_VARIANT)
+    print("character variant: %s, spire/shrine variant: %s" % (CHAR_VARIANT, SPIRE_VARIANT))
     rows = []
     for name, build in ASSETS:
+        if KIT_ONLY and name not in KIT_ONLY:
+            continue
         build()
         root = bpy.data.objects[name]
         rows.append((name, asset_tris(root)))
-    missing = [n for n in REQUIRED_NODES if bpy.data.objects.get(n) is None]
+    missing = [] if KIT_ONLY else [n for n in REQUIRED_NODES if bpy.data.objects.get(n) is None]
     if missing:
         raise RuntimeError("missing contract nodes: %s" % ", ".join(missing))
     total = sum(t for _, t in rows)

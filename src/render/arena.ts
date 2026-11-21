@@ -4,6 +4,22 @@ import {
   TorusGeometry, Vector3, type BufferGeometry,
 } from 'three';
 import { arenaLook, CLIFF_TINTS, COLUMN_TINTS, LOOKS, paintFlagstones, shrineLocal, SHRINE_SIDE } from './arenaDeco.ts';
+import { flattenPropMerged, kitHas } from './models.ts';
+
+/** DES-004 step 2 Blender landmarks (`crystal_spire`, `ruin_arch_shrine`, docs/qa/spire-shrine-v01): default A (in synes_kit.glb),
+ *  `?spire=B` option B (side-car GLB loaded by main.ts), `?spire=0` the old icosahedron crystals + box shrine. */
+export type SpireLook = 'A' | 'B' | null;
+export function spireLook(): SpireLook {
+  try {
+    const v = (new URLSearchParams(location.search).get('spire') || '').toUpperCase();
+    if (v === '0' || v === 'BASE' || v === 'CUR') return null;
+    return v === 'B' ? 'B' : 'A';
+  } catch { return 'A'; }
+}
+/** Spire height (m) per tall cluster index (k 0: h 5.8, k 1: h 7.6 in CRYSTAL_CLUSTERS); other clusters keep their icosahedra. */
+const SPIRE_HEIGHT: Record<number, number> = { 0: 6.4, 1: 8.2 };
+/** Spire yaw per cluster (radians, mirrored on the left side) so the snapped tip is seen from the low camera. */
+const SPIRE_YAW: Record<number, number> = { 0: 2.2, 1: 2.9 };
 
 interface Arena { x: number; z: number; r: number }
 export type ArenaFloor = Mesh<PlaneGeometry, MeshLambertMaterial>;
@@ -143,6 +159,10 @@ export function makeArenaRuins(arena: Arena, seed: number) {
   // the two back-right columns that stood there and the old box waterfall (replaced by arenaDeco.ts planes) left out.
   // The default look takes none of these branches (random() is consumed in the same order either way).
   const look = arenaLook(), proto = look !== 'base';
+  // ?spire: GLB spires replace the tallest icosahedron of the two big clusters per side, the GLB shrine replaces the box shrine
+  // (same random() order either way; falls back to the old look when the kit has no such nodes, e.g. ?nokit)
+  const spire = kitHas('crystal_spire') && kitHas('ruin_arch_shrine') ? spireLook() : null;
+  const spires: { x: number; z: number; k: number; side: number }[] = [];
   const stone = new MeshLambertMaterial();
   const crystal = new MeshLambertMaterial({ emissive: 0x136f9b, emissiveIntensity: 0.68 });
   if (look !== 'base') selfLitCrystal(crystal, LOOKS[look].crystalSelf);
@@ -172,7 +192,7 @@ export function makeArenaRuins(arena: Arena, seed: number) {
     ));
     b.colors.push(new Color(tint));
   };
-  const cluster = (x: number, z: number, height: number, variant: number) => {
+  const cluster = (x: number, z: number, height: number, variant: number, k = -1, side = 1) => {
     const label = part;
     part = 'crystal_rock';
     add(cliff, x, 0.2, z, height * 0.4, 0.48, height * 0.27, rockColor());
@@ -180,7 +200,11 @@ export function makeArenaRuins(arena: Arena, seed: number) {
     for (let i = 0; i < 3; i++) {
       const offset = (i - 1) * height * 0.16;
       const h = height * (i === 1 ? 1 : 0.48 + random() * 0.17);
+      const toSpire = !!spire && i === 1 && k in SPIRE_HEIGHT;
+      if (toSpire) spires.push({ x: x + offset, z: z + (i % 2) * 0.3, k, side });
+      skip = toSpire;
       add(prism, x + offset, h * 0.45, z + (i % 2) * 0.3, h * 0.165, h * 0.54, h * 0.19, colors[(variant + i) % colors.length], random() * Math.PI, offset * -0.4);
+      skip = false;
     }
   };
 
@@ -211,10 +235,11 @@ export function makeArenaRuins(arena: Arena, seed: number) {
       }
     }
     skip = false;
-    CRYSTAL_CLUSTERS.forEach((c, k) => { part = `crystal_${side < 0 ? 'L' : 'R'}${k}`; cluster(side * c.x, c.z, c.h, side > 0 ? c.vr : c.vl); });
+    CRYSTAL_CLUSTERS.forEach((c, k) => { part = `crystal_${side < 0 ? 'L' : 'R'}${k}`; cluster(side * c.x, c.z, c.h, side > 0 ? c.vr : c.vl, k, side); });
   }
 
   part = 'shrine';
+  skip = !!spire; // the GLB shrine below replaces these boxes, the ring and the icosahedron (random() still drawn)
   if (!proto) {
     const shrineZ = SHRINE_Z;
     for (let i = 0; i < 5; i++) {
@@ -233,6 +258,28 @@ export function makeArenaRuins(arena: Arena, seed: number) {
     for (const side of [-1, 1]) { const p = at(side * 1.95, 0); add(box, p.x, 1.31, p.z, 1.05, 1, 1.35, light(side + 7), yaw); }
     { const p = at(0, 0); add(ring, p.x, SHRINE_CRYSTAL_Y, p.z, 0.93, 1, 1, 0xffffff, yaw); }
     { const p = at(0, 0.11); add(prism, p.x, SHRINE_CRYSTAL_Y, p.z, 0.68, 1.18, 0.65, 0x76f3ff, 0.42 + yaw); }
+  }
+  skip = false;
+  if (spire) {
+    // +1 draw call each: all spires in one InstancedMesh, the shrine as one Mesh (kit nodes are baked to one material).
+    // Not sim colliders, no shadows (like the rest of the ruins). Shrine pose = where the current arena look puts the box shrine.
+    const [s] = flattenPropMerged('crystal_spire');
+    s.geometry.computeBoundingBox();
+    const modelH = s.geometry.boundingBox!.max.y;
+    const spireMesh = new InstancedMesh(s.geometry, s.material, spires.length);
+    spireMesh.name = 'crystal_spire';
+    spires.forEach((p, i) => {
+      const k = SPIRE_HEIGHT[p.k] / modelH;
+      spireMesh.setMatrixAt(i, new Matrix4().compose(new Vector3(arena.x + p.x, 0, arena.z + p.z),
+        new Quaternion().setFromEuler(new Euler(0, p.side * SPIRE_YAW[p.k], 0)), new Vector3(k, k, k)));
+    });
+    spireMesh.computeBoundingSphere();
+    const [sh] = flattenPropMerged('ruin_arch_shrine');
+    const shrine = new Mesh(sh.geometry, sh.material);
+    shrine.name = 'ruin_arch_shrine';
+    if (proto) { const c = shrineLocal(0, 0); shrine.position.set(arena.x + c.x, 0, arena.z + c.z); shrine.rotation.y = SHRINE_SIDE.yaw; }
+    else shrine.position.set(arena.x, 0, arena.z + SHRINE_Z);
+    group.add(spireMesh, shrine);
   }
   for (const b of [box, column, cliff, prism, ring, fall]) {
     if (!b.matrices.length) continue; // prototype looks drop the box waterfall

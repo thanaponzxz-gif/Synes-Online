@@ -39,6 +39,11 @@ python3 tools/blender/kit_stats.py /tmp/kit_r0.glb public/assets/models/synes_ki
 ```
 รายละเอียดและผลเทียบในเกมอยู่ที่ `docs/qa/chars-v01/README.md`
 
+### ตัวเลือกผลึกยอดแหลม + ศาล (DES-004 ขั้น 2, branch `exp/stage1-spire-shrine`)
+`crystal_spire` และ `ruin_arch_shrine` มีแบบ `A` (ค่าเริ่มต้น) และ `B` เลือกด้วย env `SYNES_SPIRE_VARIANT` หรือ `--spire` (แยกจาก `SYNES_CHAR_VARIANT`)
+`SYNES_KIT_ONLY=crystal_spire,ruin_arch_shrine` สร้างไฟล์เสริมที่มีแค่ node เหล่านี้ (ข้ามการตรวจ node ตามสัญญา) ซึ่งเกมโหลดเมื่อใส่ `?spire=B`
+คำสั่งและผลเทียบอยู่ที่ `docs/qa/spire-shrine-v01/README.md`
+
 - `--rebuild-check` จะ build ลงไฟล์ชั่วคราว 2 รอบ แล้วยืนยันว่าทั้งสองไฟล์และไฟล์ที่ commit ไว้ตรงกันทุกไบต์
   (ถ้าแก้ `build_kit.py` แล้วลืม build ใหม่ การตรวจนี้จะไม่ผ่าน)
   ไบต์ตรงกันได้เฉพาะเมื่อใช้ Blender รุ่นเดียวกัน: 4.5.3 กับ 5.3 เรียง node และ material ในไฟล์ต่างกัน (เรขาคณิตทุก node เหมือนเดิม)
@@ -49,8 +54,8 @@ python3 tools/blender/kit_stats.py /tmp/kit_r0.glb public/assets/models/synes_ki
 ## งบ (สคริปต์และตัวตรวจจะหยุดทันทีถ้าเกิน)
 | รายการ | งบ | ปัจจุบัน |
 |---|---|---|
-| triangles รวมทั้งไฟล์ | ≤ 60,000 | **15,988** (แบบ A) |
-| ขนาด GLB | ≤ 1.2 MB (เป้า ≤ 700 KB) | **585.6 KB** (แบบ A) |
+| triangles รวมทั้งไฟล์ | ≤ 60,000 | **17,137** (แบบ A + spire/shrine A) |
+| ขนาด GLB | ≤ 1.2 MB (เป้า ≤ 700 KB) | **631.8 KB** (แบบ A + spire/shrine A) |
 | scatter ต้นไม้ (`tree_round`, `tree_round_b`, `tree_pine`) | ≤ 350 ต่อชิ้น | 304 / 328 / 124 |
 | scatter เล็ก (`bush`, `rock_a`, `rock_b`, `flower_patch`, `mushroom_glow`, `crystal_cluster`) | ≤ 150 ต่อชิ้น | 144 / 125 / 117 / 146 / 138 / 128 |
 | texture, Draco, meshopt, กล้อง, ไฟ, animation, UV | ห้ามมี | ไม่มี |

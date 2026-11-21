@@ -1,0 +1,165 @@
+{
+ "tag": "spireA",
+ "qs": "&spire=A",
+ "seed": 1,
+ "generatedAt": "2026-11-21T01:44:45.648Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "boss-open-844-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 49,
+   "tris": 36643,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.305,
+    "p5": 44,
+    "p95": 158,
+    "bands": {
+     "top": 0.374,
+     "mid": 0.282,
+     "bottom": 0.266
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 36423,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.299,
+    "p5": 44,
+    "p95": 150,
+    "bands": {
+     "top": 0.351,
+     "mid": 0.281,
+     "bottom": 0.272
+    }
+   }
+  },
+  {
+   "name": "boss-circle-844-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 50,
+   "tris": 36645,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 36205,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-open-844-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 56729,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.31,
+    "p5": 44,
+    "p95": 161,
+    "bands": {
+     "top": 0.379,
+     "mid": 0.288,
+     "bottom": 0.27
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 56509,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.305,
+    "p5": 44,
+    "p95": 154,
+    "bands": {
+     "top": 0.357,
+     "mid": 0.288,
+     "bottom": 0.277
+    }
+   }
+  },
+  {
+   "name": "boss-circle-844-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 54,
+   "tris": 56731,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 56291,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  }
+ ],
+ "notes": [],
+ "errors": [],
+ "pngBytes": 10578086,
+ "finalBytes": 10578086
+}
