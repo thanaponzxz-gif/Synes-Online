@@ -45,8 +45,9 @@ export class Rings {
   private items: { m: Mesh; t: number; dur: number; from: number; to: number; op: number }[] = [];
   private scene: Scene;
   constructor(scene: Scene) { this.scene = scene; }
-  ring(x: number, z: number, from: number, to: number, color: number, dur = 0.35, op = 0.85, y = 0.08) {
-    const m = new Mesh(new RingGeometry(0.85, 1, 40), new MeshBasicMaterial({ color, transparent: true, opacity: op, side: DoubleSide, depthWrite: false, blending: AdditiveBlending }));
+  /** single: one draw call instead of two (forceSinglePass; a flat ring looks the same), used by the exp/stage1-vfx options only */
+  ring(x: number, z: number, from: number, to: number, color: number, dur = 0.35, op = 0.85, y = 0.08, single = false) {
+    const m = new Mesh(new RingGeometry(0.85, 1, 40), new MeshBasicMaterial({ color, transparent: true, opacity: op, side: DoubleSide, depthWrite: false, blending: AdditiveBlending, forceSinglePass: single }));
     m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.scale.setScalar(from); m.renderOrder = 5;
     this.scene.add(m); this.items.push({ m, t: 0, dur, from, to, op });
   }

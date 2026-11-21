@@ -1,0 +1,2556 @@
+{
+ "seed": 1,
+ "size": "844x390",
+ "generatedAt": "2026-11-21T00:52:32.110Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "chime-prep-low-cur",
+   "scene": "chime-prep",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 44,
+   "tris": 40915,
+   "calls0": 44,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-low-cur",
+   "scene": "chime-burst",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 51,
+   "tris": 41705,
+   "calls0": 47,
+   "fxCalls": 4,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 5414,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 656,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-low-cur",
+   "scene": "crescent",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 46,
+   "tris": 41015,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 601,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 170,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-low-cur",
+   "scene": "crescent-late",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 46,
+   "tris": 41043,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 1720,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 78
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-low-cur",
+   "scene": "crystal-prep",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40963,
+   "calls0": 44,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 125,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-low-cur",
+   "scene": "crystal-hit",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 48,
+   "tris": 41807,
+   "calls0": 44,
+   "fxCalls": 4,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 837,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 3171,
+    "particles": 422
+   },
+   "warmPx": {
+    "skill": 72,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 30,
+    "particles": 372
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-low-cur",
+   "scene": "hit-spark",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 46,
+   "tris": 41173,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-low-cur",
+   "scene": "perfect-dodge",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 51,
+   "tris": 41449,
+   "calls0": 46,
+   "fxCalls": 5,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 2235,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-low-cur",
+   "scene": "field",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 44,
+   "tris": 41107,
+   "calls0": 44,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-low-cur",
+   "scene": "arena",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 45,
+   "tris": 34951,
+   "calls0": 45,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-low-cur",
+   "scene": "boss-hit1",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 46,
+   "tris": 35015,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-low-cur",
+   "scene": "boss-hit4",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 45,
+   "tris": 34795,
+   "calls0": 44,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-low-cur",
+   "scene": "slam-chime-prep",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 46,
+   "tris": 34953,
+   "calls0": 46,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-low-cur",
+   "scene": "slam-chime",
+   "variant": "cur",
+   "tier": "low",
+   "calls": 48,
+   "tris": 35089,
+   "calls0": 46,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 13101,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 17
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  },
+  {
+   "name": "chime-prep-low-A",
+   "scene": "chime-prep",
+   "variant": "A",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40879,
+   "calls0": 44,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 245,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-low-A",
+   "scene": "chime-burst",
+   "variant": "A",
+   "tier": "low",
+   "calls": 52,
+   "tris": 41673,
+   "calls0": 47,
+   "fxCalls": 5,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 5270,
+    "impact": 108,
+    "sparkles": 0,
+    "rings": 447,
+    "particles": 204
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-low-A",
+   "scene": "crescent",
+   "variant": "A",
+   "tier": "low",
+   "calls": 47,
+   "tris": 40983,
+   "calls0": 44,
+   "fxCalls": 3,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 1037,
+    "impact": 74,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 135
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-low-A",
+   "scene": "crescent-late",
+   "variant": "A",
+   "tier": "low",
+   "calls": 47,
+   "tris": 41011,
+   "calls0": 44,
+   "fxCalls": 3,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 3033,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 164
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-low-A",
+   "scene": "crystal-prep",
+   "variant": "A",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40901,
+   "calls0": 44,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 112,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-low-A",
+   "scene": "crystal-hit",
+   "variant": "A",
+   "tier": "low",
+   "calls": 49,
+   "tris": 41775,
+   "calls0": 44,
+   "fxCalls": 5,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 819,
+    "impact": 108,
+    "sparkles": 0,
+    "rings": 3171,
+    "particles": 541
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 30,
+    "particles": 366
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-low-A",
+   "scene": "hit-spark",
+   "variant": "A",
+   "tier": "low",
+   "calls": 47,
+   "tris": 41141,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 57,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 55
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-low-A",
+   "scene": "perfect-dodge",
+   "variant": "A",
+   "tier": "low",
+   "calls": 51,
+   "tris": 41387,
+   "calls0": 46,
+   "fxCalls": 5,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 2235,
+    "particles": 1
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-low-A",
+   "scene": "field",
+   "variant": "A",
+   "tier": "low",
+   "calls": 44,
+   "tris": 41045,
+   "calls0": 44,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-low-A",
+   "scene": "arena",
+   "variant": "A",
+   "tier": "low",
+   "calls": 46,
+   "tris": 34889,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 621,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-low-A",
+   "scene": "boss-hit1",
+   "variant": "A",
+   "tier": "low",
+   "calls": 47,
+   "tris": 34935,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 240,
+    "sparkles": 433,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-low-A",
+   "scene": "boss-hit4",
+   "variant": "A",
+   "tier": "low",
+   "calls": 46,
+   "tris": 34715,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 740,
+    "sparkles": 715,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-low-A",
+   "scene": "slam-chime-prep",
+   "variant": "A",
+   "tier": "low",
+   "calls": 48,
+   "tris": 34917,
+   "calls0": 46,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 475,
+    "impact": 0,
+    "sparkles": 562,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-low-A",
+   "scene": "slam-chime",
+   "variant": "A",
+   "tier": "low",
+   "calls": 49,
+   "tris": 35009,
+   "calls0": 46,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 13101,
+    "impact": 761,
+    "sparkles": 618,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  },
+  {
+   "name": "chime-prep-low-B",
+   "scene": "chime-prep",
+   "variant": "B",
+   "tier": "low",
+   "calls": 46,
+   "tris": 40903,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 486,
+    "impact": 0,
+    "sparkles": 1109,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-low-B",
+   "scene": "chime-burst",
+   "variant": "B",
+   "tier": "low",
+   "calls": 53,
+   "tris": 41813,
+   "calls0": 47,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 5815,
+    "impact": 318,
+    "sparkles": 1456,
+    "rings": 143,
+    "particles": 288
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-low-B",
+   "scene": "crescent",
+   "variant": "B",
+   "tier": "low",
+   "calls": 48,
+   "tris": 41077,
+   "calls0": 44,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 3731,
+    "impact": 255,
+    "sparkles": 1315,
+    "rings": 0,
+    "particles": 261
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-low-B",
+   "scene": "crescent-late",
+   "variant": "B",
+   "tier": "low",
+   "calls": 48,
+   "tris": 41119,
+   "calls0": 44,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 7964,
+    "impact": 311,
+    "sparkles": 1486,
+    "rings": 0,
+    "particles": 358
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-low-B",
+   "scene": "crystal-prep",
+   "variant": "B",
+   "tier": "low",
+   "calls": 46,
+   "tris": 40933,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 166,
+    "impact": 0,
+    "sparkles": 1434,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-low-B",
+   "scene": "crystal-hit",
+   "variant": "B",
+   "tier": "low",
+   "calls": 50,
+   "tris": 41846,
+   "calls0": 44,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 2883,
+    "impact": 333,
+    "sparkles": 1263,
+    "rings": 3171,
+    "particles": 430
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 30,
+    "particles": 127
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-low-B",
+   "scene": "hit-spark",
+   "variant": "B",
+   "tier": "low",
+   "calls": 48,
+   "tris": 41177,
+   "calls0": 45,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 182,
+    "sparkles": 1652,
+    "rings": 0,
+    "particles": 194
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-low-B",
+   "scene": "perfect-dodge",
+   "variant": "B",
+   "tier": "low",
+   "calls": 53,
+   "tris": 41531,
+   "calls0": 46,
+   "fxCalls": 7,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 1653,
+    "rings": 2261,
+    "particles": 21
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-low-B",
+   "scene": "field",
+   "variant": "B",
+   "tier": "low",
+   "calls": 45,
+   "tris": 41045,
+   "calls0": 44,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 958,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-low-B",
+   "scene": "arena",
+   "variant": "B",
+   "tier": "low",
+   "calls": 46,
+   "tris": 34889,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 1786,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-low-B",
+   "scene": "boss-hit1",
+   "variant": "B",
+   "tier": "low",
+   "calls": 47,
+   "tris": 34963,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 473,
+    "sparkles": 1397,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-low-B",
+   "scene": "boss-hit4",
+   "variant": "B",
+   "tier": "low",
+   "calls": 46,
+   "tris": 34743,
+   "calls0": 44,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 1338,
+    "sparkles": 1963,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-low-B",
+   "scene": "slam-chime-prep",
+   "variant": "B",
+   "tier": "low",
+   "calls": 48,
+   "tris": 34941,
+   "calls0": 46,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 1074,
+    "impact": 0,
+    "sparkles": 1547,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-low-B",
+   "scene": "slam-chime",
+   "variant": "B",
+   "tier": "low",
+   "calls": 49,
+   "tris": 35141,
+   "calls0": 46,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 16360,
+    "impact": 1252,
+    "sparkles": 1624,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  },
+  {
+   "name": "chime-prep-medium-cur",
+   "scene": "chime-prep",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 45,
+   "tris": 59731,
+   "calls0": 45,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-medium-cur",
+   "scene": "chime-burst",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 60585,
+   "calls0": 48,
+   "fxCalls": 4,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 5781,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 562,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 378,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-medium-cur",
+   "scene": "crescent",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59911,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 899,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 318,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-medium-cur",
+   "scene": "crescent-late",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59939,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 1975,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 104
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-medium-cur",
+   "scene": "crystal-prep",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59779,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 125,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-medium-cur",
+   "scene": "crystal-hit",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 60688,
+   "calls0": 45,
+   "fxCalls": 4,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 3645,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 3171,
+    "particles": 162
+   },
+   "warmPx": {
+    "skill": 731,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 36,
+    "particles": 112
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-medium-cur",
+   "scene": "hit-spark",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59989,
+   "calls0": 46,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-medium-cur",
+   "scene": "perfect-dodge",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 60265,
+   "calls0": 47,
+   "fxCalls": 5,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 2235,
+    "particles": 2
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-medium-cur",
+   "scene": "field",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 45,
+   "tris": 59923,
+   "calls0": 45,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-medium-cur",
+   "scene": "arena",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 54301,
+   "calls0": 49,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-medium-cur",
+   "scene": "boss-hit1",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54365,
+   "calls0": 49,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-medium-cur",
+   "scene": "boss-hit4",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 54145,
+   "calls0": 48,
+   "fxCalls": 1,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-medium-cur",
+   "scene": "slam-chime-prep",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54303,
+   "calls0": 50,
+   "fxCalls": 0,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-medium-cur",
+   "scene": "slam-chime",
+   "variant": "cur",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 54503,
+   "calls0": 50,
+   "fxCalls": 2,
+   "sparkleCalls": 0,
+   "fxPx": {
+    "skill": 13590,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 35
+   },
+   "warmPx": {
+    "skill": 270,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  },
+  {
+   "name": "chime-prep-medium-A",
+   "scene": "chime-prep",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59695,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 242,
+    "impact": 0,
+    "sparkles": 514,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-medium-A",
+   "scene": "chime-burst",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 54,
+   "tris": 60553,
+   "calls0": 48,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 5637,
+    "impact": 110,
+    "sparkles": 640,
+    "rings": 382,
+    "particles": 171
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-medium-A",
+   "scene": "crescent",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 59879,
+   "calls0": 45,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 1410,
+    "impact": 79,
+    "sparkles": 578,
+    "rings": 0,
+    "particles": 152
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-medium-A",
+   "scene": "crescent-late",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 59907,
+   "calls0": 45,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 3323,
+    "impact": 0,
+    "sparkles": 666,
+    "rings": 0,
+    "particles": 216
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-medium-A",
+   "scene": "crystal-prep",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59717,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 112,
+    "impact": 0,
+    "sparkles": 651,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-medium-A",
+   "scene": "crystal-hit",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 60656,
+   "calls0": 45,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 3619,
+    "impact": 94,
+    "sparkles": 535,
+    "rings": 3171,
+    "particles": 347
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 36,
+    "particles": 138
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-medium-A",
+   "scene": "hit-spark",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 59957,
+   "calls0": 46,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 56,
+    "sparkles": 729,
+    "rings": 0,
+    "particles": 122
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-medium-A",
+   "scene": "perfect-dodge",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 60203,
+   "calls0": 47,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 793,
+    "rings": 2235,
+    "particles": 1
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-medium-A",
+   "scene": "field",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59861,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 422,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-medium-A",
+   "scene": "arena",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54239,
+   "calls0": 49,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 784,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-medium-A",
+   "scene": "boss-hit1",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 54285,
+   "calls0": 49,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 240,
+    "sparkles": 612,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-medium-A",
+   "scene": "boss-hit4",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54065,
+   "calls0": 48,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 740,
+    "sparkles": 905,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-medium-A",
+   "scene": "slam-chime-prep",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 54267,
+   "calls0": 50,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 475,
+    "impact": 0,
+    "sparkles": 716,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-medium-A",
+   "scene": "slam-chime",
+   "variant": "A",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 54423,
+   "calls0": 50,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 13590,
+    "impact": 761,
+    "sparkles": 722,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  },
+  {
+   "name": "chime-prep-medium-B",
+   "scene": "chime-prep",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59719,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 485,
+    "impact": 0,
+    "sparkles": 2020,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 8,
+   "tele": [
+    "hop:circle:0.19"
+   ],
+   "cast": "1@6",
+   "afterTicks": 7
+  },
+  {
+   "name": "chime-burst-medium-B",
+   "scene": "chime-burst",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 54,
+   "tris": 60693,
+   "calls0": 48,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 6500,
+    "impact": 309,
+    "sparkles": 2482,
+    "rings": 131,
+    "particles": 299
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 13,
+   "tele": [],
+   "cast": null,
+   "afterTicks": 12
+  },
+  {
+   "name": "crescent-medium-B",
+   "scene": "crescent",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 59965,
+   "calls0": 45,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 4042,
+    "impact": 257,
+    "sparkles": 2306,
+    "rings": 0,
+    "particles": 287
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "cast": "2@7",
+   "afterTicks": 8
+  },
+  {
+   "name": "crescent-late-medium-B",
+   "scene": "crescent-late",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 60007,
+   "calls0": 45,
+   "fxCalls": 4,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 8192,
+    "impact": 311,
+    "sparkles": 2561,
+    "rings": 0,
+    "particles": 416
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 12,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "cast": "2@10",
+   "afterTicks": 11
+  },
+  {
+   "name": "crystal-prep-medium-B",
+   "scene": "crystal-prep",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 47,
+   "tris": 59749,
+   "calls0": 45,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 166,
+    "impact": 0,
+    "sparkles": 2523,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 11,
+   "tele": [
+    "hop:circle:0.28"
+   ],
+   "cast": "3@9",
+   "afterTicks": 10
+  },
+  {
+   "name": "crystal-hit-medium-B",
+   "scene": "crystal-hit",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 60724,
+   "calls0": 45,
+   "fxCalls": 6,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 4956,
+    "impact": 276,
+    "sparkles": 2128,
+    "rings": 3171,
+    "particles": 628
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 36,
+    "particles": 193
+   },
+   "tick": 20,
+   "tele": [],
+   "cast": "3@18",
+   "afterTicks": 19
+  },
+  {
+   "name": "hit-spark-medium-B",
+   "scene": "hit-spark",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 59993,
+   "calls0": 46,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 185,
+    "sparkles": 2396,
+    "rings": 0,
+    "particles": 175
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "cast": null,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "perfect-dodge-medium-B",
+   "scene": "perfect-dodge",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 54,
+   "tris": 60347,
+   "calls0": 47,
+   "fxCalls": 7,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 2148,
+    "rings": 2261,
+    "particles": 78
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 39,
+   "tele": [],
+   "cast": null,
+   "n": 3,
+   "perfect": 1
+  },
+  {
+   "name": "field-medium-B",
+   "scene": "field",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59861,
+   "calls0": 45,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 1694,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 60,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "arena-medium-B",
+   "scene": "arena",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54239,
+   "calls0": 49,
+   "fxCalls": 1,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 2460,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 16,
+   "tele": [],
+   "cast": null
+  },
+  {
+   "name": "boss-hit1-medium-B",
+   "scene": "boss-hit1",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 54313,
+   "calls0": 49,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 472,
+    "sparkles": 1942,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 7,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "boss-hit4-medium-B",
+   "scene": "boss-hit4",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 54093,
+   "calls0": 48,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 0,
+    "impact": 1338,
+    "sparkles": 2761,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 10,
+   "tele": [],
+   "cast": null,
+   "bossR": 1.9,
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "slam-chime-prep-medium-B",
+   "scene": "slam-chime-prep",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 54291,
+   "calls0": 50,
+   "fxCalls": 2,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 1074,
+    "impact": 0,
+    "sparkles": 2201,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 86,
+   "tele": [
+    "slam:circle:0.51"
+   ],
+   "cast": "1@5",
+   "afterTicks": 6
+  },
+  {
+   "name": "slam-chime-medium-B",
+   "scene": "slam-chime",
+   "variant": "B",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 54555,
+   "calls0": 50,
+   "fxCalls": 3,
+   "sparkleCalls": 1,
+   "fxPx": {
+    "skill": 16842,
+    "impact": 1252,
+    "sparkles": 2261,
+    "rings": 0,
+    "particles": 0
+   },
+   "warmPx": {
+    "skill": 0,
+    "impact": 0,
+    "sparkles": 0,
+    "rings": 0,
+    "particles": 0
+   },
+   "tick": 94,
+   "tele": [
+    "slam:circle:0.72"
+   ],
+   "cast": null,
+   "afterTicks": 14
+  }
+ ],
+ "notes": [
+  "perfect-dodge rows re-shot after the single-pass echo ring (B) change: 2026-11-21T00:59:23.451Z"
+ ],
+ "errors": []
+}

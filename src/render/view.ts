@@ -11,6 +11,9 @@ import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenP
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
 import { SkillFx, castPose } from './skillfx.ts';
+import { SkillFxV } from './vfxskill.ts';
+import { StageVfx, makeHeroRing } from './vfx.ts';
+import { vfxVariant, VFX_STYLES, FXC } from './vfxstyle.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
 import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
 import { makeArenaDeco, glowPillars, type ArenaDeco } from './arenaDeco.ts';
@@ -50,8 +53,10 @@ export class View {
   q: QualitySettings = TIERS.medium; tone: Tone = DEFAULT_TONE;
   particles!: Particles; rings!: Rings;
   /** DES-001 player skill VFX; `?vfx=0` turns them off (A/B draw-call measurement only) */
-  skillFx: SkillFx | null = null;
+  skillFx: SkillFx | SkillFxV | null = null;
   readonly vfx = new URLSearchParams(location.search).get('vfx') !== '0';
+  /** exp/stage1-vfx: `?vfx=A|B` = DES-004 step 5 / Q26 effect options (vfxstyle.ts); no parameter = current look */
+  readonly vfxVar = vfxVariant(); private stageVfx: StageVfx | null = null;
   private actors = new Map<number, ActorView>();
   private teles = new Map<number, { t: Telegraph; m: Mesh; mat: any }>();
   private gates = new Map<string, { g: Object3D; open: boolean; y: number }>();
@@ -276,12 +281,19 @@ export class View {
     for (const a of world.actors) this.addActor(a);
     // always-visible player marker (drawn over everything, so the player is findable behind any prop)
     if (!this.playerMark) {
-      this.playerMark = new Mesh(new RingGeometry(0.55, 0.7, 32), new MeshBasicMaterial({ color: PAL.lumen, transparent: true, opacity: 0.85, depthTest: false, depthWrite: false }));
+      if (this.vfxVar !== 'cur') this.playerMark = makeHeroRing(VFX_STYLES[this.vfxVar]); // DES-004 step 5: thinner lumen ring
+      else this.playerMark = new Mesh(new RingGeometry(0.55, 0.7, 32), new MeshBasicMaterial({ color: PAL.lumen, transparent: true, opacity: 0.85, depthTest: false, depthWrite: false }));
       this.playerMark.rotation.x = -Math.PI / 2; this.playerMark.renderOrder = 12; this.scene.add(this.playerMark);
     }
     if (!this.particles) { this.particles = new Particles(this.scene, this.q.particles); this.rings = new Rings(this.scene); }
     // pooled skill VFX: allocated here (level build), never per cast
-    this.skillFx?.dispose(); this.skillFx = new SkillFx(this.scene, this.q.tier, this.vfx);
+    this.skillFx?.dispose(); this.stageVfx?.dispose(); this.stageVfx = null;
+    if (this.vfxVar === 'cur') this.skillFx = new SkillFx(this.scene, this.q.tier, this.vfx);
+    else {
+      const fx = new SkillFxV(this.scene, this.q.tier, this.vfx, VFX_STYLES[this.vfxVar]);
+      fx.attach(this.camera, this.actors.get(world.player.id)?.parts.hero_sword ?? null); // Q26 blade light
+      this.skillFx = fx; this.stageVfx = new StageVfx(this.scene, this.q, VFX_STYLES[this.vfxVar]);
+    }
   }
 
   private addActor(a: Actor) {
@@ -314,19 +326,28 @@ export class View {
         case 'hit': {
           const v = [...this.actors.values()].find((x) => x.a.id === e.target);
           if (v) v.flash = 0.18;
-          this.particles.burst(e.x, 0.9, e.z, e.byPlayer ? (e.crit ? PAL.gold : 0xffffff) : 0xff5a6a, e.crit ? 14 : 8, 3.2, 2.5, 0.45, e.crit ? 1.4 : 1);
+          if (this.stageVfx && e.byPlayer) { // DES-004 step 5: readable cool hit spark; faceted shards when the sword hits crystal
+            const H = this.stageVfx.style.hit, crystal = v?.a.kind === 'prismback';
+            const y = this.stageVfx.onHit(world.tick, e.x, e.z, world.player, crystal ? 2 : e.crit ? 1 : 0, v?.a.r ?? 1, this.camera.position);
+            if (!crystal) this.particles.burst(e.x, y - 0.15, e.z, e.crit ? FXC.violet : FXC.lumenHi, e.crit ? H.parts + 4 : H.parts, 3.4, H.partUp, 0.5, H.partSize * (e.crit ? 1.25 : 1));
+          } else this.particles.burst(e.x, 0.9, e.z, e.byPlayer ? (e.crit ? PAL.gold : 0xffffff) : 0xff5a6a, e.crit ? 14 : 8, 3.2, 2.5, 0.45, e.crit ? 1.4 : 1);
           if (!e.byPlayer) this.shake = Math.max(this.shake, 0.35);
           else if (e.crit) this.shake = Math.max(this.shake, 0.15);
           break;
         }
         case 'swing': {
           const p = world.player;
-          this.rings.arc(p.x, p.z, Math.atan2(-p.fx, -p.fz), PLAYER.combo[e.step].range + 0.3, e.step === 2 ? PAL.gold : PAL.lumen, e.step);
+          this.rings.arc(p.x, p.z, Math.atan2(-p.fx, -p.fz), PLAYER.combo[e.step].range + 0.3, e.step === 2 ? (this.stageVfx ? FXC.violet : PAL.gold) : PAL.lumen, e.step); // options: no gold
           break;
         }
         case 'skill': break; // legacy Chime event: its visuals are now the skill-hit ring (DES-001 §2)
         case 'skill-hit': this.skillFx?.onSkillHit(e.slot, world.tick, e.x, e.z, e.dx, e.dz); break;
-        case 'perfect': this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1); this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
+        case 'perfect': {
+          this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1);
+          const P = this.stageVfx?.style.perfect;
+          if (P?.echo) { this.rings.ring(e.x, e.z, 0.3, 1.9, FXC.violet, 0.5, 0.9, 0.08, true); this.particles.burst(e.x, 1.1, e.z, FXC.violet, P.parts - 16, 4.5, 3.4, 0.7, 1.2); }
+          this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
+        }
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
         case 'death': { const v = this.actors.get(e.id); if (v) { this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
         case 'pillar-break': { const pl = LEVEL.pillars[e.i]; this.pillars[e.i].visible = false; this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
@@ -374,6 +395,7 @@ export class View {
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.skillFx?.update(world.tick, alpha, world.ps.cast);
+    if (this.stageVfx) this.stageVfx.update(world.tick, alpha, this.time, this.camera, this.camTarget, this.actors.get(world.player.id)?.root.position.z ?? 0, this.renderer);
     const pv = this.actors.get(world.player.id);
     this.applyAtmosphere(pv ? arenaWeight(pv.root.position.z) : 0);
     const w = this.atmosW;
