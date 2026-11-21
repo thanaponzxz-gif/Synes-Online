@@ -31,8 +31,8 @@ export interface VfxStyle {
   hit: { y: number; r: number; rays: number; life: number; parts: number; partSize: number; partUp: number; shards: number; shardSize: number };
   /** Perfect dodge: violet echo ring + extra particles */
   perfect: { echo: boolean; parts: number };
-  /** Hero foot ring (was 0.55..0.70 m solid): centre radius, core half-width, soft glow half-width (0 = none), alphas */
-  ring: { r: number; core: number; glow: number; alpha: number; glowA: number };
+  /** Hero foot ring (was 0.55..0.70 m solid): centre radius, core half-width, soft glow half-width (0 = none), alphas, core tint toward lumen-white */
+  ring: { r: number; core: number; glow: number; alpha: number; glowA: number; hi: number };
   /** Ambient crystal sparkles (point sprites, 1 draw call): share of the tier's `particles`, intensity in the meadow per tier
    *  (arena = 1), sprite size and brightness factors */
   sparkles: { share: number; field: Record<Tier, number>; size: number; bright: number };
@@ -41,13 +41,13 @@ export interface VfxStyle {
 export const VFX_STYLES: Record<'A' | 'B', VfxStyle> = {
   A: {
     id: 'A',
-    chimePrep: { sheathW: 0.1, sheathA: 0.55, tipR: 0.3, tipA: 0.9, motes: 0 },
+    chimePrep: { sheathW: 0.1, sheathA: 0.55, tipR: 0.34, tipA: 0.95, motes: 0 },
     chime: { band: 0.7, echo: 0, shards: 8, shardsLow: 0, shardSize: 0.11 },
     crescent: { y0: 0.35, y1: 0.7, thick: 1.35, edge: 0.22, life: 9, curtain: 0, shards: 10, shardsLow: 0 },
     crystal: { scale: 1, lowCrystals: 1, shards: 7, shardsLow: 0, crackA: 1, crackGlints: false },
-    hit: { y: 1.05, r: 0.36, rays: 4, life: 4, parts: 10, partSize: 1.15, partUp: 3.2, shards: 8, shardSize: 0.15 },
+    hit: { y: 1.05, r: 0.36, rays: 4, life: 4, parts: 10, partSize: 1.15, partUp: 3.2, shards: 8, shardSize: 0.18 },
     perfect: { echo: false, parts: 16 },
-    ring: { r: 0.62, core: 0.035, glow: 0, alpha: 0.8, glowA: 0 },
+    ring: { r: 0.62, core: 0.035, glow: 0, alpha: 0.92, glowA: 0, hi: 0 },
     sparkles: { share: 0.5, field: { low: 0, medium: 0.45, high: 0.45 }, size: 1, bright: 1 },
   },
   B: {
@@ -56,9 +56,9 @@ export const VFX_STYLES: Record<'A' | 'B', VfxStyle> = {
     chime: { band: 0.85, echo: 1, shards: 12, shardsLow: 4, shardSize: 0.14 },
     crescent: { y0: 0.3, y1: 0.85, thick: 1.6, edge: 0.26, life: 11, curtain: 0.9, shards: 14, shardsLow: 5 },
     crystal: { scale: 1.25, lowCrystals: 3, shards: 11, shardsLow: 4, crackA: 1.25, crackGlints: true },
-    hit: { y: 1.05, r: 0.56, rays: 6, life: 5, parts: 14, partSize: 1.4, partUp: 4.2, shards: 14, shardSize: 0.21 },
+    hit: { y: 1.05, r: 0.56, rays: 6, life: 5, parts: 14, partSize: 1.4, partUp: 4.2, shards: 14, shardSize: 0.25 },
     perfect: { echo: true, parts: 24 },
-    ring: { r: 0.62, core: 0.03, glow: 0.12, alpha: 0.95, glowA: 0.28 },
+    ring: { r: 0.62, core: 0.03, glow: 0.08, alpha: 0.95, glowA: 0.3, hi: 0.4 },
     sparkles: { share: 1, field: { low: 0.6, medium: 0.8, high: 0.8 }, size: 1.35, bright: 1.35 },
   },
 };

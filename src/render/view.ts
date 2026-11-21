@@ -339,7 +339,7 @@ export class View {
         case 'perfect': {
           this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1);
           const P = this.stageVfx?.style.perfect;
-          if (P?.echo) { this.rings.ring(e.x, e.z, 0.3, 1.9, FXC.violet, 0.5, 0.9); this.particles.burst(e.x, 1.1, e.z, FXC.violet, P.parts - 16, 4.5, 3.4, 0.7, 1.2); }
+          if (P?.echo) { this.rings.ring(e.x, e.z, 0.3, 1.9, FXC.violet, 0.5, 0.9, 0.08, true); this.particles.burst(e.x, 1.1, e.z, FXC.violet, P.parts - 16, 4.5, 3.4, 0.7, 1.2); }
           this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
         }
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }

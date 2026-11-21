@@ -25,11 +25,11 @@ export function makeHeroRing(s: VfxStyle): Mesh {
   const geo = new PlaneGeometry(ext * 2, ext * 2);
   const mat = new ShaderMaterial({
     transparent: true, depthTest: false, depthWrite: false, fog: false,
-    uniforms: { uR: { value: s.ring.r }, uCore: { value: s.ring.core }, uGlow: { value: s.ring.glow }, uA: { value: s.ring.alpha }, uGA: { value: s.ring.glowA }, uExt: { value: ext },
+    uniforms: { uR: { value: s.ring.r }, uCore: { value: s.ring.core }, uGlow: { value: s.ring.glow }, uA: { value: s.ring.alpha }, uGA: { value: s.ring.glowA }, uHiK: { value: s.ring.hi }, uExt: { value: ext },
       uCol: { value: new Color(FXC.lumen) }, uHi: { value: new Color(FXC.lumenHi) } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: `
-      uniform float uR; uniform float uCore; uniform float uGlow; uniform float uA; uniform float uGA; uniform float uExt; uniform vec3 uCol; uniform vec3 uHi;
+      uniform float uR; uniform float uCore; uniform float uGlow; uniform float uA; uniform float uGA; uniform float uHiK; uniform float uExt; uniform vec3 uCol; uniform vec3 uHi;
       varying vec2 vUv;
       void main(){
         float d = abs(length(vUv * 2.0 - 1.0) * uExt - uR);
@@ -38,7 +38,7 @@ export function makeHeroRing(s: VfxStyle): Mesh {
         float glow = uGlow > 0.0 ? uGA * pow(1.0 - clamp(d / uGlow, 0.0, 1.0), 2.0) : 0.0;
         float a = max(core * uA, glow);
         if (a < 0.003) discard;
-        gl_FragColor = vec4(mix(uCol, uHi, core * 0.45), a);
+        gl_FragColor = vec4(mix(uCol, uHi, core * uHiK), a);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
       }`,
@@ -118,7 +118,7 @@ const C_LUMEN = new Color(FXC.lumen), C_VIOLET = new Color(FXC.violet), C_HI = n
 /** Pooled hit flashes (+ crystal shards). kind 0 normal, 1 crit (empowered), 2 crystal target. */
 export class ImpactFx {
   readonly buf: FxBuf; private items: Impact[] = []; private F = new Facing(); private n = 0; private s: VfxStyle;
-  constructor(scene: Scene, s: VfxStyle) { this.s = s; this.buf = new FxBuf(scene, 900, 9, false); this.buf.mesh.name = 'vfx_impact'; }
+  constructor(scene: Scene, s: VfxStyle) { this.s = s; this.buf = new FxBuf(scene, 640, 9, false); this.buf.mesh.name = 'vfx_impact'; }
   add(tick: number, x: number, y: number, z: number, kind: 0 | 1 | 2, dx: number, dz: number) {
     if (this.items.length >= 8) this.items.shift();
     this.items.push({ t0: tick, x, y, z, kind, seed: this.n++, dx, dz });

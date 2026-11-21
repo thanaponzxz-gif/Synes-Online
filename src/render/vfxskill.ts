@@ -43,7 +43,10 @@ export class FxBuf {
   quad(a: ArrayLike<number>, b: ArrayLike<number>, c: ArrayLike<number>, d: ArrayLike<number>, ca: C4, cb: C4, cc: C4, cd: C4) { this.tri(a, b, c, ca, cb, cc); this.tri(a, c, d, ca, cc, cd); }
   end() {
     this.geo.setDrawRange(0, this.n * 3);
-    (this.geo.attributes.position as BufferAttribute).needsUpdate = true; (this.geo.attributes.color as BufferAttribute).needsUpdate = true;
+    // upload only the part written this frame (the buffers are sized for the worst case)
+    const pa = this.geo.attributes.position as BufferAttribute, ca = this.geo.attributes.color as BufferAttribute;
+    pa.clearUpdateRanges(); ca.clearUpdateRanges();
+    if (this.n > 0) { pa.addUpdateRange(0, this.n * 9); ca.addUpdateRange(0, this.n * 12); pa.needsUpdate = true; ca.needsUpdate = true; }
     this.mesh.visible = this.n > 0;
   }
   dispose() { this.geo.dispose(); (this.mesh.material as MeshBasicMaterial).dispose(); this.mesh.removeFromParent(); }
