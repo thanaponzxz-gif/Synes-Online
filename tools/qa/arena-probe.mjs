@@ -198,12 +198,16 @@ try {
     await page.waitForTimeout(150);
     const m = await page.evaluate(measure);
     const name = `${look}-${sc}-${size[0]}-${tier}`;
+    // level build time (canvas floor + scatter + ruins + deco), median of 3 rebuilds; only on the opening frame (after measuring)
+    if (sc === 'open') m.buildMs = await page.evaluate(() => { const { view, world } = window.__synes, t = [];
+      for (let i = 0; i < 3; i++) { const t0 = performance.now(); view.buildLevel(world, 1); t.push(performance.now() - t0); }
+      t.sort((a, b) => a - b); return +t[1].toFixed(1); });
     fs.writeFileSync(path.join(outDir, name + '-labels.png'), Buffer.from(m.labelPng, 'base64'));
     fs.writeFileSync(path.join(outDir, name + '-gray.png'), Buffer.from(m.grayPng, 'base64'));
     delete m.labelPng; delete m.grayPng;
     report.shots.push({ name, look, scene: sc, size: `${size[0]}x${size[1]}`, tier, setup: got, ...m });
     const g = m.groups, lb = m.labels;
-    console.log(`${name} calls ${m.calls} tris ${m.tris} tex ${(m.texBytes / 1048576).toFixed(2)}MB | L0 ${lb.crystal_L0?.luma} pBL ${lb.pillar_BL?.luma} pBR ${lb.pillar_BR?.luma} floor ${g.floor?.luma} (c ${lb.floor_c?.luma}) shrine ${lb.shrine?.luma} bg ${g.background?.luma}/${g.background?.std} mid ${g.midgroundBright?.luma}/${g.midgroundBright?.std} | legacy L ${m.legacy.crystalL} floorMid ${m.legacy.floorMid}`);
+    console.log(`${name} calls ${m.calls} tris ${m.tris}${m.buildMs != null ? ` build ${m.buildMs}ms` : ''} tex ${(m.texBytes / 1048576).toFixed(2)}MB | L0 ${lb.crystal_L0?.luma} pBL ${lb.pillar_BL?.luma} pBR ${lb.pillar_BR?.luma} floor ${g.floor?.luma} (c ${lb.floor_c?.luma}) shrine ${lb.shrine?.luma} bg ${g.background?.luma}/${g.background?.std} mid ${g.midgroundBright?.luma}/${g.midgroundBright?.std} | legacy L ${m.legacy.crystalL} floorMid ${m.legacy.floorMid}`);
     await ctx.close();
   }
 } finally { await browser.close(); srv.close(); }
