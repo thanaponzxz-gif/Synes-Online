@@ -1,6 +1,7 @@
 // Talks to the authoritative server when one is reachable on the same origin. Static hosting ⇒ offline mode.
 export type NetMode = 'online' | 'offline';
 import type { RunVariant } from '../shared/sim/variant.ts';
+import { tuningHash, type Ruleset } from '../shared/sim/ruleset.ts';
 export interface RunTicket { runId: string; seed: number; }
 
 export class Net {
@@ -15,9 +16,9 @@ export class Net {
     } catch { this.mode = 'offline'; }
     return this.mode;
   }
-  async start(variant?: RunVariant): Promise<RunTicket | null> {
+  async start(variant?: RunVariant, ruleset?: Ruleset): Promise<RunTicket | null> {
     if (this.mode !== 'online') return null;
-    try { const r = await fetch('./api/run/start', { method: 'POST', body: JSON.stringify({ variant }), headers: { 'content-type': 'application/json' } }); return r.ok ? await r.json() : null; } catch { return null; }
+    try { const r = await fetch('./api/run/start', { method: 'POST', body: JSON.stringify({ variant, ...(ruleset ? { rulesetVersion: ruleset, tuningHash: tuningHash(ruleset) } : {}) }), headers: { 'content-type': 'application/json' } }); return r.ok ? await r.json() : null; } catch { return null; }
   }
   /** Retries while the device is offline (e.g. lost signal on the bus); resolves with the server verdict. */
   async finish(runId: string, log: number[], tries = 6): Promise<any> {

@@ -11,9 +11,14 @@ import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenP
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
 import { TIERS, type QualitySettings } from './quality.ts';
 import { SkillFx, castPose } from './skillfx.ts';
+import { SkillFxV } from './vfxskill.ts';
+import { StageVfx, makeHeroRing } from './vfx.ts';
+import { vfxVariant, VFX_STYLES, FXC } from './vfxstyle.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
 import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
+import { makeArenaDeco, glowPillars, type ArenaDeco } from './arenaDeco.ts';
 import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
+import { openingFromQuery, openingTone, openingPathFill, nearGuide, patchGate, patchHeroRim, addOpeningProps } from './opening.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -33,7 +38,7 @@ function shapeSDF(s: Shape, x: number, z: number) {
 }
 
 /** Big props that may stand between the camera and the player: faded so they never hide the player or a telegraph. */
-interface Occluder { obj: Object3D; r: number; h: number; mats: Material[]; f: number; actor?: Actor; }
+interface Occluder { obj: Object3D; r: number; h: number; mats: Material[]; f: number; actor?: Actor; twins: Mesh[]; parts: Mesh[]; }
 let STAR_GEO: ShapeGeometry | null = null;
 function starGeo() {
   if (STAR_GEO) return STAR_GEO;
@@ -49,8 +54,10 @@ export class View {
   q: QualitySettings = TIERS.medium; tone: Tone = DEFAULT_TONE;
   particles!: Particles; rings!: Rings;
   /** DES-001 player skill VFX; `?vfx=0` turns them off (A/B draw-call measurement only) */
-  skillFx: SkillFx | null = null;
+  skillFx: SkillFx | SkillFxV | null = null;
   readonly vfx = new URLSearchParams(location.search).get('vfx') !== '0';
+  /** exp/stage1-vfx: `?vfx=A|B` = DES-004 step 5 / Q26 effect options (vfxstyle.ts); no parameter = current look */
+  readonly vfxVar = vfxVariant(); private stageVfx: StageVfx | null = null;
   private actors = new Map<number, ActorView>();
   private teles = new Map<number, { t: Telegraph; m: Mesh; mat: any }>();
   private gates = new Map<string, { g: Object3D; open: boolean; y: number }>();
@@ -61,9 +68,14 @@ export class View {
   private flames: Object3D[] = [];
   private arenaFloor: ArenaFloor | null = null;
   private arenaRuins: Group | null = null;
+  /** DES-004 step 2 prototype deco (`?arena=A|B`, null by default) */
+  private arenaDeco: ArenaDeco | null = null;
   /** DES-004 step 1 (arena light + atmosphere); `?atmos=0`, `?glow=0`, `?rays=0` switch parts off for A/B shots */
   private readonly flags = new URLSearchParams(location.search);
   atmosOn = this.flags.get('atmos') !== '0';
+  /** ?opening=A|B: opening-scene look prototypes (opening.ts, docs/qa/opening-v01). null = the current look; every hook below is skipped */
+  readonly opening = openingFromQuery(this.flags);
+  private openingFx: ReturnType<typeof addOpeningProps> | null = null;
   private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   /** 0 meadow … 1 arena; exposed for QA */
@@ -71,6 +83,8 @@ export class View {
   private sunOffset = new Vector3().copy(BASE_SUN_OFFSET);
   env = new Group();
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
+  /** DES-006 §1 pull-back: smoothed base pose (camBase), current pull amount (0 = low angle), hold timer, scratch camera for the visibility test */
+  private camBase = new Vector3(); private camPull = 0; private camPullHold = 0; private noPull = /[?&]nopull\b/.test(location.search); /* QA only: ?nopull = the pre-pull-back camera, for before/after */ private pullCam = new PerspectiveCamera(48, 16 / 9, 0.5, 90); private pullPts: number[] = [];
   time = 0;
   pixelRatio = 1;
   /** shared uniform: decoration closer than this (m) to the camera dithers out so it never hides the action */
@@ -110,6 +124,7 @@ export class View {
   }
 
   applyTone(t: Tone) {
+    if (this.opening) t = openingTone(t, this.opening);
     this.tone = t;
     this.scene.background = new Color(t.fog);
     this.scene.fog = new Fog(t.fog, t.fogNear, t.fogFar);
@@ -153,6 +168,8 @@ export class View {
     });
     for (const fx of [this.glow, this.shafts]) { fx?.mesh.geometry.dispose(); fx?.mat.dispose(); }
     this.glow = this.shafts = null;
+    this.arenaDeco?.dispose(); this.arenaDeco = null;
+    this.openingFx?.dispose(); this.openingFx = null;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
@@ -176,7 +193,7 @@ export class View {
     }
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
-    const drawShapes = (pad: number, style: string) => {
+    const drawShapes = (pad: number, style: string | CanvasGradient) => {
       g.fillStyle = style;
       for (const s of LEVEL.walkable) {
         g.beginPath();
@@ -186,7 +203,7 @@ export class View {
     };
     drawShapes(0.9, hex(t.pathEdge, 0.55));
     drawShapes(0.15, hex(t.pathEdge));
-    drawShapes(-0.25, hex(t.path));
+    drawShapes(-0.25, this.opening ? openingPathFill(g, this.opening, V) : hex(t.path));
     for (let i = 0; i < W * H / 90; i++) { const x = rnd() * W, y = rnd() * H; g.fillStyle = 'rgba(120,90,60,0.07)'; g.fillRect(x, y, 3, 2); }
     const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 4; tex.minFilter = LinearMipmapLinearFilter;
     const ground = new Mesh(new PlaneGeometry(BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0), new MeshLambertMaterial({ map: tex }));
@@ -196,6 +213,7 @@ export class View {
       this.arenaFloor = makeArenaFloor(arena, this.q.groundRes, seed);
       this.arenaRuins = makeArenaRuins(arena, seed);
       this.env.add(this.arenaFloor, this.arenaRuins);
+      this.arenaDeco = makeArenaDeco(arena, this.q, seed); if (this.arenaDeco) this.env.add(this.arenaDeco.group);
       if (this.atmosOn && this.q.glow && this.flags.get('glow') !== '0') { this.glow = makeGlowHalos(arena); this.env.add(this.glow.mesh); }
       if (this.atmosOn && this.q.rays && this.flags.get('rays') !== '0') { this.shafts = makeLightShafts(arena); this.env.add(this.shafts.mesh); }
     }
@@ -205,6 +223,7 @@ export class View {
     // decoration scatter (client-only)
     const place: Record<string, Matrix4[]> = {};
     const add = (name: string, x: number, z: number, s: number, rot: number) => {
+      if (this.opening && name === 'crystal_cluster' && nearGuide(this.opening, x, z)) return; // the opening guide crystal takes this spot
       (place[name] ??= []).push(new Matrix4().compose(new Vector3(x, 0, z), new Quaternion().setFromEuler(new Euler(0, rot, 0)), new Vector3(s, s, s)));
     };
     const dens = this.q.decoDensity;
@@ -230,16 +249,19 @@ export class View {
         add(i % 3 === 0 ? 'rock_a' : 'flower_patch', x, z, 0.85 + rnd() * 0.4, rnd() * Math.PI * 2);
       }
     }
-    const faded = new Map<Material, Material>();
-    for (const [name, mats] of Object.entries(place)) {
-      for (const part of flattenPropMerged(name)) {
-        let mat = faded.get(part.material);
-        if (!mat) { mat = nearFade(part.material, this.nearFadeU); faded.set(part.material, mat); }
-        const im = new InstancedMesh(part.geometry, mat, mats.length);
-        mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
-        im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
-        this.env.add(im);
-      }
+    // Opaque batches are drawn in material.id order, which decides the winner where two surfaces tie in depth. Before batching,
+    // each source material had one near-fade clone, created in order of first use; keep that order: one clone per batch, created
+    // in the order of the first source material the batch contains.
+    const rank = new Map<Material, number>();
+    const batches: { name: string; mats: Matrix4[]; part: ReturnType<typeof flattenPropMerged>[number] }[] = [];
+    for (const [name, mats] of Object.entries(place)) for (const part of flattenPropMerged(name, rank)) batches.push({ name, mats, part });
+    batches.sort((x, y) => x.part.rank - y.part.rank);
+    for (const { name, mats, part } of batches) {
+      const mat = nearFade(part.material, this.nearFadeU);
+      const im = new InstancedMesh(part.geometry, mat, mats.length);
+      mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
+      im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
+      this.env.add(im);
     }
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
@@ -251,26 +273,36 @@ export class View {
     const spring = put('lumen_spring', LEVEL.spring.x, LEVEL.spring.z);
     this.springGem = spring.getObjectByName('gem') ?? null;
     for (const pl of LEVEL.pillars) { const o = put('crystal_pillar', pl.x, pl.z, pl.x * 0.3); this.pillars.push(o); this.addOccluder(o, pl.r + 0.2, 4.5); }
+    glowPillars(this.pillars); // DES-006 §3, ?arena=B only
     for (const gd of LEVEL.gates) {
       const gate = put('crystal_gate', gd.x, gd.z, Math.atan2(-gd.dirz, gd.dirx));
       const open = world.gates[gd.id];
       gate.position.y = open ? -4 : 0; gate.visible = !open;
       this.gates.set(gd.id, { g: gate, open, y: gate.position.y });
       this.addOccluder(gate, 3.2, 3.0);
+      if (this.opening) patchGate(this.occluders[this.occluders.length - 1].mats, this.opening);
     }
     put('lantern_post', -6, -63.5); put('lantern_post', 2, -63.5);
+    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening, (m) => nearFade(m, this.nearFadeU), this.nearFadeU);
     // actors
     for (const v of this.actors.values()) this.scene.remove(v.root);
     this.actors.clear();
     for (const a of world.actors) this.addActor(a);
     // always-visible player marker (drawn over everything, so the player is findable behind any prop)
     if (!this.playerMark) {
-      this.playerMark = new Mesh(new RingGeometry(0.55, 0.7, 32), new MeshBasicMaterial({ color: PAL.lumen, transparent: true, opacity: 0.85, depthTest: false, depthWrite: false }));
+      if (this.vfxVar !== 'cur') this.playerMark = makeHeroRing(VFX_STYLES[this.vfxVar]); // DES-004 step 5: thinner lumen ring
+      else this.playerMark = new Mesh(new RingGeometry(0.55, 0.7, 32), new MeshBasicMaterial({ color: PAL.lumen, transparent: true, opacity: 0.85, depthTest: false, depthWrite: false }));
       this.playerMark.rotation.x = -Math.PI / 2; this.playerMark.renderOrder = 12; this.scene.add(this.playerMark);
     }
     if (!this.particles) { this.particles = new Particles(this.scene, this.q.particles); this.rings = new Rings(this.scene); }
     // pooled skill VFX: allocated here (level build), never per cast
-    this.skillFx?.dispose(); this.skillFx = new SkillFx(this.scene, this.q.tier, this.vfx);
+    this.skillFx?.dispose(); this.stageVfx?.dispose(); this.stageVfx = null;
+    if (this.vfxVar === 'cur') this.skillFx = new SkillFx(this.scene, this.q.tier, this.vfx);
+    else {
+      const fx = new SkillFxV(this.scene, this.q.tier, this.vfx, VFX_STYLES[this.vfxVar]);
+      fx.attach(this.camera, this.actors.get(world.player.id)?.parts.hero_sword ?? null); // Q26 blade light
+      this.skillFx = fx; this.stageVfx = new StageVfx(this.scene, this.q, VFX_STYLES[this.vfxVar]);
+    }
   }
 
   private addActor(a: Actor) {
@@ -285,6 +317,7 @@ export class View {
     if (a.kind === 'prismback') this.addOccluder(root, a.r, 3.6, a);
     if (a.kind === 'player') { // transparent pass after telegraphs (opacity 1): the player is never tinted/hidden by a warning area
       model.traverse((o) => { const m = o as Mesh; if (!m.isMesh) return; const own = (m.material as Material).clone(); own.transparent = true; own.depthWrite = true; m.material = own; m.renderOrder = 13; });
+      if (this.opening) patchHeroRim(parts.hero_head, this.opening);
     }
     const shadow = blobShadow(a.r); root.add(shadow);
     const stars = new Group();
@@ -303,19 +336,28 @@ export class View {
         case 'hit': {
           const v = [...this.actors.values()].find((x) => x.a.id === e.target);
           if (v) v.flash = 0.18;
-          this.particles.burst(e.x, 0.9, e.z, e.byPlayer ? (e.crit ? PAL.gold : 0xffffff) : 0xff5a6a, e.crit ? 14 : 8, 3.2, 2.5, 0.45, e.crit ? 1.4 : 1);
+          if (this.stageVfx && e.byPlayer) { // DES-004 step 5: readable cool hit spark; faceted shards when the sword hits crystal
+            const H = this.stageVfx.style.hit, crystal = v?.a.kind === 'prismback';
+            const y = this.stageVfx.onHit(world.tick, e.x, e.z, world.player, crystal ? 2 : e.crit ? 1 : 0, v?.a.r ?? 1, this.camera.position);
+            if (!crystal) this.particles.burst(e.x, y - 0.15, e.z, e.crit ? FXC.violet : FXC.lumenHi, e.crit ? H.parts + 4 : H.parts, 3.4, H.partUp, 0.5, H.partSize * (e.crit ? 1.25 : 1));
+          } else this.particles.burst(e.x, 0.9, e.z, e.byPlayer ? (e.crit ? PAL.gold : 0xffffff) : 0xff5a6a, e.crit ? 14 : 8, 3.2, 2.5, 0.45, e.crit ? 1.4 : 1);
           if (!e.byPlayer) this.shake = Math.max(this.shake, 0.35);
           else if (e.crit) this.shake = Math.max(this.shake, 0.15);
           break;
         }
         case 'swing': {
           const p = world.player;
-          this.rings.arc(p.x, p.z, Math.atan2(-p.fx, -p.fz), PLAYER.combo[e.step].range + 0.3, e.step === 2 ? PAL.gold : PAL.lumen, e.step);
+          this.rings.arc(p.x, p.z, Math.atan2(-p.fx, -p.fz), PLAYER.combo[e.step].range + 0.3, e.step === 2 ? (this.stageVfx ? FXC.violet : PAL.gold) : PAL.lumen, e.step); // options: no gold
           break;
         }
         case 'skill': break; // legacy Chime event: its visuals are now the skill-hit ring (DES-001 §2)
         case 'skill-hit': this.skillFx?.onSkillHit(e.slot, world.tick, e.x, e.z, e.dx, e.dz); break;
-        case 'perfect': this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1); this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
+        case 'perfect': {
+          this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1);
+          const P = this.stageVfx?.style.perfect;
+          if (P?.echo) { this.rings.ring(e.x, e.z, 0.3, 1.9, FXC.violet, 0.5, 0.9, 0.08, true); this.particles.burst(e.x, 1.1, e.z, FXC.violet, P.parts - 16, 4.5, 3.4, 0.7, 1.2); }
+          this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
+        }
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
         case 'death': { const v = this.actors.get(e.id); if (v) { this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
         case 'pillar-break': { const pl = LEVEL.pillars[e.i]; this.pillars[e.i].visible = false; this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
@@ -333,12 +375,14 @@ export class View {
     this.time += dt;
     // telegraphs
     const alive = new Set<number>();
+    const boss = world.tele.length ? this.actors.get(this.findBossId()) : undefined; // DES-006 §2: telegraph edge fades under the boss body
     for (const t of world.tele) {
       alive.add(t.id);
       let tv = this.teles.get(t.id);
       if (!tv) tv = this.makeTele(t);
       tv.mat.uniforms.uProg.value = 1 - Math.max(0, t.t) / t.total;
       tv.mat.uniforms.uTime.value = this.time;
+      if (boss?.a.alive) tv.mat.uniforms.uBoss.value.set(boss.root.position.x, boss.root.position.z, boss.a.r); else tv.mat.uniforms.uBoss.value.set(0, 0, 0);
     }
     for (const [id, tv] of this.teles) {
       if (alive.has(id)) continue;
@@ -358,14 +402,17 @@ export class View {
       gv.g.position.y = gv.y; if (gv.open && gv.y < -3.9) gv.g.visible = false;
     }
     for (const f of this.flames) { f.scale.y = 0.85 + Math.sin(this.time * 17 + f.id) * 0.15; f.rotation.y += dt * 2; }
+    this.openingFx?.update(this.time);
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.skillFx?.update(world.tick, alpha, world.ps.cast);
+    if (this.stageVfx) this.stageVfx.update(world.tick, alpha, this.time, this.camera, this.camTarget, this.actors.get(world.player.id)?.root.position.z ?? 0, this.renderer);
     const pv = this.actors.get(world.player.id);
     this.applyAtmosphere(pv ? arenaWeight(pv.root.position.z) : 0);
     const w = this.atmosW;
     if (this.glow) { this.glow.mesh.visible = w > 0.01; this.glow.mat.uniforms.uI.value = 0.55 * w; this.glow.mat.uniforms.uTime.value = this.time; }
     if (this.shafts) { this.shafts.mesh.visible = w > 0.01; this.shafts.mat.uniforms.uI.value = 0.16 * w; }
+    this.arenaDeco?.update(this.time);
     this.updateCamera(world, dt);
     this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);
@@ -498,9 +545,17 @@ export class View {
     const oy = 10.5 * dist * (1 - low) + (4.5 + wide + back * 0.42) * low;
     const cz = (tz + 9 * dist) * (1 - low) + (pz + 5.5 + wide + back) * low;
     const k = 1 - Math.exp(-dt * 6);
-    if (this.camPos.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camPos.set(tx, oy, cz); }
+    if (this.camBase.lengthSq() === 0) { this.camTarget.set(tx, ty, tz); this.camBase.set(tx, oy, cz); }
     this.camTarget.lerp(TMP.set(tx, ty, tz), k);
-    this.camPos.lerp(TMP.set(tx, oy, cz), k);
+    this.camBase.lerp(TMP.set(tx, oy, cz), k);
+    // DES-006 §1: when a warning edge / threatening enemy would be off-screen, back off + rise along the SAME view angle
+    // (no rotation, controls unchanged); fast attack, slow release. Portrait is untouched.
+    const need = portrait || this.noPull ? 0 : this.pullNeeded(world, px, pz);
+    if (need > this.camPull) { this.camPull += (need - this.camPull) * (1 - Math.exp(-dt * 10)); this.camPullHold = 0.7; }
+    else if (need > 0.01) this.camPullHold = Math.max(this.camPullHold, 0.35);
+    else if ((this.camPullHold -= dt) <= 0) this.camPull = Math.max(0, this.camPull - dt * 0.9);
+    if (this.camPull < 0.002) this.camPull = 0;
+    this.camPos.copy(this.camBase).sub(this.camTarget).multiplyScalar(1 + this.camPull).add(this.camTarget);
     this.shake = Math.max(0, this.shake - dt * 2.2);
     const s = this.shake * this.shake * 0.6;
     this.camera.position.set(this.camPos.x + (Math.random() - 0.5) * s, this.camPos.y + (Math.random() - 0.5) * s, this.camPos.z);
@@ -511,13 +566,61 @@ export class View {
     else { this.sun.position.copy(so); this.sun.target.position.set(0, 0, 0); }
   }
 
+  /** Smallest extra pull-back (0..PULL_MAX, scale of the camera offset from its target) that keeps the player, nearby/attacking
+   *  enemies and every active telegraph outline (circle ring, cone arc+edges, line rectangle) inside the viewport safe area. */
+  private pullNeeded(world: World, px: number, pz: number): number {
+    const pts = this.pullPts; pts.length = 0;
+    const push = (x: number, y: number, z: number) => { pts.push(x, y, z); };
+    push(px, 0, pz); push(px, 1.6, pz);
+    for (const t of world.tele) {
+      if (t.shape === 'circle') { for (let i = 0; i < 16; i++) { const a = i * (Math.PI / 8); push(t.x + Math.cos(a) * t.r, 0, t.z + Math.sin(a) * t.r); } }
+      else if (t.shape === 'cone') {
+        const base = Math.atan2(t.dz, t.dx), half = Math.acos(Math.min(1, Math.max(-1, t.cos)));
+        push(t.x, 0, t.z);
+        for (let i = 0; i <= 6; i++) { const a = base - half + (2 * half * i) / 6; push(t.x + Math.cos(a) * t.r, 0, t.z + Math.sin(a) * t.r); }
+      } else {
+        // charge/rush line: far end capped a few metres past the player (the rest of an 18 m line only matters to whoever stands in it)
+        const along = (px - t.x) * t.dx + (pz - t.z) * t.dz, L = Math.min(t.r, Math.max(6, along + 4)), hw = t.w / 2, nx = -t.dz, nz = t.dx;
+        for (const l of [0, L]) for (const s of [-hw, hw]) push(t.x + t.dx * l + nx * s, 0, t.z + t.dz * l + nz * s);
+      }
+    }
+    for (const a of world.actors) {
+      if (a.kind === 'player' || !a.alive) continue;
+      const boss = a.kind === 'prismback';
+      if (!boss) { const d = Math.hypot(a.x - px, a.z - pz); if (a.state === 'idle' || a.state === 'dead' || d > 10) continue; }
+      else if (!world.bossStarted) continue;
+      const h = boss ? 3.2 : 1.3, r = a.r;
+      for (const [ox, oz] of [[-r, 0], [r, 0], [0, -r], [0, r]]) { push(a.x + ox, 0, a.z + oz); push(a.x + ox, h, a.z + oz); }
+    }
+    const cam = this.pullCam, P = this.camera.projectionMatrix.elements, off = TMP_C2.copy(this.camBase).sub(this.camTarget);
+    cam.near = this.camera.near;
+    for (let p = 0; p <= PULL_MAX + 1e-6; p += 0.1) {
+      cam.position.copy(this.camTarget).addScaledVector(off, 1 + p);
+      cam.lookAt(this.camTarget); cam.updateMatrixWorld(true);
+      const m = cam.matrixWorldInverse.elements;
+      let ok = true;
+      for (let i = 0; i < pts.length && ok; i += 3) {
+        const x = pts[i], y = pts[i + 1], z = pts[i + 2];
+        const vz = m[2] * x + m[6] * y + m[10] * z + m[14];
+        if (vz > -cam.near) { ok = false; break; }
+        const nx = (P[0] * (m[0] * x + m[4] * y + m[8] * z + m[12])) / -vz, ny = (P[5] * (m[1] * x + m[5] * y + m[9] * z + m[13])) / -vz;
+        if (nx < -PULL_SAFE_X || nx > PULL_SAFE_X || ny < PULL_SAFE_BOTTOM || ny > PULL_SAFE_TOP) ok = false;
+      }
+      if (ok) return p;
+    }
+    return PULL_MAX;
+  }
+
   private addOccluder(obj: Object3D, r: number, h: number, actor?: Actor) {
-    const mats: Material[] = [];
+    const mats: Material[] = [], twins: Mesh[] = [], parts: Mesh[] = [];
     obj.traverse((o) => {
       const m = o as Mesh; if (!m.isMesh || o === this.playerMark) return;
       const own = (m.material as Material).clone(); m.material = own; mats.push(own);
+      if (m.userData.twin) twins.push(m); else parts.push(m);
     });
-    this.occluders.push({ obj, r, h, mats, f: 1, actor });
+    // Perf: while opaque, draw the merged twin (1 draw call); while faded, draw the separate meshes (see models.ts TWIN)
+    if (twins.length) { for (const m of twins) m.visible = true; for (const m of parts) m.visible = false; } else parts.length = 0;
+    this.occluders.push({ obj, r, h, mats, f: 1, actor, twins, parts });
   }
 
   /** Fade boss / pillars / gates that sit between the camera and the player. Camera looks along −z from +z, so "in front" = larger z. */
@@ -535,6 +638,7 @@ export class View {
       o.f += (target - o.f) * Math.min(1, dt * 10);
       if (Math.abs(o.f - target) < 0.01) o.f = target;
       const transparent = o.f < 0.99;
+      if (o.twins.length && o.twins[0].visible === transparent) { for (const m of o.twins) m.visible = !transparent; for (const m of o.parts) m.visible = transparent; }
       for (const m of o.mats) {
         if (m.transparent !== transparent) { m.transparent = transparent; m.depthWrite = !transparent; m.needsUpdate = true; }
         m.opacity = o.f;
@@ -555,18 +659,22 @@ export class View {
 }
 const TMP = new Vector3();
 const TMP_C = new Color();
+const TMP_C2 = new Vector3();
+/** DES-006 §1 camera pull-back: max extra scale of the camera offset, and the viewport safe area in NDC (bottom margin leaves room for the HUD buttons / joystick) */
+const PULL_MAX = 1.2, PULL_SAFE_X = 0.94, PULL_SAFE_TOP = 0.94, PULL_SAFE_BOTTOM = -0.86;
 function dist2(a: Actor, b: Actor) { return (a.x - b.x) ** 2 + (a.z - b.z) ** 2; }
 /** Patch a Lambert material so fragments near the camera dither away (keeps foreground trees from hiding the player). */
 function nearFade(src: Material, u: { value: number }): Material {
-  const m = src.clone();
-  m.onBeforeCompile = (sh) => {
+  const m = src.clone(), prevCompile = m.onBeforeCompile.bind(m), prevKey = m.customProgramCacheKey.bind(m); // keep the source's own shader patch (baked emissive)
+  m.onBeforeCompile = (sh, rd) => {
+    prevCompile(sh, rd);
     sh.uniforms.uNearFade = u;
     sh.fragmentShader = 'uniform float uNearFade;\n' + sh.fragmentShader.replace('void main() {', `void main() {
       float nfT = smoothstep(uNearFade, uNearFade + 3.0, length(vViewPosition));
       float nfB = mod(floor(gl_FragCoord.x), 2.0) * 0.5 + mod(floor(gl_FragCoord.y), 2.0) * 0.25 + 0.125;
       if (nfT < nfB) discard;`);
   };
-  m.customProgramCacheKey = () => 'nearfade';
+  m.customProgramCacheKey = () => prevKey() + 'nearfade';
   return m;
 }
 function hex(c: number, a = 1) { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return a === 1 ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a})`; }

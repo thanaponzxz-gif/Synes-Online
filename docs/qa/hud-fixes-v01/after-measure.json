@@ -1,0 +1,4935 @@
+{
+ "tag": "after",
+ "dist": "dist",
+ "generatedAt": "2026-11-20T23:42:59.245Z",
+ "note": "Chromium headless + SwiftShader; not a real device",
+ "measure": {
+  "L": {
+   "field": {
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 725.2,
+       "t": 266.8,
+       "r": 800.9,
+       "b": 342.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 492.9,
+       "t": 326.7,
+       "r": 543,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 551,
+       "t": 326.7,
+       "r": 601.1,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 609,
+       "t": 326.7,
+       "r": 659.2,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 668.9,
+       "t": 329.3,
+       "r": 714.6,
+       "b": 375,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 743.7,
+       "t": 205.2,
+       "r": 795.6,
+       "b": 257.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 763,
+       "t": 153.3,
+       "r": 807,
+       "b": 197.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 789,
+       "t": 5,
+       "r": 837,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": {
+      "box": {
+       "l": 12,
+       "t": 336,
+       "r": 110,
+       "b": 382,
+       "w": 98,
+       "h": 46
+      },
+      "visual": 98,
+      "hitW": 99,
+      "hitH": 47,
+      "hitArea": 4525,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto-set": {
+      "box": {
+       "l": 118,
+       "t": 336,
+       "r": 164,
+       "b": 382,
+       "w": 46,
+       "h": 46
+      },
+      "visual": 46,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 2209,
+      "stolenCells": 0,
+      "circle": false
+     }
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": -65.8,
+      "r": 484.5,
+      "b": -48.8,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 114.4,
+      "t": 23.8,
+      "r": 169.1,
+      "b": 38.8,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 46.2,
+      "t": 26.9,
+      "r": 237.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 48.5,
+      "t": 5,
+      "r": 235.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 208.3,
+      "t": 6,
+      "r": 235.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 249.9,
+      "t": -64.8,
+      "r": 594.1,
+      "b": -12.8,
+      "w": 344.2,
+      "h": 52
+     },
+     "bossFrame": {
+      "l": 249.9,
+      "t": -48,
+      "r": 594.1,
+      "b": -12.8,
+      "w": 344.2,
+      "h": 35.2
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": -65.8,
+      "r": 484.5,
+      "b": -48.8,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 678.2,
+      "t": 8,
+      "r": 834,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 678.2,
+      "t": 16.5,
+      "r": 740.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 748.7,
+      "t": 19,
+      "r": 784,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 789,
+      "t": 5,
+      "r": 837,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 51,
+      "r": 239.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 792.1,
+      "t": 185.2,
+      "r": 813,
+      "b": 203.3,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": null,
+    "bossShown": false,
+    "nameAboveTrough": 3.9,
+    "faded": []
+   },
+   "pause": {
+    "card": {
+     "l": 283.359375,
+     "t": 15.609375,
+     "w": 277.3,
+     "h": 358.8
+    },
+    "sound": {
+     "l": 464.640625,
+     "t": 145.609375,
+     "w": 66,
+     "h": 44
+    },
+    "soundLabel": {
+     "l": 313.359375,
+     "t": 145.609375,
+     "w": 217.3,
+     "h": 44
+    },
+    "role": "switch",
+    "cardOverflow": 3
+   },
+   "autoPanel": {
+    "card": {
+     "l": 72,
+     "t": 30,
+     "w": 700,
+     "h": 330
+    },
+    "keep": {
+     "l": 676,
+     "t": 151,
+     "w": 66,
+     "h": 44
+    },
+    "keepLabel": {
+     "l": 433,
+     "t": 151,
+     "w": 309,
+     "h": 44
+    },
+    "role": "switch",
+    "focusOutline": "solid 2px",
+    "cardScroll": false
+   },
+   "top": {
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 725.2,
+       "t": 266.8,
+       "r": 800.9,
+       "b": 342.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 492.9,
+       "t": 326.7,
+       "r": 543,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 551,
+       "t": 326.7,
+       "r": 601.1,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 609,
+       "t": 326.7,
+       "r": 659.2,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 668.9,
+       "t": 329.3,
+       "r": 714.6,
+       "b": 375,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 743.7,
+       "t": 205.2,
+       "r": 795.6,
+       "b": 257.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 763,
+       "t": 153.3,
+       "r": 807,
+       "b": 197.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1850,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 789,
+       "t": 5,
+       "r": 837,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 117.8,
+      "t": 23.8,
+      "r": 165.7,
+      "b": 38.8,
+      "w": 47.8,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 46.2,
+      "t": 26.9,
+      "r": 237.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 48.5,
+      "t": 5,
+      "r": 235.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 208.3,
+      "t": 6,
+      "r": 235.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 249.9,
+      "t": 8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 52
+     },
+     "bossFrame": {
+      "l": 249.9,
+      "t": 24.8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 35.2
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 678.2,
+      "t": 8,
+      "r": 834,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 678.2,
+      "t": 16.5,
+      "r": 740.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 748.7,
+      "t": 19,
+      "r": 784,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 789,
+      "t": 5,
+      "r": 837,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 51,
+      "r": 239.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 794.9,
+      "t": 185.2,
+      "r": 813,
+      "b": 203.3,
+      "w": 18.2,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 0,
+      "y": 21.4,
+      "gapX": 10
+     },
+     "topLeft_boss": {
+      "x": 0,
+      "y": 34.2,
+      "gapX": 10
+     },
+     "nameLine_boss": {
+      "x": 0,
+      "y": 15,
+      "gapX": 14.6
+     },
+     "potions_boss": {
+      "x": 0,
+      "y": 14,
+      "gapX": 14.6
+     },
+     "bossName_topLeft": {
+      "x": 0,
+      "y": 12,
+      "gapX": 119.6
+     },
+     "bossName_topRight": {
+      "x": 0,
+      "y": 16,
+      "gapX": 193.7
+     },
+     "topRight_boss": {
+      "x": 0,
+      "y": 42,
+      "gapX": 84.1
+     },
+     "hint_boss": {
+      "x": 0,
+      "y": 9,
+      "gapX": 10
+     },
+     "chip_boss": {
+      "x": 0,
+      "y": 25,
+      "gapX": 84.1
+     },
+     "timer_boss": {
+      "x": 0,
+      "y": 20,
+      "gapX": 154.6
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 45,
+      "gapX": 194.9
+     },
+     "bossName_chip": {
+      "x": 0,
+      "y": 7.5,
+      "gapX": 193.7
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 3.9,
+    "faded": []
+   },
+   "topSafe": {
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 678.2,
+       "t": 245.8,
+       "r": 753.9,
+       "b": 321.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 445.9,
+       "t": 305.7,
+       "r": 496,
+       "b": 355.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 504,
+       "t": 305.7,
+       "r": 554.1,
+       "b": 355.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 562,
+       "t": 305.7,
+       "r": 612.2,
+       "b": 355.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 621.9,
+       "t": 308.3,
+       "r": 667.6,
+       "b": 354,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 696.7,
+       "t": 184.2,
+       "r": 748.6,
+       "b": 236.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 716,
+       "t": 132.3,
+       "r": 760,
+       "b": 176.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1850,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 742,
+       "t": 5,
+       "r": 790,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 164.8,
+      "t": 23.8,
+      "r": 212.7,
+      "b": 38.8,
+      "w": 47.8,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 93.2,
+      "t": 26.9,
+      "r": 284.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 59,
+      "t": 12,
+      "r": 286.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 95.5,
+      "t": 5,
+      "r": 282.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 255.3,
+      "t": 6,
+      "r": 282.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 59,
+      "t": 12,
+      "r": 286.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 296.9,
+      "t": 8,
+      "r": 547.1,
+      "b": 50.4,
+      "w": 250.2,
+      "h": 42.4
+     },
+     "bossFrame": {
+      "l": 296.9,
+      "t": 24.8,
+      "r": 547.1,
+      "b": 50.4,
+      "w": 250.2,
+      "h": 25.6
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 631.2,
+      "t": 8,
+      "r": 787,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 631.2,
+      "t": 16.5,
+      "r": 693.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 701.7,
+      "t": 19,
+      "r": 737,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 742,
+      "t": 5,
+      "r": 790,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 59,
+      "t": 51,
+      "r": 286.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 747.9,
+      "t": 164.2,
+      "r": 766,
+      "b": 182.3,
+      "w": 18.2,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 0,
+      "y": 21.4,
+      "gapX": 10
+     },
+     "topLeft_boss": {
+      "x": 0,
+      "y": 34.2,
+      "gapX": 10
+     },
+     "nameLine_boss": {
+      "x": 0,
+      "y": 15,
+      "gapX": 14.6
+     },
+     "potions_boss": {
+      "x": 0,
+      "y": 14,
+      "gapX": 14.6
+     },
+     "bossName_topLeft": {
+      "x": 0,
+      "y": 12,
+      "gapX": 72.6
+     },
+     "bossName_topRight": {
+      "x": 0,
+      "y": 16,
+      "gapX": 146.7
+     },
+     "topRight_boss": {
+      "x": 0,
+      "y": 42,
+      "gapX": 84.1
+     },
+     "hint_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 10
+     },
+     "chip_boss": {
+      "x": 0,
+      "y": 25,
+      "gapX": 84.1
+     },
+     "timer_boss": {
+      "x": 0,
+      "y": 20,
+      "gapX": 154.6
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 42.4,
+      "gapX": 194.9
+     },
+     "bossName_chip": {
+      "x": 0,
+      "y": 7.5,
+      "gapX": 146.7
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 3.9,
+    "faded": []
+   },
+   "boss-circle": {
+    "got": {
+     "tick": 80,
+     "atk": "slam",
+     "fill": 0.35,
+     "player": [
+      0,
+      2.5
+     ]
+    },
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 725.2,
+       "t": 266.8,
+       "r": 800.9,
+       "b": 342.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 492.9,
+       "t": 326.7,
+       "r": 543,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 551,
+       "t": 326.7,
+       "r": 601.1,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 609,
+       "t": 326.7,
+       "r": 659.2,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 668.9,
+       "t": 329.3,
+       "r": 714.6,
+       "b": 375,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 743.7,
+       "t": 205.2,
+       "r": 795.6,
+       "b": 257.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 763,
+       "t": 153.3,
+       "r": 807,
+       "b": 197.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 789,
+       "t": 5,
+       "r": 837,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 114.4,
+      "t": 23.8,
+      "r": 169.1,
+      "b": 38.8,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 46.2,
+      "t": 26.9,
+      "r": 237.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 48.5,
+      "t": 5,
+      "r": 235.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 208.3,
+      "t": 6,
+      "r": 235.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 249.9,
+      "t": 8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 52
+     },
+     "bossFrame": {
+      "l": 249.9,
+      "t": 24.8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 35.2
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 678.2,
+      "t": 8,
+      "r": 834,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 678.2,
+      "t": 16.5,
+      "r": 740.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 748.7,
+      "t": 19,
+      "r": 784,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 789,
+      "t": 5,
+      "r": 837,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 51,
+      "r": 239.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 792.1,
+      "t": 185.2,
+      "r": 813,
+      "b": 203.3,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 0,
+      "y": 21.4,
+      "gapX": 10
+     },
+     "topLeft_boss": {
+      "x": 0,
+      "y": 34.2,
+      "gapX": 10
+     },
+     "nameLine_boss": {
+      "x": 0,
+      "y": 15,
+      "gapX": 14.6
+     },
+     "potions_boss": {
+      "x": 0,
+      "y": 14,
+      "gapX": 14.6
+     },
+     "bossName_topLeft": {
+      "x": 0,
+      "y": 12,
+      "gapX": 119.6
+     },
+     "bossName_topRight": {
+      "x": 0,
+      "y": 16,
+      "gapX": 193.7
+     },
+     "topRight_boss": {
+      "x": 0,
+      "y": 42,
+      "gapX": 84.1
+     },
+     "hint_boss": {
+      "x": 0,
+      "y": 9,
+      "gapX": 10
+     },
+     "chip_boss": {
+      "x": 0,
+      "y": 25,
+      "gapX": 84.1
+     },
+     "timer_boss": {
+      "x": 0,
+      "y": 20,
+      "gapX": 154.6
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 45,
+      "gapX": 194.9
+     },
+     "bossName_chip": {
+      "x": 0,
+      "y": 7.5,
+      "gapX": 193.7
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 3.9,
+    "faded": [
+     "btn-skill",
+     "btn-skill2",
+     "btn-skill3",
+     "btn-ult"
+    ]
+   },
+   "boss-fan": {
+    "got": {
+     "tick": 80,
+     "atk": "sweep",
+     "fill": 0.46,
+     "player": [
+      0,
+      3.37
+     ]
+    },
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 725.2,
+       "t": 266.8,
+       "r": 800.9,
+       "b": 342.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 492.9,
+       "t": 326.7,
+       "r": 543,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 551,
+       "t": 326.7,
+       "r": 601.1,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 609,
+       "t": 326.7,
+       "r": 659.2,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 668.9,
+       "t": 329.3,
+       "r": 714.6,
+       "b": 375,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 743.7,
+       "t": 205.2,
+       "r": 795.6,
+       "b": 257.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 763,
+       "t": 153.3,
+       "r": 807,
+       "b": 197.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 789,
+       "t": 5,
+       "r": 837,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 114.4,
+      "t": 23.8,
+      "r": 169.1,
+      "b": 38.8,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 46.2,
+      "t": 26.9,
+      "r": 237.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 48.5,
+      "t": 5,
+      "r": 235.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 208.3,
+      "t": 6,
+      "r": 235.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 249.9,
+      "t": 8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 52
+     },
+     "bossFrame": {
+      "l": 249.9,
+      "t": 24.8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 35.2
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 678.2,
+      "t": 8,
+      "r": 834,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 678.2,
+      "t": 16.5,
+      "r": 740.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 748.7,
+      "t": 19,
+      "r": 784,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 789,
+      "t": 5,
+      "r": 837,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 51,
+      "r": 239.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 792.1,
+      "t": 185.2,
+      "r": 813,
+      "b": 203.3,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 0,
+      "y": 21.4,
+      "gapX": 10
+     },
+     "topLeft_boss": {
+      "x": 0,
+      "y": 34.2,
+      "gapX": 10
+     },
+     "nameLine_boss": {
+      "x": 0,
+      "y": 15,
+      "gapX": 14.6
+     },
+     "potions_boss": {
+      "x": 0,
+      "y": 14,
+      "gapX": 14.6
+     },
+     "bossName_topLeft": {
+      "x": 0,
+      "y": 12,
+      "gapX": 119.6
+     },
+     "bossName_topRight": {
+      "x": 0,
+      "y": 16,
+      "gapX": 193.7
+     },
+     "topRight_boss": {
+      "x": 0,
+      "y": 42,
+      "gapX": 84.1
+     },
+     "hint_boss": {
+      "x": 0,
+      "y": 9,
+      "gapX": 10
+     },
+     "chip_boss": {
+      "x": 0,
+      "y": 25,
+      "gapX": 84.1
+     },
+     "timer_boss": {
+      "x": 0,
+      "y": 20,
+      "gapX": 154.6
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 45,
+      "gapX": 194.9
+     },
+     "bossName_chip": {
+      "x": 0,
+      "y": 7.5,
+      "gapX": 193.7
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 3.9,
+    "faded": [
+     "btn-skill",
+     "btn-skill2",
+     "btn-skill3",
+     "btn-ult"
+    ]
+   },
+   "boss-dash": {
+    "got": {
+     "tick": 80,
+     "atk": "charge",
+     "fill": 0.32,
+     "player": [
+      0,
+      5.43
+     ]
+    },
+    "viewport": [
+     844,
+     390
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 725.2,
+       "t": 266.8,
+       "r": 800.9,
+       "b": 342.5,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 77,
+      "hitH": 76,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 492.9,
+       "t": 326.7,
+       "r": 543,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 551,
+       "t": 326.7,
+       "r": 601.1,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 609,
+       "t": 326.7,
+       "r": 659.2,
+       "b": 376.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.9,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 668.9,
+       "t": 329.3,
+       "r": 714.6,
+       "b": 375,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 1765,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 9.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 743.7,
+       "t": 205.2,
+       "r": 795.6,
+       "b": 257.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 53,
+      "hitH": 53,
+      "hitArea": 2233,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 763,
+       "t": 153.3,
+       "r": 807,
+       "b": 197.3,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 10,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 789,
+       "t": 5,
+       "r": 837,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 114.4,
+      "t": 23.8,
+      "r": 169.1,
+      "b": 38.8,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 46.2,
+      "t": 26.9,
+      "r": 237.4,
+      "b": 36.6,
+      "w": 191.2,
+      "h": 9.7
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "nameLine": {
+      "l": 48.5,
+      "t": 5,
+      "r": 235.3,
+      "b": 23,
+      "w": 186.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 208.3,
+      "t": 6,
+      "r": 235.3,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 239.9,
+      "b": 46.2,
+      "w": 227.9,
+      "h": 34.2
+     },
+     "boss": {
+      "l": 249.9,
+      "t": 8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 52
+     },
+     "bossFrame": {
+      "l": 249.9,
+      "t": 24.8,
+      "r": 594.1,
+      "b": 60,
+      "w": 344.2,
+      "h": 35.2
+     },
+     "bossName": {
+      "l": 359.5,
+      "t": 7,
+      "r": 484.5,
+      "b": 24,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 678.2,
+      "t": 8,
+      "r": 834,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 678.2,
+      "t": 16.5,
+      "r": 740.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 748.7,
+      "t": 19,
+      "r": 784,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 789,
+      "t": 5,
+      "r": 837,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 51,
+      "r": 239.9,
+      "b": 98.2,
+      "w": 227.9,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 792.1,
+      "t": 185.2,
+      "r": 813,
+      "b": 203.3,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 0,
+      "y": 21.4,
+      "gapX": 10
+     },
+     "topLeft_boss": {
+      "x": 0,
+      "y": 34.2,
+      "gapX": 10
+     },
+     "nameLine_boss": {
+      "x": 0,
+      "y": 15,
+      "gapX": 14.6
+     },
+     "potions_boss": {
+      "x": 0,
+      "y": 14,
+      "gapX": 14.6
+     },
+     "bossName_topLeft": {
+      "x": 0,
+      "y": 12,
+      "gapX": 119.6
+     },
+     "bossName_topRight": {
+      "x": 0,
+      "y": 16,
+      "gapX": 193.7
+     },
+     "topRight_boss": {
+      "x": 0,
+      "y": 42,
+      "gapX": 84.1
+     },
+     "hint_boss": {
+      "x": 0,
+      "y": 9,
+      "gapX": 10
+     },
+     "chip_boss": {
+      "x": 0,
+      "y": 25,
+      "gapX": 84.1
+     },
+     "timer_boss": {
+      "x": 0,
+      "y": 20,
+      "gapX": 154.6
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 45,
+      "gapX": 194.9
+     },
+     "bossName_chip": {
+      "x": 0,
+      "y": 7.5,
+      "gapX": 193.7
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 3.9,
+    "faded": [
+     "btn-skill",
+     "btn-skill2"
+    ]
+   },
+   "cooldown": {
+    "cd": [
+     4.7,
+     2.27,
+     10.83
+    ],
+    "cls": [
+     "act skill cooling",
+     "act skill cooling",
+     "act skill cooling"
+    ]
+   },
+   "denied": {
+    "clsAtPress": "act skill cooling denied down",
+    "cdTicksBefore": 68,
+    "cdTicksAfter3": 65,
+    "cast": null,
+    "qaLogTail": [
+     {
+      "t": 2.7,
+      "e": "skill-hit"
+     },
+     {
+      "t": 3.2,
+      "e": "potion"
+     }
+    ],
+    "frozenAnimations": 2
+   },
+   "early": {
+    "got": {
+     "n": 67
+    },
+    "hit": {
+     "n": 37,
+     "hp": 94,
+     "early": 1
+    },
+    "frozenAt": 500,
+    "frozen": 2,
+    "count": 1
+   },
+   "fadetip": {
+    "got": {
+     "tick": 80,
+     "atk": "charge",
+     "fill": 0.32,
+     "player": [
+      0,
+      5.43
+     ]
+    },
+    "seen": "👆ปุ่มจางลงเพื่อให้เห็นวงเตือนข้างใต้ แต่ยังกดได้ตามปกติ"
+   }
+  },
+  "P": {
+   "field": {
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 749,
+       "r": 374.2,
+       "b": 824.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 705.8,
+       "r": 267.7,
+       "b": 756,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 691.8,
+       "r": 321.4,
+       "b": 741.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 692.7,
+       "r": 375.9,
+       "b": 742.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 642.5,
+       "r": 379.5,
+       "b": 688.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 769.2,
+       "r": 291.5,
+       "b": 821.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 771.8,
+       "r": 234.3,
+       "b": 815.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 5,
+       "r": 383,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": {
+      "box": {
+       "l": 12,
+       "t": 790,
+       "r": 110,
+       "b": 836,
+       "w": 98,
+       "h": 46
+      },
+      "visual": 98,
+      "hitW": 99,
+      "hitH": 47,
+      "hitArea": 4525,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto-set": {
+      "box": {
+       "l": 118,
+       "t": 790,
+       "r": 164,
+       "b": 836,
+       "w": 46,
+       "h": 46
+      },
+      "visual": 46,
+      "hitW": 47,
+      "hitH": 47,
+      "hitArea": 2209,
+      "stolenCells": 0,
+      "circle": false
+     }
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": -48.5,
+      "r": 257.5,
+      "b": -31.5,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 95.7,
+      "t": 20.9,
+      "r": 150.4,
+      "b": 35.9,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 24.8,
+      "r": 204.9,
+      "b": 33.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 5,
+      "r": 203.1,
+      "b": 23,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 6,
+      "r": 203.1,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": -47.5,
+      "r": 306.1,
+      "b": -8,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": -30.8,
+      "r": 306.1,
+      "b": -8,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": -48.5,
+      "r": 257.5,
+      "b": -31.5,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 8,
+      "r": 380,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 16.5,
+      "r": 286.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 19,
+      "r": 330,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 5,
+      "r": 383,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 104,
+      "r": 238.2,
+      "b": 151.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 219.3,
+      "t": 803.8,
+      "r": 240.3,
+      "b": 821.8,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": null,
+    "bossShown": false,
+    "nameAboveTrough": 1.8,
+    "faded": []
+   },
+   "pause": {
+    "card": {
+     "l": 56.359375,
+     "t": 213,
+     "w": 277.3,
+     "h": 418
+    },
+    "sound": {
+     "l": 237.640625,
+     "t": 361,
+     "w": 66,
+     "h": 44
+    },
+    "soundLabel": {
+     "l": 86.359375,
+     "t": 361,
+     "w": 217.3,
+     "h": 44
+    },
+    "role": "switch",
+    "cardOverflow": 0
+   },
+   "autoPanel": {
+    "card": {
+     "l": 16,
+     "t": 167.5,
+     "w": 358,
+     "h": 509
+    },
+    "keep": {
+     "l": 278,
+     "t": 507.5,
+     "w": 66,
+     "h": 44
+    },
+    "keepLabel": {
+     "l": 46,
+     "t": 507.5,
+     "w": 298,
+     "h": 44
+    },
+    "role": "switch",
+    "focusOutline": "solid 2px",
+    "cardScroll": false
+   },
+   "top": {
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 749,
+       "r": 374.2,
+       "b": 824.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 705.8,
+       "r": 267.7,
+       "b": 756,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 691.8,
+       "r": 321.4,
+       "b": 741.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 692.7,
+       "r": 375.9,
+       "b": 742.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 642.5,
+       "r": 379.5,
+       "b": 688.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 769.2,
+       "r": 291.5,
+       "b": 821.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 771.8,
+       "r": 234.3,
+       "b": 815.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1850,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 5,
+       "r": 383,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 99.1,
+      "t": 20.9,
+      "r": 147,
+      "b": 35.9,
+      "w": 47.8,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 24.8,
+      "r": 204.9,
+      "b": 33.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 5,
+      "r": 203.1,
+      "b": 23,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 6,
+      "r": 203.1,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": 56,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": 72.8,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 8,
+      "r": 380,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 16.5,
+      "r": 286.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 19,
+      "r": 330,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 5,
+      "r": 383,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 104,
+      "r": 238.2,
+      "b": 151.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 222.1,
+      "t": 803.8,
+      "r": 240.3,
+      "b": 821.8,
+      "w": 18.2,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "topLeft_boss": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "nameLine_boss": {
+      "x": 119.2,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "potions_boss": {
+      "x": 27,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "bossName_topLeft": {
+      "x": 74.5,
+      "y": 0,
+      "gapX": -74.5
+     },
+     "bossName_topRight": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     },
+     "topRight_boss": {
+      "x": 81.9,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "hint_boss": {
+      "x": 154.3,
+      "y": 0,
+      "gapX": -154.3
+     },
+     "chip_boss": {
+      "x": 62.5,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "timer_boss": {
+      "x": 11.4,
+      "y": 0,
+      "gapX": -11.4
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 28.9
+     },
+     "bossName_chip": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 1.8,
+    "faded": []
+   },
+   "topSafe": {
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 715,
+       "r": 374.2,
+       "b": 790.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 671.8,
+       "r": 267.7,
+       "b": 722,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 657.8,
+       "r": 321.4,
+       "b": 707.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 658.7,
+       "r": 375.9,
+       "b": 708.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 608.5,
+       "r": 379.5,
+       "b": 654.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 735.2,
+       "r": 291.5,
+       "b": 787.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 737.8,
+       "r": 234.3,
+       "b": 781.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1850,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 52,
+       "r": 383,
+       "b": 100,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": 102,
+      "r": 257.5,
+      "b": 119,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 99.1,
+      "t": 67.9,
+      "r": 147,
+      "b": 82.9,
+      "w": 47.8,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 71.8,
+      "r": 204.9,
+      "b": 80.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 59,
+      "r": 207,
+      "b": 88.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 52,
+      "r": 203.1,
+      "b": 70,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 53,
+      "r": 203.1,
+      "b": 69,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 59,
+      "r": 207,
+      "b": 88.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": 103,
+      "r": 306.1,
+      "b": 142.5,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": 119.8,
+      "r": 306.1,
+      "b": 142.5,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": 102,
+      "r": 257.5,
+      "b": 119,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 55,
+      "r": 380,
+      "b": 97,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 63.5,
+      "r": 286.7,
+      "b": 88.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 66,
+      "r": 330,
+      "b": 86,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 52,
+      "r": 383,
+      "b": 100,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 151,
+      "r": 238.2,
+      "b": 198.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 222.1,
+      "t": 769.8,
+      "r": 240.3,
+      "b": 787.8,
+      "w": 18.2,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "topLeft_boss": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "nameLine_boss": {
+      "x": 119.2,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "potions_boss": {
+      "x": 27,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "bossName_topLeft": {
+      "x": 74.5,
+      "y": 0,
+      "gapX": -74.5
+     },
+     "bossName_topRight": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     },
+     "topRight_boss": {
+      "x": 81.9,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "hint_boss": {
+      "x": 154.3,
+      "y": 0,
+      "gapX": -154.3
+     },
+     "chip_boss": {
+      "x": 62.5,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "timer_boss": {
+      "x": 11.4,
+      "y": 0,
+      "gapX": -11.4
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 28.9
+     },
+     "bossName_chip": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 1.8,
+    "faded": []
+   },
+   "boss-circle": {
+    "got": {
+     "tick": 80,
+     "atk": "slam",
+     "fill": 0.35,
+     "player": [
+      0,
+      2.5
+     ]
+    },
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 749,
+       "r": 374.2,
+       "b": 824.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 705.8,
+       "r": 267.7,
+       "b": 756,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 691.8,
+       "r": 321.4,
+       "b": 741.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 692.7,
+       "r": 375.9,
+       "b": 742.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 642.5,
+       "r": 379.5,
+       "b": 688.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 769.2,
+       "r": 291.5,
+       "b": 821.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 771.8,
+       "r": 234.3,
+       "b": 815.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 5,
+       "r": 383,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 95.7,
+      "t": 20.9,
+      "r": 150.4,
+      "b": 35.9,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 24.8,
+      "r": 204.9,
+      "b": 33.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 5,
+      "r": 203.1,
+      "b": 23,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 6,
+      "r": 203.1,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": 56,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": 72.8,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 8,
+      "r": 380,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 16.5,
+      "r": 286.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 19,
+      "r": 330,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 5,
+      "r": 383,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 104,
+      "r": 238.2,
+      "b": 151.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 219.3,
+      "t": 803.8,
+      "r": 240.3,
+      "b": 821.8,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "topLeft_boss": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "nameLine_boss": {
+      "x": 119.2,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "potions_boss": {
+      "x": 27,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "bossName_topLeft": {
+      "x": 74.5,
+      "y": 0,
+      "gapX": -74.5
+     },
+     "bossName_topRight": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     },
+     "topRight_boss": {
+      "x": 81.9,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "hint_boss": {
+      "x": 154.3,
+      "y": 0,
+      "gapX": -154.3
+     },
+     "chip_boss": {
+      "x": 62.5,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "timer_boss": {
+      "x": 11.4,
+      "y": 0,
+      "gapX": -11.4
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 28.9
+     },
+     "bossName_chip": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 1.8,
+    "faded": []
+   },
+   "boss-fan": {
+    "got": {
+     "tick": 80,
+     "atk": "sweep",
+     "fill": 0.46,
+     "player": [
+      0,
+      3.37
+     ]
+    },
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 749,
+       "r": 374.2,
+       "b": 824.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 705.8,
+       "r": 267.7,
+       "b": 756,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 691.8,
+       "r": 321.4,
+       "b": 741.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 692.7,
+       "r": 375.9,
+       "b": 742.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 642.5,
+       "r": 379.5,
+       "b": 688.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 769.2,
+       "r": 291.5,
+       "b": 821.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 771.8,
+       "r": 234.3,
+       "b": 815.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 5,
+       "r": 383,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 95.7,
+      "t": 20.9,
+      "r": 150.4,
+      "b": 35.9,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 24.8,
+      "r": 204.9,
+      "b": 33.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 5,
+      "r": 203.1,
+      "b": 23,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 6,
+      "r": 203.1,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": 56,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": 72.8,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 8,
+      "r": 380,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 16.5,
+      "r": 286.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 19,
+      "r": 330,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 5,
+      "r": 383,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 104,
+      "r": 238.2,
+      "b": 151.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 219.3,
+      "t": 803.8,
+      "r": 240.3,
+      "b": 821.8,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "topLeft_boss": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "nameLine_boss": {
+      "x": 119.2,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "potions_boss": {
+      "x": 27,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "bossName_topLeft": {
+      "x": 74.5,
+      "y": 0,
+      "gapX": -74.5
+     },
+     "bossName_topRight": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     },
+     "topRight_boss": {
+      "x": 81.9,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "hint_boss": {
+      "x": 154.3,
+      "y": 0,
+      "gapX": -154.3
+     },
+     "chip_boss": {
+      "x": 62.5,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "timer_boss": {
+      "x": 11.4,
+      "y": 0,
+      "gapX": -11.4
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 28.9
+     },
+     "bossName_chip": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 1.8,
+    "faded": []
+   },
+   "boss-dash": {
+    "got": {
+     "tick": 80,
+     "atk": "charge",
+     "fill": 0.32,
+     "player": [
+      0,
+      5.43
+     ]
+    },
+    "viewport": [
+     390,
+     844
+    ],
+    "controls": {
+     "btn-attack": {
+      "box": {
+       "l": 298.5,
+       "t": 749,
+       "r": 374.2,
+       "b": 824.6,
+       "w": 75.7,
+       "h": 75.7
+      },
+      "visual": 75.7,
+      "hitW": 76,
+      "hitH": 77,
+      "hitArea": 4648,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 7.5,
+      "gapTo": "btn-dodge"
+     },
+     "btn-skill": {
+      "box": {
+       "l": 217.5,
+       "t": 705.8,
+       "r": 267.7,
+       "b": 756,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-skill2"
+     },
+     "btn-skill2": {
+      "box": {
+       "l": 271.2,
+       "t": 691.8,
+       "r": 321.4,
+       "b": 741.9,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill3"
+     },
+     "btn-skill3": {
+      "box": {
+       "l": 325.8,
+       "t": 692.7,
+       "r": 375.9,
+       "b": 742.8,
+       "w": 50.2,
+       "h": 50.2
+      },
+      "visual": 50.2,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 2077,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.4,
+      "gapTo": "btn-skill2"
+     },
+     "btn-ult": {
+      "box": {
+       "l": 333.7,
+       "t": 642.5,
+       "r": 379.5,
+       "b": 688.3,
+       "w": 45.8,
+       "h": 45.8
+      },
+      "visual": 45.8,
+      "hitW": 46,
+      "hitH": 46,
+      "hitArea": 1688,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 4.7,
+      "gapTo": "btn-skill3"
+     },
+     "btn-dodge": {
+      "box": {
+       "l": 239.5,
+       "t": 769.2,
+       "r": 291.5,
+       "b": 821.1,
+       "w": 51.9,
+       "h": 51.9
+      },
+      "visual": 51.9,
+      "hitW": 52,
+      "hitH": 53,
+      "hitArea": 2208,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-potion"
+     },
+     "btn-potion": {
+      "box": {
+       "l": 190.3,
+       "t": 771.8,
+       "r": 234.3,
+       "b": 815.8,
+       "w": 44,
+       "h": 44
+      },
+      "visual": 44,
+      "hitW": 51,
+      "hitH": 51,
+      "hitArea": 1872,
+      "stolenCells": 0,
+      "circle": true,
+      "gap": 5.3,
+      "gapTo": "btn-dodge"
+     },
+     "btn-pause": {
+      "box": {
+       "l": 335,
+       "t": 5,
+       "r": 383,
+       "b": 53,
+       "w": 48,
+       "h": 48
+      },
+      "visual": 42,
+      "hitW": 49,
+      "hitH": 49,
+      "hitArea": 1901,
+      "stolenCells": 0,
+      "circle": false
+     },
+     "btn-auto": null,
+     "btn-auto-set": null
+    },
+    "text": {
+     "bossName": 14,
+     "bossNameRect": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "nameLine": 14,
+     "hpText": 12,
+     "hpTextRect": {
+      "l": 95.7,
+      "t": 20.9,
+      "r": 150.4,
+      "b": 35.9,
+      "w": 54.7,
+      "h": 15
+     },
+     "hpTrough": {
+      "l": 41.3,
+      "t": 24.8,
+      "r": 204.9,
+      "b": 33.1,
+      "w": 163.6,
+      "h": 8.3
+     },
+     "potionBottle": 16,
+     "potionCount": 14,
+     "cooldownNum": 21.07,
+     "slotBadge": 12.54,
+     "ultLabel": 12,
+     "early": {
+      "fontSize": 22,
+      "bg": "rgba(18, 12, 40, 0.74)",
+      "stroke": "3px"
+     },
+     "timer": 16,
+     "chip": 12,
+     "hint": 12
+    },
+    "box": {
+     "hpFrame": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "nameLine": {
+      "l": 43.2,
+      "t": 5,
+      "r": 203.1,
+      "b": 23,
+      "w": 159.9,
+      "h": 18
+     },
+     "potions": {
+      "l": 176.1,
+      "t": 6,
+      "r": 203.1,
+      "b": 22,
+      "w": 27,
+      "h": 16
+     },
+     "topLeft": {
+      "l": 12,
+      "t": 12,
+      "r": 207,
+      "b": 41.3,
+      "w": 195,
+      "h": 29.3
+     },
+     "boss": {
+      "l": 83.9,
+      "t": 56,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 39.5
+     },
+     "bossFrame": {
+      "l": 83.9,
+      "t": 72.8,
+      "r": 306.1,
+      "b": 95.5,
+      "w": 222.3,
+      "h": 22.8
+     },
+     "bossName": {
+      "l": 132.5,
+      "t": 55,
+      "r": 257.5,
+      "b": 72,
+      "w": 125,
+      "h": 17
+     },
+     "topRight": {
+      "l": 224.2,
+      "t": 8,
+      "r": 380,
+      "b": 50,
+      "w": 155.8,
+      "h": 42
+     },
+     "chip": {
+      "l": 224.2,
+      "t": 16.5,
+      "r": 286.7,
+      "b": 41.5,
+      "w": 62.5,
+      "h": 25
+     },
+     "timer": {
+      "l": 294.7,
+      "t": 19,
+      "r": 330,
+      "b": 39,
+      "w": 35.3,
+      "h": 20
+     },
+     "pause": {
+      "l": 335,
+      "t": 5,
+      "r": 383,
+      "b": 53,
+      "w": 48,
+      "h": 48
+     },
+     "hint": {
+      "l": 12,
+      "t": 104,
+      "r": 238.2,
+      "b": 151.2,
+      "w": 226.2,
+      "h": 47.2
+     },
+     "potionBadge": {
+      "l": 219.3,
+      "t": 803.8,
+      "r": 240.3,
+      "b": 821.8,
+      "w": 20.9,
+      "h": 18.1
+     }
+    },
+    "overlap": {
+     "hpFrame_bossFrame": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "topLeft_boss": {
+      "x": 123.1,
+      "y": 0,
+      "gapX": -123.1
+     },
+     "nameLine_boss": {
+      "x": 119.2,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "potions_boss": {
+      "x": 27,
+      "y": 0,
+      "gapX": -119.2
+     },
+     "bossName_topLeft": {
+      "x": 74.5,
+      "y": 0,
+      "gapX": -74.5
+     },
+     "bossName_topRight": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     },
+     "topRight_boss": {
+      "x": 81.9,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "hint_boss": {
+      "x": 154.3,
+      "y": 0,
+      "gapX": -154.3
+     },
+     "chip_boss": {
+      "x": 62.5,
+      "y": 0,
+      "gapX": -81.9
+     },
+     "timer_boss": {
+      "x": 11.4,
+      "y": 0,
+      "gapX": -11.4
+     },
+     "pause_boss": {
+      "x": 0,
+      "y": 0,
+      "gapX": 28.9
+     },
+     "bossName_chip": {
+      "x": 33.3,
+      "y": 0,
+      "gapX": -33.3
+     }
+    },
+    "bossShown": true,
+    "nameAboveTrough": 1.8,
+    "faded": [
+     "btn-attack",
+     "btn-dodge",
+     "btn-skill",
+     "btn-skill2",
+     "btn-potion"
+    ]
+   },
+   "cooldown": {
+    "cd": [
+     4.7,
+     2.27,
+     10.83
+    ],
+    "cls": [
+     "act skill cooling",
+     "act skill cooling",
+     "act skill cooling"
+    ]
+   },
+   "denied": {
+    "clsAtPress": "act skill cooling denied down",
+    "cdTicksBefore": 68,
+    "cdTicksAfter3": 65,
+    "cast": null,
+    "qaLogTail": [
+     {
+      "t": 2.7,
+      "e": "skill-hit"
+     },
+     {
+      "t": 3.2,
+      "e": "potion"
+     }
+    ],
+    "frozenAnimations": 2
+   },
+   "early": {
+    "got": {
+     "n": 67
+    },
+    "hit": {
+     "n": 37,
+     "hp": 94,
+     "early": 1
+    },
+    "frozenAt": 500,
+    "frozen": 2,
+    "count": 1
+   },
+   "fadetip": {
+    "got": {
+     "tick": 80,
+     "atk": "charge",
+     "fill": 0.32,
+     "player": [
+      0,
+      5.43
+     ]
+    },
+    "seen": "👆ปุ่มจางลงเพื่อให้เห็นวงเตือนข้างใต้ แต่ยังกดได้ตามปกติ"
+   }
+  }
+ },
+ "tele": {
+  "L-circle": {
+   "got": {
+    "tick": 80,
+    "atk": "slam",
+    "fill": 0.35,
+    "player": [
+     0,
+     2.5
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 0,
+     "faded": true,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill2": {
+     "telePx": 0,
+     "faded": true,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill3": {
+     "telePx": 943,
+     "faded": true,
+     "retention": 0.735,
+     "edgeRetention": 0.565
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": true,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-dodge": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-potion": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    }
+   }
+  },
+  "L-fan": {
+   "got": {
+    "tick": 80,
+    "atk": "sweep",
+    "fill": 0.46,
+    "player": [
+     0,
+     3.37
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 0,
+     "faded": true,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill2": {
+     "telePx": 10,
+     "faded": true,
+     "retention": 0.299,
+     "edgeRetention": 0.41
+    },
+    "btn-skill3": {
+     "telePx": 1065,
+     "faded": true,
+     "retention": 0.756,
+     "edgeRetention": 0.851
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": true,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-dodge": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-potion": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    }
+   }
+  },
+  "L-dash": {
+   "got": {
+    "tick": 80,
+    "atk": "charge",
+    "fill": 0.32,
+    "player": [
+     0,
+     5.43
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 847,
+     "faded": true,
+     "retention": 0.853,
+     "edgeRetention": 0.914
+    },
+    "btn-skill2": {
+     "telePx": 1095,
+     "faded": true,
+     "retention": 0.797,
+     "edgeRetention": 0.806
+    },
+    "btn-skill3": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-dodge": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-potion": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    }
+   }
+  },
+  "P-circle": {
+   "got": {
+    "tick": 80,
+    "atk": "slam",
+    "fill": 0.35,
+    "player": [
+     0,
+     2.5
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill2": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill3": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-dodge": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-potion": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    }
+   }
+  },
+  "P-fan": {
+   "got": {
+    "tick": 80,
+    "atk": "sweep",
+    "fill": 0.46,
+    "player": [
+     0,
+     3.37
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill2": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-skill3": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-dodge": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-potion": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    }
+   }
+  },
+  "P-dash": {
+   "got": {
+    "tick": 80,
+    "atk": "charge",
+    "fill": 0.32,
+    "player": [
+     0,
+     5.43
+    ]
+   },
+   "buttons": {
+    "btn-skill": {
+     "telePx": 768,
+     "faded": true,
+     "retention": 0.763,
+     "edgeRetention": 0.748
+    },
+    "btn-skill2": {
+     "telePx": 611,
+     "faded": true,
+     "retention": 0.734,
+     "edgeRetention": 0.81
+    },
+    "btn-skill3": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-ult": {
+     "telePx": 0,
+     "faded": false,
+     "retention": null,
+     "edgeRetention": null
+    },
+    "btn-attack": {
+     "telePx": 37,
+     "faded": true,
+     "retention": 0.541,
+     "edgeRetention": 0.588
+    },
+    "btn-dodge": {
+     "telePx": 806,
+     "faded": true,
+     "retention": 0.84,
+     "edgeRetention": 0.83
+    },
+    "btn-potion": {
+     "telePx": 886,
+     "faded": true,
+     "retention": 0.82,
+     "edgeRetention": 0.918
+    }
+   }
+  }
+ },
+ "notes": [],
+ "errors": []
+}

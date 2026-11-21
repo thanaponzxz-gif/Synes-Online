@@ -1,0 +1,12 @@
+{"profile":"android-low","tier":"low","readyMs":2955,"firstPlayMs":3934,"transferKB":838,"requests":13,"fpsAvg":21.6,"endPixelRatio":0.6,"drawCalls":144,"tris":40169,"heapMB":14.4,"kit":true,"errors":0}
+{"profile":"android-mid","tier":"low","readyMs":793,"firstPlayMs":1337,"transferKB":838,"requests":13,"fpsAvg":18.2,"endPixelRatio":0.6,"drawCalls":144,"tris":40169,"heapMB":11.9,"kit":true,"errors":0}
+{"profile":"iphone-class","tier":"low","readyMs":704,"firstPlayMs":1084,"transferKB":838,"requests":13,"fpsAvg":25.5,"endPixelRatio":0.6,"drawCalls":144,"tris":40169,"heapMB":11.9,"kit":true,"errors":0}
+{"profile":"pc","tier":"medium","readyMs":172,"firstPlayMs":459,"transferKB":838,"requests":13,"fpsAvg":15.1,"endPixelRatio":0.6,"drawCalls":150,"tris":59129,"heapMB":13.3,"kit":true,"errors":0}
+┌─────────┬────────────────┬──────────┬─────────┬─────────────┬────────────┬──────────┬────────┬───────────────┬───────────┬───────┬────────┬──────┬────────┐
+│ (index) │ profile        │ tier     │ readyMs │ firstPlayMs │ transferKB │ requests │ fpsAvg │ endPixelRatio │ drawCalls │ tris  │ heapMB │ kit  │ errors │
+├─────────┼────────────────┼──────────┼─────────┼─────────────┼────────────┼──────────┼────────┼───────────────┼───────────┼───────┼────────┼──────┼────────┤
+│ 0       │ 'android-low'  │ 'low'    │ 2955    │ 3934        │ 838        │ 13       │ 21.6   │ 0.6           │ 144       │ 40169 │ 14.4   │ true │ 0      │
+│ 1       │ 'android-mid'  │ 'low'    │ 793     │ 1337        │ 838        │ 13       │ 18.2   │ 0.6           │ 144       │ 40169 │ 11.9   │ true │ 0      │
+│ 2       │ 'iphone-class' │ 'low'    │ 704     │ 1084        │ 838        │ 13       │ 25.5   │ 0.6           │ 144       │ 40169 │ 11.9   │ true │ 0      │
+│ 3       │ 'pc'           │ 'medium' │ 172     │ 459         │ 838        │ 13       │ 15.1   │ 0.6           │ 150       │ 59129 │ 13.3   │ true │ 0      │
+└─────────┴────────────────┴──────────┴─────────┴─────────────┴────────────┴──────────┴────────┴───────────────┴───────────┴───────┴────────┴──────┴────────┘

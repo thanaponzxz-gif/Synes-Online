@@ -1,0 +1,573 @@
+{
+ "tag": "current",
+ "qs": "",
+ "dist": "/tmp/claude-0/-home-user/a07fd6b5-b156-540a-bf4e-38c4e398e311/scratchpad/opening-lane/dist-new",
+ "seed": 1,
+ "generatedAt": "2026-11-21T01:15:30.468Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "tiers": {
+  "low": {
+   "shots": {},
+   "measure": {
+    "calls": {
+     "start": 46,
+     "walk2s": 46,
+     "pathA": 45,
+     "plaza": 45
+    },
+    "tris": {
+     "start": 40551,
+     "pathA": 41803
+    },
+    "sky": 0.873,
+    "archL": 0.792,
+    "archR": 0.781,
+    "archGlowPx": 0,
+    "archLumenPx": 43,
+    "archVioletPx": 0,
+    "crystal": {
+     "n": 112,
+     "mean": 0.643,
+     "p90": 0.658,
+     "max": 0.669,
+     "min": 0.609
+    },
+    "crystalLumenPx": 31,
+    "crystalVioletPx": 8,
+    "crystalGlowPx": 37,
+    "crystalW2": {
+     "n": 512,
+     "mean": 0.632,
+     "p90": 0.646,
+     "max": 0.653,
+     "min": 0.604
+    },
+    "crystalW2Px": 0,
+    "pathFar": 0.798,
+    "pathMid": 0.793,
+    "pathNear": 0.797,
+    "grass": 0.655,
+    "treeR": 0.469,
+    "treeL": 0.592,
+    "hair": 0.783,
+    "aboveHead": 0.789,
+    "hairEdge": {
+     "px": 191,
+     "mean": 0.813,
+     "shareGE092": 0
+    },
+    "scarfPx": 520,
+    "scarfLuma": 0.464,
+    "capTop": 0.574,
+    "capBody": 0.583,
+    "underPuff": 0.798,
+    "tentLit": {
+     "n": 1200,
+     "mean": 0.787,
+     "p90": 0.846,
+     "max": 0.846,
+     "min": 0.493
+    },
+    "tentDoor": 0.258,
+    "lanterns": [
+     {
+      "box": [
+       333,
+       77,
+       345,
+       99
+      ],
+      "n": 264,
+      "mean": 0.645,
+      "p90": 0.774,
+      "max": 0.776,
+      "min": 0.215
+     },
+     {
+      "box": [
+       491,
+       63,
+       503,
+       80
+      ],
+      "n": 204,
+      "mean": 0.71,
+      "p90": 0.829,
+      "max": 0.841,
+      "min": 0.364
+     }
+    ],
+    "lanternWarm": [
+     {
+      "satMax": 0.87,
+      "hueMin": 41.7
+     },
+     {
+      "satMax": 0.87,
+      "hueMin": 41.7
+     }
+    ],
+    "frameMean": 0.659,
+    "frameMeanW2": 0.636,
+    "roughR": 0.002,
+    "roughL": 0.02,
+    "o9": {
+     "startScene": 0,
+     "walk2sScene": 0,
+     "startScreen": 5
+    },
+    "pathA": {
+     "setup": {
+      "n": 41,
+      "teleCount": 1
+     },
+     "tele": [
+      "hop:circle:0.31"
+     ],
+     "target": "#FF7A1A",
+     "roiPx": 745,
+     "meanHex": "#FE7C1E",
+     "hue": 25.2,
+     "sat": 0.882,
+     "val": 0.995,
+     "dE00mean": 0.5,
+     "shareDE10": 1,
+     "edgeLuma": 0.568,
+     "underLuma": 0.78,
+     "roiSVmedian": 0.878,
+     "roiCmedian": 81,
+     "sceneWarmOtherSVmax": 0.71,
+     "sceneWarmOtherCmax": 68.7,
+     "footprintPx": 11237,
+     "edgeMostVivid": true,
+     "o8": {
+      "px": 650,
+      "ringLuma": 0.572,
+      "pathUnderLuma": 0.797,
+      "delta": 0.226
+     },
+     "o9WarmOutsideTelegraph": 0
+    },
+    "plaza": {
+     "setup": {
+      "n": 41,
+      "both": true,
+      "teleShapes": [
+       "line",
+       "circle"
+      ]
+     },
+     "tele": [
+      "rush:line:0.89",
+      "hop:circle:0.14"
+     ],
+     "target": "#FF7A1A",
+     "roiPx": 1053,
+     "meanHex": "#FC8226",
+     "hue": 25.8,
+     "sat": 0.851,
+     "val": 0.988,
+     "dE00mean": 2,
+     "shareDE10": 0.999,
+     "edgeLuma": 0.584,
+     "underLuma": 0.794,
+     "roiSVmedian": 0.839,
+     "roiCmedian": 77.5,
+     "sceneWarmOtherSVmax": 0.71,
+     "sceneWarmOtherCmax": 68.7,
+     "footprintPx": 13828,
+     "edgeMostVivid": true,
+     "o9WarmOutsideTelegraph": 0
+    },
+    "pathMidNear": 0.797
+   },
+   "rules": {
+    "O1": {
+     "pass": false,
+     "v": "p90 0.658 vs path 0.797 (+-0.139)"
+    },
+    "O2": {
+     "pass": false,
+     "v": "p90 0.658 vs max mid/ground 0.846 (tentMax), sky-0.02 0.853"
+    },
+    "O3": {
+     "pass": false,
+     "v": "arch-sky 0.081/0.092, glow px 0"
+    },
+    "O4": {
+     "pass": false,
+     "v": "far 0.798 mid 0.793 near 0.797"
+    },
+    "O5": {
+     "pass": false,
+     "v": "ROI 0.783 - path 0.789 = -0.006 · top-edge 191 px mean 0.813 (0.024 vs path), share >=0.92 0"
+    },
+    "O6": {
+     "pass": false,
+     "v": "trees 0.469/0.592 vs path-0.25 0.543"
+    },
+    "O7": {
+     "pass": true,
+     "v": "cap 0.574 body 0.583 vs path 0.798 (min diff 0.215, need 0.15)"
+    },
+    "O8": {
+     "pass": true,
+     "v": "ring 0.572 vs path under 0.797 (0.226, 650 px)"
+    },
+    "O9": {
+     "pass": true,
+     "v": "scene px start 0 walk2s 0 pathA 0 plaza 0 (screen incl. HUD 5)"
+    }
+   },
+   "extra": {
+    "crystalMean": {
+     "pass": false,
+     "v": "0.643 (need 0.8)"
+    },
+    "crystalP90": {
+     "pass": false,
+     "v": "0.658 (need 0.92)"
+    },
+    "crystalPx": {
+     "pass": false,
+     "v": "31 lumen + 8 violet = 39 (glow 37)"
+    },
+    "crystalW2": {
+     "pass": false,
+     "v": "walk2s mean 0.632 p90 0.646, 0 px"
+    },
+    "tent": {
+     "pass": false,
+     "v": "tent max 0.846 vs crystal p90-0.08 0.578"
+    },
+    "scarf": {
+     "pass": true,
+     "v": "520 px luma 0.464"
+    },
+    "sky": {
+     "pass": true,
+     "v": "0.873 in 0.82,0.88"
+    },
+    "pathFar": {
+     "pass": false,
+     "v": "0.798 in 0.8,0.86"
+    },
+    "pathMidNear": {
+     "pass": true,
+     "v": "0.793/0.797 in 0.76,0.8"
+    },
+    "grass": {
+     "pass": true,
+     "v": "0.655 in 0.58,0.66"
+    },
+    "trees": {
+     "pass": false,
+     "v": "0.469/0.592 in 0.28,0.45"
+    },
+    "frame": {
+     "pass": false,
+     "v": "0.659 in 0.58,0.65"
+    },
+    "lantern": {
+     "pass": false,
+     "v": "s 0.87 h>=41.7 · s 0.87 h>=41.7"
+    },
+    "dither": {
+     "pass": true,
+     "v": "0.002 / 0.02"
+    },
+    "edgePathA": {
+     "pass": true,
+     "v": "#FE7C1E dE00 0.5 s 0.882 most vivid true"
+    },
+    "edgePlaza": {
+     "pass": true,
+     "v": "#FC8226 dE00 2 s 0.851 most vivid true"
+    }
+   },
+   "judgedAs": "A"
+  },
+  "medium": {
+   "shots": {},
+   "measure": {
+    "calls": {
+     "start": 48,
+     "walk2s": 48,
+     "pathA": 47,
+     "plaza": 48
+    },
+    "tris": {
+     "start": 59367,
+     "pathA": 61483
+    },
+    "sky": 0.876,
+    "archL": 0.792,
+    "archR": 0.781,
+    "archGlowPx": 0,
+    "archLumenPx": 43,
+    "archVioletPx": 0,
+    "crystal": {
+     "n": 112,
+     "mean": 0.68,
+     "p90": 0.795,
+     "max": 0.823,
+     "min": 0.292
+    },
+    "crystalLumenPx": 136,
+    "crystalVioletPx": 48,
+    "crystalGlowPx": 175,
+    "crystalW2": {
+     "n": 512,
+     "mean": 0.691,
+     "p90": 0.764,
+     "max": 0.823,
+     "min": 0.279
+    },
+    "crystalW2Px": 738,
+    "pathFar": 0.798,
+    "pathMid": 0.795,
+    "pathNear": 0.796,
+    "grass": 0.645,
+    "treeR": 0.359,
+    "treeL": 0.375,
+    "hair": 0.783,
+    "aboveHead": 0.798,
+    "hairEdge": {
+     "px": 191,
+     "mean": 0.813,
+     "shareGE092": 0
+    },
+    "scarfPx": 520,
+    "scarfLuma": 0.464,
+    "capTop": 0.574,
+    "capBody": 0.583,
+    "underPuff": 0.795,
+    "tentLit": {
+     "n": 1200,
+     "mean": 0.788,
+     "p90": 0.846,
+     "max": 0.846,
+     "min": 0.493
+    },
+    "tentDoor": 0.258,
+    "lanterns": [
+     {
+      "box": [
+       333,
+       77,
+       345,
+       99
+      ],
+      "n": 264,
+      "mean": 0.7,
+      "p90": 0.774,
+      "max": 0.776,
+      "min": 0.524
+     },
+     {
+      "box": [
+       491,
+       63,
+       503,
+       80
+      ],
+      "n": 204,
+      "mean": 0.712,
+      "p90": 0.833,
+      "max": 0.84,
+      "min": 0.398
+     }
+    ],
+    "lanternWarm": [
+     {
+      "satMax": 0.87,
+      "hueMin": 41.7
+     },
+     {
+      "satMax": 0.87,
+      "hueMin": 41.7
+     }
+    ],
+    "frameMean": 0.638,
+    "frameMeanW2": 0.618,
+    "roughR": 0.193,
+    "roughL": 0.108,
+    "o9": {
+     "startScene": 0,
+     "walk2sScene": 0,
+     "startScreen": 5
+    },
+    "pathA": {
+     "setup": {
+      "n": 41,
+      "teleCount": 1
+     },
+     "tele": [
+      "hop:circle:0.31"
+     ],
+     "target": "#FF7A1A",
+     "roiPx": 745,
+     "meanHex": "#FE7C1E",
+     "hue": 25.2,
+     "sat": 0.882,
+     "val": 0.996,
+     "dE00mean": 0.5,
+     "shareDE10": 1,
+     "edgeLuma": 0.568,
+     "underLuma": 0.781,
+     "roiSVmedian": 0.878,
+     "roiCmedian": 81,
+     "sceneWarmOtherSVmax": 0.71,
+     "sceneWarmOtherCmax": 68.7,
+     "footprintPx": 11237,
+     "edgeMostVivid": true,
+     "o8": {
+      "px": 651,
+      "ringLuma": 0.572,
+      "pathUnderLuma": 0.795,
+      "delta": 0.224
+     },
+     "o9WarmOutsideTelegraph": 0
+    },
+    "plaza": {
+     "setup": {
+      "n": 41,
+      "both": true,
+      "teleShapes": [
+       "line",
+       "circle"
+      ]
+     },
+     "tele": [
+      "rush:line:0.89",
+      "hop:circle:0.14"
+     ],
+     "target": "#FF7A1A",
+     "roiPx": 1053,
+     "meanHex": "#FC8226",
+     "hue": 25.8,
+     "sat": 0.851,
+     "val": 0.988,
+     "dE00mean": 2,
+     "shareDE10": 0.999,
+     "edgeLuma": 0.584,
+     "underLuma": 0.792,
+     "roiSVmedian": 0.839,
+     "roiCmedian": 77.5,
+     "sceneWarmOtherSVmax": 0.71,
+     "sceneWarmOtherCmax": 68.7,
+     "footprintPx": 13828,
+     "edgeMostVivid": true,
+     "o9WarmOutsideTelegraph": 0
+    },
+    "pathMidNear": 0.796
+   },
+   "rules": {
+    "O1": {
+     "pass": false,
+     "v": "p90 0.795 vs path 0.796 (+-0.001)"
+    },
+    "O2": {
+     "pass": false,
+     "v": "p90 0.795 vs max mid/ground 0.846 (tentMax), sky-0.02 0.856"
+    },
+    "O3": {
+     "pass": false,
+     "v": "arch-sky 0.084/0.095, glow px 0"
+    },
+    "O4": {
+     "pass": false,
+     "v": "far 0.798 mid 0.795 near 0.796"
+    },
+    "O5": {
+     "pass": false,
+     "v": "ROI 0.783 - path 0.798 = -0.015 · top-edge 191 px mean 0.813 (0.015 vs path), share >=0.92 0"
+    },
+    "O6": {
+     "pass": true,
+     "v": "trees 0.359/0.375 vs path-0.25 0.545"
+    },
+    "O7": {
+     "pass": true,
+     "v": "cap 0.574 body 0.583 vs path 0.795 (min diff 0.212, need 0.15)"
+    },
+    "O8": {
+     "pass": true,
+     "v": "ring 0.572 vs path under 0.795 (0.224, 651 px)"
+    },
+    "O9": {
+     "pass": true,
+     "v": "scene px start 0 walk2s 0 pathA 0 plaza 0 (screen incl. HUD 5)"
+    }
+   },
+   "extra": {
+    "crystalMean": {
+     "pass": false,
+     "v": "0.68 (need 0.8)"
+    },
+    "crystalP90": {
+     "pass": false,
+     "v": "0.795 (need 0.92)"
+    },
+    "crystalPx": {
+     "pass": false,
+     "v": "136 lumen + 48 violet = 184 (glow 175)"
+    },
+    "crystalW2": {
+     "pass": false,
+     "v": "walk2s mean 0.691 p90 0.764, 738 px"
+    },
+    "tent": {
+     "pass": false,
+     "v": "tent max 0.846 vs crystal p90-0.08 0.715"
+    },
+    "scarf": {
+     "pass": true,
+     "v": "520 px luma 0.464"
+    },
+    "sky": {
+     "pass": true,
+     "v": "0.876 in 0.82,0.88"
+    },
+    "pathFar": {
+     "pass": false,
+     "v": "0.798 in 0.8,0.86"
+    },
+    "pathMidNear": {
+     "pass": true,
+     "v": "0.795/0.796 in 0.76,0.8"
+    },
+    "grass": {
+     "pass": true,
+     "v": "0.645 in 0.58,0.66"
+    },
+    "trees": {
+     "pass": true,
+     "v": "0.359/0.375 in 0.28,0.45"
+    },
+    "frame": {
+     "pass": true,
+     "v": "0.638 in 0.58,0.65"
+    },
+    "lantern": {
+     "pass": false,
+     "v": "s 0.87 h>=41.7 · s 0.87 h>=41.7"
+    },
+    "dither": {
+     "pass": false,
+     "v": "0.193 / 0.108"
+    },
+    "edgePathA": {
+     "pass": true,
+     "v": "#FE7C1E dE00 0.5 s 0.882 most vivid true"
+    },
+    "edgePlaza": {
+     "pass": true,
+     "v": "#FC8226 dE00 2 s 0.851 most vivid true"
+    }
+   },
+   "judgedAs": "A"
+  }
+ },
+ "errors": []
+}

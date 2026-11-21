@@ -8,6 +8,8 @@
 | `build_kit.py` | สร้างทุก node ตามสัญญา แล้ว export GLB (deterministic: build ซ้ำได้ไฟล์เดิมทุกไบต์) |
 | `verify_kit.py` | ตรวจ GLB กับสัญญา (อ่านรายชื่อ node จาก ASSET_CONTRACT.md เอง) ถ้ามีข้อผิดพลาดจะจบด้วย exit 1 |
 | `render_preview.py` | เรนเดอร์ contact sheet ไปที่ `docs/art/kit_preview.png` (Cycles CPU) |
+| `render_chars.py` | contact sheet เทียบตัวละคร: 1 แถวต่อ GLB, `hero` 3 มุม + `prismback` 3 มุม (มุมกล้องเกม) ได้ภาพสี + ขาวดำ (`-gray`) + เงาทึบ (`-sil`) |
+| `kit_stats.py` | Python ธรรมดา (ไม่ต้องใช้ bpy): tris และจำนวน primitive (material) ต่อ node ของ GLB หลายไฟล์เทียบกัน |
 | `.venv/` | Blender 5.3 แบบ Python module (`bpy`) ถูก gitignore ไว้ อยู่ใน checkout หลักเท่านั้น |
 
 ## สร้างใหม่ (headless)
@@ -20,16 +22,40 @@ $PY tools/blender/verify_kit.py --rebuild-check   # ~10 วินาที, ต�
 $PY tools/blender/render_preview.py               # ~20 วินาที, docs/art/kit_preview.png
 ```
 
+### ตัวเลือกตัวละคร (DES-004 ขั้น 3–4, branch `exp/stage1-chars`)
+`hero` และ `prismback` มี 3 แบบ ส่วน asset อื่นทุกชิ้นเหมือนกันทุกแบบ เลือกด้วย env `SYNES_CHAR_VARIANT` หรือ `--variant`
+| แบบ | ความหมาย |
+|---|---|
+| `r0` (หรือ `current`) | แบบ DES-003 ที่เจ้าของอนุมัติ 2026-11-21 (ก่อน DES-004 ขั้น 3–4) build ได้ไบต์ตรงกับไฟล์เดิมเมื่อใช้ Blender รุ่นเดียวกัน |
+| `A` (**ค่าเริ่มต้น**) | แก้จาก r0 แบบระมัดระวัง |
+| `B` | เปลี่ยน silhouette แรงกว่า |
+
+```bash
+SYNES_CHAR_VARIANT=B SYNES_KIT_OUT=docs/qa/chars-v01/synes_kit_B.glb $PY tools/blender/build_kit.py
+SYNES_CHAR_VARIANT=B $PY tools/blender/verify_kit.py --rebuild-check --glb docs/qa/chars-v01/synes_kit_B.glb
+$PY tools/blender/render_chars.py --glb r0=/tmp/kit_r0.glb --glb A=public/assets/models/synes_kit.glb \
+    --glb B=docs/qa/chars-v01/synes_kit_B.glb --out /tmp/chars.png      # ~1 นาที
+python3 tools/blender/kit_stats.py /tmp/kit_r0.glb public/assets/models/synes_kit.glb --nodes hero,prismback
+```
+รายละเอียดและผลเทียบในเกมอยู่ที่ `docs/qa/chars-v01/README.md`
+
+### ตัวเลือกผลึกยอดแหลม + ศาล (DES-004 ขั้น 2, branch `exp/stage1-spire-shrine`)
+`crystal_spire` และ `ruin_arch_shrine` มีแบบ `A` (ค่าเริ่มต้น) และ `B` เลือกด้วย env `SYNES_SPIRE_VARIANT` หรือ `--spire` (แยกจาก `SYNES_CHAR_VARIANT`)
+`SYNES_KIT_ONLY=crystal_spire,ruin_arch_shrine` สร้างไฟล์เสริมที่มีแค่ node เหล่านี้ (ข้ามการตรวจ node ตามสัญญา) ซึ่งเกมโหลดเมื่อใส่ `?spire=B`
+คำสั่งและผลเทียบอยู่ที่ `docs/qa/spire-shrine-v01/README.md`
+
 - `--rebuild-check` จะ build ลงไฟล์ชั่วคราว 2 รอบ แล้วยืนยันว่าทั้งสองไฟล์และไฟล์ที่ commit ไว้ตรงกันทุกไบต์
   (ถ้าแก้ `build_kit.py` แล้วลืม build ใหม่ การตรวจนี้จะไม่ผ่าน)
+  ไบต์ตรงกันได้เฉพาะเมื่อใช้ Blender รุ่นเดียวกัน: 4.5.3 กับ 5.3 เรียง node และ material ในไฟล์ต่างกัน (เรขาคณิตทุก node เหมือนเดิม)
+  GLB บน `exp/stage1-chars` export ด้วย 5.3.0
 - `render_preview.py --only hero,prismback --out /tmp/x.png` ใช้ดูเฉพาะบางชิ้นได้เร็ว และปรับแสงได้ด้วย `--sun` กับ `--sky-light`
 - ตัวแปรแวดล้อม: `SYNES_KIT_OUT` เปลี่ยนไฟล์ปลายทางของ GLB และ `SYNES_REPO` ระบุ root ของ repo เมื่อรันแบบไม่มี `__file__`
 
 ## งบ (สคริปต์และตัวตรวจจะหยุดทันทีถ้าเกิน)
 | รายการ | งบ | ปัจจุบัน |
 |---|---|---|
-| triangles รวมทั้งไฟล์ | ≤ 60,000 | **15,232** |
-| ขนาด GLB | ≤ 1.2 MB (เป้า ≤ 700 KB) | **537.6 KB** |
+| triangles รวมทั้งไฟล์ | ≤ 60,000 | **17,137** (แบบ A + spire/shrine A) |
+| ขนาด GLB | ≤ 1.2 MB (เป้า ≤ 700 KB) | **631.8 KB** (แบบ A + spire/shrine A) |
 | scatter ต้นไม้ (`tree_round`, `tree_round_b`, `tree_pine`) | ≤ 350 ต่อชิ้น | 304 / 328 / 124 |
 | scatter เล็ก (`bush`, `rock_a`, `rock_b`, `flower_patch`, `mushroom_glow`, `crystal_cluster`) | ≤ 150 ต่อชิ้น | 144 / 125 / 117 / 146 / 138 / 128 |
 | texture, Draco, meshopt, กล้อง, ไฟ, animation, UV | ห้ามมี | ไม่มี |
@@ -43,6 +69,8 @@ $PY tools/blender/render_preview.py               # ~20 วินาที, docs
 - ฉากที่มีด้านหน้า (บ้าน, เต็นท์, ป้าย, แผง, เคาน์เตอร์, ชั้นอาวุธ, ธง) หันประตูหรือหน้าป้ายไป +Z เหมือนกัน
 - material แชร์กันตามชื่อ palette (Principled: base color, roughness, metallic 0) ชุดเปล่งแสงมี `lumen`, `crystal_violet`, `crystal_mid` และ `glow_gold`
 - node ที่มีหลาย material จะโหลดใน Three.js เป็น `Group` ซึ่งมี `Mesh` ลูกหนึ่งตัวต่อ material จึงควรใช้ `traverse` เมื่อต้องแก้ material
+- draw calls: เกมรวม mesh ลูกของแต่ละ node เป็น 1 draw call (`bakeKit` ใน `src/render/models.ts`) **ยกเว้น `prismback`** ที่แยกไว้เพื่อจางและเรืองแสง
+  ดังนั้นจำนวน material ของ hero และ prop ไม่เพิ่ม draw call แต่ทุก material ใน node ของ prismback คือ 1 draw call (r0 = 28, แบบ A/B = 20)
 - `hero_sword`: origin อยู่กลางด้ามจับ แกนของ node ขนานกับ `hero` ส่วนใบดาบในท่าพักชี้ขึ้นและเอียงไปข้างหน้า 15° ออกด้านนอก 22° (bake ลง mesh แล้ว)
   ดังนั้น rotation = 0 คือท่าพัก และการหมุนรอบแกน X ของ node คือการฟันไปข้างหน้า
 
@@ -82,20 +110,20 @@ $PY tools/blender/render_preview.py               # ~20 วินาที, docs
 
 | node | ชนิด | tris | pivot / หมายเหตุ |
 |---|---|---:|---|
-| `hero` | Empty | 1,556 รวม | สูง 1.52 m |
-| ├ `hero_body` | mesh | 650 | (0, 0, 0) เท้า มีผ้าพันคอ teal และชายผ้าที่ปลิวไปด้านหลังซ้าย |
-| ├ `hero_head` | mesh | 756 | (0, 0.86, 0) คอ หัวคิดเป็น 43% ของความสูง |
-| └ `hero_sword` | mesh | 150 | (−0.29, 0.52, 0.14) ด้ามจับในมือขวา ใบดาบสี lumen เปล่งแสง |
+| `hero` | Empty | 2,162 รวม (แบบ A) | สูง 1.55 m |
+| ├ `hero_body` | mesh | 1,182 | (0, 0, 0) เท้า ผ้าพันคอ teal + ปลายผ้า teal, หางผ้าม่วง/เงินที่ปลิวไปด้านหลังซ้าย (คงตาม r0), ผ้าคลุมม่วง 2 แฉก, ขอบทองที่เข็มขัด |
+| ├ `hero_head` | mesh | 810 | (0, 0.86, 0) คอ หัวคิดเป็น 44% ของความสูง ผมเงิน 9 ปอย |
+| └ `hero_sword` | mesh | 170 | (−0.29, 0.52, 0.14) ด้ามจับในมือขวา ใบดาบสี lumen เปล่งแสง (เหมือน r0) |
 | `puffcap` | Empty | 1,700 รวม | สูง 0.98 m |
 | ├ `puffcap_cap` | mesh | 1,062 | (0, 0.56, 0) จุดที่หมวกต่อกับลำต้น หมวกเอียงไปข้างหลัง 10° เพื่อให้เห็นหน้าจากกล้องสูง |
 | └ `puffcap_stem` | mesh | 638 | (0, 0, 0) เท้า หน้าอยู่บนลำต้น |
 | `thornling` | Empty | 888 รวม | สูง 0.96 m |
 | └ `thornling_body` | mesh | 888 | (0, 0, 0) เท้า |
-| `prismback` | Empty | 2,582 รวม | 3.93 × 5.18 × 3.09 m (ยาวตาม z) |
-| ├ `prismback_body` | mesh | 858 | (0, 0, 0) ตัว คอ หัว และตา |
-| ├ `prismback_shell` | mesh | 902 | (0, 0, 0) กระดอง มอส scute หกเหลี่ยม และกลุ่มคริสตัล |
-| ├ `prismback_horn` | mesh | 54 | (0, 1.50, 2.28) โคนเขาบนหน้าผาก |
-| └ `prismback_legs` | mesh | 768 | (0, 0, 0) ขาทั้ง 6 รวมเป็น mesh เดียว |
+| `prismback` | Empty | 2,732 รวม (แบบ A) | 3.82 × 5.04 × 3.29 m (ยาวตาม z) |
+| ├ `prismback_body` | mesh | 750 | (0, 0, 0) ตัว คอ หัว และตา lumen (5 material) |
+| ├ `prismback_shell` | mesh | 1,008 | (0, 0, 0) กระดอง เกราะ 7 แผ่นขอบทอง รอยแตก lumen และผลึก 11 ชิ้น (8 material) |
+| ├ `prismback_horn` | mesh | 80 | (0, 1.58, 2.38) โคนหงอนผลึกบนหน้าผาก (4 material) |
+| └ `prismback_legs` | mesh | 894 | (0, 0, 0) ขาทั้ง 6 รวมเป็น mesh เดียว มีรอยแตก lumen (3 material) |
 | `tree_round` | mesh | 304 | สูง 3.40 m |
 | `tree_round_b` | mesh | 328 | สูง 3.37 m เรือนยอดเข้มประดอก blossom |
 | `tree_pine` | mesh | 124 | สูง 4.10 m |
@@ -123,7 +151,7 @@ $PY tools/blender/render_preview.py               # ~20 วินาที, docs
 | `shop_counter` | mesh | 554 | |
 | `weapon_rack` | mesh | 502 | |
 | `banner` | mesh | 190 | |
-| **รวม** | | **15,232** | GLB 537.6 KB, 22 materials, 41 nodes |
+| **รวม** | | **15,988** | GLB 585.6 KB, 28 materials, 41 nodes (แบบ A, Blender 5.3.0) |
 
 ## Material
 สีหลักตามสัญญา (`lumen`, `synes_violet`, `blossom`, `gold`, `leaf`, `leaf_dark`, `bark`, `path`, `stone`, `cloth_teal`) ใช้ hex ตรงตัว

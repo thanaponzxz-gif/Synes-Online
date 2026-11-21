@@ -45,8 +45,9 @@ export class Rings {
   private items: { m: Mesh; t: number; dur: number; from: number; to: number; op: number }[] = [];
   private scene: Scene;
   constructor(scene: Scene) { this.scene = scene; }
-  ring(x: number, z: number, from: number, to: number, color: number, dur = 0.35, op = 0.85, y = 0.08) {
-    const m = new Mesh(new RingGeometry(0.85, 1, 40), new MeshBasicMaterial({ color, transparent: true, opacity: op, side: DoubleSide, depthWrite: false, blending: AdditiveBlending }));
+  /** single: one draw call instead of two (forceSinglePass; a flat ring looks the same), used by the exp/stage1-vfx options only */
+  ring(x: number, z: number, from: number, to: number, color: number, dur = 0.35, op = 0.85, y = 0.08, single = false) {
+    const m = new Mesh(new RingGeometry(0.85, 1, 40), new MeshBasicMaterial({ color, transparent: true, opacity: op, side: DoubleSide, depthWrite: false, blending: AdditiveBlending, forceSinglePass: single }));
     m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.scale.setScalar(from); m.renderOrder = 5;
     this.scene.add(m); this.items.push({ m, t: 0, dur, from, to, op });
   }
@@ -71,14 +72,26 @@ export class Rings {
   }
 }
 
-/** Telegraph material: fills with progress, bright pulsing edge. Shape: 0 circle, 1 cone, 2 line. */
+/** Telegraph material: fills with progress, thin pulsing edge. Shape: 0 circle, 1 cone, 2 line.
+ *  DES-006 §2: the warning colour is kept apart from fog / lights / tone mapping / the floor below, so #FF7A1A and #FF3355
+ *  reach the screen as those hex values: unlit ShaderMaterial (fog off, toneMapped off, no tonemapping chunk), output encoded
+ *  with <colorspace_fragment> (the uniform is linear, the canvas sRGB; without it the hex came out shifted and the 70% white
+ *  mix on the edge read pink). Edge and progress front are the pure hex; the edge stays >= 90% opaque through its pulse.
+ *  Unchanged: interior alpha 0.08 / 0.25, edge band widths, fill / front / chevron timing, pulse rate, hit shapes.
+ *  uBoss = (x, z, r) of the boss body: where the floor is under the boss (the sim keeps the player >= r + 0.42 away, so
+ *  nobody can stand there) the EDGE fades out instead of painting a line across the boss face (depthTest is off).
+ *  Still one mesh = one draw call per telegraph; renderOrder 10 + depthTest off (view.ts) keeps it above scene and VFX. */
 export function telegraphMaterial(color: number, shape: number, cos = 0.5, inner = 0.12): ShaderMaterial {
   return new ShaderMaterial({
-    transparent: true, depthWrite: false, depthTest: false, side: DoubleSide,
-    uniforms: { uColor: { value: new Color(color) }, uProg: { value: 0 }, uShape: { value: shape }, uCos: { value: cos }, uInner: { value: inner }, uTime: { value: 0 }, uAlpha: { value: 1 } },
-    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    transparent: true, depthWrite: false, depthTest: false, side: DoubleSide, fog: false, toneMapped: false,
+    uniforms: {
+      uColor: { value: new Color(color) }, uProg: { value: 0 }, uShape: { value: shape }, uCos: { value: cos }, uInner: { value: inner }, uTime: { value: 0 }, uAlpha: { value: 1 },
+      uBoss: { value: new Vector3(0, 0, 0) },
+    },
+    vertexShader: 'varying vec2 vUv; varying vec2 vWp; void main(){ vUv = uv; vWp = (modelMatrix * vec4(position,1.0)).xz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: `
-      uniform vec3 uColor; uniform float uProg; uniform float uShape; uniform float uCos; uniform float uInner; uniform float uTime; uniform float uAlpha; varying vec2 vUv;
+      uniform vec3 uColor; uniform float uProg; uniform float uShape; uniform float uCos; uniform float uInner; uniform float uTime; uniform float uAlpha; uniform vec3 uBoss;
+      varying vec2 vUv; varying vec2 vWp;
       void main(){
         float pulse = 0.75 + 0.25 * sin(uTime * (8.0 + 22.0 * uProg));
         float a = 0.0; float edge = 0.0; float fill = 0.0; float front = 0.0;
@@ -90,7 +103,10 @@ export function telegraphMaterial(color: number, shape: number, cos = 0.5, inner
           vec2 p = vUv * 2.0 - 1.0; float d = length(p); if (d > 1.0) discard;
           float c = d > 0.001 ? p.y / d : 1.0; if (c < uCos && d > uInner) discard;
           float ang = clamp((c - uCos) / max(0.0001, 1.0 - uCos), 0.0, 1.0);
-          edge = max(smoothstep(0.93, 0.97, d), 1.0 - smoothstep(0.0, 0.035, ang)); fill = step(d, uProg);
+          // the inner disc (CONE_INNER_R) outside the cone angle is interior, not edge: ang clamps to 0 there, which used to
+          // paint the whole disc as solid edge over the boss face
+          float side = c >= uCos ? (1.0 - smoothstep(0.0, 0.035, ang)) * step(uInner, d) : 0.0;
+          edge = max(smoothstep(0.93, 0.97, d), side); fill = step(d, uProg);
           front = (1.0 - smoothstep(0.0, 0.03, abs(d - uProg))) * step(0.02, uProg);
         } else {
           float sx = abs(vUv.x - 0.5) * 2.0;
@@ -99,10 +115,14 @@ export function telegraphMaterial(color: number, shape: number, cos = 0.5, inner
           front = (1.0 - smoothstep(0.0, 0.015, abs(vUv.y - uProg))) * step(0.01, uProg);
           float chev = step(0.5, fract(vUv.y * 10.0 - uTime * 2.0 + sx * 0.5)) * 0.35; fill = max(fill, chev);
         }
-        vec3 col = mix(uColor, vec3(1.0, 0.98, 0.9), max(edge, front * 0.6) * 0.7);
-        // interior: ~0.08 before fill, ~0.25 after; thin bright edge + progress front keep the countdown readable
-        a = max(max(edge * 0.95 * pulse, front * 0.6), mix(0.08, 0.25, fill));
-        gl_FragColor = vec4(col, a * uAlpha);
+        // the edge (only) fades out on the floor under the boss body (uBoss.z = r; r = 0: no-op); fill and front keep showing
+        // the countdown there
+        edge *= smoothstep(uBoss.z - 0.4, uBoss.z, distance(vWp, uBoss.xy));
+        // interior: ~0.08 before fill, ~0.25 after; thin edge (pulse rate unchanged, alpha 0.9..1 so the floor below never
+        // washes the hue out) + progress front (0.6) keep the countdown readable
+        a = max(max(edge * (0.8 + 0.2 * pulse), front * 0.6), mix(0.08, 0.25, fill));
+        gl_FragColor = vec4(uColor, a * uAlpha);
+        #include <colorspace_fragment>
       }`,
   });
 }

@@ -5,7 +5,8 @@ import { InputLog } from '../shared/sim/input.ts';
 import { TICK } from '../shared/data/tuning.ts';
 import { rankFor } from '../shared/rules/reward.ts';
 import { View } from './render/view.ts';
-import { loadKit, kitLoaded } from './render/models.ts';
+import { loadKit, kitLoaded, loadKitExtra } from './render/models.ts';
+import { spireLook } from './render/arena.ts';
 import { TIERS, guessTier, loadPref, savePref, AdaptiveResolution, type QualityPref } from './render/quality.ts';
 import { toneById } from './render/tones.ts';
 import { Input } from './input.ts';
@@ -14,6 +15,7 @@ import { ButtonFade } from './ui/buttonFade.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
+import { rulesetFromQuery } from '../shared/sim/ruleset.ts';
 import { Bot } from '../tests/bot.ts';
 import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
 import { AUTO_KINDS, autoAllowedHere, defaultAuto, packAuto, type AutoSettings } from '../shared/sim/auto.ts';
@@ -22,6 +24,7 @@ import { dist } from '../shared/sim/math.ts';
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
+const ruleset = rulesetFromQuery(Q); // ?combo=A|B|C (default combat-1)
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
@@ -83,7 +86,9 @@ const qaLog: { t: number; e: string }[] = [];
   $('#chip-q').textContent = `กราฟิก: ${tierLabel(tierName)}${pref === 'auto' ? ' (อัตโนมัติ)' : ''}`;
   const [mode] = await Promise.all([
     net.detect(),
-    Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`)).then((ok) => (perf.kit = ok)),
+    Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`))
+      // ?spire=B: DES-004 step-2 option B landmarks from a small side-car GLB (same node names, overrides the kit's A models)
+      .then(async (ok) => { if (ok && spireLook() === 'B') await loadKitExtra('./assets/models/spire_shrine_B.glb'); return (perf.kit = ok); }),
   ]);
   bar.style.width = '100%';
   $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: บันทึกผลได้' : 'ออฟไลน์: ผลไม่ถูกบันทึก';
@@ -115,9 +120,9 @@ async function startGame() {
 }
 
 async function newRun() {
-  ticket = await net.start(variant);
+  ticket = await net.start(variant, ruleset);
   const seed = ticket?.seed ?? (Q.has('seed') ? +Q.get('seed')! : (Math.random() * 2 ** 32) >>> 0);
-  world = new World(seed, variant);
+  world = new World(seed, variant, ruleset);
   log = new InputLog();
   input.autoPending = null; autoSet.enabled = false;
   view.buildLevel(world, 7);

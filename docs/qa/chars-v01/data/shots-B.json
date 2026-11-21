@@ -1,0 +1,448 @@
+{
+ "tag": "B",
+ "seed": 1,
+ "generatedAt": "2026-11-20T23:30:00.976Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "opening-start-844-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40653,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.658,
+    "p5": 60,
+    "p95": 223,
+    "bands": {
+     "top": 0.629,
+     "mid": 0.667,
+     "bottom": 0.676
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 44,
+   "tris": 41167,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.635,
+    "p5": 61,
+    "p95": 223,
+    "bands": {
+     "top": 0.636,
+     "mid": 0.642,
+     "bottom": 0.626
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40653,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.67,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.645,
+     "mid": 0.681,
+     "bottom": 0.679
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 44,
+   "tris": 41167,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.646,
+    "p5": 65,
+    "p95": 223,
+    "bands": {
+     "top": 0.655,
+     "mid": 0.647,
+     "bottom": 0.634
+    }
+   }
+  },
+  {
+   "name": "boss-open-844-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 35047,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.319,
+    "p5": 27,
+    "p95": 145,
+    "bands": {
+     "top": 0.326,
+     "mid": 0.309,
+     "bottom": 0.326
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 44,
+   "tris": 34827,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.315,
+    "p5": 27,
+    "p95": 142,
+    "bands": {
+     "top": 0.305,
+     "mid": 0.309,
+     "bottom": 0.332
+    }
+   }
+  },
+  {
+   "name": "chars-hero-844-low",
+   "scene": "chars",
+   "part": "hero",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40653,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 182,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-puffcap-844-low",
+   "scene": "chars",
+   "part": "puffcap",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40653,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 66,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-thornling-844-low",
+   "scene": "chars",
+   "part": "thornling",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40653,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 67,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-prismback-844-low",
+   "scene": "chars",
+   "part": "prismback",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 66,
+   "tris": 43437,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 272,
+    "y": 16,
+    "width": 300,
+    "height": 220,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "opening-start-844-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59469,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.637,
+    "p5": 60,
+    "p95": 223,
+    "bands": {
+     "top": 0.578,
+     "mid": 0.651,
+     "bottom": 0.676
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 45,
+   "tris": 59983,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.617,
+    "p5": 59,
+    "p95": 223,
+    "bands": {
+     "top": 0.598,
+     "mid": 0.624,
+     "bottom": 0.627
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59469,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.65,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.599,
+     "mid": 0.668,
+     "bottom": 0.678
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 45,
+   "tris": 59983,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.626,
+    "p5": 63,
+    "p95": 223,
+    "bands": {
+     "top": 0.614,
+     "mid": 0.627,
+     "bottom": 0.636
+    }
+   }
+  },
+  {
+   "name": "boss-open-844-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 54397,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.321,
+    "p5": 25,
+    "p95": 147,
+    "bands": {
+     "top": 0.329,
+     "mid": 0.312,
+     "bottom": 0.327
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 48,
+   "tris": 54177,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.316,
+    "p5": 25,
+    "p95": 143,
+    "bands": {
+     "top": 0.31,
+     "mid": 0.308,
+     "bottom": 0.332
+    }
+   }
+  },
+  {
+   "name": "chars-hero-844-medium",
+   "scene": "chars",
+   "part": "hero",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59469,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 182,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-puffcap-844-medium",
+   "scene": "chars",
+   "part": "puffcap",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59469,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 66,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-thornling-844-medium",
+   "scene": "chars",
+   "part": "thornling",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 46,
+   "tris": 59469,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 67,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-prismback-844-medium",
+   "scene": "chars",
+   "part": "prismback",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 67,
+   "tris": 62253,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 272,
+    "y": 16,
+    "width": 300,
+    "height": 220,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  }
+ ],
+ "notes": [],
+ "errors": [],
+ "pngBytes": 13112401,
+ "finalBytes": 13112401
+}

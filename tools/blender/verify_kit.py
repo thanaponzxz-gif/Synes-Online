@@ -1,6 +1,6 @@
 """Verify public/assets/models/synes_kit.glb against docs/art/ASSET_CONTRACT.md.
 
-    tools/blender/.venv/bin/python tools/blender/verify_kit.py [--rebuild-check]
+    tools/blender/.venv/bin/python tools/blender/verify_kit.py [--rebuild-check] [--glb PATH]
 
 Two independent passes:
   1. raw glTF JSON: required node names (parsed from the contract itself), character
@@ -10,6 +10,10 @@ Two independent passes:
      feet on the ground, centred origins, approximate contract sizes, animation pivots.
 --rebuild-check also runs build_kit.py twice into temp files and compares SHA-256 with the
 committed GLB (determinism). Exits with status 1 and a FAIL list if anything is wrong.
+--glb checks another file (e.g. a character-variant build); --rebuild-check then compares the two
+fresh builds with that file, building the variant named by SYNES_CHAR_VARIANT (default: A).
+The byte comparison only holds for builds made with the same Blender version (4.5 and 5.3 order
+nodes differently in the file, the geometry is identical).
 """
 import hashlib
 import json
@@ -272,7 +276,8 @@ def blender_pass(required, parts, gltf_tris):
 
 # ----------------------------------------------------------------------------- determinism
 def rebuild_check():
-    say("== determinism: build_kit.py twice into temp files")
+    say("== determinism: build_kit.py twice into temp files (variant %s, Blender %s)"
+        % (os.environ.get("SYNES_CHAR_VARIANT", "A (default)"), bpy.app.version_string))
     digests = []
     tmp = tempfile.mkdtemp(prefix="synes_verify_")
     for i in range(2):
@@ -283,12 +288,15 @@ def rebuild_check():
         digests.append(hashlib.sha256(open(out, "rb").read()).hexdigest())
     committed = hashlib.sha256(open(GLB, "rb").read()).hexdigest()
     check(digests[0] == digests[1], "two builds are byte-identical (%s)" % digests[0][:16])
-    check(digests[0] == committed, "committed GLB matches a fresh build (%s)" % committed[:16])
+    check(digests[0] == committed, "%s matches a fresh build (%s)" % (os.path.relpath(GLB, REPO), committed[:16]))
 
 
 def main():
+    global GLB
     if not bpy.app.background:  # it resets to factory settings: never inside a live session/MCP
         raise SystemExit("verify_kit.py is headless-only; run it with tools/blender/.venv/bin/python")
+    if "--glb" in sys.argv[:-1]:
+        GLB = os.path.abspath(sys.argv[sys.argv.index("--glb") + 1])
     required, parts = parse_contract(CONTRACT)
     say("contract: %d required nodes, %d characters" % (len(required), len(parts)))
     gltf_tris, size, _ = gltf_pass(required, parts)

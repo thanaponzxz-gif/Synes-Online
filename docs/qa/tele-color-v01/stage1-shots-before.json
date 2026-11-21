@@ -1,0 +1,192 @@
+{
+ "tag": "before-eabfc35",
+ "seed": 1,
+ "generatedAt": "2026-11-20T22:55:10.713Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "boss-circle-844-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 54,
+   "tris": 34569,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 52,
+   "tris": 34129,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-fan-844-low",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 54,
+   "tris": 34569,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-fan-1672-low",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 52,
+   "tris": 34129,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-dash-844-low",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 54,
+   "tris": 34569,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "boss-dash-1672-low",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 52,
+   "tris": 34129,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "boss-circle-844-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 58,
+   "tris": 53919,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 56,
+   "tris": 53479,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-fan-844-medium",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 58,
+   "tris": 53919,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-fan-1672-medium",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 56,
+   "tris": 53479,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-dash-844-medium",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 58,
+   "tris": 53919,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "boss-dash-1672-medium",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 56,
+   "tris": 53479,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  }
+ ],
+ "notes": [],
+ "errors": [],
+ "pngBytes": 8894940,
+ "finalBytes": 8894940
+}

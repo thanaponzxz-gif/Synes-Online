@@ -1,0 +1,68 @@
+[
+ {
+  "variant": "cur",
+  "out": "docs/qa/vfx-v01/clips/vfx-cur.webm",
+  "frames": 230,
+  "seconds": 7.7,
+  "MB": 0.74,
+  "events": [
+   "6:chime",
+   "32:crescent",
+   "50:crystal",
+   "78:attack",
+   "90:attack",
+   "102:attack",
+   "128:chime under slam",
+   "162:attack boss",
+   "174:attack boss",
+   "186:attack boss",
+   "198:attack boss",
+   "210:crescent on boss"
+  ],
+  "errors": []
+ },
+ {
+  "variant": "A",
+  "out": "docs/qa/vfx-v01/clips/vfx-A.webm",
+  "frames": 230,
+  "seconds": 7.7,
+  "MB": 0.79,
+  "events": [
+   "6:chime",
+   "32:crescent",
+   "50:crystal",
+   "78:attack",
+   "90:attack",
+   "102:attack",
+   "128:chime under slam",
+   "162:attack boss",
+   "174:attack boss",
+   "186:attack boss",
+   "198:attack boss",
+   "210:crescent on boss"
+  ],
+  "errors": []
+ },
+ {
+  "variant": "B",
+  "out": "docs/qa/vfx-v01/clips/vfx-B.webm",
+  "frames": 230,
+  "seconds": 7.7,
+  "MB": 0.86,
+  "events": [
+   "6:chime",
+   "32:crescent",
+   "50:crystal",
+   "78:attack",
+   "90:attack",
+   "102:attack",
+   "128:chime under slam",
+   "162:attack boss",
+   "174:attack boss",
+   "186:attack boss",
+   "198:attack boss",
+   "210:crescent on boss"
+  ],
+  "errors": []
+ }
+]

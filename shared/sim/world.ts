@@ -7,6 +7,7 @@ import { BTN, AXIS, type TickInput } from './input.ts';
 import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
 import { AutoState } from './auto.ts';
+import { DEFAULT_RULESET, comboFor, type Ruleset, type TickCombo } from './ruleset.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
 
@@ -75,6 +76,8 @@ export class World {
   stats: Stats = { damageTaken: 0, perfect: 0, deaths: 0, dodges: 0, potionsUsed: 0, hitsLanded: 0 };
   ps = {
     combo: -1, swingT: 0, swingDur: 0, hitAt: 0, hitDone: true, comboTimer: 0,
+    /** integer-tick combo rulesets only (comboTimer/bufAttack then count ticks; swingT/swingDur stay seconds for the renderer) */
+    swingTk: 0, swingLen: 0, hitTk: 0,
     bufAttack: 0, bufDodge: 0, dodgeT: 0, dodgeCd: 0, iframes: 0, dashx: 0, dashz: 1,
     skillCd: 0, castT: 0, potions: P.potion.charges, drinkT: 0, empowered: false,
     down: false, downT: 0, cause: null as DefeatCause | null, moving: false,
@@ -95,8 +98,12 @@ export class World {
   auto = new AutoState();
   seed: number;
   variant: RunVariant;
-  constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT) {
+  ruleset: Ruleset;
+  /** integer-tick combo (rulesets combo-A/B/C) or null = legacy `combat-1` */
+  private tc: TickCombo | null;
+  constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT, ruleset: Ruleset = DEFAULT_RULESET) {
     this.seed = seed;
+    this.ruleset = ruleset; this.tc = comboFor(ruleset);
     this.variant = variant;
     this.rng = new Rng(seed);
     for (const g of LEVEL.gates) this.gates[g.id] = g.startsOpen;
@@ -169,8 +176,15 @@ export class World {
     if (ml > 1) { mx /= ml; mz /= ml; }
     ps.moving = ml > 0.15;
     // timers
-    ps.dodgeCd -= TICK; ps.skillCd -= TICK; ps.iframes -= TICK; ps.comboTimer -= TICK;
-    ps.bufAttack -= TICK; ps.bufDodge -= TICK;
+    ps.dodgeCd -= TICK; ps.skillCd -= TICK; ps.iframes -= TICK; ps.bufDodge -= TICK;
+    const tc = this.tc;
+    if (tc) {
+      ps.comboTimer--; ps.bufAttack--;
+      if (ps.swingT > 0) { // integer swing clock: a swing occupies ticks 0..len-1 from its start tick
+        ps.swingTk++;
+        ps.swingT = ps.swingTk >= ps.swingLen ? 0 : (ps.swingLen - ps.swingTk) * TICK;
+      }
+    } else { ps.comboTimer -= TICK; ps.bufAttack -= TICK; }
     if (ps.cdT[1] > 0) ps.cdT[1]--;
     if (ps.cdT[2] > 0) ps.cdT[2]--;
     if (ps.cast) {
@@ -180,7 +194,7 @@ export class World {
         if (ps.cast.tick >= ps.cast.endTick) ps.cast = null;
       }
     }
-    if (edges & BTN.ATTACK) ps.bufAttack = P.inputBufferS;
+    if (edges & BTN.ATTACK) ps.bufAttack = tc ? tc.bufferTicks : P.inputBufferS;
     if (edges & BTN.DODGE) ps.bufDodge = 0.2;
     // dodge (highest priority, cancels swing/drink)
     if (ps.bufDodge > 0 && ps.dodgeCd <= 0 && ps.castT <= 0) {
@@ -214,11 +228,17 @@ export class World {
     }
     // attack start
     const swingProgress = ps.swingT > 0 ? 1 - ps.swingT / ps.swingDur : 1;
-    if (ps.bufAttack > 0 && ps.dodgeT <= 0 && ps.castT <= 0 && !ps.cast && ps.drinkT <= 0 && swingProgress >= 0.62) {
+    if (ps.bufAttack > 0 && ps.dodgeT <= 0 && ps.castT <= 0 && !ps.cast && ps.drinkT <= 0 && (tc ? ps.swingT <= 0 : swingProgress >= 0.62)) {
       const step = ps.comboTimer > 0 && ps.combo < 2 ? ps.combo + 1 : 0;
-      const c = P.combo[step];
-      ps.combo = step; ps.swingT = c.dur; ps.swingDur = c.dur; ps.hitAt = c.hitAt; ps.hitDone = false;
-      ps.comboTimer = c.dur + P.comboResetS; ps.bufAttack = 0;
+      if (tc) {
+        ps.combo = step; ps.swingLen = tc.dur[step]; ps.hitTk = tc.hit[step]; ps.swingTk = 0; ps.hitDone = false;
+        ps.swingT = ps.swingLen * TICK; ps.swingDur = ps.swingLen * TICK; ps.hitAt = ps.hitTk / ps.swingLen;
+        ps.comboTimer = ps.swingLen + tc.resetTicks; ps.bufAttack = 0;
+      } else {
+        const c = P.combo[step];
+        ps.combo = step; ps.swingT = c.dur; ps.swingDur = c.dur; ps.hitAt = c.hitAt; ps.hitDone = false;
+        ps.comboTimer = c.dur + P.comboResetS; ps.bufAttack = 0;
+      }
       const tgt = this.nearestEnemy(p.x, p.z, P.autoAimRange);
       if (tgt) { const [fx, fz] = norm(tgt.x - p.x, tgt.z - p.z); p.fx = fx; p.fz = fz; }
       else if (ps.moving) { const [fx, fz] = norm(mx, mz); p.fx = fx; p.fz = fz; }
@@ -238,8 +258,8 @@ export class World {
     p.x += vx * TICK; p.z += vz * TICK;
     // swing hit
     if (ps.swingT > 0) {
-      ps.swingT -= TICK;
-      if (!ps.hitDone && 1 - ps.swingT / ps.swingDur >= ps.hitAt) {
+      if (!tc) ps.swingT -= TICK;
+      if (!ps.hitDone && (tc ? ps.swingTk >= ps.hitTk : 1 - ps.swingT / ps.swingDur >= ps.hitAt)) {
         ps.hitDone = true;
         const c = P.combo[ps.combo];
         let any = false;
@@ -463,7 +483,7 @@ export class World {
       const [cx, cz] = this.clampWalk(nx, nz, a.r);
       a.x = cx; a.z = cz;
       if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
-      if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.hint('counter'); }
+      if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.atkToken.delete(a.id); this.hint('counter'); }
     } else if (a.state === 'recover') {
       if (a.st <= 0) a.state = 'approach';
     }
@@ -506,7 +526,7 @@ export class World {
         for (let i = 0; i < this.pillars.length; i++) {
           const pl = this.pillars[i];
           if (pl.alive && dist(a.x, a.z, pl.x, pl.z) < a.r + pl.r) {
-            pl.alive = false; a.state = 'stunned'; a.st = D.stunPillar;
+            pl.alive = false; this.atkToken.delete(a.id); a.state = 'stunned'; a.st = D.stunPillar;
             this.events.push({ t: 'pillar-break', i }, { t: 'stun', id: a.id, long: true });
             return;
           }
@@ -514,7 +534,7 @@ export class World {
         const [cx, cz] = this.clampArena(a.x, a.z, a.r);
         const hitWall = dist2(cx, cz, a.x, a.z) > 1e-4;
         a.x = cx; a.z = cz;
-        if (hitWall || a.travel >= A.charge.r) { a.state = 'stunned'; a.st = D.stunMiss; this.events.push({ t: 'stun', id: a.id, long: false }); }
+        if (hitWall || a.travel >= A.charge.r) { this.atkToken.delete(a.id); a.state = 'stunned'; a.st = D.stunMiss; this.events.push({ t: 'stun', id: a.id, long: false }); }
         break;
       }
       case 'stunned':
