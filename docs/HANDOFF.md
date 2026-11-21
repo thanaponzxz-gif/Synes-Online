@@ -1,25 +1,30 @@
 # Handoff: Synes Online
 
-## รอบ stage1 (ด่านแรก) · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-C (`session_01A1roa2KGrJBDidSksZdrwK`)
-**คำสั่งเจ้าของ:** ทำงานต่อเนื่องไม่หยุดรออนุมัติ เฉพาะงานปรับปรุงด่านแรก บน branch งาน · หยุดเมื่อ: จ่ายเงิน/สมัคร, เปิดเผย secret, ลบงานต้นฉบับ, เขียนทับที่กู้ไม่ได้, เปลี่ยนกฎความปลอดภัย, **merge เข้า `main`**, เผยแพร่สาธารณะ · แผน `docs/stage1/PLAN.md`
-**ทีม A ส่ง DES-006 แล้ว** (`main` `90d3b4d`): ตัดสิน REQ-003, กล้อง, ผังปุ่ม/วงเตือน, DES-004 และ Q1–Q73 → ข้อความส่ง Codex ที่เตรียมไว้ก่อนหน้า**ไม่ต้องส่งแล้ว**
-**branch รวม `stage1/polish`** (ยังไม่ merge `main` — ต้องให้เจ้าของสั่ง) มีแล้ว:
+## รอบ stage1 (ด่านแรก) จบรอบ · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-C (`session_01A1roa2KGrJBDidSksZdrwK`)
+**คำสั่งเจ้าของ:** ทำต่อเนื่องไม่หยุดรออนุมัติ เฉพาะงานปรับปรุงด่านแรก บน branch งาน · หยุดเมื่อ: จ่ายเงิน/สมัคร, เปิดเผย secret, ลบงานต้นฉบับ, เขียนทับที่กู้ไม่ได้, เปลี่ยนกฎความปลอดภัย, **merge เข้า `main`**, เผยแพร่สาธารณะ · แผน `docs/stage1/PLAN.md`
+**ทีม A ส่ง DES-006 แล้ว** (`main` `90d3b4d`) → ข้อความส่ง Codex ที่เตรียมไว้ก่อนหน้าไม่ต้องส่งแล้ว
+**branch รวม `stage1/polish` = `ea3d371`+ (ยังไม่ merge `main` — รอเจ้าของสั่ง)** ผลรวมก่อน→หลัง: `docs/qa/stage1-v01/r1-final/README.md`
 | งาน | branch | ผล (Chromium headless) |
 |---|---|---|
-| baseline มุมกล้องจริง + เครื่องมือถ่ายซ้ำ `tools/qa/stage1-shots.mjs` | `qa/stage1-baseline` | `docs/qa/stage1-v01/r0-baseline/` |
-| ลด draw calls ภาพไม่เปลี่ยน | `lane/perf-field` | ทุ่ง 149→45 (low), 152→46 (med) · ลานบอส ~105→53 · พิกเซลตรง main |
-| จังหวะตี A/B/C (DES-006 §1) เป็น `?combo=A|B|C` + `rulesetVersion`/`tuningHash` | `lane/combo` | ค่าเริ่ม `combat-1` เหมือนเดิมทุกไบต์ · test 150 · **พบ REQ-003 ผิด: รอบคอมโบจริง 0.73 s ไม่ใช่ 1.14 s** → A/B/C ช้ากว่าเดิม 1.9–2.4× (คลิป `docs/qa/combo-v01/`) |
-| สีวงเตือนแยกจาก fog/แสง (DES-006 §2) | `lane/tele-color` | ขอบ ΔE00 23→4 · สาเหตุ: shader ไม่แปลง sRGB + ผสมขาว 70% · +0 draw call |
-| กล้องถอยชั่วคราว (DES-006 §1) | `lane/camera-pullback` | กลางเวลาเตือนเห็นครบ 23/23 (เดิม 8/23) · tick แรกยัง 14/23 · calls ≤ 67 |
-| ตัวละคร DES-004 ขั้น 3–4 ตัวเลือก A (PM เลือก) / B เก็บไว้ | `exp/stage1-chars` | GLB 585.8 KB · ฮีโร่ +194 tris, บอส +190 · บอส 28→20 calls · **placeholder ยังไม่ APPROVED** |
-| HUD ตาม DES-006 (ขนาด, ตัวอักษร, Q29–33, Q46, Q48, Q72) | `lane/hud-fixes` | แก้บั๊กปุ่มไม่จางเหนือวงเตือน 5/8 กรณี · Q17 ยังไม่ทำ |
-| เอกสารโครงสร้างด่านใหญ่ + มอนสเตอร์ 15 แบบ (เอกสารอย่างเดียว) | `docs/world-structure` | `docs/stage1/WORLD_STRUCTURE.md` คำถาม S1–S16 |
-**ผลทดสอบหลัง merge ล่าสุด (`a31ce02`):** test 150/150 · typecheck · build · lifecycle 20/20 · **Android / iPhone: ยังไม่ได้ทดสอบ**
-**กำลังทำ/ค้าง:** ลานบอส A/B (`exp/stage1-arena`), VFX A/B (`exp/stage1-vfx`), เป้าภาพฉากเปิด (`docs/art-target-opening`) → แล้วทำฉากเปิด A/B · Blender `crystal_spire`/`ruin_arch_shrine` หลังลานบอส · Q17
-**รอทีม A:** combo คงช่วงต่อท่า 62% หรือไม่ (`DES-006-teamB.md` §1 combo) · กล้อง C1–C4 · สีวงเตือน: 4 จุดภาพที่เปลี่ยน + แดงในขาวดำ + แถบ HP บอสสดเท่าขอบแดง · ตัวละคร: สีที่ทีม B เลือกเอง · HUD B1–B11 · โลก S1–S16
-**รอเจ้าของ:** เลือก combo A/B/C จากคลิป · อนุมัติโมเดลตัวละคร A · merge `stage1/polish` เข้า `main` · Pages (ห้ามอัปเดตเอง)
-**หมายเหตุ:** GLB สร้างด้วย Blender 5.3 แล้ว (เดิม 4.5.3) ลำดับ node ในไฟล์ต่าง เนื้อหาเท่ากัน · มีไฟล์ค้าง `/v_puff.png` (รูปเทียบ 65 KB ที่ agent เขียนผิดที่) ลบไม่ได้เพราะ safety check — เจ้าของลบเองได้
-**ขั้นถัดไปควรใช้โมเดล:** ตรวจ/เลือกตัวเลือกภาพ **Opus** · งานกราฟิก **Opus** · โค้ดที่ไม่เปลี่ยนภาพ (Q17, เครื่องมือ QA) **Sonnet**
+| baseline + เครื่องมือถ่ายซ้ำ `tools/qa/stage1-shots.mjs` | `qa/stage1-baseline` | `docs/qa/stage1-v01/r0-baseline/` |
+| ลด draw calls ภาพไม่เปลี่ยน | `lane/perf-field` | ทุ่ง 149→45 · พิกเซลตรง main |
+| จังหวะตี A/B/C (`?combo=`) + `rulesetVersion`/`tuningHash` | `lane/combo` | ค่าเริ่ม `combat-1` เหมือนเดิมทุกไบต์ · **REQ-003 ผิด: รอบคอมโบจริง 0.73 s** → A/B/C ช้ากว่าเดิม 1.9–2.4× |
+| สีวงเตือน (DES-006 §2) | `lane/tele-color` | ΔE00 23→4 (sRGB + เลิกผสมขาว) · +0 call |
+| กล้องถอยชั่วคราว (DES-006 §1) | `lane/camera-pullback` | กลางเวลาเตือน 23/23 (เดิม 8/23) · tick แรก 14/23 |
+| HUD (DES-006) | `lane/hud-fixes` | แก้บั๊กปุ่มไม่จาง 5/8 · ตัวอักษร ≥12/14 px |
+| Q17 | `lane/q17` | ล้าง token ค้างของท่าพุ่ง + 4 เทสต์ |
+| ฉากเปิด A (เลือก) / B `?opening=B` | `exp/stage1-opening` | O1–O9 ผ่านที่ medium (เดิมตก O1–O5) · คริสตัลนำทางตกแต่ง (AQ4) |
+| ลานบอส A (เลือก) / B `?arena=B` | `exp/stage1-arena` | พื้นหิน Voronoi, หญ้าขอบ, น้ำตก, ศาลย้ายขวา · ขอบวงยังชัดในขาวดำ (B เสีย 40–50%) |
+| ตัวละคร A (เลือก) / B GLB ใน `docs/qa/chars-v01/` | `exp/stage1-chars` | ผมเป็นปอย, ผ้าพันคอ teal ชัด, บอสเกราะหิน+ผลึกใหญ่ · **placeholder ยังไม่ APPROVED** |
+| VFX A (เลือก) / B `?vfx=B` | `exp/stage1-vfx` | Chime prep cue (Q26), Crescent เอียงหากล้อง, hit flash, วงฮีโร่บาง, ประกาย 1 call · ไม่มีสีอุ่น |
+| เอกสาร: โลก 5 โซน + มอน 15 แบบ / เป้าภาพฉากเปิด | `docs/world-structure`, `docs/art-target-opening` | S1–S16, AQ1–AQ4 |
+**รวม (844×390):** draw calls ทุ่ง 149–155 → 45–50 · ลานบอส 97–116 → 48–58 · bench 144–150 → 43–46 · transfer 838→863 KB · test 154/154 · typecheck · build · lifecycle 20/20 · **Android / iPhone: ยังไม่ได้ทดสอบ**
+**ตัวเลือกที่ไม่ได้เลือกยังอยู่** (สลับด้วย URL) ไม่ลบ branch ใด
+**รอทีม A:** combo คงช่วงต่อท่า 62%? · กล้อง C1–C4 · สีวงเตือน 4 จุด + แดงในขาวดำ + แถบ HP บอส · ตัวละคร (สีที่ทีม B เลือก) · HUD B1–B11 · ลานบอส 1–6 · VFX 1–7 · ฉากเปิด AQ1–AQ4 + ลายตาข่ายต้นไม้ · โลก S1–S16 (ทั้งหมดอยู่ใน `docs/design/DES-006-teamB.md`, `DES-004` §8, `docs/qa/*-v01/README.md`)
+**รอเจ้าของ:** เลือก combo A/B/C (คลิป `docs/qa/combo-v01/`) · อนุมัติโมเดลตัวละคร A · merge `stage1/polish` เข้า `main` · Pages (ห้ามอัปเดตเอง) · เล่นบนมือถือจริง
+**งานถัดไป (ยังอยู่ในขอบเขตด่านแรก):** Blender `crystal_spire`/`ruin_arch_shrine` (DES-004 ขั้น 2 ส่วนที่เหลือ) · แก้ตามคำตอบทีม A · ห้ามขยายด่านใหญ่/มอนใหม่จนด่านแรกผ่านเกณฑ์
+**หมายเหตุ:** GLB สร้างด้วย Blender 5.3 แล้ว (เดิม 4.5.3) · ไฟล์ค้าง `/v_puff.png` (รูปเทียบ 65 KB ที่ agent เขียนผิดที่) ลบไม่ได้เพราะ safety check — เจ้าของลบเองได้ · subagent หลายตัวใช้ scratchpad ร่วมกัน ให้ใช้โฟลเดอร์ย่อยและ port ไม่ซ้ำ
+**ขั้นถัดไปควรใช้โมเดล:** ตรวจคำตอบทีม A / เลือกภาพ **Opus** · งานกราฟิก (Blender spire/shrine) **Opus** · โค้ดที่ไม่เปลี่ยนภาพ / QA ซ้ำ **Sonnet**
 
 ## Rollover → 🟡 MAIN · Synes Online · รอบ 2-C (perf + TERRAVIA) · 2026-11-21
 **เหตุผล:** context ~440k ใกล้ 450k + จบรอบ (กล้องต่ำ / Auto / แถวสกิล merge แล้ว) (CLAUDE.md ข้อ 5 ข, ค)

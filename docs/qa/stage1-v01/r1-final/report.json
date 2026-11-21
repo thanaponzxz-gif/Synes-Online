@@ -1,0 +1,894 @@
+{
+ "tag": "final",
+ "qs": "",
+ "seed": 1,
+ "generatedAt": "2026-11-21T01:26:32.078Z",
+ "note": "Chromium headless + SwiftShader, not a real device",
+ "shots": [
+  {
+   "name": "opening-start-844-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.65,
+    "p5": 59,
+    "p95": 223,
+    "bands": {
+     "top": 0.629,
+     "mid": 0.66,
+     "bottom": 0.658
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 42371,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.637,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.637,
+     "mid": 0.649,
+     "bottom": 0.623
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-low",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.662,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.647,
+     "mid": 0.674,
+     "bottom": 0.661
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-low",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 48,
+   "tris": 42371,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.649,
+    "p5": 66,
+    "p95": 223,
+    "bands": {
+     "top": 0.657,
+     "mid": 0.656,
+     "bottom": 0.63
+    }
+   }
+  },
+  {
+   "name": "pathA-844-low",
+   "scene": "pathA",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 47,
+   "tris": 41933,
+   "tick": 51,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "n": 41,
+   "teleCount": 1
+  },
+  {
+   "name": "plaza-844-low",
+   "scene": "plaza",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 45,
+   "tris": 40729,
+   "tick": 46,
+   "tele": [
+    "rush:line:0.89",
+    "hop:circle:0.14"
+   ],
+   "n": 41,
+   "both": true,
+   "teleShapes": [
+    "line",
+    "circle"
+   ],
+   "enemies": 6
+  },
+  {
+   "name": "pool-844-low",
+   "scene": "pool",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 50,
+   "tris": 36423,
+   "tick": 20,
+   "tele": [],
+   "hp": 100,
+   "note": "hp preset to 60 and potions 0 before 20 ticks on the spring"
+  },
+  {
+   "name": "boss-open-844-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 35313,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.307,
+    "p5": 44,
+    "p95": 162,
+    "bands": {
+     "top": 0.382,
+     "mid": 0.283,
+     "bottom": 0.266
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-low",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 47,
+   "tris": 35093,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.301,
+    "p5": 44,
+    "p95": 155,
+    "bands": {
+     "top": 0.357,
+     "mid": 0.281,
+     "bottom": 0.272
+    }
+   }
+  },
+  {
+   "name": "boss-circle-844-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 49,
+   "tris": 35315,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-low",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 47,
+   "tris": 34875,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-fan-844-low",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 49,
+   "tris": 35315,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-fan-1672-low",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 47,
+   "tris": 34875,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-dash-844-low",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 55,
+   "tris": 36309,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "boss-dash-1672-low",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "1672x941",
+   "tier": "low",
+   "calls": 55,
+   "tris": 36309,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "chars-hero-844-low",
+   "scene": "chars",
+   "part": "hero",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 182,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-puffcap-844-low",
+   "scene": "chars",
+   "part": "puffcap",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 66,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-thornling-844-low",
+   "scene": "chars",
+   "part": "thornling",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 48,
+   "tris": 40681,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 67,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-prismback-844-low",
+   "scene": "chars",
+   "part": "prismback",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 69,
+   "tris": 43429,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 272,
+    "y": 16,
+    "width": 300,
+    "height": 220,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "vfx-skill1-chime-844-low",
+   "scene": "vfx",
+   "part": "skill1-chime",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 54,
+   "tris": 42631,
+   "tick": 13,
+   "tele": [],
+   "afterTicks": 12
+  },
+  {
+   "name": "vfx-skill2-crescent-844-low",
+   "scene": "vfx",
+   "part": "skill2-crescent",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 51,
+   "tris": 42309,
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "afterTicks": 8
+  },
+  {
+   "name": "vfx-skill3-crystal-844-low",
+   "scene": "vfx",
+   "part": "skill3-crystal",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 49,
+   "tris": 42321,
+   "tick": 20,
+   "tele": [],
+   "afterTicks": 19
+  },
+  {
+   "name": "vfx-hit-spark-844-low",
+   "scene": "vfx",
+   "part": "hit-spark",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 51,
+   "tris": 42467,
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "vfx-perfect-dodge-844-low",
+   "scene": "vfx",
+   "part": "perfect-dodge",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 50,
+   "tris": 42201,
+   "tick": 39,
+   "tele": [],
+   "n": 3,
+   "t": 0.09999999999999964,
+   "perfect": 1,
+   "dmg": 0,
+   "injected": false
+  },
+  {
+   "name": "vfx-ult-locked-844-low",
+   "scene": "vfx",
+   "part": "ult-locked",
+   "size": "844x390",
+   "tier": "low",
+   "calls": 49,
+   "tris": 42343,
+   "tick": 3,
+   "tele": [
+    "hop:circle:0.06"
+   ],
+   "note": "ultimate is locked (ULT.locked): only a banner shows; no ultimate VFX exists to capture"
+  },
+  {
+   "name": "opening-start-844-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.629,
+    "p5": 58,
+    "p95": 223,
+    "bands": {
+     "top": 0.578,
+     "mid": 0.645,
+     "bottom": 0.658
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-844-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 61923,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.62,
+    "p5": 59,
+    "p95": 223,
+    "bands": {
+     "top": 0.599,
+     "mid": 0.632,
+     "bottom": 0.624
+    }
+   }
+  },
+  {
+   "name": "opening-start-1672-medium",
+   "scene": "opening",
+   "part": "start",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "gray": {
+    "mean": 0.643,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.6,
+     "mid": 0.661,
+     "bottom": 0.661
+    }
+   }
+  },
+  {
+   "name": "opening-walk2s-1672-medium",
+   "scene": "opening",
+   "part": "walk2s",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 61923,
+   "tick": 60,
+   "tele": [],
+   "player": [
+    0,
+    -8.900000000000013
+   ],
+   "gray": {
+    "mean": 0.629,
+    "p5": 62,
+    "p95": 223,
+    "bands": {
+     "top": 0.617,
+     "mid": 0.635,
+     "bottom": 0.632
+    }
+   }
+  },
+  {
+   "name": "pathA-844-medium",
+   "scene": "pathA",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 49,
+   "tris": 61485,
+   "tick": 51,
+   "tele": [
+    "hop:circle:0.31"
+   ],
+   "n": 41,
+   "teleCount": 1
+  },
+  {
+   "name": "plaza-844-medium",
+   "scene": "plaza",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 48,
+   "tris": 60425,
+   "tick": 46,
+   "tele": [
+    "rush:line:0.89",
+    "hop:circle:0.14"
+   ],
+   "n": 41,
+   "both": true,
+   "teleShapes": [
+    "line",
+    "circle"
+   ],
+   "enemies": 6
+  },
+  {
+   "name": "pool-844-medium",
+   "scene": "pool",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 56119,
+   "tick": 20,
+   "tele": [],
+   "hp": 100,
+   "note": "hp preset to 60 and potions 0 before 20 ticks on the spring"
+  },
+  {
+   "name": "boss-open-844-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 55399,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.313,
+    "p5": 44,
+    "p95": 165,
+    "bands": {
+     "top": 0.386,
+     "mid": 0.289,
+     "bottom": 0.27
+    }
+   }
+  },
+  {
+   "name": "boss-open-1672-medium",
+   "scene": "boss-open",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 55179,
+   "tick": 16,
+   "tele": [],
+   "n": 1,
+   "started": true,
+   "gray": {
+    "mean": 0.307,
+    "p5": 45,
+    "p95": 160,
+    "bands": {
+     "top": 0.363,
+     "mid": 0.288,
+     "bottom": 0.277
+    }
+   }
+  },
+  {
+   "name": "boss-circle-844-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 55401,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-circle-1672-medium",
+   "scene": "boss-circle",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 54961,
+   "tick": 80,
+   "tele": [
+    "slam:circle:0.35"
+   ],
+   "n": 67,
+   "atk": "slam"
+  },
+  {
+   "name": "boss-fan-844-medium",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 55401,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-fan-1672-medium",
+   "scene": "boss-fan",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 54961,
+   "tick": 80,
+   "tele": [
+    "sweep:cone:0.46"
+   ],
+   "n": 67,
+   "atk": "sweep"
+  },
+  {
+   "name": "boss-dash-844-medium",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 58,
+   "tris": 56011,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "boss-dash-1672-medium",
+   "scene": "boss-dash",
+   "part": "",
+   "size": "1672x941",
+   "tier": "medium",
+   "calls": 58,
+   "tris": 56011,
+   "tick": 80,
+   "tele": [
+    "charge:line:0.32"
+   ],
+   "n": 67,
+   "atk": "charge"
+  },
+  {
+   "name": "chars-hero-844-medium",
+   "scene": "chars",
+   "part": "hero",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 182,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-puffcap-844-medium",
+   "scene": "chars",
+   "part": "puffcap",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 66,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-thornling-844-medium",
+   "scene": "chars",
+   "part": "thornling",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 50,
+   "tris": 59369,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 332,
+    "y": 67,
+    "width": 180,
+    "height": 180,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "chars-prismback-844-medium",
+   "scene": "chars",
+   "part": "prismback",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 71,
+   "tris": 62117,
+   "tick": 0,
+   "tele": [],
+   "dpr": 2,
+   "crop": {
+    "x": 272,
+    "y": 16,
+    "width": 300,
+    "height": 220,
+    "vis": true
+   },
+   "note": "crop (CSS px) of the 844x390 gameplay frame, device scale 2"
+  },
+  {
+   "name": "vfx-skill1-chime-844-medium",
+   "scene": "vfx",
+   "part": "skill1-chime",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 56,
+   "tris": 62239,
+   "tick": 13,
+   "tele": [],
+   "afterTicks": 12
+  },
+  {
+   "name": "vfx-skill2-crescent-844-medium",
+   "scene": "vfx",
+   "part": "skill2-crescent",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 61941,
+   "tick": 9,
+   "tele": [
+    "hop:circle:0.22"
+   ],
+   "afterTicks": 8
+  },
+  {
+   "name": "vfx-skill3-crystal-844-medium",
+   "scene": "vfx",
+   "part": "skill3-crystal",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 61962,
+   "tick": 20,
+   "tele": [],
+   "afterTicks": 19
+  },
+  {
+   "name": "vfx-hit-spark-844-medium",
+   "scene": "vfx",
+   "part": "hit-spark",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 53,
+   "tris": 62019,
+   "tick": 6,
+   "tele": [
+    "hop:circle:0.14"
+   ],
+   "n": 4,
+   "hits": 1
+  },
+  {
+   "name": "vfx-perfect-dodge-844-medium",
+   "scene": "vfx",
+   "part": "perfect-dodge",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 52,
+   "tris": 61753,
+   "tick": 39,
+   "tele": [],
+   "n": 3,
+   "t": 0.09999999999999964,
+   "perfect": 1,
+   "dmg": 0,
+   "injected": false
+  },
+  {
+   "name": "vfx-ult-locked-844-medium",
+   "scene": "vfx",
+   "part": "ult-locked",
+   "size": "844x390",
+   "tier": "medium",
+   "calls": 51,
+   "tris": 61895,
+   "tick": 3,
+   "tele": [
+    "hop:circle:0.06"
+   ],
+   "note": "ultimate is locked (ULT.locked): only a banner shows; no ultimate VFX exists to capture"
+  }
+ ],
+ "notes": [],
+ "errors": [],
+ "pngBytes": 34007781,
+ "converted": "jpeg (ffmpeg -q:v 3, about q85)",
+ "finalBytes": 7971442
+}
