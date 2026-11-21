@@ -14,6 +14,7 @@ import { SkillFx, castPose } from './skillfx.ts';
 import { DEFAULT_TONE, type Tone } from './tones.ts';
 import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
 import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
+import { openingFromQuery, openingTone, openingPathFill, nearGuide, patchGate, patchHeroRim, addOpeningProps } from './opening.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -64,6 +65,9 @@ export class View {
   /** DES-004 step 1 (arena light + atmosphere); `?atmos=0`, `?glow=0`, `?rays=0` switch parts off for A/B shots */
   private readonly flags = new URLSearchParams(location.search);
   atmosOn = this.flags.get('atmos') !== '0';
+  /** ?opening=A|B: opening-scene look prototypes (opening.ts, docs/qa/opening-v01). null = the current look; every hook below is skipped */
+  readonly opening = openingFromQuery(this.flags);
+  private openingFx: ReturnType<typeof addOpeningProps> | null = null;
   private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   /** 0 meadow … 1 arena; exposed for QA */
@@ -112,6 +116,7 @@ export class View {
   }
 
   applyTone(t: Tone) {
+    if (this.opening) t = openingTone(t, this.opening);
     this.tone = t;
     this.scene.background = new Color(t.fog);
     this.scene.fog = new Fog(t.fog, t.fogNear, t.fogFar);
@@ -155,6 +160,7 @@ export class View {
     });
     for (const fx of [this.glow, this.shafts]) { fx?.mesh.geometry.dispose(); fx?.mat.dispose(); }
     this.glow = this.shafts = null;
+    this.openingFx?.dispose(); this.openingFx = null;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
@@ -178,7 +184,7 @@ export class View {
     }
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
-    const drawShapes = (pad: number, style: string) => {
+    const drawShapes = (pad: number, style: string | CanvasGradient) => {
       g.fillStyle = style;
       for (const s of LEVEL.walkable) {
         g.beginPath();
@@ -188,7 +194,7 @@ export class View {
     };
     drawShapes(0.9, hex(t.pathEdge, 0.55));
     drawShapes(0.15, hex(t.pathEdge));
-    drawShapes(-0.25, hex(t.path));
+    drawShapes(-0.25, this.opening ? openingPathFill(g, this.opening, V) : hex(t.path));
     for (let i = 0; i < W * H / 90; i++) { const x = rnd() * W, y = rnd() * H; g.fillStyle = 'rgba(120,90,60,0.07)'; g.fillRect(x, y, 3, 2); }
     const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 4; tex.minFilter = LinearMipmapLinearFilter;
     const ground = new Mesh(new PlaneGeometry(BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0), new MeshLambertMaterial({ map: tex }));
@@ -207,6 +213,7 @@ export class View {
     // decoration scatter (client-only)
     const place: Record<string, Matrix4[]> = {};
     const add = (name: string, x: number, z: number, s: number, rot: number) => {
+      if (this.opening && name === 'crystal_cluster' && nearGuide(this.opening, x, z)) return; // the opening guide crystal takes this spot
       (place[name] ??= []).push(new Matrix4().compose(new Vector3(x, 0, z), new Quaternion().setFromEuler(new Euler(0, rot, 0)), new Vector3(s, s, s)));
     };
     const dens = this.q.decoDensity;
@@ -262,8 +269,10 @@ export class View {
       gate.position.y = open ? -4 : 0; gate.visible = !open;
       this.gates.set(gd.id, { g: gate, open, y: gate.position.y });
       this.addOccluder(gate, 3.2, 3.0);
+      if (this.opening) patchGate(this.occluders[this.occluders.length - 1].mats, this.opening);
     }
     put('lantern_post', -6, -63.5); put('lantern_post', 2, -63.5);
+    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening);
     // actors
     for (const v of this.actors.values()) this.scene.remove(v.root);
     this.actors.clear();
@@ -290,6 +299,7 @@ export class View {
     if (a.kind === 'prismback') this.addOccluder(root, a.r, 3.6, a);
     if (a.kind === 'player') { // transparent pass after telegraphs (opacity 1): the player is never tinted/hidden by a warning area
       model.traverse((o) => { const m = o as Mesh; if (!m.isMesh) return; const own = (m.material as Material).clone(); own.transparent = true; own.depthWrite = true; m.material = own; m.renderOrder = 13; });
+      if (this.opening) patchHeroRim(parts.hero_head, this.opening);
     }
     const shadow = blobShadow(a.r); root.add(shadow);
     const stars = new Group();
@@ -365,6 +375,7 @@ export class View {
       gv.g.position.y = gv.y; if (gv.open && gv.y < -3.9) gv.g.visible = false;
     }
     for (const f of this.flames) { f.scale.y = 0.85 + Math.sin(this.time * 17 + f.id) * 0.15; f.rotation.y += dt * 2; }
+    this.openingFx?.update(this.time);
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.skillFx?.update(world.tick, alpha, world.ps.cast);

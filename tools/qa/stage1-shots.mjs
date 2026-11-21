@@ -1,5 +1,6 @@
 // Stage-1 ("ทุ่งน้ำค้างแสง") deterministic baseline shots from the REAL in-game camera. Re-run after every art round and diff.
-//   node tools/qa/stage1-shots.mjs [outDir] [--tag name] [--only scene,scene] [--base http://host:port] [--jpeg]
+//   node tools/qa/stage1-shots.mjs [outDir] [--tag name] [--only scene,scene] [--base http://host:port] [--jpeg] [--qs "opening=A"]
+//   --qs: extra query string appended to every page URL (look options such as ?opening=A|B), recorded in report.json
 // Serves dist/ in-process (run `npm run build` first). Same seed (1) + same tick counts every run: ?offline&seed=1&q=<tier>&autostart&qafreeze,
 // the sim is only advanced through window.__synesQA.stepTicks, player is moved by writing world.player (QA teleport, same as atmos-shots/vfx-calls).
 // Scenes: opening, pathA, plaza, pool, boss-open, boss-circle, boss-fan, boss-dash, chars, vfx. Tiers low+medium.
@@ -15,11 +16,12 @@ import { LAUNCH_ARGS } from './profiles.mjs';
 const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
 const flag = (k) => args.includes('--' + k);
-const valued = new Set(['--tag', '--only', '--base']);
+const valued = new Set(['--tag', '--only', '--base', '--qs']);
 const pos = args.filter((a, i) => !a.startsWith('--') && !valued.has(args[i - 1]));
 const outDir = pos[0] || 'tools/qa/out/stage1-shots';
 const tag = opt('tag', 'run');
 const only = opt('only', '') ? opt('only').split(',') : null;
+const qs = opt('qs', '');
 const SEED = 1;
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -39,7 +41,7 @@ if (!base) {
   base = `http://127.0.0.1:${port}`;
 }
 const browser = await chromium.launch({ args: LAUNCH_ARGS });
-const report = { tag, seed: SEED, generatedAt: new Date().toISOString(), note: 'Chromium headless + SwiftShader, not a real device', shots: [], notes: [], errors: [] };
+const report = { tag, qs, seed: SEED, generatedAt: new Date().toISOString(), note: 'Chromium headless + SwiftShader, not a real device', shots: [], notes: [], errors: [] };
 const TIERS = ['low', 'medium'];
 const S844 = [844, 390], S1672 = [1672, 941];
 
@@ -49,7 +51,7 @@ async function open(size, tier, start, dpr = 1) {
   const page = await ctx.newPage();
   page.on('pageerror', (e) => report.errors.push(`${width} ${tier} ${start}: ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error') report.errors.push(`console ${width} ${tier}: ${m.text()}`); });
-  await page.goto(`${base}/?offline&seed=${SEED}&q=${tier}&autostart&qafreeze${start ? '&start=' + start : ''}`, { waitUntil: 'load' });
+  await page.goto(`${base}/?offline&seed=${SEED}&q=${tier}&autostart&qafreeze${start ? '&start=' + start : ''}${qs ? '&' + qs : ''}`, { waitUntil: 'load' });
   await page.waitForFunction(() => window.__synes?.state === 'playing' && window.__synes.world, null, { timeout: 60000 });
   await page.evaluate(() => window.__synesQA.stepTicks(0)); // first drawn frame
   return { ctx, page };
