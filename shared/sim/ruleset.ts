@@ -3,24 +3,28 @@
 // in the 8-bit input tuple. No engine/DOM imports.
 import { PLAYER, COMBO_TICKS, ENEMIES, SKILLS, ULT, CONE_INNER_R, TICK } from '../data/tuning.ts';
 
-export const RULESETS = ['combat-1', 'combo-A', 'combo-B', 'combo-C'] as const;
+export const RULESETS = ['combat-1', 'combo-A', 'combo-B', 'combo-C', 'combat-2'] as const;
 export type Ruleset = (typeof RULESETS)[number];
 export const DEFAULT_RULESET: Ruleset = 'combat-1';
 /** Logs / run records without the field are `combat-1` with all old combo values. */
+/** Owner picked combo A (2026-11-21): its permanent name is `combat-2` (same numbers as combo-A, DES-006 §1). New clients use it
+ *  when no ?combo= is given; the server still reads a missing field as `combat-1` so old logs replay under the old rules. */
+export const CLIENT_DEFAULT_RULESET: Ruleset = 'combat-2';
 export const isRuleset = (x: unknown): x is Ruleset => typeof x === 'string' && (RULESETS as readonly string[]).includes(x);
 /** undefined/null -> combat-1 (old clients); unknown -> null (server rejects). */
 export function parseRuleset(x: unknown): Ruleset | null { return x === undefined || x === null ? DEFAULT_RULESET : isRuleset(x) ? x : null; }
-/** Lenient URL parse for the client: ?combo=A|B|C (case-insensitive); anything else -> combat-1. */
+/** Lenient URL parse for the client: ?combo=A|B|C (case-insensitive); ?combo=1 = old `combat-1`; anything else -> combat-2. */
 export function rulesetFromQuery(q: URLSearchParams): Ruleset {
   const v = (q.get('combo') ?? '').toUpperCase();
-  return v === 'A' || v === 'B' || v === 'C' ? (`combo-${v}` as Ruleset) : DEFAULT_RULESET;
+  if (v === '1') return 'combat-1';
+  return v === 'A' || v === 'B' || v === 'C' ? (`combo-${v}` as Ruleset) : CLIENT_DEFAULT_RULESET;
 }
 
 export interface TickCombo { bufferTicks: number; resetTicks: number; dur: readonly number[]; hit: readonly number[]; }
 /** Integer-tick combo for a ruleset, or null for `combat-1` (legacy seconds-based combo in PLAYER). */
 export function comboFor(r: Ruleset): TickCombo | null {
   if (r === 'combat-1') return null;
-  const s = COMBO_TICKS.sets[r.slice(-1) as 'A' | 'B' | 'C'];
+  const s = COMBO_TICKS.sets[r === 'combat-2' ? 'A' : (r.slice(-1) as 'A' | 'B' | 'C')];
   return { bufferTicks: COMBO_TICKS.bufferTicks, resetTicks: COMBO_TICKS.resetTicks, dur: s.dur, hit: s.hit };
 }
 

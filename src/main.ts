@@ -24,7 +24,7 @@ import { dist } from '../shared/sim/math.ts';
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
-const ruleset = rulesetFromQuery(Q); // ?combo=A|B|C (default combat-1)
+const ruleset = rulesetFromQuery(Q); // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A)
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;

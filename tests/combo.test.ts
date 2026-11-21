@@ -35,17 +35,25 @@ describe('ruleset parsing + hashing', () => {
     expect(parseRuleset(undefined)).toBe('combat-1');
     expect(parseRuleset(null)).toBe('combat-1');
     for (const r of RULESETS) expect(parseRuleset(r)).toBe(r);
-    for (const bad of ['combo-D', 'combo-a', 'combat-2', '', 1, {}, [], 'COMBAT-1']) expect(parseRuleset(bad), String(bad)).toBeNull();
+    for (const bad of ['combo-D', 'combo-a', 'combat-3', '', 1, {}, [], 'COMBAT-1']) expect(parseRuleset(bad), String(bad)).toBeNull();
   });
-  it('?combo=A|B|C selects a ruleset; anything else is combat-1', () => {
+  it('?combo=A|B|C selects a ruleset; ?combo=1 is combat-1; anything else is combat-2 (owner pick A)', () => {
     expect(rulesetFromQuery(new URLSearchParams('combo=A'))).toBe('combo-A');
     expect(rulesetFromQuery(new URLSearchParams('combo=c'))).toBe('combo-C');
-    for (const q of ['', 'combo=D', 'combo=', 'combo=combo-A']) expect(rulesetFromQuery(new URLSearchParams(q))).toBe('combat-1');
+    expect(rulesetFromQuery(new URLSearchParams('combo=1'))).toBe('combat-1');
+    for (const q of ['', 'combo=D', 'combo=', 'combo=combo-A']) expect(rulesetFromQuery(new URLSearchParams(q))).toBe('combat-2');
+  });
+  it('combat-2 uses exactly the combo-A numbers but has its own name and hash', () => {
+    expect(comboFor('combat-2')).toEqual(comboFor('combo-A'));
+    expect(tuningHash('combat-2')).not.toBe(tuningHash('combo-A'));
+    const a = new World(3, undefined, 'combat-2'), b = new World(3, undefined, 'combo-A');
+    for (let i = 0; i < 300; i++) { a.step(i % 2 === 0 ? ATK : NO_INPUT); b.step(i % 2 === 0 ? ATK : NO_INPUT); }
+    expect(JSON.stringify(a.ps)).toBe(JSON.stringify(b.ps));
   });
   it('tuning hash is stable, 16 hex chars, and differs per ruleset', () => {
     const hs = RULESETS.map(tuningHash);
     for (const h of hs) expect(h).toMatch(/^[0-9a-f]{16}$/);
-    expect(new Set(hs).size).toBe(4);
+    expect(new Set(hs).size).toBe(5);
     expect(tuningHash('combo-B')).toBe(hs[2]);
   });
   it('the three variants match DES-006 §1 and total 42/46/52 ticks', () => {
@@ -144,7 +152,7 @@ const post = (p: string, b: unknown) => fetch(base + p, { method: 'POST', body: 
 
 describe('server run envelope', () => {
   it('rejects unknown rulesets and a mismatching tuning hash; old clients (no field) get combat-1', async () => {
-    for (const bad of ['combo-D', 'combat-2', 'combo-a', '', 7, {}]) expect((await post('/api/run/start', { rulesetVersion: bad })).status, String(bad)).toBe(422);
+    for (const bad of ['combo-D', 'combat-3', 'combo-a', '', 7, {}]) expect((await post('/api/run/start', { rulesetVersion: bad })).status, String(bad)).toBe(422);
     expect((await post('/api/run/start', { rulesetVersion: 'combo-A' })).status).toBe(200); // hash is optional
     const bad = await post('/api/run/start', { rulesetVersion: 'combo-A', tuningHash: tuningHash('combo-B') });
     expect([bad.status, bad.body.error]).toEqual([422, 'tuning-mismatch']);
@@ -169,7 +177,8 @@ describe('server run envelope', () => {
     const lg = new InputLog();
     for (let i = 0; i < 90; i++) lg.push(i === 0 ? { ...NO_INPUT, auto: packAuto({ ...defaultAuto(), enabled: true, hall: true, skills: [true, true, true] }) } : NO_INPUT);
     for (const [name, log] of [['v1', v1], ['v2', lg.data]] as const) {
-      for (const r of RULESETS) {
+      // combo-A is skipped here only to stay under the server rate limit (30/IP): combat-2 has the same numbers (tested above)
+      for (const r of RULESETS.filter((x) => x !== 'combo-A')) {
         const st = await post('/api/run/start', { rulesetVersion: r });
         const fin = await post('/api/run/finish', { runId: st.body.runId, log });
         expect([name, r, fin.status, fin.body.rulesetVersion]).toEqual([name, r, 200, r]);
