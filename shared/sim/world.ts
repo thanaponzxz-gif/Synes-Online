@@ -483,7 +483,7 @@ export class World {
       const [cx, cz] = this.clampWalk(nx, nz, a.r);
       a.x = cx; a.z = cz;
       if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
-      if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.hint('counter'); }
+      if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.atkToken.delete(a.id); this.hint('counter'); }
     } else if (a.state === 'recover') {
       if (a.st <= 0) a.state = 'approach';
     }
@@ -526,7 +526,7 @@ export class World {
         for (let i = 0; i < this.pillars.length; i++) {
           const pl = this.pillars[i];
           if (pl.alive && dist(a.x, a.z, pl.x, pl.z) < a.r + pl.r) {
-            pl.alive = false; a.state = 'stunned'; a.st = D.stunPillar;
+            pl.alive = false; this.atkToken.delete(a.id); a.state = 'stunned'; a.st = D.stunPillar;
             this.events.push({ t: 'pillar-break', i }, { t: 'stun', id: a.id, long: true });
             return;
           }
@@ -534,7 +534,7 @@ export class World {
         const [cx, cz] = this.clampArena(a.x, a.z, a.r);
         const hitWall = dist2(cx, cz, a.x, a.z) > 1e-4;
         a.x = cx; a.z = cz;
-        if (hitWall || a.travel >= A.charge.r) { a.state = 'stunned'; a.st = D.stunMiss; this.events.push({ t: 'stun', id: a.id, long: false }); }
+        if (hitWall || a.travel >= A.charge.r) { this.atkToken.delete(a.id); a.state = 'stunned'; a.st = D.stunMiss; this.events.push({ t: 'stun', id: a.id, long: false }); }
         break;
       }
       case 'stunned':
