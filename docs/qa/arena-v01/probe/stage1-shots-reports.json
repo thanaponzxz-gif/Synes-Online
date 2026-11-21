@@ -1,0 +1,878 @@
+{
+ "shots-A-boss-fan": {
+  "tag": "A",
+  "seed": 1,
+  "generatedAt": "2026-11-21T00:32:31.661Z",
+  "note": "Chromium headless + SwiftShader, not a real device",
+  "shots": [
+   {
+    "name": "boss-fan-844-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 56,
+    "tris": 34993,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34553,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 62,
+    "tris": 35987,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 62,
+    "tris": 35987,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-fan-844-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 60,
+    "tris": 55207,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54767,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 65,
+    "tris": 55817,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 65,
+    "tris": 55817,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   }
+  ],
+  "notes": [],
+  "errors": [],
+  "pngBytes": 8055922,
+  "finalBytes": 8055922
+ },
+ "shots-A-boss-open": {
+  "tag": "A",
+  "seed": 1,
+  "generatedAt": "2026-11-21T00:31:43.916Z",
+  "note": "Chromium headless + SwiftShader, not a real device",
+  "shots": [
+   {
+    "name": "boss-open-844-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 55,
+    "tris": 34991,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.306,
+     "p5": 43,
+     "p95": 160,
+     "bands": {
+      "top": 0.383,
+      "mid": 0.277,
+      "bottom": 0.268
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34771,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.298,
+     "p5": 44,
+     "p95": 153,
+     "bands": {
+      "top": 0.359,
+      "mid": 0.27,
+      "bottom": 0.274
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 56,
+    "tris": 34993,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34553,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-open-844-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 59,
+    "tris": 55205,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.311,
+     "p5": 44,
+     "p95": 164,
+     "bands": {
+      "top": 0.388,
+      "mid": 0.284,
+      "bottom": 0.272
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54985,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.305,
+     "p5": 44,
+     "p95": 158,
+     "bands": {
+      "top": 0.365,
+      "mid": 0.28,
+      "bottom": 0.279
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 60,
+    "tris": 55207,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54767,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   }
+  ],
+  "notes": [],
+  "errors": [],
+  "pngBytes": 10431334,
+  "finalBytes": 10431334
+ },
+ "shots-B-boss-fan": {
+  "tag": "B",
+  "seed": 1,
+  "generatedAt": "2026-11-21T00:33:53.241Z",
+  "note": "Chromium headless + SwiftShader, not a real device",
+  "shots": [
+   {
+    "name": "boss-fan-844-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 56,
+    "tris": 34993,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34553,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 62,
+    "tris": 35987,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 62,
+    "tris": 35987,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-fan-844-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 60,
+    "tris": 55207,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54767,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 65,
+    "tris": 55817,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 65,
+    "tris": 55817,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   }
+  ],
+  "notes": [],
+  "errors": [],
+  "pngBytes": 8011870,
+  "finalBytes": 8011870
+ },
+ "shots-B-boss-open": {
+  "tag": "B",
+  "seed": 1,
+  "generatedAt": "2026-11-21T00:33:21.762Z",
+  "note": "Chromium headless + SwiftShader, not a real device",
+  "shots": [
+   {
+    "name": "boss-open-844-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 55,
+    "tris": 34991,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.421,
+     "p5": 46,
+     "p95": 171,
+     "bands": {
+      "top": 0.397,
+      "mid": 0.422,
+      "bottom": 0.445
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34771,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.417,
+     "p5": 46,
+     "p95": 168,
+     "bands": {
+      "top": 0.372,
+      "mid": 0.427,
+      "bottom": 0.449
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 56,
+    "tris": 34993,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34553,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-open-844-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 59,
+    "tris": 55205,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.431,
+     "p5": 47,
+     "p95": 172,
+     "bands": {
+      "top": 0.402,
+      "mid": 0.433,
+      "bottom": 0.456
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54985,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.427,
+     "p5": 47,
+     "p95": 171,
+     "bands": {
+      "top": 0.378,
+      "mid": 0.439,
+      "bottom": 0.461
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 60,
+    "tris": 55207,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 54767,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   }
+  ],
+  "notes": [],
+  "errors": [],
+  "pngBytes": 10395198,
+  "finalBytes": 10395198
+ },
+ "shots-base": {
+  "tag": "base",
+  "seed": 1,
+  "generatedAt": "2026-11-21T00:27:10.315Z",
+  "note": "Chromium headless + SwiftShader, not a real device",
+  "shots": [
+   {
+    "name": "boss-open-844-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 53,
+    "tris": 34567,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.318,
+     "p5": 27,
+     "p95": 144,
+     "bands": {
+      "top": 0.326,
+      "mid": 0.306,
+      "bottom": 0.327
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-low",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 52,
+    "tris": 34347,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.313,
+     "p5": 27,
+     "p95": 141,
+     "bands": {
+      "top": 0.305,
+      "mid": 0.304,
+      "bottom": 0.332
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34569,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-low",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 52,
+    "tris": 34129,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-fan-844-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 54,
+    "tris": 34569,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-low",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 52,
+    "tris": 34129,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "low",
+    "calls": 60,
+    "tris": 35563,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-low",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "low",
+    "calls": 60,
+    "tris": 35563,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-open-844-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 57,
+    "tris": 53917,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.32,
+     "p5": 24,
+     "p95": 147,
+     "bands": {
+      "top": 0.33,
+      "mid": 0.308,
+      "bottom": 0.327
+     }
+    }
+   },
+   {
+    "name": "boss-open-1672-medium",
+    "scene": "boss-open",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 56,
+    "tris": 53697,
+    "tick": 16,
+    "tele": [],
+    "n": 1,
+    "started": true,
+    "gray": {
+     "mean": 0.316,
+     "p5": 24,
+     "p95": 144,
+     "bands": {
+      "top": 0.311,
+      "mid": 0.306,
+      "bottom": 0.333
+     }
+    }
+   },
+   {
+    "name": "boss-circle-844-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 53919,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-circle-1672-medium",
+    "scene": "boss-circle",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 56,
+    "tris": 53479,
+    "tick": 80,
+    "tele": [
+     "slam:circle:0.35"
+    ],
+    "n": 67,
+    "atk": "slam"
+   },
+   {
+    "name": "boss-fan-844-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 58,
+    "tris": 53919,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-fan-1672-medium",
+    "scene": "boss-fan",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 56,
+    "tris": 53479,
+    "tick": 80,
+    "tele": [
+     "sweep:cone:0.46"
+    ],
+    "n": 67,
+    "atk": "sweep"
+   },
+   {
+    "name": "boss-dash-844-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "844x390",
+    "tier": "medium",
+    "calls": 63,
+    "tris": 54529,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   },
+   {
+    "name": "boss-dash-1672-medium",
+    "scene": "boss-dash",
+    "part": "",
+    "size": "1672x941",
+    "tier": "medium",
+    "calls": 63,
+    "tris": 54529,
+    "tick": 80,
+    "tele": [
+     "charge:line:0.32"
+    ],
+    "n": 67,
+    "atk": "charge"
+   }
+  ],
+  "notes": [],
+  "errors": [],
+  "pngBytes": 13927544,
+  "finalBytes": 13927544
+ }
+}
