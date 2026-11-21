@@ -370,6 +370,44 @@ describe('"dodge-early" event', () => {
   });
 });
 
+describe('"dodge-early" attribution (Q17)', () => {
+  const stand = (w: World) => { w.player.x = 0; w.player.z = 0; };
+  const dest = PLAYER.dodge.speed * PLAYER.dodge.dur; // dash east by (64,0)
+  const early = (ev: SimEvent[]) => ev.filter((e) => e.t === 'dodge-early').length;
+  const hits = (ev: SimEvent[]) => ev.filter((e) => e.t === 'hit' && !e.byPlayer).length;
+  it('dodge BEFORE the telegraph exists -> hit, no message', () => {
+    const w = arena(); stand(w);
+    const ev = [...w.step(press(BTN.DODGE, 64, 0)), ...run(w, 12)];
+    (w as any).addTele(w.boss, 'test', HOP, w.player.x, w.player.z, 0, 1, 0.1, true);
+    ev.push(...run(w, 6));
+    expect(hits(ev)).toBe(1); expect(early(ev)).toBe(0);
+  });
+  it('dodge after telegraph, i-frames still cover the hit -> perfect, no hit, no message', () => {
+    const w = arena(); stand(w);
+    (w as any).addTele(w.boss, 'test', HOP, dest, 0, 0, 1, 0.2, true);
+    const ev = [...w.step(press(BTN.DODGE, 64, 0)), ...run(w, 12)];
+    expect(ev.filter((e) => e.t === 'perfect').length).toBe(1); expect(hits(ev)).toBe(0); expect(early(ev)).toBe(0);
+  });
+  it('dodge after telegraph, i-frames end before the hit, same instance hits -> exactly one message', () => {
+    const w = arena(); stand(w);
+    (w as any).addTele(w.boss, 'test', HOP, dest, 0, 0, 1, 1.0, true);
+    const ev = [...w.step(press(BTN.DODGE, 64, 0)), ...run(w, 40)];
+    expect(hits(ev)).toBe(1); expect(early(ev)).toBe(1);
+  });
+  it('two overlapping telegraphs: only the instance telegraphed before the dodge is named', () => {
+    const w = arena(); stand(w);
+    const A = (w as any).addTele(w.boss, 'test', HOP, dest, 0, 0, 1, 1.0, true); // before the dodge, lands late
+    const ev = [...w.step(press(BTN.DODGE, 64, 0)), ...run(w, 2)];
+    const B = (w as any).addTele(w.boss, 'test', HOP, dest, 0, 0, 1, 0.5, true); // after the dodge, lands first (i-frames over)
+    expect(B.id).not.toBe(A.id);
+    const first = run(w, 25); // B lands here
+    expect(hits(first)).toBe(1); expect(early(first)).toBe(0);
+    const second = run(w, 20); // A lands here
+    expect(hits(second)).toBe(1); expect(early(second)).toBe(1);
+    expect(early(ev)).toBe(0);
+  });
+});
+
 describe('replay determinism with skills', () => {
   it('old r3 log still replays to the exact old summary (default variant)', () => {
     const r = JSON.parse(fs.readFileSync(new URL('./fixtures/r3-run.json', import.meta.url), 'utf8'));
