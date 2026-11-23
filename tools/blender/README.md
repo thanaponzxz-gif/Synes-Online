@@ -160,3 +160,26 @@ python3 tools/blender/kit_stats.py /tmp/kit_r0.glb public/assets/models/synes_ki
 `cream` #FFF3DC, `navy` #33437A, `skin` #FFD9BF, `hair_auburn` #9A4A3A, `ink` #2B2440, `white`, `stone_dark` #8F89A6,
 `wood_light` #D2A679 และ `water` #8FDDEB
 ถ้าจะเพิ่มสีใหม่ ให้เพิ่มใน `PALETTE` ของ `build_kit.py` แล้วรัน `verify_kit.py` ซึ่งจะตรวจระยะห่างจากสีสงวนให้
+
+## Environment Asset Library (third-party CC0, manifest-driven)
+สคริปต์ 2 ตัวสำหรับชุดต้นไม้/หิน/หญ้าจากภายนอก (เช่น Quaternius Stylized Nature MegaKit) แยกจาก `synes_kit.glb`: ไม่ใส่ asset ใดลงเกมจนกว่าเจ้าของอนุมัติ
+(ไฟล์ต้นทางอยู่ใน `assets/source/third_party/**/extracted/` ซึ่งถูก gitignore ต้องลงทะเบียนใน `docs/ASSETS.md`)
+
+| ไฟล์ | หน้าที่ |
+|---|---|
+| `build_env_library.py` | อ่าน manifest → import แต่ละชิ้น, รวมเป็น mesh เดียว, ย่อ/ขยายตาม `target_height_m`, origin ที่กลางฐาน, อบสี palette ลง vertex color (material เดียว `env_vcol`; texture ที่มี alpha เก็บเป็น alpha-clip และรายงาน), decimate เฉพาะที่เกิน `max_tris`, export GLB เดียว (ไม่ Draco/meshopt, deterministic) |
+| `env_library_manifest.json` | **เทมเพลต** ชื่อไฟล์/`src_node` เป็นการเดา ต้องแก้ตามไฟล์จริงหลังแตก zip |
+| `render_env_gallery.py` | contact sheet ของทุก node พร้อมแคปซูลสูง 1.5 ม. เทียบสเกล (Cycles CPU, มุมกล้องเกม 48°, `--front` = มุมตรง) |
+| `_make_test_env_src.py` | สร้างต้นทางปลอม 4 ชิ้น (ต้นไม้ที่มีวัสดุสีส้ม, หิน, หญ้า alpha, ดอกไม้) ไว้ทดสอบสองสคริปต์ข้างบน |
+
+```bash
+PY=tools/blender/.venv/bin/python
+$PY tools/blender/build_env_library.py [--manifest M.json] [--src-root DIR] [--out public/assets/models/env_library_v01.glb] \
+    [--report R.json] [--skip-missing] [--check-determinism]          # exit 1 ถ้ามีสีส้ม/แดงสงวน, GLB > 1.5 MB, ไฟล์ต้นทางหาย
+$PY tools/blender/render_env_gallery.py --glb public/assets/models/env_library_v01.glb --out docs/art/env_library_gallery.png [--front] [--sheet-cols 4]
+# ทดสอบด้วยข้อมูลปลอม (เขียนนอก repo)
+$PY tools/blender/_make_test_env_src.py /tmp/envtest     # ได้ manifest_fail.json (ต้อง exit 1) และ manifest_ok.json (color_map แก้แล้ว)
+$PY tools/blender/build_env_library.py --manifest /tmp/envtest/manifest_ok.json --src-root /tmp/envtest --out /tmp/envtest/env.glb --check-determinism
+```
+- สีต้นทางที่อยู่ในโซนสงวน (hue 0–35°/345–360° และ sat > 0.45, v > 0.6 หรือห่างจาก #FF7A1A/#FF3355 < 100) จะ **ไม่ถูก snap อัตโนมัติ** ต้องใส่ `color_map` ใน manifest เอง
+- สีอื่นที่ไม่มี `color_map` จะถูกจับคู่กับสี palette ที่ใกล้สุดตาม hue/lightness

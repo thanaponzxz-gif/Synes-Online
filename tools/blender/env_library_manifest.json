@@ -1,0 +1,14 @@
+{
+  "_README": "TEMPLATE - fill in once the Quaternius Stylized Nature MegaKit (CC0, glTF) is extracted under src_root. File names and src_node values below are GUESSES from the pack's public listing; run `ls` on the extracted folder, fix every `src`, tune target_height_m, and add color_map entries for any source material that the nearest-palette auto-mapping gets wrong. Palette keys: lumen violet blossom gold leaf leaf_dark bark stone path white sky (or '#RRGGBB'). Never map to orange #FF7A1A / red #FF3355 (build fails). Fields per entry: name (env_*), src, src_node?, category (tree|bush|grass|flower|rock|mushroom|log), target_height_m, max_tris? (defaults tree 1500, bush/rock/log/mushroom 400, grass/flower 120), color_map? {source material name: palette key}, tint? ('#hex' or {color, amount}).",
+  "src_root": "assets/source/third_party/quaternius_nature_megakit/extracted",
+  "entries": [
+    {"name": "env_tree_common_1", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/CommonTree_1.gltf", "category": "tree", "target_height_m": 5.5},
+    {"name": "env_tree_common_2", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/CommonTree_2.gltf", "category": "tree", "target_height_m": 6.0},
+    {"name": "env_tree_pine_1", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Pine_1.gltf", "category": "tree", "target_height_m": 6.5, "color_map": {"Leaves": "leaf_dark", "Wood": "bark"}},
+    {"name": "env_bush_common", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Bush_Common.gltf", "category": "bush", "target_height_m": 1.0},
+    {"name": "env_rock_medium_1", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Rock_Medium_1.gltf", "category": "rock", "target_height_m": 1.2},
+    {"name": "env_grass_common_short", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Grass_Common_Short.gltf", "category": "grass", "target_height_m": 0.35},
+    {"name": "env_flower_3_group", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Flower_3_Group.gltf", "category": "flower", "target_height_m": 0.4, "tint": {"color": "#FF9EC7", "amount": 0.15}},
+    {"name": "env_mushroom_common", "src": "assets/source/third_party/quaternius_nature_megakit/extracted/glTF/Mushroom_Common.gltf", "category": "mushroom", "target_height_m": 0.5}
+  ]
+}
