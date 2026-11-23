@@ -27,3 +27,5 @@
 | `crystal_spire` + `ruin_arch_shrine` DES-004 ขั้น 2 **ตัวเลือก B** (ยอดแฝดเอียง + ปลายที่หักลอยเหนือรอยหัก ~9.1 m / ศาลพังด้านขวา เสาสั้น ซุ้มหัก ก้อนหินหล่น บันได 4 ขั้น วงแหวนใหญ่เอียงทะลุซุ้ม ผลึกลอยใหญ่ขึ้น + เศษผลึกโคจร 4) spire 256 / shrine 1,062 tris | `public/assets/models/spire_shrine_B.glb` (54.7 KB, side-car โหลดเฉพาะ `?spire=B`) · ทั้งชุด `docs/qa/spire-shrine-v01/synes_kit_spireB.glb` (638.1 KB, ไฟล์เทียบ/verify) · `SYNES_SPIRE_VARIANT=B` · ทีม Synes (Claude Opus 5.5) · เป็นของโปรเจกต์ | ตัวเลือกเทียบกับ A | **placeholder ต้นแบบ ยังไม่ APPROVED** · verify ผ่าน 0 คำเตือน |
 
 ยังไม่มีการดาวน์โหลด asset หรือ plugin จากภายนอก จึงยังไม่มี plugin ที่ต้องตรวจโค้ด
+
+Free Asset First Policy (2026-11-23, สาย `lane/env-assets`): ตรวจ license จากหน้าทางการของ Quaternius Stylized Nature MegaKit (CC0) และ Kenney Nature Kit (CC0) แล้ว แต่**ยังดาวน์โหลดไม่ได้** จึงยังไม่มี asset ภายนอกใน repo · ดู `docs/art/ENV_ASSET_LIBRARY.md`
