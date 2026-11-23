@@ -108,6 +108,8 @@ PM ทำทุกต้นรอบ แล้วบันทึกผลใน�
   การติดตั้ง, การเชื่อมบัญชี (OAuth) และบริการเสียเงินต้องให้เจ้าของยืนยันตามข้อ 6 · ห้ามรายงานว่า "ใช้ได้" ถ้ายังไม่ได้เรียกเครื่องมือจริงสำเร็จ
 - **เครื่องมือไม่เปลี่ยนกฎ:** การออกแบบยังเป็นของทีม A (ข้อ 0) · Claude ไม่สร้างภาพหรือ asset สำเร็จรูปเอง (ข้อ 5.2) · Supabase หรือ backend ใหม่ห้ามใช้แทน Node server เดิมจนกว่าจะมี ADR (ADR-002)
   ภาพอ้างอิงจาก Mobbin หรือแหล่งภายนอกห้าม commit ลง repo สาธารณะ (L-009)
+- **เงื่อนไขเจ้าของ 2026-11-23:** PM ตรวจเครื่องมือก่อนเริ่มทุก task (`PLUGIN_SKILLS.md` ข้อ 7) · Adobe ห้ามซื้อ Stock/license · Supabase พักไว้ · Blender MCP ต้อง safe mode + ปิด telemetry + localhost เท่านั้น
+  **ห้ามเปลี่ยน art direction หรือเพิ่มขอบเขตเกมเพียงเพราะมีเครื่องมือใหม่** · แม่แบบสำหรับโปรเจกต์อื่น: `docs/knowledge/GLOBAL_PLUGIN_PLAYBOOK.md`
 
 ## คำสั่งที่ใช้บ่อย
 `npm run build && npm run server` (เล่นที่ :8080) · `npm test` · `node tools/qa/bench.mjs http://localhost:8080` · `node tools/qa/lifecycle.mjs http://localhost:8080` · `node tools/qa/tone-studies.mjs` · `tools/blender/.venv/bin/python tools/blender/build_kit.py`

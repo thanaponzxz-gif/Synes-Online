@@ -3,6 +3,17 @@
 > กฎสั้นอยู่ใน CLAUDE.md ข้อ 8 และ AGENTS.md ข้อ 4.1 ไฟล์นี้เก็บรายละเอียด **อ่านเมื่อจะเลือกเครื่องมือเท่านั้น**
 > ตรวจล่าสุด 2026-11-23 (Claude Code 2.1.330) ข้อมูลราคาและเงื่อนไขเปลี่ยนได้ ให้ตรวจหน้าทางการซ้ำก่อนสมัครทุกครั้ง
 
+## 0. เงื่อนไขอนุมัติของเจ้าของ (2026-11-23)
+1. อนุมัติ Figma, Mobbin, Adobe, Canva · **เจ้าของเชื่อมบัญชีและตรวจสิทธิ์เอง** (ขั้นตอน: `docs/setup/PLUGINS_OWNER_SETUP.md`)
+2. Adobe: **ห้ามซื้อ Stock Asset หรือ license** โดยไม่ได้รับอนุมัติ (`adobe-stock-search-and-license` ใช้ค้นได้อย่างเดียว ห้ามขั้น license)
+3. Supabase: **พักไว้** ห้ามเปลี่ยน backend และสถาปัตยกรรมเดิม
+4. Blender MCP บน Windows: ตรวจของเดิมก่อน ห้ามติดตั้งซ้ำ · safe mode เปิด · telemetry ปิด · ฟังเฉพาะ localhost ห้ามเปิดพอร์ตสู่ภายนอก (`tools/setup/setup-blender-mcp.ps1`)
+5. PM ตรวจความเหมาะสมของ plugin ก่อนเริ่มทุก task และเปิดเฉพาะที่จำเป็น (ข้อ 7)
+6. ทดสอบด้วยงานจริงขนาดเล็ก เทียบ Quality / Time / Token (ข้อ 4)
+7. Global Playbook สำหรับโปรเจกต์อื่น: `docs/knowledge/GLOBAL_PLUGIN_PLAYBOOK.md`
+8. ส่ง ADR-010 + ผลทดสอบให้ทีม A ตรวจอิสระก่อน merge (`docs/design/REVIEW-001-adr010.md`)
+9. ห้ามเปลี่ยน art direction หรือเพิ่มขอบเขตเกมเพียงเพราะมีเครื่องมือใหม่
+
 ## 1. หลักการ
 1. **เลือกเครื่องมือก่อนเริ่มงาน** ดูตารางข้อ 2 ถ้ามีเครื่องมือเฉพาะทางที่เชื่อมแล้ว ให้ใช้ตัวนั้นก่อนเขียนโค้ดเอง
    (ตัวอย่าง: ทีม A ส่งดีไซน์ HUD เป็น Figma → อ่านค่าสี ระยะ และ asset ผ่าน `get_design_context` / `get_variable_defs` แทนการวัดจากภาพหน้าจอ)
@@ -35,35 +46,41 @@ token "เปิดค้าง" = คำอธิบาย skill ที่โ�
 | Mobbin | Anthropic Directory (partner `mobbin`, upstream `mobbin/skills`) | 1.5.0 · `cac3383` | 4 skills + MCP `https://api.mobbin.com/mcp` (search_screens/flows/sections) · สคริปต์ Python 1 ไฟล์ (ฝังภาพลง HTML) | MIT | ~0.6k | ภาพหน้าจอเป็นลิขสิทธิ์ของแอปต้นทาง → ใช้เป็นอ้างอิงเท่านั้น ห้าม commit | ต้องเชื่อมบัญชี |
 | Adobe | Anthropic Directory (partner `adobe`, upstream `adobe/skills` → `creative-cloud/adobe-for-creativity`) | 3.4.0 · `9aa09af` | 26 skills + MCP `https://adobe-creativity.adobe.io/mcp` (109+ tools) · plugin ตัวนี้ไม่มี hook | Apache-2.0 | **~6.0k** (สูงสุด) | มี `adobe-stock-search-and-license` ซึ่งอาจซื้อ license ได้ → ห้ามใช้โดยไม่ถาม · skill หลายตัว (PDF/Excel/headshot) ไม่เกี่ยวกับเกม | ต้องเชื่อมบัญชี |
 | Canva | Anthropic Directory (partner `canva-sdks`, upstream `canva-sdks/canva-skills`) | 1.1.0 · `5087533` | 10 skills + MCP `https://mcp.canva.com/mcp` · ไม่มีสคริปต์ ไม่มี hook | Apache-2.0 | ~1.6k | สร้าง/แก้ดีไซน์ในบัญชีจริง | ต้องเชื่อมบัญชี |
-| Supabase | Anthropic Directory (partner `supabase-community`, upstream `supabase-community/supabase-plugin`) | 0.1.17 · `016bf5b` | 2 skills + MCP `https://mcp.supabase.com/mcp` (40 tools รวม `create_project`, `get_cost`, `confirm_cost`) · ไม่มีสคริปต์ | MIT | ~0.6k | **สร้างโปรเจกต์และสร้างค่าใช้จ่ายได้** · รองรับ `read_only=true` (SUPABASE.md) | ต้องเชื่อมบัญชี + ต้องมี ADR ก่อนใช้ |
+| Supabase (**พักไว้**) | Anthropic Directory (partner `supabase-community`, upstream `supabase-community/supabase-plugin`) | 0.1.17 · `016bf5b` | 2 skills + MCP `https://mcp.supabase.com/mcp` (40 tools รวม `create_project`, `get_cost`, `confirm_cost`) · ไม่มีสคริปต์ | MIT | ~0.6k | **สร้างโปรเจกต์และสร้างค่าใช้จ่ายได้** · รองรับ `read_only=true` (SUPABASE.md) | ON-HOLD (เจ้าของสั่งพัก) |
 | Blender MCP (MCP for Blender) | **ไม่อยู่ใน Anthropic Directory** · repo ผู้พัฒนา `ahujasid/blender-mcp` (มี plugin Claude ใน `integrations/claude/`) | 2.3.1 · `a5a8acf` | MCP แบบ local (`uvx mcp-for-blender`) + add-on `addon.py` ใน Blender GUI | MIT (ชุมชน ไม่ใช่ Blender Foundation) | 0 | add-on รัน Python ใดก็ได้ (`exec`) ผ่าน socket `localhost:9876` **ไม่มี authentication** · มี `BLENDER_MCP_SAFE_MODE=1` บล็อกการอ่านเขียนไฟล์/network · ส่ง telemetry แบบไม่ระบุตัวตนเป็นค่าเริ่ม ปิดด้วย `DISABLE_TELEMETRY=true` · มีบริการ premium (สร้างโมเดล AI) | ต้องติดตั้งบนเครื่องเจ้าของ |
 
 **ยังไม่ได้ตรวจ:** ราคาและแผนที่ต้องใช้กับ MCP ของ Figma, Mobbin, Adobe, Canva, Supabase และราคา premium ของ Blender MCP
 เพราะ network ของ container นี้เข้าเว็บของผู้ให้บริการไม่ได้ (DNS ไม่พบ host) หน้าเชื่อมบัญชีของ claude.ai จะแสดงสิทธิ์ที่ขอ ให้เจ้าของตรวจแผนตอนเชื่อม
 
-## 4. ผลทดสอบการใช้งานจริง
-| เครื่องมือ | วันที่ | ทดสอบอะไร | ผล |
-|---|---|---|---|
-| ทั้ง 6 ตัว | 2026-11-23 | ยังไม่ได้ทดสอบ (ยังไม่ได้ติดตั้ง/เชื่อมบัญชี) | — |
+## 4. ทดสอบด้วยงานจริงขนาดเล็ก (เงื่อนไขข้อ 6)
+ทุกงานอยู่ในขอบเขตเดิมของด่านแรก ไม่สร้าง asset ใหม่เข้าเกม ผลลัพธ์เก็บใน scratchpad (ไม่ commit) · วิธีวัดตาม `GLOBAL_PLUGIN_PLAYBOOK.md` ข้อ 3
+| # | เครื่องมือ | งานจริง | วิธีเดิมที่ใช้เทียบ | เกณฑ์ Quality (เขียนก่อนทดสอบ) | ผู้ตรวจอิสระ |
+|---|---|---|---|---|---|
+| T1 | Figma | อ่าน frame HUD ที่ทีม A ส่ง (หรือไฟล์ว่างของเจ้าของถ้ายังไม่มี) → ดึงขนาด/ตำแหน่ง/สีของปุ่มต่อสู้ 4 ปุ่ม | วัดจากภาพ PNG ใน DES-002 ด้วยมือ | ค่าตรงกับต้นฉบับ ±1 px, สีตรงทุกหลัก · ไม่แก้ไฟล์ Figma | QA + ทีม A |
+| T2 | Mobbin | ค้น "landscape game HUD" 1 ครั้ง เพื่อเขียนข้อเท็จจริงประกอบใบขอ (ไม่ใช่ข้อเสนอดีไซน์) | ไม่มีเครื่องมือ (บรรยายจากความรู้) | ได้ตัวอย่าง ≥ 3 ที่ตรงคำค้น · ไม่มีไฟล์ภาพใน repo (`git status` สะอาด) | PM |
+| T3 | Adobe | ตัดพื้นหลังภาพ `assets/source/ui_hud_sheet_v01.webp` 1 ชิ้น (กรอบปุ่ม) | `tools/art/slice_hud.py` | ขอบไม่มีขาว/ดำ, จุด alpha 1–15 = 0 (L-011), ขนาดเท่าเดิม · ไม่มีการซื้อใด ๆ | QA |
+| T4 | Canva | `search-designs` ในบัญชี (อ่านอย่างเดียว) · ไม่มีงานการตลาดใน scope ตอนนี้จึงไม่สร้างดีไซน์ | — | เรียกสำเร็จ, ไม่มีดีไซน์ใหม่ในบัญชี | PM |
+| T5 | Blender MCP | บนเครื่องเจ้าของ: safe mode → `get_scene_info` → รัน `tools/blender/build_kit.py` → export GLB | build headless ใน container | GLB ผ่าน `verify_kit.py` 0 คำเตือน, จำนวน tris เท่าเดิม (hash เทียบได้เฉพาะ Blender รุ่นเดียวกัน, L-021) · `-Verify` ผ่าน | QA + ทีม A |
 
-ชุดทดสอบที่จะรันเมื่อเชื่อมแล้ว (อ่านอย่างเดียว ไม่สร้างค่าใช้จ่าย) และวัด เวลา / token / คุณภาพ เทียบวิธีเดิม:
-- **Figma:** `whoami` → `get_metadata` + `get_screenshot` ของ frame ที่ทีม A ส่ง · เทียบกับการวัดค่าจากภาพ PNG ในงาน HUD skin เดิม (DES-002)
-- **Mobbin:** `search_screens` "game HUD landscape" 1 ครั้ง · ตรวจว่าไม่มีไฟล์ภาพตกค้างใน repo
-- **Adobe:** ลบพื้นหลังภาพ placeholder 1 ชิ้นใน scratchpad · เทียบกับ `tools/art/slice_hud.py` (ขอบ alpha, เวลา)
-- **Canva:** `search-designs` ในบัญชี (อ่านอย่างเดียว)
-- **Supabase:** `list_projects` แบบ `read_only=true` · ห้ามเรียก `create_project`
-- **Blender MCP:** บนเครื่องเจ้าของ เปิด safe mode → `get_scene_info` → รัน `tools/blender/build_kit.py` แล้วเทียบ hash GLB กับ build headless ใน container
+### ผล (เติมหลังทดสอบ)
+| # | วิธี | Quality | Time | Token (ใช้งาน) | token เปิดค้าง | เงิน | สรุป |
+|---|---|---|---|---|---|---|---|
+| T1–T5 | — | ยังไม่ได้ทดสอบ (รอเจ้าของเชื่อมบัญชี/ติดตั้ง) | — | — | ดูข้อ 3 | 0 | — |
 
 ## 5. รายการขออนุมัติจากเจ้าของ
 | # | รายการ | เจ้าของต้องทำ | ความเสี่ยง/ค่าใช้จ่าย |
 |---|---|---|---|
-| 1 | Figma plugin (Knowledge Work, upstream ของ Figma) | กดติดตั้ง + เชื่อมบัญชี Figma | แผนฟรีอาจจำกัดจำนวนการเรียก (ยังไม่ได้ตรวจ) |
-| 2 | Mobbin plugin | กดติดตั้ง + เชื่อมบัญชี Mobbin | อาจต้องใช้แผนเสียเงิน (ยังไม่ได้ตรวจ) |
-| 3 | Adobe plugin | กดติดตั้ง + เชื่อม Adobe ID | token เปิดค้างสูงสุด (~6k) และมี tool ซื้อ Stock license |
-| 4 | Canva plugin | กดติดตั้ง + เชื่อมบัญชี Canva | ต่ำ |
-| 5 | Supabase plugin | กดติดตั้ง + เชื่อมบัญชี · ตัดสินว่าจะเริ่ม ADR backend หรือพักไว้ | สร้างโปรเจกต์ที่มีค่าใช้จ่ายได้ แนะนำพักไว้จนถึง backlog ข้อ 7 |
-| 6 | Blender MCP | ติดตั้ง Blender + add-on บนเครื่อง Windows และอนุมัติให้ Claude ต่อเข้าเครื่อง (Remote Control) | add-on รันโค้ดใดก็ได้ → เปิด safe mode, ปิด telemetry, เปิด socket เฉพาะตอนใช้ · ขั้นตอนใน `docs/BLENDER_MCP.md` |
+| 1 | Figma plugin **(อนุมัติ 2026-11-23)** (Knowledge Work, upstream ของ Figma) | กดติดตั้ง + เชื่อมบัญชี Figma | แผนฟรีอาจจำกัดจำนวนการเรียก (ยังไม่ได้ตรวจ) |
+| 2 | Mobbin plugin **(อนุมัติ)** | กดติดตั้ง + เชื่อมบัญชี Mobbin | อาจต้องใช้แผนเสียเงิน (ยังไม่ได้ตรวจ) |
+| 3 | Adobe plugin **(อนุมัติ, ห้ามซื้อ Stock/license)** | กดติดตั้ง + เชื่อม Adobe ID | token เปิดค้างสูงสุด (~6k) และมี tool ซื้อ Stock license |
+| 4 | Canva plugin **(อนุมัติ)** | กดติดตั้ง + เชื่อมบัญชี Canva | ต่ำ |
+| 5 | Supabase plugin | **พักไว้ (เจ้าของสั่ง 2026-11-23)** ไม่ต้องติดตั้ง | สร้างโปรเจกต์ที่มีค่าใช้จ่ายได้ |
+| 6 | Blender MCP **(อนุมัติการเตรียม)** | ติดตั้ง Blender + add-on บนเครื่อง Windows และอนุมัติให้ Claude ต่อเข้าเครื่อง (Remote Control) | add-on รันโค้ดใดก็ได้ → เปิด safe mode, ปิด telemetry, เปิด socket เฉพาะตอนใช้ · ขั้นตอนใน `docs/setup/PLUGINS_OWNER_SETUP.md` ขั้น 5 |
 
 ## 6. นำไปใช้กับโปรเจกต์อื่น
-- K.N.D.: ใช้หลักข้อ 1 ได้ทันที บทบาทที่เกี่ยวคือ Marketing (Canva, Adobe) · repo/ไฟล์กฎของ K.N.D. ไม่อยู่ในเซสชันนี้ จึงยังไม่ได้แก้
-- โปรเจกต์ใหม่: คัดลอกข้อ 1–2 แล้วปรับตาราง ห้ามเปลี่ยนสถาปัตยกรรมเดิมเพื่อให้เข้ากับเครื่องมือ
+ใช้ `docs/knowledge/GLOBAL_PLUGIN_PLAYBOOK.md` (ข้อ 6 คือข้อความสำหรับวางใน CLAUDE.md/AGENTS.md) · K.N.D.: repo ไม่อยู่ในเซสชันนี้ จึงยังไม่ได้วาง
+
+## 7. ขั้นตอนของ PM ก่อนเริ่มทุก task (เงื่อนไขข้อ 5)
+1. task นี้ต้องใช้เครื่องมือตัวไหนจากข้อ 2 (งานโค้ด/เทสต์ของด่านแรกส่วนใหญ่ไม่ต้องใช้ plugin)
+2. `ListPlugins` / `ListConnectors`: ตัวที่ต้องใช้เปิดอยู่ไหม ตัวที่ไม่ใช้ควรปิดไหม (แจ้งเจ้าของ เพราะ Claude ปิดแทนไม่ได้)
+3. เขียนหนึ่งบรรทัดใน handoff ของรอบ: `เครื่องมือรอบนี้: <รายการ หรือ ไม่มี>`

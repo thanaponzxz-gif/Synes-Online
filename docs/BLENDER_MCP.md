@@ -6,7 +6,9 @@
 - **จึงยังไม่ได้เชื่อม Blender MCP จริง** แต่ใช้ Blender 5.3 แบบ Python module (`bpy` จาก PyPI) รัน headless ใน container แทน
   สคริปต์ `tools/blender/build_kit.py` สร้างโมเดลทั้งชุดแล้ว export เป็น `public/assets/models/synes_kit.glb`
 
-## วิธีเชื่อมบนเครื่อง Windows ของเจ้าของ (Claude Desktop)
+> **อัปเดต 2026-11-23 (ADR-010):** ใช้ขั้นตอนใน `docs/setup/PLUGINS_OWNER_SETUP.md` ขั้น 5 และสคริปต์ `tools/setup/setup-blender-mcp.ps1` แทนหัวข้อด้านล่าง (safe mode + ปิด telemetry + localhost + ล็อกรุ่น 2.3.1 ที่ตรวจโค้ดแล้ว)
+
+## วิธีเชื่อมบนเครื่อง Windows ของเจ้าของ (Claude Desktop) — ฉบับเดิม
 1. ติดตั้ง Blender (4.x หรือ 5.x) และ `uv` (`winget install astral-sh.uv`)
 2. ดาวน์โหลด add-on `addon.py` จาก repository **blender-mcp** (ผู้พัฒนา ahujasid, license MIT) แล้วเปิด Blender
    ไปที่ Edit → Preferences → Add-ons → Install… เลือก `addon.py` และเปิดใช้งาน

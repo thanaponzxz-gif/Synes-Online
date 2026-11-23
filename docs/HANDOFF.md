@@ -5,7 +5,9 @@
   clone โค้ดทั้ง 6 ตัวมาอ่าน (license, `.mcp.json`, hook, สคริปต์) และวัด token ด้วย `claude plugin details` · ผลอยู่ใน `docs/knowledge/PLUGIN_SKILLS.md`
 - กฎถาวร: CLAUDE.md ข้อ 8, AGENTS.md ข้อ 4.1, ADR-010, PROJECT_SYNES ข้อ 3/5/7, TOOL_REGISTRY หมวด 6.1, skill `synes-pm` ข้อ B, L-023
 - **ยังไม่ได้ติดตั้ง และยังไม่ได้ทดสอบเครื่องมือใดเลย:** ทุกตัวต้องให้เจ้าของเชื่อมบัญชี (ข้อ 6) · ราคาตรวจไม่ได้เพราะ container เข้าเว็บผู้ให้บริการไม่ได้
-- **งานถัดไป:** เจ้าของอนุมัติรายการใน `PLUGIN_SKILLS.md` ข้อ 5 → รันชุดทดสอบอ่านอย่างเดียวในข้อ 4 แล้วบันทึกผล · branch นี้ยังไม่ merge เข้า `main` (PM merge)
+- **เจ้าของอนุมัติแบบมีเงื่อนไข 2026-11-23** (9 ข้อใน `PLUGIN_SKILLS.md` ข้อ 0): ทำแล้ว → ขั้นตอนเจ้าของ `docs/setup/PLUGINS_OWNER_SETUP.md`, สคริปต์ `tools/setup/setup-blender-mcp.ps1` (ค่าเริ่มตรวจอย่างเดียว, `-Apply`, `-Verify`; **ยังไม่ได้รันบน Windows จริง**), Global Playbook, แผนทดสอบ T1–T5, คำขอตรวจ `docs/design/REVIEW-001-adr010.md`
+- **งานถัดไป:** (1) เจ้าของเชื่อมบัญชี/ติดตั้ง → เปิดเซสชันใหม่ → ทดสอบ T1–T5 → เติมผลใน `PLUGIN_SKILLS.md` ข้อ 4 + REVIEW-001 รอบ 2 (2) ทีม A ตรวจ → PM merge (3) **กลับไปโฟกัสด่านแรก (stage1) ทันที** ตามคำสั่งเจ้าของ: งานค้างคือคำตอบทีม A ใน DES-006-teamB, DES-004 §8, `docs/qa/*-v01` (S1–S10) และ REQ-003
+- เครื่องมือรอบนี้: ไม่มี (ยังไม่ได้เชื่อม)
 
 ## merge stage1 → main + จังหวะตี A + Pages · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D
 **เจ้าของอนุมัติ:** merge `stage1/polish` เข้า `main` และขึ้น GitHub Pages · เลือกจังหวะตี **ชุด A** (ตอบผ่านคำถามในแชต เพราะข้อความเดิมเว้นช่องว่างไว้)

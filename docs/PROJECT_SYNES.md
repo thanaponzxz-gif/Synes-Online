@@ -79,7 +79,7 @@
 | โฮสต์สาธารณะที่มี server (ต้องใช้บัญชีของเจ้าของ) | รอ |
 | ADR-008: ใช้ asset สำเร็จรูป (CC0) ในเกมได้แค่ไหน (ตอนนี้ขัดข้อ 1 เรื่องต้นฉบับ) | รอ |
 | ADR-008: นำร่องภาพ → 3D 1 ชิ้น (EXP-102) ต้องสมัคร Tripo แบบเสียเงิน หรือบอกรุ่น GPU เครื่องเจ้าของสำหรับ Hunyuan3D | รอ |
-| ADR-010: ติดตั้ง + เชื่อมบัญชี Figma, Mobbin, Adobe, Canva (Supabase แนะนำพักไว้) และติดตั้ง Blender MCP บนเครื่อง Windows (`PLUGIN_SKILLS.md` ข้อ 5) | รอ |
+| ADR-010: เชื่อมบัญชี Figma, Mobbin, Adobe, Canva + เตรียม Blender MCP บน Windows ตาม `docs/setup/PLUGINS_OWNER_SETUP.md` | **อนุมัติ 2026-11-23** (Supabase พัก, Adobe ห้ามซื้อ Stock) · รอเจ้าของเชื่อมบัญชี → ทดสอบ T1–T5 → ทีม A ตรวจ REVIEW-001 → merge |
 | ADR-008: ลดขนาด CLAUDE.md/PROJECT_SYNES.md ที่โหลดทุกเซสชัน (EXP-101) และติดตั้ง meshopt (EXP-103) | รอ |
 
 ## 6. Backlog (เรียงตามลำดับความสำคัญ เจ้าของงานระบุไว้ในวงเล็บ)
