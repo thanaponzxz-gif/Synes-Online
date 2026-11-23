@@ -1,7 +1,7 @@
 // Three.js render layer. Reads sim state (never writes it). Interpolates between fixed ticks.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Color, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, CanvasTexture,
-  Group, Object3D, Vector3, Fog, InstancedMesh, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
+  Group, Object3D, Vector3, Fog, InstancedMesh, InstancedBufferAttribute, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
   MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry, ShaderMaterial,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
@@ -19,7 +19,7 @@ import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
 import { makeArenaDeco, glowPillars, type ArenaDeco } from './arenaDeco.ts';
 import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
 import { openingFromQuery, openingTone, openingPathFill, nearGuide, patchGate, patchHeroRim, addOpeningProps } from './opening.ts';
-import { envArtFromQuery, envTone, paintGround, bakeContactShadows, paintUnderTrees, patchGroundDetail, buildGrass, instanceTint, propDims, prng, type Caster, type GroundCtx, type GrassField } from './envArt.ts';
+import { envArtFromQuery, envTone, paintGround, bakeContactShadows, paintUnderTrees, patchGroundDetail, buildGrass, instanceTint, propDims, prng, paintProf, type Caster, type GroundCtx, type GrassField } from './envArt.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -82,6 +82,12 @@ export class View {
   /** QA: `?envfade=0` keeps the old 2x2 near-fade pattern inside the env look (finding 5 before/after) */
   private readonly envFade = this.flags.get('envfade') !== '0';
   private grass: GrassField | null = null;
+  /** env art r2 (E11): per prop type, a per-instance 'may stay solid at the screen side' flag (aSolid) + bounding spheres (x, y, z, r) */
+  private fadeSets: { attr: InstancedBufferAttribute; pts: Float32Array }[] = [];
+  /** env art r2 (E12): batches that got extra env-art instances (count back to the old number in the boss fight) */
+  private extraBatches: { im: InstancedMesh; base: number }[] = [];
+  private bossHidden = false;
+  private envGen = 0;
   private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   /** 0 meadow … 1 arena; exposed for QA */
@@ -167,6 +173,8 @@ export class View {
   // ------------------------------------------------------------------ environment
   /** QA: duration of the last buildLevel (ms), to compare the env-art ground painting cost */
   buildMs = 0;
+  /** QA: cumulative ms at env-art build stages (paint, scatter, bake, grass) */
+  envProf: Record<string, number> = {};
   buildLevel(world: World, seed = 1) {
     const buildT0 = performance.now();
     this.arenaFloor?.material.map?.dispose();
@@ -183,7 +191,7 @@ export class View {
     this.glow = this.shafts = null;
     this.arenaDeco?.dispose(); this.arenaDeco = null;
     this.openingFx?.dispose(); this.openingFx = null;
-    this.grass?.dispose(); this.grass = null;
+    this.grass?.dispose(); this.grass = null; this.fadeSets = []; this.extraBatches = []; this.bossHidden = false;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
@@ -202,6 +210,7 @@ export class View {
     } : null;
     if (gctx) {
       paintGround(gctx);
+      this.envProf.paint = performance.now() - buildT0; Object.assign(this.envProf, paintProf);
       // advance the shared scatter stream exactly as the old ground specks did, so every tree/rock keeps its old spot
       for (let i = 0; i < W * H / 60; i++) { rnd(); rnd(); rnd(); rnd(); rnd(); }
       for (let i = 0; i < W * H / 90; i++) { rnd(); rnd(); }
@@ -280,6 +289,7 @@ export class View {
     // env art: a few more rocks/bushes in the mid-ground and small stones along the path edge (own random stream)
     const avoid = [...(this.opening?.guides.map((gd) => ({ x: gd.x, z: gd.z, r: 1.4 })) ?? [])];
     if (arena?.type === 'circle') avoid.push({ x: arena.x, z: arena.z, r: arena.r + 3 });
+    const baseN = new Map(Object.entries(place).map(([n, m]) => [n, m.length]));
     if (env) {
       const er = prng(seed * 977 + 5), free = (x: number, z: number) => !avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r);
       const put3 = (name: string, x: number, z: number, s: Vector3, rot: number) => (place[name] ??= []).push(new Matrix4().compose(new Vector3(x, 0, z), new Quaternion().setFromEuler(new Euler(0, rot, 0)), s));
@@ -295,16 +305,30 @@ export class View {
     // Opaque batches are drawn in material.id order, which decides the winner where two surfaces tie in depth. Before batching,
     // each source material had one near-fade clone, created in order of first use; keep that order: one clone per batch, created
     // in the order of the first source material the batch contains.
+    this.envProf.scatter = performance.now() - buildT0;
     const rank = new Map<Material, number>();
     const batches: { name: string; mats: Matrix4[]; part: ReturnType<typeof flattenPropMerged>[number] }[] = [];
     for (const [name, mats] of Object.entries(place)) for (const part of flattenPropMerged(name, rank)) batches.push({ name, mats, part });
     batches.sort((x, y) => x.part.rank - y.part.rank);
     const tintKind = (n: string) => n.startsWith('tree') ? 'tree' as const : n === 'rock_a' ? 'rock' as const : n === 'bush' ? 'bush' as const : null;
+    // per prop type: size from its own batch parts (no second flattenPropMerged), shared aSolid attribute for all its parts
+    const dimsOf = new Map<string, { r: number; h: number }>(), solidOf = new Map<string, InstancedBufferAttribute>();
+    if (env) for (const [name, mats] of Object.entries(place)) {
+      const dm = propDims(name, batches.filter((bt) => bt.name === name).map((bt) => bt.part)); dimsOf.set(name, dm);
+      if (!this.envFade) continue;
+      const attr = new InstancedBufferAttribute(new Float32Array(mats.length), 1), pts = new Float32Array(mats.length * 4);
+      mats.forEach((m, i) => { const e = m.elements, sc = Math.max(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6])); pts.set([e[12], dm.h * sc * 0.5, e[14], Math.hypot(dm.r, dm.h * 0.5) * sc], i * 4); });
+      solidOf.set(name, attr); this.fadeSets.push({ attr, pts });
+    }
     for (const { name, mats, part } of batches) {
       const mat = nearFade(part.material, this.nearFadeU, env && this.envFade ? this.nearEdgeU : null);
       const im = new InstancedMesh(part.geometry, mat, mats.length);
       mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
-      const tk = env && tintKind(name); if (tk) mats.forEach((_, i) => im.setColorAt(i, instanceTint(tk, i, TMP_C)));
+      if (env) { // every batch gets an instance colour (white = unchanged) so all of them share one shader program
+        const tk = tintKind(name); mats.forEach((_, i) => im.setColorAt(i, tk ? instanceTint(tk, i, TMP_C) : TMP_C.setRGB(1, 1, 1)));
+        const sa = solidOf.get(name); if (sa) part.geometry.setAttribute('aSolid', sa);
+        const base = baseN.get(name) ?? 0; if (base < mats.length) this.extraBatches.push({ im, base });
+      }
       im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
       this.env.add(im);
     }
@@ -313,14 +337,22 @@ export class View {
       for (const [name, mats] of Object.entries(place)) {
         const kind = name.startsWith('tree') ? 'tree' : name === 'rock_a' ? 'rock' : name === 'bush' ? 'bush' : name === 'crystal_cluster' || name === 'mushroom_glow' ? 'small' : null;
         if (!kind) continue;
-        const dm = propDims(name, flattenPropMerged(name));
+        const dm = dimsOf.get(name)!;
         for (const m of mats) { const e = m.elements; casters.push({ x: e[12], z: e[14], s: Math.hypot(e[0], e[1], e[2]), r: dm.r, h: dm.h, kind }); }
       }
-      if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
-      paintUnderTrees(gctx, casters);
-      tex.needsUpdate = true;
-      if (this.flags.get('envgrass') !== '0') this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid });
-      if (this.grass) this.env.add(this.grass.mesh);
+      // r2 (load time, E14): contact shadows + grass are built two frames after the first gameplay frame (the first frames show the
+      // painted ground without them); QA (?qafreeze) builds them at once so shots stay deterministic.
+      const gen = ++this.envGen;
+      const late = () => {
+        if (gen !== this.envGen) return; // the level was rebuilt meanwhile
+        const t0 = performance.now();
+        if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
+        paintUnderTrees(gctx, casters);
+        tex.needsUpdate = true;
+        if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid }); this.grass.mesh.visible = !this.bossHidden; this.env.add(this.grass.mesh); }
+        this.envProf.lateMs = performance.now() - t0;
+      };
+      if (this.flags.has('qafreeze') || this.flags.get('envlate') === '0') late(); else requestAnimationFrame(() => requestAnimationFrame(late));
     }
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
@@ -475,8 +507,45 @@ export class View {
     if (this.shafts) { this.shafts.mesh.visible = w > 0.01; this.shafts.mat.uniforms.uI.value = 0.16 * w; }
     this.arenaDeco?.update(this.time);
     this.updateCamera(world, dt);
+    if (this.envArt) this.updateEnvArt(world);
     this.updateOccluders(world, dt);
     this.renderer.render(this.scene, this.camera);
+  }
+
+  /** env art r2: (E12) the boss fight draws exactly what the old look drew: no grass, extra rocks/bushes cut off by instance count;
+   *  (E11) a prop may stay solid at the screen side only when its projected bounding sphere covers < 12% of the screen and misses
+   *  the HUD zones (joystick + AUTO bottom-left, button column right, skill row bottom). Normalised zones from the 844x390 layout. */
+  private updateEnvArt(world: World) {
+    const ar = LEVEL.walkable.find((sh) => sh.id === 'arena');
+    const pv = this.actors.get(world.player.id);
+    const inArena = (world.bossStarted && world.boss.alive) || (!!pv && ar?.type === 'circle' && Math.hypot(pv.root.position.x - ar.x, pv.root.position.z - ar.z) < ar.r + 1.5);
+    if (inArena !== this.bossHidden) {
+      this.bossHidden = inArena;
+      if (this.grass) this.grass.mesh.visible = !inArena;
+      for (const { im, base } of this.extraBatches) { im.count = inArena ? base : im.instanceMatrix.count; im.visible = im.count > 0; im.computeBoundingSphere(); } // culling sphere of the drawn instances only
+    }
+    if (!this.fadeSets.length) return;
+    const cam = this.camera; cam.updateMatrixWorld(); const inv = TMP_M.copy(cam.matrixWorld).invert().elements;
+    const tV = Math.tan((cam.fov * Math.PI) / 360), tH = tV * cam.aspect, reach = this.nearFadeU.value + 3.2;
+    const cx = cam.position.x, cy = cam.position.y, cz = cam.position.z;
+    for (const { attr, pts } of this.fadeSets) {
+      const arr = attr.array as Float32Array; let dirty = false;
+      for (let i = 0, n = arr.length; i < n; i++) {
+        const x = pts[i * 4], y = pts[i * 4 + 1], z = pts[i * 4 + 2], R = pts[i * 4 + 3];
+        const dx = x - cx, dy = y - cy, dz = z - cz; if (dx * dx + dy * dy + dz * dz > (reach + R) * (reach + R)) continue; // not in the fade range
+        const vx = inv[0] * x + inv[4] * y + inv[8] * z + inv[12], vy = inv[1] * x + inv[5] * y + inv[9] * z + inv[13], d = -(inv[2] * x + inv[6] * y + inv[10] * z + inv[14]);
+        let ok = 0;
+        if (d > 0.3) {
+          const nx = vx / (d * tH), ny = vy / (d * tV), rx = R / (d * tH), ry = R / (d * tV);
+          const x0 = Math.max(0, (nx - rx + 1) / 2), x1 = Math.min(1, (nx + rx + 1) / 2), y0 = Math.max(0, (1 - ny - ry) / 2), y1 = Math.min(1, (1 - ny + ry) / 2);
+          const area = Math.max(0, x1 - x0) * Math.max(0, y1 - y0);
+          const hit = (a0: number, a1: number, b0: number, b1: number) => x0 < a1 && x1 > a0 && y0 < b1 && y1 > b0;
+          ok = area < 0.12 && !hit(0, 0.2, 0.5, 1) && !hit(0.86, 1, 0.36, 1) && !hit(0.57, 0.86, 0.82, 1) ? 1 : 0;
+        }
+        if (arr[i] !== ok) { arr[i] = ok; dirty = true; }
+      }
+      if (dirty) attr.needsUpdate = true;
+    }
   }
 
   private makeTele(t: Telegraph) {
@@ -720,6 +789,7 @@ export class View {
 }
 const TMP = new Vector3();
 const TMP_C = new Color();
+const TMP_M = new Matrix4();
 const TMP_C2 = new Vector3();
 /** DES-006 §1 camera pull-back: max extra scale of the camera offset, and the viewport safe area in NDC (bottom margin leaves room for the HUD buttons / joystick) */
 const PULL_MAX = 1.2, PULL_SAFE_X = 0.94, PULL_SAFE_TOP = 0.94, PULL_SAFE_BOTTOM = -0.86;
@@ -740,11 +810,13 @@ function nearFade(src: Material, u: { value: number }, edge: { value: number } |
     // env art (finding 5): props at the screen sides frame the shot and never cover the action in the centre, so they stay solid
     // (unless closer than 2.5 m); where a prop does fade, a fine interleaved-gradient-noise stipple replaces the coarse 2x2 grid.
     sh.uniforms.uNearEdge = edge;
-    sh.fragmentShader = 'uniform float uNearFade; uniform float uNearEdge;\n' + sh.fragmentShader.replace('void main() {', `void main() {
+    // aSolid (per instance, View.updateEnvArt): 1 = may stay solid at the screen side; missing attribute (non-instanced) reads 0
+    sh.vertexShader = 'attribute float aSolid;\nvarying float vSolid;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n\tvSolid = aSolid;');
+    sh.fragmentShader = 'uniform float uNearFade; uniform float uNearEdge;\nvarying float vSolid;\n' + sh.fragmentShader.replace('void main() {', `void main() {
       float nfD = length(vViewPosition);
       float nfT = smoothstep(uNearFade, uNearFade + 3.0, nfD);
       float nfX = abs(vViewPosition.x) / max(-vViewPosition.z, 0.05) / uNearEdge;
-      nfT = max(nfT, smoothstep(0.74, 0.92, nfX) * step(2.5, nfD));
+      nfT = max(nfT, smoothstep(0.74, 0.92, nfX) * step(2.5, nfD) * vSolid);
       float nfB = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
       if (nfT < nfB * 0.98 + 0.01) discard;`);
   };

@@ -9,7 +9,7 @@
 //   5. warm key / cool ambient tone, sun turned to the side so shapes get a lit and a shade side
 // Every art choice is listed as E1..En in the README for team A review (Claude holds technical art while Codex quota is out).
 import {
-  BufferGeometry, CanvasTexture, Color, DoubleSide, Float32BufferAttribute, LinearMipmapNearestFilter, Mesh, MeshLambertMaterial,
+  BufferAttribute, BufferGeometry, CanvasTexture, Color, DoubleSide, LinearMipmapNearestFilter, Mesh, MeshLambertMaterial,
   RepeatWrapping, Vector3, type Matrix4,
 } from 'three';
 import { envLibNode } from './models.ts';
@@ -82,16 +82,24 @@ function wobblyPath(c: GroundCtx, s: Shape, pad: number, amp: number, n: (u: num
   g.closePath(); g.fill();
 }
 
-/** Soft round spot (radial gradient), world units. */
+// r2 (load time): soft spots are stamped from one cached 64 px sprite per colour (drawImage + globalAlpha) instead of building a
+// radial gradient per spot; same falloff (1 -> 0.6 at 55% -> 0).
+const sprites = new Map<number, HTMLCanvasElement>();
+function sprite(col: number) {
+  let cv = sprites.get(col); if (cv) return cv;
+  cv = document.createElement('canvas'); cv.width = cv.height = 64; const g = cv.getContext('2d')!;
+  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, rgba(col, 1)); gr.addColorStop(0.55, rgba(col, 0.6)); gr.addColorStop(1, rgba(col, 0));
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); sprites.set(col, cv); return cv;
+}
+/** Soft round spot, world units. */
 function spot(c: GroundCtx, x: number, z: number, r: number, col: number, a: number) {
   const { g, U, V, sx, sz } = c, px = U(x), pz = V(z), rr = r * (sx + sz) * 0.5; // round in canvas px (cells are ~7.5 x 8.8 px per m: close enough)
   if (rr < 0.6) { g.fillStyle = rgba(col, a); g.fillRect(px, pz, 1, 1); return; }
-  const gr = g.createRadialGradient(px, pz, 0, px, pz, rr);
-  gr.addColorStop(0, rgba(col, a)); gr.addColorStop(0.55, rgba(col, a * 0.6)); gr.addColorStop(1, rgba(col, 0));
-  g.fillStyle = gr;
-  g.fillRect(px - rr, pz - rr, rr * 2, rr * 2);
+  g.globalAlpha = a; g.drawImage(sprite(col), px - rr, pz - rr, rr * 2, rr * 2); g.globalAlpha = 1;
 }
 
+export const paintProf: Record<string, number> = {};
 /** E1/E2: the whole ground canvas for the sample look (replaces the flat gradient + specks + 3-band path of the old look). */
 export function paintGround(c: GroundCtx) {
   const { g, W, H, U, V, sx, sz, tone: t, bounds: B, sdf } = c;
@@ -103,8 +111,12 @@ export function paintGround(c: GroundCtx) {
   // macro value/hue patches: sunlit yellow-green, lush blue-green, olive, cool dark (sizes in metres, independent of groundRes)
   const lightG = mix(t.grassA, 0xd8eb8a, 0.55), lushG = mix(t.grassB, 0x2f8a63, 0.5), olive = mix(t.grassA, 0x9c9a4e, 0.55), coolD = mix(t.grassB, 0x3d7468, 0.6);
   const macro = [lightG, lushG, olive, coolD, lightG];
-  for (let i = 0; i < 420; i++) spot(c, rx(), rz(), 2.2 + rnd() * 5.5, macro[Math.floor(rnd() * macro.length)], 0.12 + rnd() * 0.14);
-  for (let i = 0; i < 2600; i++) spot(c, rx(), rz(), 0.35 + rnd() * 1.1, rnd() < 0.5 ? lightG : lushG, 0.05 + rnd() * 0.07);
+  const T0 = performance.now();
+  // r2 (load time): detail counts scale with the canvas resolution (low = half), the canvas has fewer pixels to fill anyway
+  const k = Math.min(1, W / 512);
+  for (let i = 0, n = Math.round(420 * (0.4 + 0.6 * k)); i < n; i++) spot(c, rx(), rz(), 2.2 + rnd() * 5.5, macro[Math.floor(rnd() * macro.length)], 0.12 + rnd() * 0.14);
+  for (let i = 0, n = Math.round(2200 * k); i < n; i++) spot(c, rx(), rz(), 0.35 + rnd() * 1.1, rnd() < 0.5 ? lightG : lushG, 0.05 + rnd() * 0.07);
+  paintProf.spots = performance.now() - T0;
   // the boss grove keeps the old cool tint (same values as View)
   if (c.arena) {
     const x = U(c.arena.x), z = V(c.arena.z), grove = g.createRadialGradient(x, z, 6 * sx, x, z, 31 * sx);
@@ -123,6 +135,7 @@ export function paintGround(c: GroundCtx) {
     }
     g.stroke();
   }
+  paintProf.strokes = performance.now() - T0;
   // path: damp darker rim outside the edge (two soft passes) -> edge -> fill; every layer with its own wobble
   const rimCol = mix(t.grassB, 0x3e5a3a, 0.45), edgeCol = t.pathEdge;
   const nRim = c.walkable.map(() => wave(rnd)), nEdge = c.walkable.map(() => wave(rnd)), nFill = c.walkable.map(() => wave(rnd));
@@ -130,9 +143,10 @@ export function paintGround(c: GroundCtx) {
   g.fillStyle = rgba(rimCol, 0.2); c.walkable.forEach((s, i) => wobblyPath(c, s, 0.75, 0.3, nRim[i]));
   g.fillStyle = rgba(edgeCol, 0.75); c.walkable.forEach((s, i) => wobblyPath(c, s, 0.2, 0.28, nEdge[i]));
   g.fillStyle = c.pathFill; c.walkable.forEach((s, i) => wobblyPath(c, s, -0.22, 0.26, nFill[i]));
+  paintProf.pathfill = performance.now() - T0;
   // inside the path: soft lighter/darker blotches (worn and packed earth) and faint ruts along the trails
   const pathLight = 0xfff3d6, pathDark = mix(t.path, 0x8a6a48, 0.5);
-  for (let i = 0; i < 1400; i++) { const x = rx(), z = rz(); if (sdf(x, z) > -0.5) continue; spot(c, x, z, 0.4 + rnd() * 1.3, rnd() < 0.55 ? pathLight : pathDark, 0.07 + rnd() * 0.08); }
+  for (let i = 0, n = Math.round(1400 * k); i < n; i++) { const x = rx(), z = rz(); if (sdf(x, z) > -0.5) continue; spot(c, x, z, 0.4 + rnd() * 1.3, rnd() < 0.55 ? pathLight : pathDark, 0.07 + rnd() * 0.08); }
   for (const s of c.walkable) {
     if (s.type !== 'capsule') continue;
     const dx = s.bx - s.ax, dz = s.bz - s.az, L = Math.hypot(dx, dz), nx = -dz / L, nz = dx / L, w = wave(rnd);
@@ -142,27 +156,37 @@ export function paintGround(c: GroundCtx) {
       g.stroke();
     }
   }
+  paintProf.blotchRuts = performance.now() - T0;
   // pebbles: small dark stones with a light top, more toward the path edges
   const peb = mix(t.pathEdge, 0x6f6a72, 0.5), pebLit = 0xfff6e4, pr = Math.max(0.7, 0.09 * sx);
-  for (let i = 0; i < 5200; i++) {
+  const pebs: number[] = [];
+  for (let i = 0, n = Math.round(5200 * k); i < n; i++) {
     const x = rx(), z = rz(), d = sdf(x, z); if (d > 0.1 || d < -3.5) continue;
     if (rnd() > 0.35 + 0.65 * Math.min(1, (d + 3.5) / 3)) continue;
-    const px = U(x), py = V(z), r = pr * (0.6 + rnd() * 0.9);
-    g.fillStyle = rgba(peb, 0.55); g.beginPath(); g.ellipse(px, py, r * 1.2, r, 0, 0, 6.283); g.fill();
-    g.fillStyle = rgba(pebLit, 0.5); g.fillRect(px - r * 0.6, py - r * 0.7, Math.max(1, r * 0.7), Math.max(1, r * 0.5));
+    pebs.push(U(x), V(z), pr * (0.6 + rnd() * 0.9));
   }
+  g.fillStyle = rgba(peb, 0.55); g.beginPath();
+  for (let i = 0; i < pebs.length; i += 3) { const [px, py, r] = [pebs[i], pebs[i + 1], pebs[i + 2]]; g.moveTo(px + r * 1.2, py); g.ellipse(px, py, r * 1.2, r, 0, 0, 6.283); }
+  g.fill();
+  g.fillStyle = rgba(pebLit, 0.5);
+  for (let i = 0; i < pebs.length; i += 3) { const [px, py, r] = [pebs[i], pebs[i + 1], pebs[i + 2]]; g.fillRect(px - r * 0.6, py - r * 0.7, Math.max(1, r * 0.7), Math.max(1, r * 0.5)); }
+  paintProf.pebbles = performance.now() - T0;
   // grass creeping in over the path edge: small green tongues and blobs
   const creep = mix(t.grassA, t.grassB, 0.5), creepD = mix(t.grassB, 0x2f6b42, 0.35);
-  for (let i = 0; i < 9000; i++) {
+  for (let i = 0, n = Math.round(8000 * k); i < n; i++) {
     const x = rx(), z = rz(), d = sdf(x, z); if (d < -0.6 || d > 0.2) continue;
     const r = 0.12 + rnd() * 0.3; spot(c, x, z, r, rnd() < 0.6 ? creep : creepD, 0.3 + rnd() * 0.3);
   }
+  paintProf.creep = performance.now() - T0;
   // clover and tiny white/violet specks far from the path (reads as small flowers at distance)
-  for (let i = 0; i < 2600; i++) {
+  const specks = new Map<number, number[]>();
+  for (let i = 0, n = Math.round(2600 * k); i < n; i++) {
     const x = rx(), z = rz(), d = sdf(x, z); if (d < 1.2) continue;
     const col = rnd() < 0.55 ? 0xdff7c4 : rnd() < 0.6 ? 0xf6f1ff : 0xc9b6ff;
-    g.fillStyle = rgba(col, 0.55); g.fillRect(U(x), V(z), Math.max(1, sx * 0.08), Math.max(1, sz * 0.08));
+    let l = specks.get(col); if (!l) specks.set(col, (l = [])); l.push(U(x), V(z));
   }
+  const kw = Math.max(1, sx * 0.08), kh = Math.max(1, sz * 0.08);
+  for (const [col, l] of specks) { g.fillStyle = rgba(col, 0.55); for (let i = 0; i < l.length; i += 2) g.fillRect(l[i], l[i + 1], kw, kh); }
 }
 
 /** Placed prop (centre, scale, horizontal radius and height of the model at scale 1). */
@@ -175,10 +199,13 @@ export function bakeContactShadows(c: GroundCtx, casters: Caster[], sun: Vector3
   const shade = 0x1f3f48, core = 0x1b3326;
   for (const k of casters) {
     if (k.kind === 'tree') {
-      const R = k.r * k.s * 0.8, hc = k.h * k.s * 0.55, cx = k.x + ox * hc, cz = k.z + oz * hc;
-      spot(c, cx, cz, R * 1.15, shade, 0.26);
-      for (let i = 0; i < 6; i++) { const a = rnd() * 6.283, d = rnd() * R * 0.55; spot(c, cx + Math.cos(a) * d, cz + Math.sin(a) * d, R * (0.35 + rnd() * 0.3), shade, 0.2 + rnd() * 0.12); }
-      spot(c, k.x, k.z, 0.6 * k.s, core, 0.42);
+      // r2: smaller offset (0.22 of the height, was 0.55) so the shadow starts at the trunk, a bridge blob halfway, and a darker core
+      const R = k.r * k.s * 0.8, hc = k.h * k.s * 0.22, cx = k.x + ox * hc, cz = k.z + oz * hc;
+      spot(c, cx, cz, R * 1.1, shade, 0.26);
+      for (let i = 0, n = c.W >= 512 ? 5 : 2; i < n; i++) { const a = rnd() * 6.283, d = rnd() * R * 0.5; spot(c, cx + Math.cos(a) * d, cz + Math.sin(a) * d, R * (0.35 + rnd() * 0.3), shade, 0.2 + rnd() * 0.1); }
+      spot(c, (k.x + cx) / 2, (k.z + cz) / 2, R * 0.6, shade, 0.3);
+      spot(c, k.x, k.z, 0.85 * k.s, core, 0.62);
+      spot(c, k.x, k.z, 0.4 * k.s, core, 0.55);
     } else {
       const R = k.r * k.s * (k.kind === 'small' ? 0.9 : 1.05), off = k.h * k.s * 0.35;
       spot(c, k.x + ox * off, k.z + oz * off, R * 1.25, shade, k.kind === 'bush' ? 0.26 : 0.3);
@@ -255,105 +282,120 @@ export function patchGroundDetail(m: MeshLambertMaterial, size: [number, number]
 }
 
 // ------------------------------------------------------------------ grass tufts + flowers (one merged mesh)
-interface Tmpl { pos: number[]; col: number[]; sway: number[] }
+/** growable Float32Array (r2: no number[] + copy; one typed array per attribute, handed to three.js as is) */
+class FBuf {
+  a = new Float32Array(8192); n = 0;
+  private grow() { const b = new Float32Array(this.a.length * 2); b.set(this.a); this.a = b; }
+  p1(x: number) { if (this.n + 1 > this.a.length) this.grow(); this.a[this.n++] = x; }
+  p3(x: number, y: number, z: number) { if (this.n + 3 > this.a.length) this.grow(); const a = this.a, n = this.n; a[n] = x; a[n + 1] = y; a[n + 2] = z; this.n = n + 3; }
+  view() { return this.a.subarray(0, this.n); }
+}
+interface Tmpl { pos: FBuf; col: FBuf; sway: FBuf }
+const newTmpl = (): Tmpl => ({ pos: new FBuf(), col: new FBuf(), sway: new FBuf() });
 const FLOWER_COLS = [0xa78bfa, 0xff9ec7, 0xf7f3ff, 0x8fe9f0]; // violet, blossom, white, soft lumen (no gold/orange near telegraphs)
 
-/** If env_library_v01.glb (?envlib=1) has a node with this name, use its first mesh as a template (vertex colour = its material colour). */
+/** If env_library_v01.glb (?envlib=1) has a node with this name, use its meshes as a template (vertex colour = material colour). */
 function libTemplate(name: string): Tmpl | null {
   const n = envLibNode(name); if (!n) return null;
-  const out: Tmpl = { pos: [], col: [], sway: [] };
+  const out = newTmpl();
   n.updateMatrixWorld(true);
   n.traverse((o) => {
     const m = o as Mesh; if (!m.isMesh) return;
     let gm = m.geometry.clone().applyMatrix4(m.matrixWorld); if (gm.index) gm = gm.toNonIndexed();
     const p = gm.getAttribute('position'), col = ((m.material as MeshLambertMaterial).color ?? new Color(1, 1, 1));
     gm.computeBoundingBox(); const h = Math.max(0.01, gm.boundingBox!.max.y);
-    for (let i = 0; i < p.count; i++) { out.pos.push(p.getX(i), p.getY(i), p.getZ(i)); out.col.push(col.r, col.g, col.b); out.sway.push(Math.max(0, p.getY(i) / h)); }
+    for (let i = 0; i < p.count; i++) { out.pos.p3(p.getX(i), p.getY(i), p.getZ(i)); out.col.p3(col.r, col.g, col.b); out.sway.p1(Math.max(0, p.getY(i) / h)); }
   });
-  return out.pos.length ? out : null;
+  return out.pos.n ? out : null;
 }
 
-/** Add one tuft (4 blades) or one flower (stem + 5-petal head tipped toward the camera) to the buffers. */
+/** One tuft: 5 broad blades from a tight base (r2: reads as a clump at 844x390, not as dots). */
 function addTuft(b: Tmpl, rnd: () => number, x: number, z: number, h: number, base: Color, tip: Color, lib: Tmpl | null) {
-  if (lib) { const s = h / 0.3, rot = rnd() * 6.283, c = Math.cos(rot), sn = Math.sin(rot); for (let i = 0; i < lib.pos.length; i += 3) { const px = lib.pos[i] * s, pz = lib.pos[i + 2] * s; b.pos.push(x + px * c - pz * sn, lib.pos[i + 1] * s, z + px * sn + pz * c); b.col.push(lib.col[i] * tip.r, lib.col[i + 1] * tip.g, lib.col[i + 2] * tip.b); b.sway.push(lib.sway[i / 3]); } return; }
-  for (let k = 0; k < 3; k++) { // 3 blades per tuft
-    const a = rnd() * 6.283, w = 0.045 + rnd() * 0.035, bh = h * (0.65 + rnd() * 0.45), lean = 0.15 + rnd() * 0.3;
-    const ca = Math.cos(a), sa = Math.sin(a), ox = (rnd() - 0.5) * 0.08, oz = (rnd() - 0.5) * 0.08;
+  if (lib) {
+    const s = h / 0.3, rot = rnd() * 6.283, c = Math.cos(rot), sn = Math.sin(rot), P = lib.pos.a, Cc = lib.col.a;
+    for (let i = 0; i < lib.pos.n; i += 3) { const px = P[i] * s, pz = P[i + 2] * s; b.pos.p3(x + px * c - pz * sn, P[i + 1] * s, z + px * sn + pz * c); b.col.p3(Cc[i] * tip.r, Cc[i + 1] * tip.g, Cc[i + 2] * tip.b); b.sway.p1(lib.sway.a[i / 3]); }
+    return;
+  }
+  for (let k = 0; k < 5; k++) {
+    const a = (k / 5) * 6.283 + rnd() * 0.9, w = 0.055 + rnd() * 0.035, bh = h * (0.6 + rnd() * 0.5), lean = 0.2 + rnd() * 0.35;
+    const ca = Math.cos(a), sa = Math.sin(a), ox = ca * 0.03, oz = sa * 0.03;
     const tx = x + ox + ca * bh * lean, tz = z + oz + sa * bh * lean;
-    b.pos.push(x + ox - sa * w, 0, z + oz + ca * w, x + ox + sa * w, 0, z + oz - ca * w, tx, bh, tz);
-    b.col.push(base.r, base.g, base.b, base.r, base.g, base.b, tip.r, tip.g, tip.b);
-    b.sway.push(0, 0, bh / Math.max(h, 0.01));
+    b.pos.p3(x + ox - sa * w, 0, z + oz + ca * w); b.pos.p3(x + ox + sa * w, 0, z + oz - ca * w); b.pos.p3(tx, bh, tz);
+    b.col.p3(base.r, base.g, base.b); b.col.p3(base.r, base.g, base.b); b.col.p3(tip.r, tip.g, tip.b);
+    b.sway.p1(0); b.sway.p1(0); b.sway.p1(bh / Math.max(h, 0.01));
   }
 }
-function addFlower(b: Tmpl, rnd: () => number, x: number, z: number, h: number, petal: Color, stem: Color, lib: Tmpl | null) {
+function addFlower(b: Tmpl, rnd: () => number, x: number, z: number, h: number, petal: Color, stem: Color, centre: Color, lib: Tmpl | null) {
   if (lib) { addTuft(b, rnd, x, z, h, petal, petal, lib); return; }
   const lean = (rnd() - 0.5) * 0.06, hx = x + lean, hz = z + 0.02, hy = h;
-  b.pos.push(x - 0.012, 0, z, x + 0.012, 0, z, hx, hy, hz); b.col.push(stem.r, stem.g, stem.b, stem.r, stem.g, stem.b, stem.r, stem.g, stem.b); b.sway.push(0, 0, 1);
-  // head: 5 petals in a disc tipped ~50 degrees toward +z (the camera side), petal radius 0.055..0.085
+  b.pos.p3(x - 0.012, 0, z); b.pos.p3(x + 0.012, 0, z); b.pos.p3(hx, hy, hz);
+  for (let i = 0; i < 3; i++) b.col.p3(stem.r, stem.g, stem.b);
+  b.sway.p1(0); b.sway.p1(0); b.sway.p1(1);
+  // head: 5 petals in a disc tipped ~50 degrees toward +z (the camera side)
   const r = 0.07 + rnd() * 0.035, tilt = 0.85, ct = Math.cos(tilt), st = Math.sin(tilt), rot = rnd() * 6.283;
-  const centre = new Color(1, 1, 0.92).lerp(petal, 0.35);
   for (let k = 0; k < 5; k++) {
     const a0 = rot + (k / 5) * 6.283 - 0.5, a1 = rot + (k / 5) * 6.283 + 0.5;
-    const p = (a: number): [number, number, number] => { const u = Math.cos(a) * r, v = Math.sin(a) * r; return [hx + u, hy + v * st, hz + v * ct]; };
-    const A = p(a0), Bp = p(a1);
-    b.pos.push(hx, hy, hz, ...A, ...Bp); b.col.push(centre.r, centre.g, centre.b, petal.r, petal.g, petal.b, petal.r, petal.g, petal.b); b.sway.push(1, 1, 1);
+    b.pos.p3(hx, hy, hz);
+    b.pos.p3(hx + Math.cos(a0) * r, hy + Math.sin(a0) * r * st, hz + Math.sin(a0) * r * ct);
+    b.pos.p3(hx + Math.cos(a1) * r, hy + Math.sin(a1) * r * st, hz + Math.sin(a1) * r * ct);
+    b.col.p3(centre.r, centre.g, centre.b); b.col.p3(petal.r, petal.g, petal.b); b.col.p3(petal.r, petal.g, petal.b);
+    b.sway.p1(1); b.sway.p1(1); b.sway.p1(1);
   }
 }
 
 export interface GrassField { mesh: Mesh; update(time: number): void; dispose(): void; tufts: number; flowers: number }
 
-/** E4/E5: grass tufts clustered along the path edges and around tree bases / rocks, sparse clumps in the field, flower clusters near the
- *  path; short inside/at the path edge so feet, the hero ring and telegraphs stay readable. One static merged mesh = one draw call. */
+/** E4/E5 (+E13 r2): grass clumps along the path edges and around tree bases / rocks, sparser clumps in the field, flower clusters near
+ *  the path; short inside/at the path edge so feet, the hero ring and telegraphs stay readable. One static merged mesh = one draw call. */
 export function buildGrass(opts: {
   q: QualitySettings; art: EnvArt; tone: Tone; seed: number; bounds: { x0: number; x1: number; z0: number; z1: number };
   sdf: (x: number, z: number) => number; casters: Caster[]; avoid: { x: number; z: number; r: number }[];
 }): GrassField {
   const { q, tone: t, bounds: B, sdf } = opts, rnd = prng(opts.seed * 65537 + 11), dens = q.decoDensity;
-  const b: Tmpl = { pos: [], col: [], sway: [] };
+  const b = newTmpl();
   const libT = libTemplate('grass_tuft'), libF = libTemplate('flower_small');
   const blocked = (x: number, z: number) => opts.avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r) || x < B.x0 + 0.5 || x > B.x1 - 0.5 || z < B.z0 + 0.5 || z > B.z1 - 0.5;
   const C = (h: number) => new Color(h);
-  const baseD = C(mix(mix(t.grassA, t.grassB, 0.5), 0x4f8a4c, 0.25)), tipA = C(mix(t.grassA, 0xd9f08e, 0.4)), tipB = C(mix(t.grassB, 0xa8dc7e, 0.35)), tipC = C(mix(t.grassA, 0x8fcf96, 0.3));
-  const tips = [tipA, tipB, tipC];
-  const stem = C(mix(t.grassB, 0x3b7a3e, 0.4));
+  // r2: a little darker and more saturated than the ground so a clump reads against it
+  const baseD = C(mix(t.grassB, 0x2f6e36, 0.4)), tips = [C(mix(t.grassA, 0x9ad85a, 0.45)), C(mix(t.grassB, 0x7cc95a, 0.4)), C(mix(t.grassA, 0x63b56a, 0.4))];
+  const stem = C(mix(t.grassB, 0x3b7a3e, 0.4)), fc = FLOWER_COLS.map(C), fcc = fc.map((p) => new Color(1, 1, 0.92).lerp(p, 0.35));
   let tufts = 0, flowers = 0;
   const tuft = (x: number, z: number, h: number) => { if (blocked(x, z)) return; addTuft(b, rnd, x, z, h, baseD, tips[Math.floor(rnd() * 3)], libT); tufts++; };
-  const flower = (x: number, z: number, h: number, col: Color) => { if (blocked(x, z) || sdf(x, z) < 0.15) return; addFlower(b, rnd, x, z, h, col, stem, libF); flowers++; };
-  const heightAt = (d: number) => d < 0 ? 0.08 + rnd() * 0.05 : d < 0.9 ? 0.12 + rnd() * 0.08 : 0.16 + rnd() * 0.1;
+  const flower = (x: number, z: number, h: number, col: Color, centre: Color) => { if (blocked(x, z) || sdf(x, z) < 0.15) return; addFlower(b, rnd, x, z, h, col, stem, centre, libF); flowers++; };
+  const heightAt = (d: number) => d < 0 ? 0.08 + rnd() * 0.04 : d < 0.9 ? 0.13 + rnd() * 0.07 : 0.2 + rnd() * 0.12;
   const rx = () => B.x0 + rnd() * (B.x1 - B.x0), rz = () => B.z0 + rnd() * (B.z1 - B.z0);
-  // path-edge clumps: 2-5 tufts around a point in the band -0.45 .. 1.8 m from the walkable edge
-  for (let i = 0, n = Math.round(7200 * dens); i < n; i++) {
-    const x = rx(), z = rz(), d = sdf(x, z); if (d < -0.45 || d > 1.8) continue;
-    const k = 2 + Math.floor(rnd() * 4);
-    for (let j = 0; j < k; j++) { const tx = x + (rnd() - 0.5) * 0.5, tz = z + (rnd() - 0.5) * 0.5, dd = sdf(tx, tz); if (dd < -0.45) continue; tuft(tx, tz, heightAt(dd)); }
+  // path-edge clumps: 2-4 tufts close together, in the band -0.4 .. 1.8 m from the walkable edge
+  for (let i = 0, n = Math.round(3400 * dens); i < n; i++) {
+    const x = rx(), z = rz(), d = sdf(x, z); if (d < -0.4 || d > 1.8) continue;
+    const k = 2 + Math.floor(rnd() * 3);
+    for (let j = 0; j < k; j++) { const tx = x + (rnd() - 0.5) * 0.32, tz = z + (rnd() - 0.5) * 0.32, dd = sdf(tx, tz); if (dd < -0.4) continue; tuft(tx, tz, heightAt(dd)); }
   }
   // field clumps (sparser with distance from the path)
-  for (let i = 0, n = Math.round(2100 * dens); i < n; i++) {
+  for (let i = 0, n = Math.round(1200 * dens); i < n; i++) {
     const x = rx(), z = rz(), d = sdf(x, z); if (d < 1.8 || d > 15 || rnd() > 1.2 / (1 + d * 0.15)) continue;
-    const k = 2 + Math.floor(rnd() * 5);
-    for (let j = 0; j < k; j++) tuft(x + (rnd() - 0.5) * 0.9, z + (rnd() - 0.5) * 0.9, 0.16 + rnd() * 0.12);
+    const k = 3 + Math.floor(rnd() * 3);
+    for (let j = 0; j < k; j++) tuft(x + (rnd() - 0.5) * 0.5, z + (rnd() - 0.5) * 0.5, 0.22 + rnd() * 0.12);
   }
   // around tree bases, rocks and bushes
   for (const c of opts.casters) {
     if (c.kind === 'small') continue;
-    const n = c.kind === 'tree' ? 5 : 3, r0 = c.kind === 'tree' ? 0.35 : c.r * c.s * 0.85;
-    for (let j = 0; j < n * (0.6 + dens * 0.5); j++) { const a = rnd() * 6.283, r = r0 + rnd() * 0.7; const x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r; if (sdf(x, z) < 0.2) continue; tuft(x, z, 0.16 + rnd() * 0.12); }
-    if (c.kind !== 'tree' && rnd() < 0.45) { const a = rnd() * 6.283, r = r0 + 0.3; flower(c.x + Math.cos(a) * r, c.z + Math.sin(a) * r, 0.2 + rnd() * 0.1, C(FLOWER_COLS[Math.floor(rnd() * 4)])); }
+    const n = c.kind === 'tree' ? 3 : 2, r0 = c.kind === 'tree' ? 0.35 : c.r * c.s * 0.85;
+    for (let j = 0; j < n * (0.6 + dens * 0.5); j++) { const a = rnd() * 6.283, r = r0 + rnd() * 0.6; const x = c.x + Math.cos(a) * r, z = c.z + Math.sin(a) * r; if (sdf(x, z) < 0.2) continue; tuft(x, z, 0.2 + rnd() * 0.12); }
+    if (c.kind !== 'tree' && rnd() < 0.45) { const a = rnd() * 6.283, r = r0 + 0.3, k = Math.floor(rnd() * 4); flower(c.x + Math.cos(a) * r, c.z + Math.sin(a) * r, 0.2 + rnd() * 0.1, fc[k], fcc[k]); }
   }
   // flower clusters: one colour per cluster, mostly near the path, some in the field
-  const fc = FLOWER_COLS.map(C);
-  for (let i = 0, n = Math.round(1700 * dens); i < n; i++) {
+  for (let i = 0, n = Math.round(1400 * dens); i < n; i++) {
     const x = rx(), z = rz(), d = sdf(x, z); if (d < 0.3 || d > 9) continue;
     if (rnd() > (d < 2.6 ? 1 : 0.25)) continue;
-    const col = fc[Math.floor(rnd() * fc.length)], k = 2 + Math.floor(rnd() * 4);
-    for (let j = 0; j < k; j++) flower(x + (rnd() - 0.5) * 0.6, z + (rnd() - 0.5) * 0.6, 0.18 + rnd() * 0.12, col);
+    const ci = Math.floor(rnd() * fc.length), k = 2 + Math.floor(rnd() * 4);
+    for (let j = 0; j < k; j++) flower(x + (rnd() - 0.5) * 0.6, z + (rnd() - 0.5) * 0.6, 0.18 + rnd() * 0.12, fc[ci], fcc[ci]);
   }
   const geo = new BufferGeometry();
-  geo.setAttribute('position', new Float32BufferAttribute(b.pos, 3));
-  geo.setAttribute('color', new Float32BufferAttribute(b.col, 3));
-  geo.setAttribute('aSway', new Float32BufferAttribute(b.sway, 1));
-  const nrm = new Float32Array(b.pos.length); for (let i = 1; i < nrm.length; i += 3) nrm[i] = 1; // lit like the ground it grows from
-  geo.setAttribute('normal', new Float32BufferAttribute(nrm, 3));
+  geo.setAttribute('position', new BufferAttribute(b.pos.view(), 3));
+  geo.setAttribute('color', new BufferAttribute(b.col.view(), 3));
+  geo.setAttribute('aSway', new BufferAttribute(b.sway.view(), 1));
+  const nrm = new Float32Array(b.pos.n); for (let i = 1; i < nrm.length; i += 3) nrm[i] = 1; // lit like the ground it grows from
+  geo.setAttribute('normal', new BufferAttribute(nrm, 3));
   geo.computeBoundingSphere();
   const mat = new MeshLambertMaterial({ vertexColors: true, side: DoubleSide });
   const uTime = { value: 0 }, wind = opts.art.wind && q.tier !== 'low';
