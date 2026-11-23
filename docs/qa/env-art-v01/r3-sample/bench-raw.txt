@@ -1,0 +1,66 @@
+# node tools/qa/bench.mjs <base> <profile> [&env=0]; r3=:8793 (this commit) r2=:8792 (58a115d dist); order rotates each round
+r3#1 android-low {"profile":"android-low","tier":"low","readyMs":3491,"firstPlayMs":5379,"transferKB":886,"requests":13,"fpsAvg":23.5,"endPixelRatio":0.6,"drawCalls":48,"tris":48065,"heapMB":19.5,"kit":true,"errors":0}
+r3-env0#1 android-low {"profile":"android-low","tier":"low","readyMs":3445,"firstPlayMs":5176,"transferKB":886,"requests":13,"fpsAvg":17.4,"endPixelRatio":0.6,"drawCalls":46,"tris":42715,"heapMB":19.6,"kit":true,"errors":0}
+r2#1 android-low {"profile":"android-low","tier":"low","readyMs":3505,"firstPlayMs":5314,"transferKB":885,"requests":13,"fpsAvg":16.9,"endPixelRatio":0.6,"drawCalls":48,"tris":51962,"heapMB":18.4,"kit":true,"errors":0}
+r3-env0#2 android-low {"profile":"android-low","tier":"low","readyMs":3668,"firstPlayMs":5697,"transferKB":886,"requests":13,"fpsAvg":23.8,"endPixelRatio":0.6,"drawCalls":47,"tris":41497,"heapMB":17.8,"kit":true,"errors":0}
+r2#2 android-low {"profile":"android-low","tier":"low","readyMs":3366,"firstPlayMs":5099,"transferKB":885,"requests":13,"fpsAvg":16.6,"endPixelRatio":0.6,"drawCalls":44,"tris":51432,"heapMB":21.7,"kit":true,"errors":0}
+r3#2 android-low {"profile":"android-low","tier":"low","readyMs":3544,"firstPlayMs":5692,"transferKB":886,"requests":13,"fpsAvg":23,"endPixelRatio":0.6,"drawCalls":49,"tris":47771,"heapMB":19.8,"kit":true,"errors":0}
+r2#3 android-low {"profile":"android-low","tier":"low","readyMs":3524,"firstPlayMs":5783,"transferKB":885,"requests":13,"fpsAvg":22.3,"endPixelRatio":0.6,"drawCalls":51,"tris":51852,"heapMB":20.5,"kit":true,"errors":0}
+r3#3 android-low {"profile":"android-low","tier":"low","readyMs":3599,"firstPlayMs":5572,"transferKB":886,"requests":13,"fpsAvg":22.6,"endPixelRatio":0.6,"drawCalls":47,"tris":47937,"heapMB":19.9,"kit":true,"errors":0}
+r3-env0#3 android-low {"profile":"android-low","tier":"low","readyMs":3505,"firstPlayMs":5421,"transferKB":886,"requests":13,"fpsAvg":15.5,"endPixelRatio":0.6,"drawCalls":43,"tris":40967,"heapMB":18.4,"kit":true,"errors":0}
+r3#4 android-low {"profile":"android-low","tier":"low","readyMs":3543,"firstPlayMs":5626,"transferKB":886,"requests":13,"fpsAvg":22.4,"endPixelRatio":0.6,"drawCalls":48,"tris":48065,"heapMB":19.7,"kit":true,"errors":0}
+r3-env0#4 android-low {"profile":"android-low","tier":"low","readyMs":3704,"firstPlayMs":5852,"transferKB":886,"requests":13,"fpsAvg":17.7,"endPixelRatio":0.6,"drawCalls":45,"tris":41347,"heapMB":19.4,"kit":true,"errors":0}
+r2#4 android-low {"profile":"android-low","tier":"low","readyMs":3469,"firstPlayMs":5744,"transferKB":885,"requests":13,"fpsAvg":22.5,"endPixelRatio":0.6,"drawCalls":48,"tris":51962,"heapMB":21.2,"kit":true,"errors":0}
+r3-env0#5 android-low {"profile":"android-low","tier":"low","readyMs":3400,"firstPlayMs":5203,"transferKB":886,"requests":13,"fpsAvg":18.1,"endPixelRatio":0.6,"drawCalls":45,"tris":41307,"heapMB":20.1,"kit":true,"errors":0}
+r2#5 android-low {"profile":"android-low","tier":"low","readyMs":3535,"firstPlayMs":5659,"transferKB":885,"requests":13,"fpsAvg":21.1,"endPixelRatio":0.6,"drawCalls":49,"tris":51700,"heapMB":19.8,"kit":true,"errors":0}
+r3#5 android-low {"profile":"android-low","tier":"low","readyMs":3426,"firstPlayMs":5630,"transferKB":886,"requests":13,"fpsAvg":23.4,"endPixelRatio":0.6,"drawCalls":48,"tris":48065,"heapMB":18.5,"kit":true,"errors":0}
+r2#6 android-low {"profile":"android-low","tier":"low","readyMs":3454,"firstPlayMs":5525,"transferKB":885,"requests":13,"fpsAvg":16.4,"endPixelRatio":0.6,"drawCalls":46,"tris":51820,"heapMB":21.2,"kit":true,"errors":0}
+r3#6 android-low {"profile":"android-low","tier":"low","readyMs":3520,"firstPlayMs":5345,"transferKB":886,"requests":13,"fpsAvg":17.8,"endPixelRatio":0.6,"drawCalls":47,"tris":49307,"heapMB":19.1,"kit":true,"errors":0}
+r3-env0#6 android-low {"profile":"android-low","tier":"low","readyMs":3348,"firstPlayMs":5059,"transferKB":886,"requests":13,"fpsAvg":19.3,"endPixelRatio":0.6,"drawCalls":46,"tris":42755,"heapMB":17.1,"kit":true,"errors":0}
+r3#1 iphone-class {"profile":"iphone-class","tier":"low","readyMs":857,"firstPlayMs":1640,"transferKB":886,"requests":13,"fpsAvg":21.5,"endPixelRatio":0.6,"drawCalls":47,"tris":49299,"heapMB":18.2,"kit":true,"errors":0}
+r3-env0#1 iphone-class {"profile":"iphone-class","tier":"low","readyMs":873,"firstPlayMs":1704,"transferKB":886,"requests":13,"fpsAvg":21.5,"endPixelRatio":0.6,"drawCalls":43,"tris":40967,"heapMB":17.3,"kit":true,"errors":0}
+r2#1 iphone-class {"profile":"iphone-class","tier":"low","readyMs":869,"firstPlayMs":1822,"transferKB":885,"requests":13,"fpsAvg":20.7,"endPixelRatio":0.6,"drawCalls":44,"tris":51432,"heapMB":20.5,"kit":true,"errors":0}
+r3-env0#2 iphone-class {"profile":"iphone-class","tier":"low","readyMs":801,"firstPlayMs":1564,"transferKB":886,"requests":13,"fpsAvg":24.8,"endPixelRatio":0.6,"drawCalls":43,"tris":40967,"heapMB":17.2,"kit":true,"errors":0}
+r2#2 iphone-class {"profile":"iphone-class","tier":"low","readyMs":813,"firstPlayMs":1547,"transferKB":885,"requests":13,"fpsAvg":20.3,"endPixelRatio":0.6,"drawCalls":44,"tris":51432,"heapMB":21.3,"kit":true,"errors":0}
+r3#2 iphone-class {"profile":"iphone-class","tier":"low","readyMs":880,"firstPlayMs":1772,"transferKB":886,"requests":13,"fpsAvg":22.2,"endPixelRatio":0.6,"drawCalls":47,"tris":49299,"heapMB":20.9,"kit":true,"errors":0}
+r2#3 iphone-class {"profile":"iphone-class","tier":"low","readyMs":810,"firstPlayMs":1607,"transferKB":885,"requests":13,"fpsAvg":21.7,"endPixelRatio":0.6,"drawCalls":44,"tris":51432,"heapMB":18.3,"kit":true,"errors":0}
+r3#3 iphone-class {"profile":"iphone-class","tier":"low","readyMs":852,"firstPlayMs":1883,"transferKB":886,"requests":13,"fpsAvg":22,"endPixelRatio":0.6,"drawCalls":47,"tris":49291,"heapMB":18.4,"kit":true,"errors":0}
+r3-env0#3 iphone-class {"profile":"iphone-class","tier":"low","readyMs":836,"firstPlayMs":1573,"transferKB":886,"requests":13,"fpsAvg":21.5,"endPixelRatio":0.6,"drawCalls":43,"tris":40967,"heapMB":18,"kit":true,"errors":0}
+r3#4 iphone-class {"profile":"iphone-class","tier":"low","readyMs":858,"firstPlayMs":1570,"transferKB":886,"requests":13,"fpsAvg":22,"endPixelRatio":0.6,"drawCalls":44,"tris":47519,"heapMB":19.3,"kit":true,"errors":0}
+r3-env0#4 iphone-class {"profile":"iphone-class","tier":"low","readyMs":881,"firstPlayMs":1701,"transferKB":886,"requests":13,"fpsAvg":21.1,"endPixelRatio":0.6,"drawCalls":43,"tris":40967,"heapMB":19.6,"kit":true,"errors":0}
+r2#4 iphone-class {"profile":"iphone-class","tier":"low","readyMs":876,"firstPlayMs":1654,"transferKB":885,"requests":13,"fpsAvg":21.4,"endPixelRatio":0.6,"drawCalls":44,"tris":51424,"heapMB":18.6,"kit":true,"errors":0}
+done
+
+# summary (sum3.py)
+android-low   r2       n=6 firstPlay 5314/5099/5783/5744/5659/5525 med 5592 range 5099-5783 | ready med 3487 | fps 16.9/16.6/22.3/22.5/21.1/16.4 med 19.0 mean 19.30 | heap med 20.9 | calls 48/44/51/48/49/46 | KB 885
+android-low   r3       n=6 firstPlay 5379/5692/5572/5626/5630/5345 med 5599 range 5345-5692 | ready med 3532 | fps 23.5/23/22.6/22.4/23.4/17.8 med 22.8 mean 22.12 | heap med 19.6 | calls 48/49/47/48/48/47 | KB 886
+android-low   r3-env0  n=6 firstPlay 5176/5697/5421/5852/5203/5059 med 5312 range 5059-5852 | ready med 3475 | fps 17.4/23.8/15.5/17.7/18.1/19.3 med 17.9 mean 18.63 | heap med 18.9 | calls 46/47/43/45/45/46 | KB 886
+iphone-class  r2       n=4 firstPlay 1822/1547/1607/1654 med 1630 range 1547-1822 | ready med 841 | fps 20.7/20.3/21.7/21.4 med 21.0 mean 21.02 | heap med 19.6 | calls 44/44/44/44 | KB 885
+iphone-class  r3       n=4 firstPlay 1640/1772/1883/1570 med 1706 range 1570-1883 | ready med 858 | fps 21.5/22.2/22/22 med 22.0 mean 21.93 | heap med 18.9 | calls 47/47/47/44 | KB 886
+iphone-class  r3-env0  n=4 firstPlay 1704/1564/1573/1701 med 1637 range 1564-1704 | ready med 854 | fps 21.5/24.8/21.5/21.1 med 21.5 mean 22.23 | heap med 17.6 | calls 43/43/43/43 | KB 886
+android-low: paired firstPlay r3 - env0 per round [203, -5, 151, -226, 427, 286] median 177
+android-low: median(r3) - median(env0) = 287
+iphone-class: paired firstPlay r3 - env0 per round [-64, 208, 310, -131] median 72
+iphone-class: median(r3) - median(env0) = 69
+
+# load probe lt.mjs: 5 runs android-low + 3 runs iphone-class, each run = default then ?env=0 (alternating); prof = envProf ms marks
+android-low - prof {"paint":173.6000000005588,"spots":59.10000000055879,"strokes":82.80000000074506,"pathfill":106.5,"blotchRuts":120.70000000018626,"pebbles":130.90000000037253,"creep":152.1000000005588,"paintInBuild":0,"hudDrop":15,"hudMs":21.299999999813735,"scatter":500.90000000037253,"bake":14.700000000186265,"grass":53.89999999944121,"tufts":762,"flowers":178,"firstRender":568.7000000001863} total 668 ready 3532 fp 5309
+android-low &env=0 prof {"hudDrop":0,"scatter":569.7999999998137,"firstRender":651.2000000001863} total 759 ready 3506 fp 5577
+android-low - prof {"paint":160.09999999962747,"spots":49.89999999944121,"strokes":69.59999999962747,"pathfill":91.19999999925494,"blotchRuts":105.29999999981374,"pebbles":117.3999999994412,"creep":139.5,"paintInBuild":0,"hudDrop":15,"hudMs":18.700000000186265,"scatter":470.09999999962747,"bake":21.299999999813735,"grass":60.40000000037253,"tufts":762,"flowers":178,"firstRender":710.6000000005588} total 692 ready 3441 fp 5400
+android-low &env=0 prof {"hudDrop":0,"scatter":530.8999999994412,"firstRender":566.1999999992549} total 669 ready 3403 fp 5158
+android-low - prof {"paint":149.70000000018626,"spots":45,"strokes":64.29999999981374,"pathfill":80.40000000037253,"blotchRuts":94.40000000037253,"pebbles":106.20000000018626,"creep":126.20000000018626,"paintInBuild":0,"hudDrop":15,"hudMs":16.699999999254942,"scatter":481.59999999962747,"bake":16.90000000037253,"grass":58.799999999813735,"tufts":762,"flowers":178,"firstRender":637.7000000001863} total 660 ready 3349 fp 5271
+android-low &env=0 prof {"hudDrop":0,"scatter":631.0999999996275,"firstRender":685.2000000001863} total 840 ready 3455 fp 5643
+android-low - prof {"paint":123.5,"spots":34.60000000055879,"strokes":54.299999999813735,"pathfill":68.90000000037253,"blotchRuts":77.6000000005588,"pebbles":88.5,"creep":107.29999999981374,"paintInBuild":0,"hudDrop":15,"hudMs":17.5,"scatter":480.90000000037253,"bake":15.5,"grass":82.70000000018626,"tufts":762,"flowers":178,"firstRender":678.2000000001863} total 748 ready 3413 fp 5375
+android-low &env=0 prof {"hudDrop":0,"scatter":409.20000000018626,"firstRender":683.0999999996275} total 506 ready 3493 fp 5330
+android-low - prof {"paint":169.29999999981374,"spots":58.5,"strokes":84.1000000005588,"pathfill":105,"blotchRuts":115.5,"pebbles":127.70000000018626,"creep":147.30000000074506,"paintInBuild":0,"hudDrop":15,"hudMs":18.90000000037253,"scatter":394.09999999962747,"bake":14.799999999813735,"grass":60.799999999813735,"tufts":762,"flowers":178,"firstRender":795.2000000001863} total 567 ready 3574 fp 5462
+android-low &env=0 prof {"hudDrop":0,"scatter":652.5999999996275,"firstRender":718.2000000001863} total 824 ready 3539 fp 5745
+android-low - firstPlay 5309/5400/5271/5375/5462 med 5375 | build 668/692/660/748/567 med 668 | heap 19.8/17.3/19.7/18.4/18.5 med 18.5
+android-low &env=0 firstPlay 5577/5158/5643/5330/5745 med 5577 | build 759/669/840/506/824 med 759 | heap 17.8/18.8/17.9/18.6/16.6 med 17.9
+iphone-class - prof {"paint":45.799999999813735,"spots":13.299999999813735,"strokes":20.399999999441206,"pathfill":24.899999999441206,"blotchRuts":28,"pebbles":31,"creep":37.799999999813735,"paintInBuild":0,"hudDrop":15,"hudMs":10.199999999254942,"scatter":196.69999999925494,"bake":8.599999999627471,"grass":29.40000000037253,"tufts":762,"flowers":178,"firstRender":310.3999999994412} total 288 ready 841 fp 1686
+iphone-class &env=0 prof {"hudDrop":0,"scatter":174.70000000018626,"firstRender":368.29999999981374} total 208 ready 915 fp 1713
+iphone-class - prof {"paint":37.40000000037253,"spots":11.700000000186265,"strokes":17.700000000186265,"pathfill":21.799999999813735,"blotchRuts":25,"pebbles":28.299999999813735,"creep":33.200000000186265,"paintInBuild":0,"hudDrop":15,"hudMs":7,"scatter":156.70000000018626,"bake":5.7999999998137355,"grass":19.700000000186265,"tufts":762,"flowers":178,"firstRender":407.79999999981374} total 215 ready 869 fp 1676
+iphone-class &env=0 prof {"hudDrop":0,"scatter":213.6000000005588,"firstRender":323.40000000037253} total 258 ready 845 fp 1663
+iphone-class - prof {"paint":55.200000000186265,"spots":17.5,"strokes":26,"pathfill":32.59999999962747,"blotchRuts":37.19999999925494,"pebbles":41.299999999813735,"creep":46.5,"paintInBuild":0,"hudDrop":15,"hudMs":5.7000000001862645,"scatter":116.5,"bake":5.7000000001862645,"grass":17.700000000186265,"tufts":762,"flowers":178,"firstRender":385.90000000037253} total 172 ready 803 fp 1547
+iphone-class &env=0 prof {"hudDrop":0,"scatter":217.70000000018626,"firstRender":402.70000000018626} total 263 ready 905 fp 1789
+iphone-class - firstPlay 1686/1676/1547 med 1676 | build 288/215/172 med 215 | heap 17.5/19.3/18.7 med 18.7
+iphone-class &env=0 firstPlay 1713/1663/1789 med 1713 | build 208/258/263 med 258 | heap 19.1/17.7/17.5 med 17.7

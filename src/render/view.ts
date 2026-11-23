@@ -88,6 +88,11 @@ export class View {
   private extraBatches: { im: InstancedMesh; base: number }[] = [];
   private bossHidden = false;
   private envGen = 0;
+  /** env art r3 (load time): the painted ground is independent of the kit, so it is painted while the kit downloads (boot only) and
+   *  each buildLevel copies it; key = everything paintGround reads */
+  private groundCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+  private prepaintQueued = false;
+  private firstRenderT0 = 0;
   private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   /** 0 meadow … 1 arena; exposed for QA */
@@ -148,6 +153,37 @@ export class View {
     this.sun.color.set(t.sun); this.sun.intensity = t.sunI;
     this.renderer.toneMappingExposure = (t.exposure ?? 1.05) * 0.95;
     this.atmosW = -1; // force the next applyAtmosphere() to rewrite every value
+    this.queuePrepaint();
+  }
+
+  /** env art r3: paint the ground once the boot settings (quality + tone) are in, during the kit download; main.ts builds every
+   *  level with seed 7. Boot only: a later quality/tone change rebuilds at once and paints in buildLevel as before. */
+  private queuePrepaint() {
+    if (!this.envArt || this.envGen > 0 || this.prepaintQueued || this.flags.get('envpre') === '0') return;
+    this.prepaintQueued = true;
+    setTimeout(() => { this.prepaintQueued = false; if (this.envGen === 0) this.paintedGround(7); }, 0);
+  }
+  private groundKey(seed: number) { return `${seed}|${this.q.groundRes}|${JSON.stringify(this.tone)}|${this.opening ? 1 : 0}`; }
+  /** The painted ground canvas (cached; the caller must not draw on it). */
+  private paintedGround(seed: number): HTMLCanvasElement {
+    const key = this.groundKey(seed);
+    if (this.groundCache?.key === key) { this.envProf.paintInBuild = 0; return this.groundCache.canvas; }
+    const t0 = performance.now(), W = this.q.groundRes / 2, H = this.q.groundRes;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    paintGround(this.groundCtx(c.getContext('2d')!, W, H, seed));
+    this.groundCache = { key, canvas: c };
+    this.envProf.paint = performance.now() - t0; Object.assign(this.envProf, paintProf);
+    this.envProf.paintInBuild = this.envGen > 0 || this.building ? this.envProf.paint : 0;
+    return c;
+  }
+  private building = false;
+  private groundCtx(g: CanvasRenderingContext2D, W: number, H: number, seed: number): GroundCtx {
+    const sx = W / (BOUNDS.x1 - BOUNDS.x0), sz = H / (BOUNDS.z1 - BOUNDS.z0), t = this.tone;
+    const V = (z: number) => (z - BOUNDS.z0) * sz, arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    return {
+      g, W, H, sx, sz, U: (x: number) => (x - BOUNDS.x0) * sx, V, bounds: BOUNDS, tone: t, walkable: LEVEL.walkable, sdf: walkSDF, seed,
+      pathFill: this.opening ? openingPathFill(g, this.opening, V) : hex(t.path), arena: arena?.type === 'circle' ? arena : null,
+    };
   }
 
   /** Blend the tone (meadow) toward the arena atmosphere by w (0..1). Only writes when w moves. */
@@ -204,13 +240,9 @@ export class View {
     const arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     const env = this.envArt;
-    const gctx: GroundCtx | null = env ? {
-      g, W, H, sx, sz, U, V, bounds: BOUNDS, tone: t, walkable: LEVEL.walkable, sdf: walkSDF, seed,
-      pathFill: this.opening ? openingPathFill(g, this.opening, V) : hex(t.path), arena: arena?.type === 'circle' ? arena : null,
-    } : null;
+    const gctx: GroundCtx | null = env ? this.groundCtx(g, W, H, seed) : null;
     if (gctx) {
-      paintGround(gctx);
-      this.envProf.paint = performance.now() - buildT0; Object.assign(this.envProf, paintProf);
+      this.building = true; g.drawImage(this.paintedGround(seed), 0, 0); this.building = false; // shadows/leaves go on this copy
       // advance the shared scatter stream exactly as the old ground specks did, so every tree/rock keeps its old spot
       for (let i = 0; i < W * H / 60; i++) { rnd(); rnd(); rnd(); rnd(); rnd(); }
       for (let i = 0; i < W * H / 90; i++) { rnd(); rnd(); }
@@ -289,6 +321,7 @@ export class View {
     // env art: a few more rocks/bushes in the mid-ground and small stones along the path edge (own random stream)
     const avoid = [...(this.opening?.guides.map((gd) => ({ x: gd.x, z: gd.z, r: 1.4 })) ?? [])];
     if (arena?.type === 'circle') avoid.push({ x: arena.x, z: arena.z, r: arena.r + 3 });
+    this.envProf.hudDrop = 0;
     const baseN = new Map(Object.entries(place).map(([n, m]) => [n, m.length]));
     if (env) {
       const er = prng(seed * 977 + 5), free = (x: number, z: number) => !avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r);
@@ -301,6 +334,24 @@ export class View {
           else if (r < 0.34) { const s = 0.55 + er() * 0.6; put3('bush', x, z, new Vector3(s, s * (0.8 + er() * 0.3), s), rot); }
         } else if (d > 0.15 && d < 1.0 && r < 0.3) { const s = 0.2 + er() * 0.22; put3('rock_a', x, z, new Vector3(s * 1.2, s * 0.7, s), rot); }
       }
+      // r3 (R3, E17): an added prop must never sit behind the HUD where the near fade does not reach it (beyond ~1.5 m past the fade
+      // distance it is drawn solid). Test it from the field camera at player spots across the walkable field (1.5 m grid, the arena
+      // hides added props anyway) and drop it if any view puts its bounding sphere into a HUD zone while it is that far away.
+      const hudT0 = performance.now(), spots: number[] = [];
+      for (let z = BOUNDS.z0; z < BOUNDS.z1; z += 1.5) for (let x = BOUNDS.x0; x < BOUNDS.x1; x += 1.5) {
+        if (walkSDF(x, z) > -0.3 || (arena?.type === 'circle' && Math.hypot(x - arena.x, z - arena.z) < arena.r + 1.5)) continue;
+        spots.push(x, z);
+      }
+      for (const name of ['rock_a', 'bush']) {
+        const list = place[name], base = baseN.get(name) ?? 0; if (!list || list.length <= base) continue;
+        const dm = propDims(name, flattenPropMerged(name));
+        place[name] = list.filter((m, i) => {
+          if (i < base) return true;
+          const e = m.elements, sc = Math.max(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6]));
+          const hid = hudHidden(spots, e[12], dm.h * sc * 0.5, e[14], Math.hypot(dm.r, dm.h * 0.5) * sc); if (hid) this.envProf.hudDrop = (this.envProf.hudDrop || 0) + 1; return !hid;
+        });
+      }
+      this.envProf.hudMs = performance.now() - hudT0;
     }
     // Opaque batches are drawn in material.id order, which decides the winner where two surfaces tie in depth. Before batching,
     // each source material had one near-fade clone, created in order of first use; keep that order: one clone per batch, created
@@ -340,20 +391,15 @@ export class View {
         const dm = dimsOf.get(name)!;
         for (const m of mats) { const e = m.elements; casters.push({ x: e[12], z: e[14], s: Math.hypot(e[0], e[1], e[2]), r: dm.r, h: dm.h, kind }); }
       }
-      // r2 (load time, E14): contact shadows + grass are built two frames after the first gameplay frame (the first frames show the
-      // painted ground without them); QA (?qafreeze) builds them at once so shots stay deterministic.
-      const gen = ++this.envGen;
-      const late = () => {
-        if (gen !== this.envGen) return; // the level was rebuilt meanwhile
-        const t0 = performance.now();
-        if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
-        paintUnderTrees(gctx, casters);
-        tex.needsUpdate = true;
-        if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid }); this.grass.mesh.visible = !this.bossHidden; this.env.add(this.grass.mesh); }
-        this.envProf.lateMs = performance.now() - t0;
-      };
-      if (this.flags.has('qafreeze') || this.flags.get('envlate') === '0') late(); else requestAnimationFrame(() => requestAnimationFrame(late));
+      // r3 (R4, no pop-in): contact shadows + grass are built here again, before the first frame, onto the canvas before its one upload
+      const t0 = performance.now();
+      if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
+      paintUnderTrees(gctx, casters);
+      this.envProf.bake = performance.now() - t0;
+      if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid }); this.env.add(this.grass.mesh); }
+      this.envProf.grass = performance.now() - t0 - this.envProf.bake; this.envProf.tufts = this.grass?.tufts ?? 0; this.envProf.flowers = this.grass?.flowers ?? 0;
     }
+    this.envGen++;
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
     put('tent', -3.6, -1.2, 0.4); const fire = put('campfire', 1.6, 1.2);
@@ -394,7 +440,7 @@ export class View {
       fx.attach(this.camera, this.actors.get(world.player.id)?.parts.hero_sword ?? null); // Q26 blade light
       this.skillFx = fx; this.stageVfx = new StageVfx(this.scene, this.q, VFX_STYLES[this.vfxVar]);
     }
-    this.buildMs = performance.now() - buildT0;
+    this.buildMs = performance.now() - buildT0; this.firstRenderT0 = -1;
   }
 
   private addActor(a: Actor) {
@@ -509,7 +555,9 @@ export class View {
     this.updateCamera(world, dt);
     if (this.envArt) this.updateEnvArt(world);
     this.updateOccluders(world, dt);
+    const fr0 = this.firstRenderT0 < 0 ? performance.now() : 0;
     this.renderer.render(this.scene, this.camera);
+    if (fr0) { this.envProf.firstRender = performance.now() - fr0; this.firstRenderT0 = 0; } // QA: first frame after a build (shader compile + uploads)
   }
 
   /** env art r2: (E12) the boss fight draws exactly what the old look drew: no grass, extra rocks/bushes cut off by instance count;
@@ -822,6 +870,23 @@ function nearFade(src: Material, u: { value: number }, edge: { value: number } |
   };
   m.customProgramCacheKey = () => prevKey() + (edge ? 'nearfadeEnv' : 'nearfade');
   return m;
+}
+/** Field camera of View.updateCamera in landscape (no boss, no pull): eye (px, 4.5, pz + 5.5) looking at (px, 0.15, pz - 5), fov 48,
+ *  844x390. True when the sphere (x, y, z, R) lands in a HUD zone from any player spot while it is past the near fade. */
+const FIELD_FWD = (() => { const fy = 0.15 - 4.5, fz = -10.5, L = Math.hypot(fy, fz); return [fy / L, fz / L]; })();
+const FIELD_FADE = Math.hypot(4.5, 10.5) * 0.72 + 1.5, FIELD_TV = Math.tan((48 * Math.PI) / 360), FIELD_TH = FIELD_TV * (844 / 390);
+function hudHidden(spots: number[], x: number, y: number, z: number, R: number) {
+  const [fy, fz] = FIELD_FWD, uy = -fz, uz = fy;
+  for (let i = 0; i < spots.length; i += 2) {
+    const px = spots[i], pz = spots[i + 1], vx = x - px, dy = y - 4.5, dz = z - pz - 5.5;
+    const d = dy * fy + dz * fz; if (d < 0.5 || Math.hypot(vx, dy, dz) < FIELD_FADE) continue; // behind the camera / near enough to dither out
+    if (Math.abs(vx) > d * FIELD_TH + R) continue; // off screen to the side
+    const vy = dy * uy + dz * uz, nx = vx / (d * FIELD_TH), ny = vy / (d * FIELD_TV), rx = R / (d * FIELD_TH), ry = R / (d * FIELD_TV);
+    const x0 = (nx - rx + 1) / 2, x1 = (nx + rx + 1) / 2, y0 = (1 - ny - ry) / 2, y1 = (1 - ny + ry) / 2;
+    const hit = (a0: number, a1: number, b0: number, b1: number) => x0 < a1 && x1 > a0 && y0 < b1 && y1 > b0;
+    if (hit(0, 0.2, 0.5, 1) || hit(0.86, 1, 0.36, 1) || hit(0.57, 0.86, 0.82, 1)) return true;
+  }
+  return false;
 }
 function hex(c: number, a = 1) { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return a === 1 ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a})`; }
 export { Color, Group };

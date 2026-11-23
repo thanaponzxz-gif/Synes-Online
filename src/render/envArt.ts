@@ -194,18 +194,16 @@ export interface Caster { x: number; z: number; s: number; r: number; h: number;
 
 /** E3: soft, dappled contact shadows baked into the ground canvas, offset away from the sun (tiers without real shadow maps). */
 export function bakeContactShadows(c: GroundCtx, casters: Caster[], sun: Vector3) {
-  const rnd = prng(c.seed * 104729 + 7);
   const ox = -sun.x / sun.y, oz = -sun.z / sun.y;
   const shade = 0x1f3f48, core = 0x1b3326;
   for (const k of casters) {
     if (k.kind === 'tree') {
-      // r2: smaller offset (0.22 of the height, was 0.55) so the shadow starts at the trunk, a bridge blob halfway, and a darker core
-      const R = k.r * k.s * 0.8, hc = k.h * k.s * 0.22, cx = k.x + ox * hc, cz = k.z + oz * hc;
-      spot(c, cx, cz, R * 1.1, shade, 0.26);
-      for (let i = 0, n = c.W >= 512 ? 5 : 2; i < n; i++) { const a = rnd() * 6.283, d = rnd() * R * 0.5; spot(c, cx + Math.cos(a) * d, cz + Math.sin(a) * d, R * (0.35 + rnd() * 0.3), shade, 0.2 + rnd() * 0.1); }
-      spot(c, (k.x + cx) / 2, (k.z + cz) / 2, R * 0.6, shade, 0.3);
-      spot(c, k.x, k.z, 0.85 * k.s, core, 0.62);
-      spot(c, k.x, k.z, 0.4 * k.s, core, 0.55);
+      // r3 (R1, E16): trunk-base contact only. The canopy-sized shadow stayed dark on the ground when its tree dithered out near the
+      // camera (a dark hole under the HUD); a contact this small is hidden by the trunk/grass when the tree is solid and is too
+      // small to read as a hole when it fades. Slight lean away from the sun.
+      const lx = k.x + ox * 0.25 * k.s, lz = k.z + oz * 0.25 * k.s;
+      spot(c, lx, lz, 1.15 * k.s, shade, 0.22);
+      spot(c, k.x, k.z, 0.6 * k.s, core, 0.45);
     } else {
       const R = k.r * k.s * (k.kind === 'small' ? 0.9 : 1.05), off = k.h * k.s * 0.35;
       spot(c, k.x + ox * off, k.z + oz * off, R * 1.25, shade, k.kind === 'bush' ? 0.26 : 0.3);
@@ -351,7 +349,8 @@ export function buildGrass(opts: {
   q: QualitySettings; art: EnvArt; tone: Tone; seed: number; bounds: { x0: number; x1: number; z0: number; z1: number };
   sdf: (x: number, z: number) => number; casters: Caster[]; avoid: { x: number; z: number; r: number }[];
 }): GrassField {
-  const { q, tone: t, bounds: B, sdf } = opts, rnd = prng(opts.seed * 65537 + 11), dens = q.decoDensity;
+  // r3 (R2, E18): low keeps 65% of the clump/flower attempts (build time on the slowest phones; the low tier is the 760x360 one)
+  const { q, tone: t, bounds: B, sdf } = opts, rnd = prng(opts.seed * 65537 + 11), dens = q.decoDensity * (q.tier === 'low' ? 0.65 : 1);
   const b = newTmpl();
   const libT = libTemplate('grass_tuft'), libF = libTemplate('flower_small');
   const blocked = (x: number, z: number) => opts.avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r) || x < B.x0 + 0.5 || x > B.x1 - 0.5 || z < B.z0 + 0.5 || z > B.z1 - 0.5;
