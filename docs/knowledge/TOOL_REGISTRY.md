@@ -37,7 +37,7 @@
 |---|---|---|---|
 | Mixamo (Adobe) | CANDIDATE | ฟรี ต้องมี Adobe ID · ใช้ในวิดีโอเกมเชิงพาณิชย์ได้ ไม่ต้องใส่เครดิต · auto-rig ใช้ได้เฉพาะตัวละครคล้ายมนุษย์ที่แยกหัว/ลำตัว/แขน/ขาชัด และสัดส่วนไม่เพี้ยนเกินไป (helpx.adobe.com Mixamo FAQ, 2026-11-21) · ห้ามแจกจ่ายไฟล์ตัวละคร/animation ดิบ (Adobe community FAQ) | repo เป็น Public: commit ไฟล์ดิบจาก Mixamo อาจนับเป็นการแจกจ่าย → ต้องตัดสินว่าเก็บไฟล์ดิบนอก repo · ศัตรูที่ไม่ใช่มนุษย์ (พัฟแคป, ธอร์นลิง, ปริซึมแบ็ก) ใช้ไม่ได้ · ต้องใช้บัญชีภายนอก (ขออนุมัติ) |
 | Blender armature/Rigify จากสคริปต์ | CANDIDATE | อยู่ใน Blender ที่ใช้อยู่ ไม่ต้องสมัคร | **ยังไม่ได้ทดสอบ**ว่า Rigify ใช้ได้กับ `bpy` แบบ headless · ใช้ได้ทุกรูปร่าง แต่ต้องเขียนสคริปต์เอง |
-| blender-mcp (ahujasid, MIT) | CANDIDATE | ดู `docs/BLENDER_MCP.md` | add-on รัน Python ใดก็ได้ผ่าน socket **ยังไม่ได้ตรวจโค้ด** · ต้องติดตั้งบนเครื่องเจ้าของ (ขออนุมัติ) · ใช้แทนสคริปต์ headless ไม่ได้ในคลาวด์ |
+| blender-mcp (ahujasid, MIT) | CANDIDATE | ดู `docs/BLENDER_MCP.md` และหมวด 6.1 | add-on รัน Python ใดก็ได้ผ่าน socket (ตรวจโค้ดแล้ว 2026-11-23) · ต้องติดตั้งบนเครื่องเจ้าของ (ขออนุมัติ) · ใช้แทนสคริปต์ headless ไม่ได้ในคลาวด์ |
 | gltf-transform + meshopt | CANDIDATE | backlog ข้อ 6 · Three.js มีตัวถอด meshopt มาให้ | ต้องติดตั้ง npm package (ตรวจ license และขออนุมัติก่อน) · **ยังไม่ได้วัด**ว่าลดขนาดได้เท่าไร (EXP-103) |
 
 ## 5. Asset สำเร็จรูป
@@ -52,6 +52,16 @@
 | Agent teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`) | REJECTED | ใช้ token ราว 7 เท่าเมื่อ teammate อยู่ใน plan mode (code.claude.com/docs/en/costs, 2026-11-21) งานของ Synes แยกด้วย lane ≤ 3 สายพอแล้ว |
 | subagent `Explore` ของโปรเจคที่ตั้ง `model: haiku` | CANDIDATE | ตั้งแต่ v2.1.198 Explore ใช้โมเดลเดียวกับเซสชันหลัก การ override ด้วยไฟล์ของโปรเจคช่วยให้ค้นไฟล์ถูกลง (EXP-105) |
 | hook กรองผลเทสต์ (`PreToolUse`) | CANDIDATE | ผลเทสต์ตอนนี้สั้น (62 เทสต์ ~15 บรรทัด) ยังไม่คุ้ม พิจารณาเมื่อผลยาวขึ้น |
+
+## 6.1 Plugin / connector ตามคำสั่ง 2026-11-23 (ADR-010, รายละเอียดใน `PLUGIN_SKILLS.md`)
+| เครื่องมือ | สถานะ | หมายเหตุ |
+|---|---|---|
+| Figma (plugin + MCP remote) | CANDIDATE (รอเจ้าของเชื่อมบัญชี) | ตรวจโค้ด `43a06ff` แล้ว · ~2.6k token เปิดค้าง · แผน/ราคา ยังไม่ได้ตรวจ |
+| Mobbin (plugin + MCP remote) | CANDIDATE (รอเจ้าของเชื่อมบัญชี) | MIT · ~0.6k · ภาพเป็นอ้างอิงเท่านั้น ห้าม commit |
+| Adobe for creativity (plugin + MCP remote) | CANDIDATE (รอเจ้าของเชื่อมบัญชี) | Apache-2.0 · ~6.0k (สูงสุด) · มี tool ซื้อ Stock license |
+| Canva (plugin + MCP remote) | CANDIDATE (รอเจ้าของเชื่อมบัญชี) | Apache-2.0 · ~1.6k |
+| Supabase (plugin + MCP remote) | ON-HOLD | MIT · ~0.6k · สร้างโปรเจกต์ที่มีค่าใช้จ่ายได้ · ต้องมี ADR backend ก่อน (ADR-002) |
+| Blender MCP (`mcp-for-blender` 2.3.1) | CANDIDATE (ตรวจโค้ดแล้ว `a5a8acf`, รอติดตั้งบนเครื่องเจ้าของ) | แทนแถว blender-mcp ในหมวด 4 · socket ไม่มี auth, ใช้ safe mode + ปิด telemetry |
 
 ## 7. Infrastructure
 | ทางเลือก | สถานะ | หมายเหตุ |

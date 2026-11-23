@@ -33,6 +33,7 @@
 | 006 | Hybrid Asset Pipeline v1 | งานศิลป์ใหม่ต้องผ่านใบสั่งงาน → inbox → ตรวจ → เจ้าของอนุมัติ (`docs/ASSET_PIPELINE.md`) มติ: ใช้ Three.js ต่อ, โมเดลจากสคริปต์ Blender นับเป็นงาน Blender ต้องมีภาพเทียบในเกมให้อนุมัติ, คงสิทธิ์ push |
 | 007 | **กฎเหล็ก: ทีม A ออกแบบก่อน** | งานออกแบบ/ปรับดีไซน์ทุกประเภทให้ GPT Codex (ทีม A) ออกแบบหรือเขียนบรีฟก่อน → Claude (ทีม B) ทำ ทดสอบ แล้วส่งผลกลับให้ตรวจ เปลี่ยนดีไซน์ระหว่างทำต้องส่งกลับก่อน (CLAUDE.md ข้อ 0, `docs/design/README.md`) |
 | 009 | จังหวะตี | เจ้าของเลือกชุด A → ruleset `combat-2` เป็นค่าเริ่ม (`?combo=1` = เดิม) log เก่ายังเป็น `combat-1` |
+| 010 | Plugin & Skills | เลือกเครื่องมือเฉพาะทางก่อนเริ่มงาน, เปิดเฉพาะตัวที่ใช้, ติดตั้ง/เชื่อมบัญชีต้องให้เจ้าของยืนยัน, เครื่องมือไม่เปลี่ยน ADR-002/007 (CLAUDE.md ข้อ 8, `docs/knowledge/PLUGIN_SKILLS.md`) |
 | 008 | เรียนรู้ต่อเนื่อง | เทคนิคใหม่ผ่านวงจร 7 ขั้น ทดลองบน `exp/*` ก่อนใช้จริง ความรู้อยู่ใน `docs/knowledge/` (อ่านเมื่อจำเป็น ไม่ @import) และ `AGENTS.md` สำหรับ Codex (CLAUDE.md ข้อ 7) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
@@ -78,6 +79,7 @@
 | โฮสต์สาธารณะที่มี server (ต้องใช้บัญชีของเจ้าของ) | รอ |
 | ADR-008: ใช้ asset สำเร็จรูป (CC0) ในเกมได้แค่ไหน (ตอนนี้ขัดข้อ 1 เรื่องต้นฉบับ) | รอ |
 | ADR-008: นำร่องภาพ → 3D 1 ชิ้น (EXP-102) ต้องสมัคร Tripo แบบเสียเงิน หรือบอกรุ่น GPU เครื่องเจ้าของสำหรับ Hunyuan3D | รอ |
+| ADR-010: ติดตั้ง + เชื่อมบัญชี Figma, Mobbin, Adobe, Canva (Supabase แนะนำพักไว้) และติดตั้ง Blender MCP บนเครื่อง Windows (`PLUGIN_SKILLS.md` ข้อ 5) | รอ |
 | ADR-008: ลดขนาด CLAUDE.md/PROJECT_SYNES.md ที่โหลดทุกเซสชัน (EXP-101) และติดตั้ง meshopt (EXP-103) | รอ |
 
 ## 6. Backlog (เรียงตามลำดับความสำคัญ เจ้าของงานระบุไว้ในวงเล็บ)
@@ -93,6 +95,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
+| 2026-11-23 | Plugin & Skills `session_01A1roa3aBpxmBB4TpMpCfCE` | ADR-010: ตรวจ 6 เครื่องมือ (โค้ด/license/token), กฎ CLAUDE.md ข้อ 8 + AGENTS.md 4.1, ตารางบทบาท → เครื่องมือ · ยังไม่ได้ติดตั้ง (รอเจ้าของ) | `claude/plugin-skills-integration-3967pu` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002, merge prismatic (เจ้าของอนุมัติโมเดลใหม่), กล้องต่ำตลอด, Auto ตาม DES-001 §4 (log v2), แถวสกิลล่าง, REQ-003, Pages 2 ครั้ง | `b5d20dc`, `4fdc1b3`, `e4e59e1`, `6edb182`, `c0af790`, gh-pages `0c9d21f` |
 | 2026-11-21 | แชตโปรเจค Synes `session_01A1roa5V1LencXdcrbPpfsW` | ADR-008 ระบบเรียนรู้ต่อเนื่อง: `docs/knowledge/` 4 ไฟล์, `AGENTS.md`, CLAUDE.md ข้อ 7 (ตรวจ license/ราคาเครื่องมือจากแหล่งทางการ) | `main` (ดู git log) |

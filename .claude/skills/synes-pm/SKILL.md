@@ -22,6 +22,7 @@ PM ทำได้แค่เขียนใบขอออกแบบ (`docs/
 | GitHub remote | `git remote -v` ถ้าไม่มี ให้เจ้าของสร้าง repo แล้วเชื่อมที่ https://claude.ai/connect-github จากนั้นใช้ `add_repo` แนบ repo เข้าเซสชันแล้ว `git remote add origin … && git push -u origin main` |
 | ส่วนเสริม | `SearchPlugins` เฉพาะเมื่อมีงานติดขัดจริง ต้องอ่านโค้ด plugin ก่อนเสนอ และติดตั้งเมื่อเจ้าของยืนยันแล้วเท่านั้น |
 | connector | `ListConnectors` เช่น Google Drive (มีแล้ว) ใช้สำรองไฟล์ได้เมื่อเจ้าของอนุญาต |
+| เครื่องมือตามบทบาท (ADR-010) | ก่อนเริ่มงานแต่ละรอบ ดูตารางใน `docs/knowledge/PLUGIN_SKILLS.md` ข้อ 2 · `ListPlugins` ดูว่าเปิดอะไรอยู่ เปิดเฉพาะตัวที่งานรอบนี้ใช้ ปิดตัวที่ไม่ใช้ · อัปเดตผลทดสอบจริงในข้อ 4 |
 | สกิล | งานที่ทำซ้ำ ≥ 2 รอบให้ทำเป็น skill ใน `.claude/skills/` |
 | environment | `get_environment` ใช้เมื่อ network ถูกบล็อกจริงเท่านั้น และปฏิบัติตามคำอธิบายของ tool |
 

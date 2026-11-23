@@ -26,6 +26,7 @@
 - **L-003** (2026-11-20) เซสชันที่เริ่มนอกโฟลเดอร์ repo (เช่น `/home/user`) ไม่อ่าน `.claude/settings.json` ทำให้ `autoCompactWindow` ไม่ทำงาน ให้เริ่มเซสชันจากโฟลเดอร์ repo (สาเหตุยังไม่ยืนยัน) — `docs/HANDOFF.md` rollover 2-B
 - **L-004** (2026-11-20) ไฟล์แนบจากเจ้าของบางครั้งไม่เข้ามาในเซสชัน (DES-001) ให้ตรวจโฟลเดอร์อัปโหลด, repo และ Drive ก่อน ถ้าไม่มีให้ขอให้ commit บน branch `design/*` หรือวางเป็นข้อความ — `docs/HANDOFF.md`
 - **L-014** (2026-11-20) การแยกเซสชัน/agent ไม่ได้เพิ่มโควตา token ได้แค่บริบทแยกและทำขนาน — PROJECT_SYNES ข้อ 1, code.claude.com/docs/en/costs
+- **L-023** (2026-11-23) วัด token ของ plugin ก่อนติดตั้งได้ด้วย `claude --plugin-dir <clone> plugin details <ชื่อ>` · Adobe ~6k, ทั้ง 6 ตัว ~11k ต่อเซสชัน จึงต้องเปิดเฉพาะตัวที่ใช้ · container เข้าเว็บผู้ให้บริการไม่ได้ ราคาต้องให้เจ้าของดูตอนเชื่อม — `docs/knowledge/PLUGIN_SKILLS.md`
 - **L-016** (2026-11-21) พฤติกรรมเครื่องมือเปลี่ยนตามเวอร์ชัน: Explore subagent ใช้ Haiku มาก่อน แต่ตั้งแต่ Claude Code v2.1.198 ใช้โมเดลเดียวกับเซสชันหลัก ให้บันทึกเวอร์ชันทุกครั้งที่อ้างพฤติกรรมเครื่องมือ — code.claude.com/docs/en/sub-agents
 
 ## E. ความปลอดภัย / license

@@ -1,5 +1,12 @@
 # Handoff: Synes Online
 
+## Plugin & Skills Integration (ADR-010) · 2026-11-23 · branch `claude/plugin-skills-integration-3967pu`
+- **ทำแล้ว:** ตรวจของที่ติดตั้งอยู่ (plugin 0 ตัว, connector มีแค่ Gmail + Google Drive) · หา Figma/Mobbin/Adobe/Canva/Supabase ใน Anthropic Directory ได้ครบ ส่วน Blender MCP ไม่มีในนั้น (ใช้ repo ผู้พัฒนา)
+  clone โค้ดทั้ง 6 ตัวมาอ่าน (license, `.mcp.json`, hook, สคริปต์) และวัด token ด้วย `claude plugin details` · ผลอยู่ใน `docs/knowledge/PLUGIN_SKILLS.md`
+- กฎถาวร: CLAUDE.md ข้อ 8, AGENTS.md ข้อ 4.1, ADR-010, PROJECT_SYNES ข้อ 3/5/7, TOOL_REGISTRY หมวด 6.1, skill `synes-pm` ข้อ B, L-023
+- **ยังไม่ได้ติดตั้ง และยังไม่ได้ทดสอบเครื่องมือใดเลย:** ทุกตัวต้องให้เจ้าของเชื่อมบัญชี (ข้อ 6) · ราคาตรวจไม่ได้เพราะ container เข้าเว็บผู้ให้บริการไม่ได้
+- **งานถัดไป:** เจ้าของอนุมัติรายการใน `PLUGIN_SKILLS.md` ข้อ 5 → รันชุดทดสอบอ่านอย่างเดียวในข้อ 4 แล้วบันทึกผล · branch นี้ยังไม่ merge เข้า `main` (PM merge)
+
 ## merge stage1 → main + จังหวะตี A + Pages · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D
 **เจ้าของอนุมัติ:** merge `stage1/polish` เข้า `main` และขึ้น GitHub Pages · เลือกจังหวะตี **ชุด A** (ตอบผ่านคำถามในแชต เพราะข้อความเดิมเว้นช่องว่างไว้)
 - `main` `7a52680` = merge `stage1/polish` (test 154/154, typecheck, build, lifecycle 20/20)
