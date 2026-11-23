@@ -1,5 +1,17 @@
 # Handoff: Synes Online
 
+## Environment Art v01: Golden Reference ผ่านตรวจอิสระ · 2026-11-23 · 🟡 MAIN · Synes Online · รอบ 2-D
+**คำสั่งเจ้าของ (2026-11-23):** Environment Art & Visual Polish เป็นงานหลัก · Free Asset First (CC0) · Claude รับช่วง Technical Art ชั่วคราว (โควตา GPT/Codex หมด) · QA ภาพแยกจากผู้ผลิต · ทุกงานภาพมี Before/After + perf · ไม่ขยายแมพที่สอง → **ADR-010**
+- branch งาน `art/env-polish` (**ยังไม่ merge `main`, ไม่แตะ Pages**): baseline `docs/qa/env-art-v01/r0-baseline/`, พื้นที่ตัวอย่าง r1→r3 (`exp/env-sample-a` `212c989`) ตรวจอิสระ 3 รอบ ผล r3 **ผ่าน** = Golden Reference (กฎ 6 ข้อใน `docs/qa/env-art-v01/README.md`) · `?env=0` = ภาพเดิมตรงทุกพิกเซลในฉาก 3D
+- หลัง merge เข้า `art/env-polish`: test 155/155 · typecheck · build · lifecycle 20/20 · **Android / iPhone: ยังไม่ได้ทดสอบ**
+- เวลาโหลด: headless แยกความต่างไม่ได้ (−11 ถึง +287 ms, noise ±400) → ต้องวัดบน Android จริงก่อนขึ้น Pages
+- **สาย `🟡 SUB · Synes · env-assets`** (`session_01A1roa4B7XoiVyVoHkVStEs`, environment `synes-online`, branch `lane/env-assets`): สคริปต์ `build_env_library.py` พร้อม แต่**ยังไม่มี asset** — ดาวน์โหลดจากเว็บถูกตัวกรองสิทธิ์ปฏิเสธ, Drive connector จำกัด 10 MB/ไฟล์ → รอเจ้าของแบ่ง zip เป็นไฟล์ย่อย 9 MB ใน Drive/SYNES_ASSETS · เกมมี hook `?envlib=1` รอ `public/assets/models/env_library_v01.glb`
+- **Hero 001:** ไม่มีไฟล์ใน repo, ไม่มีเครื่องเจ้าของเชื่อม · เจ้าของสั่งห้ามขึ้น repo สาธารณะ (ผ่านสาย env-assets) → รอไฟล์แบ่งย่อยใน Drive · งานตัวละครยังไม่เริ่ม
+- งานรอทีม A: `docs/design/PENDING_QUEUE.md`
+- ของค้างใน container: server ทดสอบของ agent พอร์ต 8792/8793, worktree `.claude/worktrees/agent-*` (ระบบไม่อนุญาตให้ลบ)
+**งานถัดไป:** (1) ขยายตาม Golden Reference: ลวดลายลานแรก, ช่วงบ่อน้ำ→ทางเข้าลานบอส, ตรวจอิสระซ้ำ (2) นำ env_library เข้าเมื่อได้ไฟล์ (3) Hero 001 เมื่อได้ไฟล์ (4) เจ้าของ: merge `art/env-polish` → `main`, วัดบนมือถือจริง
+**ขั้นถัดไปควรใช้โมเดล:** งานภาพ/ตรวจภาพ **Opus** · นำ asset เข้า + สคริปต์ **Sonnet**
+
 ## merge stage1 → main + จังหวะตี A + Pages · 2026-11-21 · 🟡 MAIN · Synes Online · รอบ 2-D
 **เจ้าของอนุมัติ:** merge `stage1/polish` เข้า `main` และขึ้น GitHub Pages · เลือกจังหวะตี **ชุด A** (ตอบผ่านคำถามในแชต เพราะข้อความเดิมเว้นช่องว่างไว้)
 - `main` `7a52680` = merge `stage1/polish` (test 154/154, typecheck, build, lifecycle 20/20)
