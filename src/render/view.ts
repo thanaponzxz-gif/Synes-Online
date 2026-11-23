@@ -1,7 +1,7 @@
 // Three.js render layer. Reads sim state (never writes it). Interpolates between fixed ticks.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Color, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, CanvasTexture,
-  Group, Object3D, Vector3, Fog, InstancedMesh, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
+  Group, Object3D, Vector3, Fog, InstancedMesh, InstancedBufferAttribute, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
   MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry, ShaderMaterial,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
@@ -19,6 +19,7 @@ import { makeArenaFloor, makeArenaRuins, type ArenaFloor } from './arena.ts';
 import { makeArenaDeco, glowPillars, type ArenaDeco } from './arenaDeco.ts';
 import { ARENA_ATMOS, BASE_SUN_OFFSET, arenaWeight, makeGlowHalos, makeLightShafts } from './atmosphere.ts';
 import { openingFromQuery, openingTone, openingPathFill, nearGuide, patchGate, patchHeroRim, addOpeningProps } from './opening.ts';
+import { envArtFromQuery, envTone, paintGround, bakeContactShadows, paintUnderTrees, patchGroundDetail, buildGrass, instanceTint, propDims, prng, paintProf, type Caster, type GroundCtx, type GrassField } from './envArt.ts';
 
 const TELE_NORMAL = 0xff7a1a, TELE_HEAVY = 0xff3355;
 const HEAVY = new Set(['slam', 'charge']);
@@ -76,11 +77,27 @@ export class View {
   /** ?opening=A|B: opening-scene look prototypes (opening.ts, docs/qa/opening-v01). null = the current look; every hook below is skipped */
   readonly opening = openingFromQuery(this.flags);
   private openingFx: ReturnType<typeof addOpeningProps> | null = null;
+  /** exp/env-sample-a environment art (envArt.ts); `?env=0` = null = the previous look, every hook below is skipped */
+  readonly envArt = envArtFromQuery(this.flags);
+  /** QA: `?envfade=0` keeps the old 2x2 near-fade pattern inside the env look (finding 5 before/after) */
+  private readonly envFade = this.flags.get('envfade') !== '0';
+  private grass: GrassField | null = null;
+  /** env art r2 (E11): per prop type, a per-instance 'may stay solid at the screen side' flag (aSolid) + bounding spheres (x, y, z, r) */
+  private fadeSets: { attr: InstancedBufferAttribute; pts: Float32Array }[] = [];
+  /** env art r2 (E12): batches that got extra env-art instances (count back to the old number in the boss fight) */
+  private extraBatches: { im: InstancedMesh; base: number }[] = [];
+  private bossHidden = false;
+  private envGen = 0;
+  /** env art r3 (load time): the painted ground is independent of the kit, so it is painted while the kit downloads (boot only) and
+   *  each buildLevel copies it; key = everything paintGround reads */
+  private groundCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+  private prepaintQueued = false;
+  private firstRenderT0 = 0;
   private glow: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   private shafts: { mesh: Mesh; mat: ShaderMaterial } | null = null;
   /** 0 meadow … 1 arena; exposed for QA */
   atmosW = 0;
-  private sunOffset = new Vector3().copy(BASE_SUN_OFFSET);
+  private sunOffset = new Vector3().copy(this.envArt?.sun ?? BASE_SUN_OFFSET);
   env = new Group();
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
   /** DES-006 §1 pull-back: smoothed base pose (camBase), current pull amount (0 = low angle), hold timer, scratch camera for the visibility test */
@@ -89,6 +106,8 @@ export class View {
   pixelRatio = 1;
   /** shared uniform: decoration closer than this (m) to the camera dithers out so it never hides the action */
   nearFadeU = { value: 9 };
+  /** env art only: tan of the horizontal half field of view (near fade spares the screen sides) */
+  nearEdgeU = { value: 1 };
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance', stencil: false });
@@ -121,10 +140,12 @@ export class View {
     this.camera.aspect = w / h;
     this.camera.fov = w / h < 1 ? 62 : 48; // portrait fallback: widen
     this.camera.updateProjectionMatrix();
+    this.nearEdgeU.value = Math.tan((this.camera.fov * Math.PI) / 360) * this.camera.aspect;
   }
 
   applyTone(t: Tone) {
     if (this.opening) t = openingTone(t, this.opening);
+    if (this.envArt) t = envTone(t);
     this.tone = t;
     this.scene.background = new Color(t.fog);
     this.scene.fog = new Fog(t.fog, t.fogNear, t.fogFar);
@@ -132,6 +153,37 @@ export class View {
     this.sun.color.set(t.sun); this.sun.intensity = t.sunI;
     this.renderer.toneMappingExposure = (t.exposure ?? 1.05) * 0.95;
     this.atmosW = -1; // force the next applyAtmosphere() to rewrite every value
+    this.queuePrepaint();
+  }
+
+  /** env art r3: paint the ground once the boot settings (quality + tone) are in, during the kit download; main.ts builds every
+   *  level with seed 7. Boot only: a later quality/tone change rebuilds at once and paints in buildLevel as before. */
+  private queuePrepaint() {
+    if (!this.envArt || this.envGen > 0 || this.prepaintQueued || this.flags.get('envpre') === '0') return;
+    this.prepaintQueued = true;
+    setTimeout(() => { this.prepaintQueued = false; if (this.envGen === 0) this.paintedGround(7); }, 0);
+  }
+  private groundKey(seed: number) { return `${seed}|${this.q.groundRes}|${JSON.stringify(this.tone)}|${this.opening ? 1 : 0}`; }
+  /** The painted ground canvas (cached; the caller must not draw on it). */
+  private paintedGround(seed: number): HTMLCanvasElement {
+    const key = this.groundKey(seed);
+    if (this.groundCache?.key === key) { this.envProf.paintInBuild = 0; return this.groundCache.canvas; }
+    const t0 = performance.now(), W = this.q.groundRes / 2, H = this.q.groundRes;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    paintGround(this.groundCtx(c.getContext('2d')!, W, H, seed));
+    this.groundCache = { key, canvas: c };
+    this.envProf.paint = performance.now() - t0; Object.assign(this.envProf, paintProf);
+    this.envProf.paintInBuild = this.envGen > 0 || this.building ? this.envProf.paint : 0;
+    return c;
+  }
+  private building = false;
+  private groundCtx(g: CanvasRenderingContext2D, W: number, H: number, seed: number): GroundCtx {
+    const sx = W / (BOUNDS.x1 - BOUNDS.x0), sz = H / (BOUNDS.z1 - BOUNDS.z0), t = this.tone;
+    const V = (z: number) => (z - BOUNDS.z0) * sz, arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    return {
+      g, W, H, sx, sz, U: (x: number) => (x - BOUNDS.x0) * sx, V, bounds: BOUNDS, tone: t, walkable: LEVEL.walkable, sdf: walkSDF, seed,
+      pathFill: this.opening ? openingPathFill(g, this.opening, V) : hex(t.path), arena: arena?.type === 'circle' ? arena : null,
+    };
   }
 
   /** Blend the tone (meadow) toward the arena atmosphere by w (0..1). Only writes when w moves. */
@@ -151,11 +203,16 @@ export class View {
     this.hemi.intensity = t.hemiI + (A.hemiI - t.hemiI) * w;
     this.sun.color.set(t.sun).lerp(TMP_C.set(A.sun), w);
     this.sun.intensity = t.sunI + (A.sunI - t.sunI) * w;
-    this.sunOffset.copy(BASE_SUN_OFFSET).lerp(A.sunOffset, w);
+    this.sunOffset.copy(this.envArt?.sun ?? BASE_SUN_OFFSET).lerp(A.sunOffset, w);
   }
 
   // ------------------------------------------------------------------ environment
+  /** QA: duration of the last buildLevel (ms), to compare the env-art ground painting cost */
+  buildMs = 0;
+  /** QA: cumulative ms at env-art build stages (paint, scatter, bake, grass) */
+  envProf: Record<string, number> = {};
   buildLevel(world: World, seed = 1) {
+    const buildT0 = performance.now();
     this.arenaFloor?.material.map?.dispose();
     this.arenaFloor?.material.dispose();
     this.arenaFloor?.geometry.dispose();
@@ -170,6 +227,7 @@ export class View {
     this.glow = this.shafts = null;
     this.arenaDeco?.dispose(); this.arenaDeco = null;
     this.openingFx?.dispose(); this.openingFx = null;
+    this.grass?.dispose(); this.grass = null; this.fadeSets = []; this.extraBatches = []; this.bossHidden = false;
     this.env.clear();
     this.flames = []; this.pillars = []; this.gates.clear(); this.occluders = [];
     // ground canvas texture (paths drawn from the same LEVEL data the sim uses)
@@ -179,9 +237,18 @@ export class View {
     const sx = W / (BOUNDS.x1 - BOUNDS.x0), sz = H / (BOUNDS.z1 - BOUNDS.z0);
     const U = (x: number) => (x - BOUNDS.x0) * sx, V = (z: number) => (z - BOUNDS.z0) * sz;
     const t = this.tone;
+    const arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
+    const env = this.envArt;
+    const gctx: GroundCtx | null = env ? this.groundCtx(g, W, H, seed) : null;
+    if (gctx) {
+      this.building = true; g.drawImage(this.paintedGround(seed), 0, 0); this.building = false; // shadows/leaves go on this copy
+      // advance the shared scatter stream exactly as the old ground specks did, so every tree/rock keeps its old spot
+      for (let i = 0; i < W * H / 60; i++) { rnd(); rnd(); rnd(); rnd(); rnd(); }
+      for (let i = 0; i < W * H / 90; i++) { rnd(); rnd(); }
+    } else {
     const grad = g.createLinearGradient(0, 0, 0, H); grad.addColorStop(0, hex(t.grassB)); grad.addColorStop(1, hex(t.grassA));
     g.fillStyle = grad; g.fillRect(0, 0, W, H);
-    const arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
     if (arena?.type === 'circle') {
       const x = U(arena.x), z = V(arena.z);
       const grove = g.createRadialGradient(x, z, 6 * sx, x, z, 31 * sx);
@@ -191,7 +258,6 @@ export class View {
       g.fillStyle = grove;
       g.fillRect(0, 0, W, H);
     }
-    let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
     const drawShapes = (pad: number, style: string | CanvasGradient) => {
       g.fillStyle = style;
@@ -205,8 +271,11 @@ export class View {
     drawShapes(0.15, hex(t.pathEdge));
     drawShapes(-0.25, this.opening ? openingPathFill(g, this.opening, V) : hex(t.path));
     for (let i = 0; i < W * H / 90; i++) { const x = rnd() * W, y = rnd() * H; g.fillStyle = 'rgba(120,90,60,0.07)'; g.fillRect(x, y, 3, 2); }
+    }
     const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace; tex.anisotropy = 4; tex.minFilter = LinearMipmapLinearFilter;
-    const ground = new Mesh(new PlaneGeometry(BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0), new MeshLambertMaterial({ map: tex }));
+    const groundMat = new MeshLambertMaterial({ map: tex });
+    if (env && this.q.tier !== 'low' && this.flags.get('envdetail') !== '0') patchGroundDetail(groundMat, [BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0]);
+    const ground = new Mesh(new PlaneGeometry(BOUNDS.x1 - BOUNDS.x0, BOUNDS.z1 - BOUNDS.z0), groundMat);
     ground.rotation.x = -Math.PI / 2; ground.position.set((BOUNDS.x0 + BOUNDS.x1) / 2, 0, (BOUNDS.z0 + BOUNDS.z1) / 2);
     ground.receiveShadow = true; this.env.add(ground);
     if (arena?.type === 'circle') {
@@ -249,20 +318,88 @@ export class View {
         add(i % 3 === 0 ? 'rock_a' : 'flower_patch', x, z, 0.85 + rnd() * 0.4, rnd() * Math.PI * 2);
       }
     }
+    // env art: a few more rocks/bushes in the mid-ground and small stones along the path edge (own random stream)
+    const avoid = [...(this.opening?.guides.map((gd) => ({ x: gd.x, z: gd.z, r: 1.4 })) ?? [])];
+    if (arena?.type === 'circle') avoid.push({ x: arena.x, z: arena.z, r: arena.r + 3 });
+    this.envProf.hudDrop = 0;
+    const baseN = new Map(Object.entries(place).map(([n, m]) => [n, m.length]));
+    if (env) {
+      const er = prng(seed * 977 + 5), free = (x: number, z: number) => !avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r);
+      const put3 = (name: string, x: number, z: number, s: Vector3, rot: number) => (place[name] ??= []).push(new Matrix4().compose(new Vector3(x, 0, z), new Quaternion().setFromEuler(new Euler(0, rot, 0)), s));
+      for (let i = 0, n = Math.round(520 * dens); i < n; i++) {
+        const x = BOUNDS.x0 + er() * (BOUNDS.x1 - BOUNDS.x0), z = BOUNDS.z0 + er() * (BOUNDS.z1 - BOUNDS.z0), d = walkSDF(x, z), r = er(), rot = er() * 6.28;
+        if (!free(x, z)) continue;
+        if (d > 1.2 && d < 9) {
+          if (r < 0.12) { const s = 0.4 + er() * 0.5; put3('rock_a', x, z, new Vector3(s * (0.85 + er() * 0.35), s * (0.7 + er() * 0.45), s * (0.85 + er() * 0.35)), rot); }
+          else if (r < 0.34) { const s = 0.55 + er() * 0.6; put3('bush', x, z, new Vector3(s, s * (0.8 + er() * 0.3), s), rot); }
+        } else if (d > 0.15 && d < 1.0 && r < 0.3) { const s = 0.2 + er() * 0.22; put3('rock_a', x, z, new Vector3(s * 1.2, s * 0.7, s), rot); }
+      }
+      // r3 (R3, E17): an added prop must never sit behind the HUD where the near fade does not reach it (beyond ~1.5 m past the fade
+      // distance it is drawn solid). Test it from the field camera at player spots across the walkable field (1.5 m grid, the arena
+      // hides added props anyway) and drop it if any view puts its bounding sphere into a HUD zone while it is that far away.
+      const hudT0 = performance.now(), spots: number[] = [];
+      for (let z = BOUNDS.z0; z < BOUNDS.z1; z += 1.5) for (let x = BOUNDS.x0; x < BOUNDS.x1; x += 1.5) {
+        if (walkSDF(x, z) > -0.3 || (arena?.type === 'circle' && Math.hypot(x - arena.x, z - arena.z) < arena.r + 1.5)) continue;
+        spots.push(x, z);
+      }
+      for (const name of ['rock_a', 'bush']) {
+        const list = place[name], base = baseN.get(name) ?? 0; if (!list || list.length <= base) continue;
+        const dm = propDims(name, flattenPropMerged(name));
+        place[name] = list.filter((m, i) => {
+          if (i < base) return true;
+          const e = m.elements, sc = Math.max(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6]));
+          const hid = hudHidden(spots, e[12], dm.h * sc * 0.5, e[14], Math.hypot(dm.r, dm.h * 0.5) * sc); if (hid) this.envProf.hudDrop = (this.envProf.hudDrop || 0) + 1; return !hid;
+        });
+      }
+      this.envProf.hudMs = performance.now() - hudT0;
+    }
     // Opaque batches are drawn in material.id order, which decides the winner where two surfaces tie in depth. Before batching,
     // each source material had one near-fade clone, created in order of first use; keep that order: one clone per batch, created
     // in the order of the first source material the batch contains.
+    this.envProf.scatter = performance.now() - buildT0;
     const rank = new Map<Material, number>();
     const batches: { name: string; mats: Matrix4[]; part: ReturnType<typeof flattenPropMerged>[number] }[] = [];
     for (const [name, mats] of Object.entries(place)) for (const part of flattenPropMerged(name, rank)) batches.push({ name, mats, part });
     batches.sort((x, y) => x.part.rank - y.part.rank);
+    const tintKind = (n: string) => n.startsWith('tree') ? 'tree' as const : n === 'rock_a' ? 'rock' as const : n === 'bush' ? 'bush' as const : null;
+    // per prop type: size from its own batch parts (no second flattenPropMerged), shared aSolid attribute for all its parts
+    const dimsOf = new Map<string, { r: number; h: number }>(), solidOf = new Map<string, InstancedBufferAttribute>();
+    if (env) for (const [name, mats] of Object.entries(place)) {
+      const dm = propDims(name, batches.filter((bt) => bt.name === name).map((bt) => bt.part)); dimsOf.set(name, dm);
+      if (!this.envFade) continue;
+      const attr = new InstancedBufferAttribute(new Float32Array(mats.length), 1), pts = new Float32Array(mats.length * 4);
+      mats.forEach((m, i) => { const e = m.elements, sc = Math.max(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6])); pts.set([e[12], dm.h * sc * 0.5, e[14], Math.hypot(dm.r, dm.h * 0.5) * sc], i * 4); });
+      solidOf.set(name, attr); this.fadeSets.push({ attr, pts });
+    }
     for (const { name, mats, part } of batches) {
-      const mat = nearFade(part.material, this.nearFadeU);
+      const mat = nearFade(part.material, this.nearFadeU, env && this.envFade ? this.nearEdgeU : null);
       const im = new InstancedMesh(part.geometry, mat, mats.length);
       mats.forEach((m, i) => im.setMatrixAt(i, new Matrix4().multiplyMatrices(m, part.matrix)));
+      if (env) { // every batch gets an instance colour (white = unchanged) so all of them share one shader program
+        const tk = tintKind(name); mats.forEach((_, i) => im.setColorAt(i, tk ? instanceTint(tk, i, TMP_C) : TMP_C.setRGB(1, 1, 1)));
+        const sa = solidOf.get(name); if (sa) part.geometry.setAttribute('aSolid', sa);
+        const base = baseN.get(name) ?? 0; if (base < mats.length) this.extraBatches.push({ im, base });
+      }
       im.castShadow = name.startsWith('tree'); im.computeBoundingSphere();
       this.env.add(im);
     }
+    if (env && gctx) {
+      const casters: Caster[] = [];
+      for (const [name, mats] of Object.entries(place)) {
+        const kind = name.startsWith('tree') ? 'tree' : name === 'rock_a' ? 'rock' : name === 'bush' ? 'bush' : name === 'crystal_cluster' || name === 'mushroom_glow' ? 'small' : null;
+        if (!kind) continue;
+        const dm = dimsOf.get(name)!;
+        for (const m of mats) { const e = m.elements; casters.push({ x: e[12], z: e[14], s: Math.hypot(e[0], e[1], e[2]), r: dm.r, h: dm.h, kind }); }
+      }
+      // r3 (R4, no pop-in): contact shadows + grass are built here again, before the first frame, onto the canvas before its one upload
+      const t0 = performance.now();
+      if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
+      paintUnderTrees(gctx, casters);
+      this.envProf.bake = performance.now() - t0;
+      if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid }); this.env.add(this.grass.mesh); }
+      this.envProf.grass = performance.now() - t0 - this.envProf.bake; this.envProf.tufts = this.grass?.tufts ?? 0; this.envProf.flowers = this.grass?.flowers ?? 0;
+    }
+    this.envGen++;
     // landmarks
     const put = (name: string, x: number, z: number, rot = 0, s = 1) => { const o = makeProp(name); o.position.set(x, 0, z); o.rotation.y = rot; o.scale.setScalar(s); this.env.add(o); return o; };
     put('tent', -3.6, -1.2, 0.4); const fire = put('campfire', 1.6, 1.2);
@@ -283,7 +420,7 @@ export class View {
       if (this.opening) patchGate(this.occluders[this.occluders.length - 1].mats, this.opening);
     }
     put('lantern_post', -6, -63.5); put('lantern_post', 2, -63.5);
-    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening, (m) => nearFade(m, this.nearFadeU), this.nearFadeU);
+    if (this.opening) this.openingFx = addOpeningProps(this.env, this.opening, (m) => nearFade(m, this.nearFadeU, this.envArt && this.envFade ? this.nearEdgeU : null), this.nearFadeU);
     // actors
     for (const v of this.actors.values()) this.scene.remove(v.root);
     this.actors.clear();
@@ -303,6 +440,7 @@ export class View {
       fx.attach(this.camera, this.actors.get(world.player.id)?.parts.hero_sword ?? null); // Q26 blade light
       this.skillFx = fx; this.stageVfx = new StageVfx(this.scene, this.q, VFX_STYLES[this.vfxVar]);
     }
+    this.buildMs = performance.now() - buildT0; this.firstRenderT0 = -1;
   }
 
   private addActor(a: Actor) {
@@ -403,6 +541,7 @@ export class View {
     }
     for (const f of this.flames) { f.scale.y = 0.85 + Math.sin(this.time * 17 + f.id) * 0.15; f.rotation.y += dt * 2; }
     this.openingFx?.update(this.time);
+    this.grass?.update(this.time);
     if (this.springGem) { this.springGem.position.y = 1.3 + Math.sin(this.time * 2) * 0.12; this.springGem.rotation.y += dt; }
     this.particles.update(dt); this.rings.update(dt);
     this.skillFx?.update(world.tick, alpha, world.ps.cast);
@@ -414,8 +553,47 @@ export class View {
     if (this.shafts) { this.shafts.mesh.visible = w > 0.01; this.shafts.mat.uniforms.uI.value = 0.16 * w; }
     this.arenaDeco?.update(this.time);
     this.updateCamera(world, dt);
+    if (this.envArt) this.updateEnvArt(world);
     this.updateOccluders(world, dt);
+    const fr0 = this.firstRenderT0 < 0 ? performance.now() : 0;
     this.renderer.render(this.scene, this.camera);
+    if (fr0) { this.envProf.firstRender = performance.now() - fr0; this.firstRenderT0 = 0; } // QA: first frame after a build (shader compile + uploads)
+  }
+
+  /** env art r2: (E12) the boss fight draws exactly what the old look drew: no grass, extra rocks/bushes cut off by instance count;
+   *  (E11) a prop may stay solid at the screen side only when its projected bounding sphere covers < 12% of the screen and misses
+   *  the HUD zones (joystick + AUTO bottom-left, button column right, skill row bottom). Normalised zones from the 844x390 layout. */
+  private updateEnvArt(world: World) {
+    const ar = LEVEL.walkable.find((sh) => sh.id === 'arena');
+    const pv = this.actors.get(world.player.id);
+    const inArena = (world.bossStarted && world.boss.alive) || (!!pv && ar?.type === 'circle' && Math.hypot(pv.root.position.x - ar.x, pv.root.position.z - ar.z) < ar.r + 1.5);
+    if (inArena !== this.bossHidden) {
+      this.bossHidden = inArena;
+      if (this.grass) this.grass.mesh.visible = !inArena;
+      for (const { im, base } of this.extraBatches) { im.count = inArena ? base : im.instanceMatrix.count; im.visible = im.count > 0; im.computeBoundingSphere(); } // culling sphere of the drawn instances only
+    }
+    if (!this.fadeSets.length) return;
+    const cam = this.camera; cam.updateMatrixWorld(); const inv = TMP_M.copy(cam.matrixWorld).invert().elements;
+    const tV = Math.tan((cam.fov * Math.PI) / 360), tH = tV * cam.aspect, reach = this.nearFadeU.value + 3.2;
+    const cx = cam.position.x, cy = cam.position.y, cz = cam.position.z;
+    for (const { attr, pts } of this.fadeSets) {
+      const arr = attr.array as Float32Array; let dirty = false;
+      for (let i = 0, n = arr.length; i < n; i++) {
+        const x = pts[i * 4], y = pts[i * 4 + 1], z = pts[i * 4 + 2], R = pts[i * 4 + 3];
+        const dx = x - cx, dy = y - cy, dz = z - cz; if (dx * dx + dy * dy + dz * dz > (reach + R) * (reach + R)) continue; // not in the fade range
+        const vx = inv[0] * x + inv[4] * y + inv[8] * z + inv[12], vy = inv[1] * x + inv[5] * y + inv[9] * z + inv[13], d = -(inv[2] * x + inv[6] * y + inv[10] * z + inv[14]);
+        let ok = 0;
+        if (d > 0.3) {
+          const nx = vx / (d * tH), ny = vy / (d * tV), rx = R / (d * tH), ry = R / (d * tV);
+          const x0 = Math.max(0, (nx - rx + 1) / 2), x1 = Math.min(1, (nx + rx + 1) / 2), y0 = Math.max(0, (1 - ny - ry) / 2), y1 = Math.min(1, (1 - ny + ry) / 2);
+          const area = Math.max(0, x1 - x0) * Math.max(0, y1 - y0);
+          const hit = (a0: number, a1: number, b0: number, b1: number) => x0 < a1 && x1 > a0 && y0 < b1 && y1 > b0;
+          ok = area < 0.12 && !hit(0, 0.2, 0.5, 1) && !hit(0.86, 1, 0.36, 1) && !hit(0.57, 0.86, 0.82, 1) ? 1 : 0;
+        }
+        if (arr[i] !== ok) { arr[i] = ok; dirty = true; }
+      }
+      if (dirty) attr.needsUpdate = true;
+    }
   }
 
   private makeTele(t: Telegraph) {
@@ -659,23 +837,56 @@ export class View {
 }
 const TMP = new Vector3();
 const TMP_C = new Color();
+const TMP_M = new Matrix4();
 const TMP_C2 = new Vector3();
 /** DES-006 §1 camera pull-back: max extra scale of the camera offset, and the viewport safe area in NDC (bottom margin leaves room for the HUD buttons / joystick) */
 const PULL_MAX = 1.2, PULL_SAFE_X = 0.94, PULL_SAFE_TOP = 0.94, PULL_SAFE_BOTTOM = -0.86;
 function dist2(a: Actor, b: Actor) { return (a.x - b.x) ** 2 + (a.z - b.z) ** 2; }
 /** Patch a Lambert material so fragments near the camera dither away (keeps foreground trees from hiding the player). */
-function nearFade(src: Material, u: { value: number }): Material {
+function nearFade(src: Material, u: { value: number }, edge: { value: number } | null = null): Material {
   const m = src.clone(), prevCompile = m.onBeforeCompile.bind(m), prevKey = m.customProgramCacheKey.bind(m); // keep the source's own shader patch (baked emissive)
   m.onBeforeCompile = (sh, rd) => {
     prevCompile(sh, rd);
     sh.uniforms.uNearFade = u;
-    sh.fragmentShader = 'uniform float uNearFade;\n' + sh.fragmentShader.replace('void main() {', `void main() {
+    if (!edge) {
+      sh.fragmentShader = 'uniform float uNearFade;\n' + sh.fragmentShader.replace('void main() {', `void main() {
       float nfT = smoothstep(uNearFade, uNearFade + 3.0, length(vViewPosition));
       float nfB = mod(floor(gl_FragCoord.x), 2.0) * 0.5 + mod(floor(gl_FragCoord.y), 2.0) * 0.25 + 0.125;
       if (nfT < nfB) discard;`);
+      return;
+    }
+    // env art (finding 5): props at the screen sides frame the shot and never cover the action in the centre, so they stay solid
+    // (unless closer than 2.5 m); where a prop does fade, a fine interleaved-gradient-noise stipple replaces the coarse 2x2 grid.
+    sh.uniforms.uNearEdge = edge;
+    // aSolid (per instance, View.updateEnvArt): 1 = may stay solid at the screen side; missing attribute (non-instanced) reads 0
+    sh.vertexShader = 'attribute float aSolid;\nvarying float vSolid;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n\tvSolid = aSolid;');
+    sh.fragmentShader = 'uniform float uNearFade; uniform float uNearEdge;\nvarying float vSolid;\n' + sh.fragmentShader.replace('void main() {', `void main() {
+      float nfD = length(vViewPosition);
+      float nfT = smoothstep(uNearFade, uNearFade + 3.0, nfD);
+      float nfX = abs(vViewPosition.x) / max(-vViewPosition.z, 0.05) / uNearEdge;
+      nfT = max(nfT, smoothstep(0.74, 0.92, nfX) * step(2.5, nfD) * vSolid);
+      float nfB = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
+      if (nfT < nfB * 0.98 + 0.01) discard;`);
   };
-  m.customProgramCacheKey = () => prevKey() + 'nearfade';
+  m.customProgramCacheKey = () => prevKey() + (edge ? 'nearfadeEnv' : 'nearfade');
   return m;
+}
+/** Field camera of View.updateCamera in landscape (no boss, no pull): eye (px, 4.5, pz + 5.5) looking at (px, 0.15, pz - 5), fov 48,
+ *  844x390. True when the sphere (x, y, z, R) lands in a HUD zone from any player spot while it is past the near fade. */
+const FIELD_FWD = (() => { const fy = 0.15 - 4.5, fz = -10.5, L = Math.hypot(fy, fz); return [fy / L, fz / L]; })();
+const FIELD_FADE = Math.hypot(4.5, 10.5) * 0.72 + 1.5, FIELD_TV = Math.tan((48 * Math.PI) / 360), FIELD_TH = FIELD_TV * (844 / 390);
+function hudHidden(spots: number[], x: number, y: number, z: number, R: number) {
+  const [fy, fz] = FIELD_FWD, uy = -fz, uz = fy;
+  for (let i = 0; i < spots.length; i += 2) {
+    const px = spots[i], pz = spots[i + 1], vx = x - px, dy = y - 4.5, dz = z - pz - 5.5;
+    const d = dy * fy + dz * fz; if (d < 0.5 || Math.hypot(vx, dy, dz) < FIELD_FADE) continue; // behind the camera / near enough to dither out
+    if (Math.abs(vx) > d * FIELD_TH + R) continue; // off screen to the side
+    const vy = dy * uy + dz * uz, nx = vx / (d * FIELD_TH), ny = vy / (d * FIELD_TV), rx = R / (d * FIELD_TH), ry = R / (d * FIELD_TV);
+    const x0 = (nx - rx + 1) / 2, x1 = (nx + rx + 1) / 2, y0 = (1 - ny - ry) / 2, y1 = (1 - ny + ry) / 2;
+    const hit = (a0: number, a1: number, b0: number, b1: number) => x0 < a1 && x1 > a0 && y0 < b1 && y1 > b0;
+    if (hit(0, 0.2, 0.5, 1) || hit(0.86, 1, 0.36, 1) || hit(0.57, 0.86, 0.82, 1)) return true;
+  }
+  return false;
 }
 function hex(c: number, a = 1) { const r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255; return a === 1 ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a})`; }
 export { Color, Group };

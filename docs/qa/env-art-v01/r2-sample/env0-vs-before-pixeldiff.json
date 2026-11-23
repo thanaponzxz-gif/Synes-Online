@@ -1,0 +1,149 @@
+{
+ "opening-start-1672-low-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-start-1672-low.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-start-1672-medium-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-start-1672-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-start-844-low-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-start-844-low.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-start-844-medium-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-start-844-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-walk2s-1672-low-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-walk2s-1672-low.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-walk2s-1672-medium-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-walk2s-1672-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 1573352
+ },
+ "opening-walk2s-844-low-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-walk2s-844-low.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-walk2s-844-medium-gray.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "opening-walk2s-844-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "pathA-844-low.png": {
+  "n": 1210,
+  "max": 3,
+  "bbox": [
+   490,
+   324,
+   545,
+   379
+  ],
+  "total": 329160
+ },
+ "pathA-844-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "plaza-844-low.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "plaza-844-medium.png": {
+  "n": 0,
+  "max": 0,
+  "bbox": null,
+  "total": 329160
+ },
+ "pool-844-low.png": {
+  "n": 6,
+  "max": 1,
+  "bbox": [
+   211,
+   25,
+   230,
+   38
+  ],
+  "total": 329160
+ },
+ "pool-844-medium.png": {
+  "n": 11,
+  "max": 3,
+  "bbox": [
+   46,
+   27,
+   59,
+   37
+  ],
+  "total": 329160
+ }
+}
