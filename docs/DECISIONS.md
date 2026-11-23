@@ -88,3 +88,11 @@ FPS บน GPU ซอฟต์แวร์สูงกว่า 1.25–2× แ�
 - **ตัดสินโดย:** เจ้าของเลือกชุด A จาก DES-006 §1 (ท่า 12/12/18 tick, hit 5/5/8, 1.40 s ต่อคอมโบ) และอนุมัติ merge `stage1/polish` เข้า `main` + ขึ้น GitHub Pages
 - **ทำ:** ruleset ถาวรชื่อ `combat-2` ใช้ตัวเลขชุด A · client ที่ไม่มี `?combo=` ใช้ `combat-2` · `?combo=1` = `combat-1` เดิม · `?combo=A|B|C` ยังใช้เทียบได้
 - **ความเข้ากันได้:** server อ่าน log ที่ไม่มี field เป็น `combat-1` เหมือนเดิม (log เก่าเล่นซ้ำได้ผลเดิม) · ไม่ชดเชยดาเมจ/HP บอส (DES-006 §1: รอ playtest)
+
+## ADR-010: Free Asset First สำหรับ Environment + Claude รับช่วง Technical Art ชั่วคราว · 2026-11-23
+- **เจ้าของสั่ง:** Environment Art & Visual Polish เป็นงานหลัก · ใช้ asset ฟรี CC0 กับของทั่วไป (ต้นไม้ หญ้า ดอกไม้ หิน เห็ด พื้นผิว) เริ่มจาก Quaternius Stylized Nature MegaKit (รุ่น Standard ฟรี) · ห้ามใช้โควตา GPT Image/Tripo กับ asset ทั่วไป สงวนไว้ให้ตัวละครหลัก บอส สิ่งก่อสร้างสำคัญ และของเอกลักษณ์
+- **ผลต่อกฎเดิม:** แทน ADR-003 ("ไม่มี asset ภายนอก") และข้อ "ต้องเป็นต้นฉบับ" ใน PROJECT_SYNES ข้อ 1 **เฉพาะ environment ทั่วไป** · ตัวละคร ศัตรู บอส UI เสียง ยังต้องเป็นต้นฉบับ · ทุกชุดต้องอ่าน license จริง ลงทะเบียน `docs/ASSETS.md` + `docs/art/ENV_ASSET_LIBRARY.md` · ไม่เพิ่มค่าใช้จ่าย
+- **ADR-007 ช่วงโควตา GPT/Codex หมด:** Claude รับช่วง Technical Art / Blender จากทีม A ชั่วคราว ยึด Golden Reference ของ GPT เป็นมาตรฐาน · ทุกตัวเลือกดีไซน์ที่ Claude ทำเองต้องจดไว้ให้ทีม A ทบทวนภายหลัง · งานที่ต้องใช้ GPT/Codex จริงลง `docs/design/PENDING_QUEUE.md`
+- **ตัวละคร:** ใช้ Tripo สร้าง แล้ว Claude ปรับต่อ ห้าม Claude ปั้นตัวละครใหม่จากศูนย์
+- **QA ภาพ:** Agent ตรวจภาพแยกจาก Agent ผู้ผลิต ตรวจจากภาพในเกมจริง ถ้าไม่ดีขึ้นให้ย้อนกลับ · ทุกงานภาพต้องมี Before/After + ผล performance · ไม่ขยายไปแมพที่สองจนด่านแรกผ่านมาตรฐาน
+- **เครือข่าย:** environment ใหม่ `synes-online` (เจ้าของอนุมัติ) เปิดเฉพาะ quaternius.itch.io, itch.io, quaternius.com, kenney.nl, polyhaven.com, api.polyhaven.com, dl.polyhaven.org, ambientcg.com
