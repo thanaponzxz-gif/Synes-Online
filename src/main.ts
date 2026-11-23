@@ -5,7 +5,7 @@ import { InputLog } from '../shared/sim/input.ts';
 import { TICK } from '../shared/data/tuning.ts';
 import { rankFor } from '../shared/rules/reward.ts';
 import { View } from './render/view.ts';
-import { loadKit, kitLoaded, loadKitExtra } from './render/models.ts';
+import { loadKit, kitLoaded, loadKitExtra, loadEnvLib } from './render/models.ts';
 import { spireLook } from './render/arena.ts';
 import { TIERS, guessTier, loadPref, savePref, AdaptiveResolution, type QualityPref } from './render/quality.ts';
 import { toneById } from './render/tones.ts';
@@ -88,7 +88,9 @@ const qaLog: { t: number; e: string }[] = [];
     net.detect(),
     Q.has('nokit') ? Promise.resolve(false) : loadKit((window as any).__SYNES_KIT_URL || './assets/models/synes_kit.glb', (f) => (bar.style.width = `${10 + f * 85}%`))
       // ?spire=B: DES-004 step-2 option B landmarks from a small side-car GLB (same node names, overrides the kit's A models)
-      .then(async (ok) => { if (ok && spireLook() === 'B') await loadKitExtra('./assets/models/spire_shrine_B.glb'); return (perf.kit = ok); }),
+      .then(async (ok) => { if (ok && spireLook() === 'B') await loadKitExtra('./assets/models/spire_shrine_B.glb'); return (perf.kit = ok); })
+      // ?envlib=1: optional environment library (exp/env-sample-a hook; no-op when the GLB is missing)
+      .then(async (ok) => { if (ok && Q.get('envlib') === '1' && Q.get('env') !== '0') await loadEnvLib('./assets/models/env_library_v01.glb'); return ok; }),
   ]);
   bar.style.width = '100%';
   $('#chip-net').textContent = mode === 'online' ? 'ออนไลน์: บันทึกผลได้' : 'ออฟไลน์: ผลไม่ถูกบันทึก';

@@ -135,9 +135,27 @@ function bakeKit(root: Object3D) {
     parent.add(out);
   });
 }
+// exp/env-sample-a: optional environment library (`?envlib=1`, public/assets/models/env_library_v01.glb, from another lane).
+// Its nodes override same-named kit nodes (tree_round, rock_a, bush, ...) and give grass/flower templates by node name (envArt.ts).
+// Not loaded unless asked; when the file is missing the game keeps the kit + procedural grass (no-op).
+let envLib: Group | null = null;
+export async function loadEnvLib(url: string): Promise<boolean> {
+  try {
+    const head = await fetch(url, { method: 'HEAD' });
+    if (!head.ok) { console.warn('[synes] env library not present', url); return false; }
+    const root = (await new GLTFLoader().loadAsync(url)).scene;
+    lambertize(root); bakeKit(root); envLib = root;
+    return true;
+  } catch (e) {
+    console.warn('[synes] env library unavailable', url, e);
+    return false;
+  }
+}
+/** Node of the environment library by name (null when not loaded / not there). */
+export const envLibNode = (name: string): Object3D | null => envLib?.getObjectByName(name) ?? null;
 function fromKit(name: string): Object3D | null {
   if (!kit) return null;
-  const n = kitExtra?.getObjectByName(name) ?? kit.getObjectByName(name);
+  const n = envLib?.getObjectByName(name) ?? kitExtra?.getObjectByName(name) ?? kit.getObjectByName(name);
   if (!n) return null;
   const c = n.clone(true);
   c.position.set(0, 0, 0); c.rotation.set(0, 0, 0);
@@ -262,7 +280,7 @@ const PROCEDURAL: Record<string, PropFn> = {
 };
 
 /** True when the loaded kit (or side-car) has this node, i.e. makeProp(name) returns the GLB model and not a stand-in. */
-export const kitHas = (name: string) => !!(kitExtra?.getObjectByName(name) ?? kit?.getObjectByName(name));
+export const kitHas = (name: string) => !!(envLib?.getObjectByName(name) ?? kitExtra?.getObjectByName(name) ?? kit?.getObjectByName(name));
 
 export function makeProp(name: string): Object3D {
   const k = fromKit(name);
