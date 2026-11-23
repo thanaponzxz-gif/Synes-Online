@@ -23,6 +23,11 @@
 2. เจ้าของดาวน์โหลด `Stylized Nature MegaKit[Standard].zip` เอง (กด "No thanks, just take me to the downloads") แล้วอัปโหลดเข้า Google Drive หรือแนบมา สายนี้จะวางที่ `assets/source/third_party/quaternius_nature_megakit/` (zip อยู่นอก git, จด sha256) แล้วทำงานข้อ 3–5 ต่อ
 3. ถ้า CDN ของ itch.io ถูก network policy บล็อกด้วย ให้ใช้ Kenney Nature Kit แทน (ไฟล์ ~เล็กกว่า, CC0)
 
+### อัปเดต 2026-11-23 (ทาง Google Drive)
+- เจ้าของอัปโหลด `Stylized Nature MegaKit[Standard].zip` (104,088,529 B) และ `kenney_nature-kit.zip` (10,537,521 B) ไว้ในโฟลเดอร์ Drive `SYNES_ASSETS`
+- connector ของ Google Drive ดาวน์โหลดได้ไม่เกิน 10 MB ต่อไฟล์ (ทดสอบไฟล์ 132 B ผ่าน, ทั้ง 2 zip ถูกปฏิเสธเพราะเกินขนาด)
+- ทางแก้: แบ่ง zip เป็นไฟล์ย่อยละ ≤ 9 MB (7-Zip → Add to archive → Archive format: zip หรือ 7z, "Split to volumes" = `9M`) แล้วอัปโหลดทุกส่วนลงโฟลเดอร์เดิม สายนี้จะดาวน์โหลดทีละส่วน ต่อกลับ และตรวจความครบของ zip
+
 ## 4. ของที่มีอยู่แล้ว (เพื่อไม่ทำซ้ำ)
 `synes_kit.glb` มี `tree_round`, `tree_round_b`, `tree_pine`, `bush`, `rock_a`, `rock_b`, `flower_patch`, `mushroom_glow` (สร้างด้วยสคริปต์ ไม่มี texture, ดู `docs/art/ASSET_CONTRACT.md`) ชุดใหม่ควรตั้งชื่อ node แยก namespace (เช่น `env_tree_*`) เพื่อไม่ชนกัน
 Blender headless (`bpy` 5.3.0) ติดตั้งใน `tools/blender/.venv` ของ container นี้แล้ว (gitignore)
