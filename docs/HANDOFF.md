@@ -1,5 +1,10 @@
 # Handoff: Synes Online
 
+## รอบ 2-F เริ่ม · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
+- ปิดแชต 2-E แล้ว (⚪ + archive หลังตรวจ `927464a` บน remote) · vitest 155/155, typecheck ผ่าน · lineage 7/8 (rollover อัตโนมัติเหลือ 1 ครั้ง)
+- เจ้าของยังไม่อนุมัติ 8 ข้อ ขอข้อมูลก่อน → `docs/team/2026-11-25-pm-owner-review-pack.md` (QA C-2 + เหตุผล C-2b, พรอมป์ต์ C-1 v2, ลิงก์ REQ-004/005 ให้ทีม A, อันดับงาน, meshopt/KTX2, ไฟล์ที่ต้องแนบใหม่) · ใช้หลักฐานเดิม ไม่ได้รัน QA ซ้ำ · **ไม่เริ่ม implementation**
+- ทดสอบ: Android/iPhone ยังไม่ได้ทดสอบ · PC = Chromium headless (หลักฐานเดิม)
+
 ## โหมดกลางคืน → Rollover 🟡 MAIN · Synes Online · รอบ 2-F · 2026-11-25 · จาก รอบ 2-E (`session_01A1roa3dorP6krBJf4hzHmZ`)
 - **อ่านก่อน:** `docs/team/2026-11-25-morning-brief.md` (สรุปงานกลางคืนทั้งหมด + รายการ NEEDS OWNER 8 ข้อ) · ไม่มีงานไหนที่เจ้าของอนุมัติค้างอยู่ → **รอเจ้าของตัดสินก่อนเริ่มงานใหม่**
 - งานกลางคืน (คลาวด์เท่านั้น, ไม่มี merge/Pages/push pilot): P1 วิเคราะห์ C-1 blocker (Fable) `docs/team/2026-11-25-c1-blocker-analysis.md` + `tools/qa/c1-rotate.mjs` baseline FAIL 0/4 (TD-2 ทำซ้ำได้) `docs/qa/c1-prep/` · P2 audit `docs/qa/audit-2026-11-25.md` · P3 perf + KPI-001 (บอส 20 calls = 31%) `docs/qa/mobile-perf-2026-11-25.md` · P4 ชุดงาน Codex `docs/team/2026-11-25-codex-work-packages.md` (C-1 v2, C-6, C-5, C-7, C-3) · P5 `docs/art/ART_INTEGRATION_READINESS.md` + `tools/qa/glb-check.mjs` · REQ-004/005 ถึงทีม A · `.gitignore` กัน Hero/third-party · `webgl2-probe.mjs` พิมพ์ขั้นตอน + `--timeout` (exit 3 บอกขั้นที่ค้าง)
