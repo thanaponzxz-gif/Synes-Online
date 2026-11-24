@@ -1,5 +1,11 @@
 # Handoff: Synes Online
 
+## รอบ 2-G: เตรียมความพร้อม Claude-First (Preparation เท่านั้น) · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-G (`session_01A1roa5SiRHs91xT3uQQqXP`)
+- ปิดแชต 2-F แล้ว (⚪ + archive หลังตรวจ `0a8c27c` บน remote) · lineage **8/8** (สร้างเซสชันลูกไม่ได้ · เปลี่ยนเซสชัน = เจ้าของเปิดเองพร้อมพรอมป์ต์ master handoff ข้อ 8)
+- เจ้าของอนุมัติ **Preparation เท่านั้น (ไม่ใช่ A2)** → `docs/team/2026-11-25-2G-prep.md`: ตรวจ A1–A11 + dependency, WP C-6 (AC-1…8, Test Plan T0–T3, ความเสี่ยง SHA ข้ามเวอร์ชัน git), วิเคราะห์ C-5/SEC คู่ขนาน
+- ข้อสรุป: SEC-1/2a/3/5 พร้อมเริ่มเมื่ออนุมัติ (ไม่ขึ้นกับ P1/F1) · C-6 พร้อมหลัง P1 (AC-1/3 ต้องมี F1) · C-5 BLOCKED (P1 + F1) · SEC-2b (TTL/เพดาน runs) BLOCKED รอค่าจากทีม A ผ่าน REQ-005
+- ไม่มี implementation · ไม่มี push/merge pilot · ไม่มีงานบน PC · ทดสอบ: vitest 155/155, typecheck (ต้นรอบ) · Android/iPhone ยังไม่ได้ทดสอบ
+
 ## Rollover → 🟡 MAIN · Synes Online · รอบ 2-G · 2026-11-25 · จาก รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
 - **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` → `docs/team/2026-11-25-claude-first-allocation.md` (แผนปัจจุบัน, ADR-011)
 - เจ้าของสั่ง Claude-First Quota Allocation: Claude = Engineering หลัก ~65% · Codex = Technical Production ~35% · ทีม A คุมดีไซน์ทั้งหมด → ADR-011 + แผน (ตารางจัดสรร, A1–A11, โมเดล/ที่ทำงาน/port ต่องาน, พรอมป์ต์ P1–P5, กล่องงาน SEC/PERF, ไฟล์แนบ F1–F6, ระลอก 0–4) · AGENTS.md เพิ่มแถว Technical Production
