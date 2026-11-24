@@ -1,5 +1,12 @@
 # Handoff: Synes Online
 
+## รอบ 2-F: เตรียมสั่งงาน + Checkpoint · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
+- **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` (Master Handoff + พรอมป์ต์เริ่มเซสชันใหม่) · tag `checkpoint/2F-2026-11-25`
+- คำสั่งเจ้าของ 9 ข้อ → `docs/team/2026-11-25-dispatch-2F.md` (รายการตัดสิน D0–D8, ลำดับ C-6 → C-5 → C-1 v2 → C-2b → C-4, พรอมป์ต์ Codex/ทีม A/QA คลาวด์, แผน meshopt EXP-103) · `docs/team/2026-11-25-pm-accept-c2.md` (PM รับ C-2, F1/F2/F3 เปิดต่อ → C-2b) · แพ็ก zip REQ-004/005 ส่งเจ้าของในแชต (SHA `6de10b5c…`)
+- ตรวจ license จากแหล่งทางการ (อ่านอย่างเดียว): meshoptimizer/gltfpack MIT, glTF-Transform MIT · **ไม่ได้ติดตั้ง ไม่ได้สร้าง `exp/meshopt`**
+- พัก: C-7 (จน C-4 ผ่าน QA), KTX2, C-9 · ไม่มี push/merge pilot · ไม่ได้รัน QA ซ้ำ
+- ทดสอบ: vitest 155/155, typecheck (ต้นรอบ) · Android/iPhone ยังไม่ได้ทดสอบ
+
 ## รอบ 2-F เริ่ม · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
 - ปิดแชต 2-E แล้ว (⚪ + archive หลังตรวจ `927464a` บน remote) · vitest 155/155, typecheck ผ่าน · lineage 7/8 (rollover อัตโนมัติเหลือ 1 ครั้ง)
 - เจ้าของยังไม่อนุมัติ 8 ข้อ ขอข้อมูลก่อน → `docs/team/2026-11-25-pm-owner-review-pack.md` (QA C-2 + เหตุผล C-2b, พรอมป์ต์ C-1 v2, ลิงก์ REQ-004/005 ให้ทีม A, อันดับงาน, meshopt/KTX2, ไฟล์ที่ต้องแนบใหม่) · ใช้หลักฐานเดิม ไม่ได้รัน QA ซ้ำ · **ไม่เริ่ม implementation**

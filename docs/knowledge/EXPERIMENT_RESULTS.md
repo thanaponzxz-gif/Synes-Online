@@ -66,7 +66,9 @@
 - **วัด:** tris/draw calls/KB เทียบชิ้นเดิมใน `synes_kit.glb`, เวลาที่ต้องเก็บงานใน Blender, จำนวนรอบที่ต้องสร้างใหม่, ค่าใช้จ่ายต่อชิ้น, ภาพเทียบในเกม
 - เกณฑ์ผ่าน: ทีม A และเจ้าของเห็นว่าสวยขึ้นชัด และอยู่ในงบมือถือหลังลด polygon
 
-### EXP-103: บีบอัดโมเดลด้วย meshopt · PLANNED · ต้องอนุมัติ: ติดตั้ง npm package (หลังตรวจ license)
+### EXP-103: บีบอัดโมเดลด้วย meshopt · PLANNED · ต้องอนุมัติ: ติดตั้ง npm package (license ตรวจแล้ว 2026-11-25)
+- license จากแหล่งทางการ: meshoptimizer MIT (GitHub LICENSE.md) · npm `gltfpack` 1.3.0 MIT ไม่มี dependency · glTF-Transform MIT แต่ `@gltf-transform/cli` พ่วง `sharp` (native) · ตัวถอดมากับ three.js แล้ว (`GLTFLoader` รองรับ EXT/KHR_meshopt_compression)
+- แผนเต็ม: `docs/team/2026-11-25-dispatch-2F.md` ข้อ 8 (branch `exp/meshopt`, gltfpack, เกณฑ์ pixel-diff 0 + ขนาด gzip) · **ยังไม่ได้ติดตั้ง ยังไม่ได้สร้าง branch**
 - backlog ข้อ 6 · วัดขนาดดาวน์โหลดและเวลาเฟรมแรกด้วย `tools/qa/bench.mjs` ก่อน/หลัง
 - ไม่เปลี่ยนสิ่งที่ผู้เล่นเห็น จึงไม่ต้องผ่านทีม A
 

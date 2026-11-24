@@ -6,12 +6,12 @@
 | ลำดับ | งาน | สถานะ | ขึ้นกับ | ต้องใช้เบราว์เซอร์ WebGL2? | ผู้ทำ / QA | ไฟล์ที่แตะ (ชนกับใคร) |
 |---|---|---|---|---|---|---|
 | 0 | C-1 กล้องหมุนจอ | **พัก → NEEDS OWNER (เลิกพัก)** · พรอมป์ต์ v2 พร้อม (ข้อ 3) | — (ไม่ต้องรอวินิจฉัย WebGL2) | บนคลาวด์เท่านั้น (Codex ไม่ใช้เบราว์เซอร์) | Codex เขียน + vitest · คลาวด์ QA ด้วย `c1-rotate.mjs` | `view.ts` updateCamera, `cameraField.ts`, comment ใน `envPilot.ts` |
-| — | C-2 dispose ตอน rebuild | **QA PASS with notes · รอเจ้าของรับ** | — | — | เสร็จ | `view.ts` buildLevel, `models.ts`, `arena.ts`, `opening.ts` |
-| — | C-2b (F1/F2/F3 ของ C-2) | **NEEDS OWNER** | C-2 | ใช่ (วัด program) | Codex + คลาวด์ QA | ไฟล์เดียวกับ C-2 |
+| — | C-2 dispose ตอน rebuild | **QA PASS with notes · PM รับแล้ว รอเจ้าของยืนยัน** (`2026-11-25-pm-accept-c2.md`) | — | — | เสร็จ | `view.ts` buildLevel, `models.ts`, `arena.ts`, `opening.ts` |
+| — | C-2b (F1/F2/F3 ของ C-2) | **NEEDS OWNER** · พรอมป์ต์พร้อม (`2026-11-25-dispatch-2F.md` ข้อ 5.5) | C-2 | ใช่ (วัด program) | Codex + คลาวด์ QA | ไฟล์เดียวกับ C-2 |
 | 1 | **C-6** สคริปต์สร้าง patch | พัก → **NEEDS OWNER** | — | **ไม่ใช้** | Codex Local ทำจบได้ทั้งงาน · PM ตรวจ SHA บนคลาวด์ | `tools/qa/make-patch.mjs` (ไม่ชน) |
 | 2 | **C-4** ตัวตรวจ HUD | **อนุมัติแผนแล้ว พรอมป์ต์พร้อม** (`2026-11-25-pm-c2-qa-and-c4-plan.md` ข้อ 4) | — | ใช่ | Codex เขียน · คลาวด์รันชุดเต็ม + QA อิสระ | `tools/qa/hud-gate.mjs` (ไม่ชน) |
 | 3 | **C-5** เวลาโหลดใน `#debug` | พัก → **NEEDS OWNER** | — | ใช่ (ตรวจภาพ/ค่า) | Codex เขียน · คลาวด์ QA | `src/main.ts` เท่านั้น (ไม่ชน C-1/C-2) |
-| 4 | **C-7** silhouette ต้นไม้บังปุ่ม | พัก → **NEEDS OWNER** | C-4 (เทียบผล) | ไม่จำเป็น ถ้าคำนวณด้วยคณิต three.js ใน Node · เทียบ hud-gate ต้องใช้ | Codex เขียน + vitest · คลาวด์เทียบ hud-gate | ไฟล์ใหม่ใน `src/render/` หรือ `tools/qa/` · **ไม่แก้ `envPilot.ts`** (C-1 แก้ comment ในไฟล์นั้น) |
+| 4 | **C-7** silhouette ต้นไม้บังปุ่ม | **พักจน C-4 ผ่าน QA** (เจ้าของสั่ง 2026-11-25) | C-4 (เทียบผล) | ไม่จำเป็น ถ้าคำนวณด้วยคณิต three.js ใน Node · เทียบ hud-gate ต้องใช้ | Codex เขียน + vitest · คลาวด์เทียบ hud-gate | ไฟล์ใหม่ใน `src/render/` หรือ `tools/qa/` · **ไม่แก้ `envPilot.ts`** (C-1 แก้ comment ในไฟล์นั้น) |
 | 5 | **C-3** ภาพ medium ต่างกันระหว่างโหลด | พัก → **NEEDS OWNER** | — | ใช่ หนัก (โหลดซ้ำ 8 ครั้งต่อฉาก) | **เสนอให้ Claude คลาวด์ (Sonnet) สืบสาเหตุ** เพราะเครื่องเจ้าของติด WebGL2 | สืบอย่างเดียวก่อน · ถ้าจะแก้ต้องเปิดงานใหม่ |
 | 6 | C-8 cross-fade ขอบป่า | **รอทีม A ตอบ REQ_R5_1 ข้อ 7** + เจ้าของ | ทีม A | ใช่ | — | — |
 | — | C-9, D-1…D-5 | พักตามคำสั่งเจ้าของ | — | — | — | — |
@@ -175,7 +175,7 @@ Task ID: C-3 สืบสาเหตุ · ทำงานอ่านอย่
 ```
 
 ## 9. C-2b (ถ้าเจ้าของเลือก) · NEEDS OWNER
-ข้อเสนออยู่ใน `2026-11-25-pm-c2-qa-and-c4-plan.md` ข้อ 3 · พรอมป์ต์จะเขียนเมื่อเจ้าของเลือกว่า "รับ C-2 ตามนี้" หรือ "ทำ C-2b ก่อน"
+**พรอมป์ต์และเกณฑ์ (รวม Peak Memory, First Frame Latency, Context Restore) อยู่ใน `2026-11-25-dispatch-2F.md` ข้อ 5.5 และ 6.4** · ลำดับส่งล่าสุดอยู่ในไฟล์นั้นข้อ 4
 **หลักฐานใหม่ (คืนนี้, `docs/qa/mobile-perf-2026-11-25.md` + `f2-deferred-dispose.json`):** ทดลองเลื่อน dispose ของด่านเก่าไปหลังเฟรมแรกของด่านใหม่ บนบิลด์ C-2 (จำลองจากภายนอก ไม่แก้ src) 6 rebuild × 2 รอบ: program ใหม่ต่อ rebuild medium 15 → 0, low 14 → 0 · เฟรมแรกบน SwiftShader medium ~330 → ~100 ms, low ~270 → ~45 ms · ไม่รั่ว → ทางแก้ F2 ใน C-2b ได้ผลจริงอย่างน้อยบนคลาวด์ (มือถือจริงยังไม่ทราบ)
 
 ## 10. โมเดลที่แนะนำ

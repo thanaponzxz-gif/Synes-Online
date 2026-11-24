@@ -38,6 +38,7 @@
 | Mixamo (Adobe) | CANDIDATE | ฟรี ต้องมี Adobe ID · ใช้ในวิดีโอเกมเชิงพาณิชย์ได้ ไม่ต้องใส่เครดิต · auto-rig ใช้ได้เฉพาะตัวละครคล้ายมนุษย์ที่แยกหัว/ลำตัว/แขน/ขาชัด และสัดส่วนไม่เพี้ยนเกินไป (helpx.adobe.com Mixamo FAQ, 2026-11-21) · ห้ามแจกจ่ายไฟล์ตัวละคร/animation ดิบ (Adobe community FAQ) | repo เป็น Public: commit ไฟล์ดิบจาก Mixamo อาจนับเป็นการแจกจ่าย → ต้องตัดสินว่าเก็บไฟล์ดิบนอก repo · ศัตรูที่ไม่ใช่มนุษย์ (พัฟแคป, ธอร์นลิง, ปริซึมแบ็ก) ใช้ไม่ได้ · ต้องใช้บัญชีภายนอก (ขออนุมัติ) |
 | Blender armature/Rigify จากสคริปต์ | CANDIDATE | อยู่ใน Blender ที่ใช้อยู่ ไม่ต้องสมัคร | **ยังไม่ได้ทดสอบ**ว่า Rigify ใช้ได้กับ `bpy` แบบ headless · ใช้ได้ทุกรูปร่าง แต่ต้องเขียนสคริปต์เอง |
 | blender-mcp (ahujasid, MIT) | CANDIDATE | ดู `docs/BLENDER_MCP.md` | add-on รัน Python ใดก็ได้ผ่าน socket **ยังไม่ได้ตรวจโค้ด** · ต้องติดตั้งบนเครื่องเจ้าของ (ขออนุมัติ) · ใช้แทนสคริปต์ headless ไม่ได้ในคลาวด์ |
+| gltfpack (meshoptimizer) | CANDIDATE | backlog ข้อ 6 · EXP-103 | **MIT** (ตรวจ 2026-11-25 จาก GitHub LICENSE.md + npm) · npm 1.3.0 ไม่มี dependency · ติดตั้งต้องขออนุมัติ · ยังไม่ได้วัด |
 | gltf-transform + meshopt | CANDIDATE | backlog ข้อ 6 · Three.js มีตัวถอด meshopt มาให้ | ต้องติดตั้ง npm package (ตรวจ license และขออนุมัติก่อน) · **ยังไม่ได้วัด**ว่าลดขนาดได้เท่าไร (EXP-103) |
 
 ## 5. Asset สำเร็จรูป
