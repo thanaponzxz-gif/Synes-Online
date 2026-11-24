@@ -1,5 +1,11 @@
 # Handoff: Synes Online
 
+## รอบ 2-E เริ่ม · 2026-11-24 · 🟡 MAIN · Synes Online · รอบ 2-E (`session_01A1roa3dorP6krBJf4hzHmZ`)
+- ปิดแชต 2-D แล้ว (⚪ + archive) · `art/env-polish`: test 155/155, typecheck, build, lifecycle 20/20
+- ยังไม่มีไฟล์ใหม่: ไม่มี branch ใหม่จาก Local Art/Codex, Drive `SYNES_ASSETS` ไม่เปลี่ยนตั้งแต่ 11-23, zip v05c/d/e ไม่อยู่ใน container
+- เตรียมเทียบ v01/v02 แล้ว: `stage1-shots.mjs --qs envlib=1` เทียบ `pixeldiff.mjs` ได้ 0 px ทั้ง 18 ภาพ (ไม่มีไฟล์ library = no-op, harness deterministic)
+- เจ้าของอนุมัติ C-1 ให้ Codex Local, พัก C-2…C-9 จนตรวจรับ C-1 (ข้อความ Local Art) → ตอบใน `docs/team/2026-11-24-pm-reply-local-art.md` ข้อความที่ 3
+
 ## Rollover → 🟡 MAIN · Synes Online · รอบ 2-E (Environment v02) · 2026-11-24 · จาก รอบ 2-D (`session_01A1roa4t58WN2ZvXKFKGAPa`)
 - **branch งาน = `art/env-polish`** (ยังไม่ merge `main`, ไม่ขึ้น Pages ตามคำสั่งเจ้าของ) · baseline v01 = `baseline/env-v01` (`8b4f602`)
 - ประสาน Local Art (เครื่อง Windows ของเจ้าของ) ผ่านไฟล์เท่านั้น: `docs/team/2026-11-23-pm-to-local-art.md`, `docs/team/2026-11-24-pm-reply-local-art.md` (`ab3a4e2`) · เซสชันคลาวด์ส่งข้อความหาเครื่องเจ้าของไม่ได้ (เจ้าของปฏิเสธการเชื่อมข้ามเครื่อง — ห้ามขอซ้ำ)

@@ -93,6 +93,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
+| 2026-11-24 | 🟡 MAIN · รอบ 2-E `session_01A1roa3dorP6krBJf4hzHmZ` | ปิดแชต 2-D, ตรวจสถานะ, ยืนยัน harness เทียบ v01/v02, ตอบ Local Art (C-1 อนุมัติ, C-2…C-9 พัก) | `art/env-polish` |
 | 2026-11-24 | 🟡 MAIN · รอบ 2-D (ต่อ) `session_01A1roa4t58WN2ZvXKFKGAPa` | Env v01 Golden Reference (QA อิสระ r3), ADR-010 Free Asset First, ประสาน Local Art ผ่านไฟล์ (Codex local C-1…C-8), Hero 001 Tripo ใช้ไม่ได้ ต้องเจนใหม่ | `art/env-polish` `ab3a4e2`, `baseline/env-v01` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002, merge prismatic (เจ้าของอนุมัติโมเดลใหม่), กล้องต่ำตลอด, Auto ตาม DES-001 §4 (log v2), แถวสกิลล่าง, REQ-003, Pages 2 ครั้ง | `b5d20dc`, `4fdc1b3`, `e4e59e1`, `6edb182`, `c0af790`, gh-pages `0c9d21f` |
