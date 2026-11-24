@@ -1,0 +1,63 @@
+{
+ "env_library_v01.glb": {
+  "bytes": 361000,
+  "nodes": 8,
+  "meshes": 8,
+  "primitives": 8,
+  "tris": 3532,
+  "verts": 10406,
+  "materials": 1,
+  "textures": 0,
+  "images": [],
+  "skins": 0,
+  "anims": 0,
+  "extUsed": [],
+  "idxBytes": 21192,
+  "attrBytes": {
+   "POSITION": 124872,
+   "NORMAL": 124872,
+   "COLOR_0": 83248
+  },
+  "scenes": 1
+ },
+ "spire_shrine_B.glb": {
+  "bytes": 56020,
+  "nodes": 2,
+  "meshes": 2,
+  "primitives": 17,
+  "tris": 1318,
+  "verts": 1474,
+  "materials": 10,
+  "textures": 0,
+  "images": [],
+  "skins": 0,
+  "anims": 0,
+  "extUsed": [],
+  "idxBytes": 7908,
+  "attrBytes": {
+   "POSITION": 17688,
+   "NORMAL": 17688
+  },
+  "scenes": 1
+ },
+ "synes_kit.glb": {
+  "bytes": 646964,
+  "nodes": 43,
+  "meshes": 39,
+  "primitives": 195,
+  "tris": 17137,
+  "verts": 17840,
+  "materials": 28,
+  "textures": 0,
+  "images": [],
+  "skins": 0,
+  "anims": 0,
+  "extUsed": [],
+  "idxBytes": 102822,
+  "attrBytes": {
+   "POSITION": 214080,
+   "NORMAL": 214080
+  },
+  "scenes": 1
+ }
+}

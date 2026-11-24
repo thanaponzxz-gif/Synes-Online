@@ -1,0 +1,192 @@
+{
+"main-dist (current branch, no pilot)": [
+{
+"file": "assets/index-CyKlL9_6.js",
+"raw": 866034,
+"gzip": 240755,
+"br": 199227
+},
+{
+"file": "assets/index-D9P3iquo.css",
+"raw": 20141,
+"gzip": 5618,
+"br": 4959
+},
+{
+"file": "assets/models/spire_shrine_B.glb",
+"raw": 56020,
+"gzip": 23108,
+"br": 18271
+},
+{
+"file": "assets/models/synes_kit.glb",
+"raw": 646964,
+"gzip": 225415,
+"br": 170693
+},
+{
+"file": "assets/study-D5jGkozF.js",
+"raw": 5300,
+"gzip": 2215,
+"br": 1988
+},
+{
+"file": "assets/ui/slices.json",
+"raw": 1236,
+"gzip": 354,
+"br": 300
+},
+{
+"file": "assets/ui/ui_btn_frame_v01.png",
+"raw": 66505,
+"gzip": 66548,
+"br": 66510
+},
+{
+"file": "assets/ui/ui_hud_boss_frame_v01.png",
+"raw": 117194,
+"gzip": 116829,
+"br": 117199
+},
+{
+"file": "assets/ui/ui_hud_hp_frame_v01.png",
+"raw": 68122,
+"gzip": 67559,
+"br": 67472
+},
+{
+"file": "assets/ui/ui_menu_settings_v01.png",
+"raw": 34236,
+"gzip": 34269,
+"br": 34240
+},
+{
+"file": "assets/ui/ui_panel_v01.png",
+"raw": 92067,
+"gzip": 91876,
+"br": 92072
+},
+{
+"file": "assets/ui/ui_stick_base_v01.png",
+"raw": 83542,
+"gzip": 83564,
+"br": 83547
+},
+{
+"file": "assets/ui/ui_stick_knob_v01.png",
+"raw": 20819,
+"gzip": 20847,
+"br": 20823
+},
+{
+"file": "assets/ui/ui_toggle_v01.png",
+"raw": 37972,
+"gzip": 38005,
+"br": 37976
+},
+{
+"file": "index.html",
+"raw": 13327,
+"gzip": 4417,
+"br": 3671
+}
+],
+"Q/before dist (base 839c9c0 + pilot env library)": [
+{
+"file": "assets/index-BHFMubVh.js",
+"raw": 876593,
+"gzip": 244815,
+"br": 202598
+},
+{
+"file": "assets/index-D9P3iquo.css",
+"raw": 20141,
+"gzip": 5618,
+"br": 4959
+},
+{
+"file": "assets/models/env_library_v01.glb",
+"raw": 361000,
+"gzip": 102710,
+"br": 82527
+},
+{
+"file": "assets/models/spire_shrine_B.glb",
+"raw": 56020,
+"gzip": 23108,
+"br": 18271
+},
+{
+"file": "assets/models/synes_kit.glb",
+"raw": 646964,
+"gzip": 225415,
+"br": 170693
+},
+{
+"file": "assets/study-C7pcqPQB.js",
+"raw": 5300,
+"gzip": 2217,
+"br": 1988
+},
+{
+"file": "assets/ui/slices.json",
+"raw": 1236,
+"gzip": 354,
+"br": 300
+},
+{
+"file": "assets/ui/ui_btn_frame_v01.png",
+"raw": 66505,
+"gzip": 66548,
+"br": 66510
+},
+{
+"file": "assets/ui/ui_hud_boss_frame_v01.png",
+"raw": 117194,
+"gzip": 116829,
+"br": 117199
+},
+{
+"file": "assets/ui/ui_hud_hp_frame_v01.png",
+"raw": 68122,
+"gzip": 67559,
+"br": 67472
+},
+{
+"file": "assets/ui/ui_menu_settings_v01.png",
+"raw": 34236,
+"gzip": 34269,
+"br": 34240
+},
+{
+"file": "assets/ui/ui_panel_v01.png",
+"raw": 92067,
+"gzip": 91876,
+"br": 92072
+},
+{
+"file": "assets/ui/ui_stick_base_v01.png",
+"raw": 83542,
+"gzip": 83564,
+"br": 83547
+},
+{
+"file": "assets/ui/ui_stick_knob_v01.png",
+"raw": 20819,
+"gzip": 20847,
+"br": 20823
+},
+{
+"file": "assets/ui/ui_toggle_v01.png",
+"raw": 37972,
+"gzip": 38005,
+"br": 37976
+},
+{
+"file": "index.html",
+"raw": 13327,
+"gzip": 4416,
+"br": 3674
+}
+]
+}

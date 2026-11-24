@@ -1,0 +1,482 @@
+[
+ {
+  "tier": "medium",
+  "mode": "normal",
+  "r": [
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 351,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 317,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 307,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 375,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 345,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 369,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   }
+  ]
+ },
+ {
+  "tier": "medium",
+  "mode": "deferred",
+  "r": [
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 169,
+    "deferredDisposeMs": 0.4,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 127,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 163,
+    "deferredDisposeMs": 11,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 132,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 88,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 92,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   }
+  ]
+ },
+ {
+  "tier": "medium",
+  "mode": "normal",
+  "r": [
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 341,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 408,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 456,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 439,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 445,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 15,
+    "total": 18,
+    "firstFrameMs": 357,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 0,
+    "tex": 4,
+    "geo": 40
+   }
+  ]
+ },
+ {
+  "tier": "medium",
+  "mode": "deferred",
+  "r": [
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 118,
+    "deferredDisposeMs": 0.9,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 77,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 83,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 112,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 81,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   },
+   {
+    "newPrograms": 0,
+    "total": 18,
+    "firstFrameMs": 92,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 138,
+    "tex": 4,
+    "geo": 40
+   }
+  ]
+ },
+ {
+  "tier": "low",
+  "mode": "normal",
+  "r": [
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 245,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 247,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 229,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 295,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 229,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 205,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   }
+  ]
+ },
+ {
+  "tier": "low",
+  "mode": "deferred",
+  "r": [
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 137,
+    "deferredDisposeMs": 0.3,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 45,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 37,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 43,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 79,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 35,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   }
+  ]
+ },
+ {
+  "tier": "low",
+  "mode": "normal",
+  "r": [
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 337,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 351,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 312,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 339,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 292,
+    "deferredDisposeMs": 0,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 14,
+    "total": 17,
+    "firstFrameMs": 350,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 0,
+    "tex": 3,
+    "geo": 38
+   }
+  ]
+ },
+ {
+  "tier": "low",
+  "mode": "deferred",
+  "r": [
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 57,
+    "deferredDisposeMs": 4.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 46,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 43,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 39,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 44,
+    "deferredDisposeMs": 0.1,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   },
+   {
+    "newPrograms": 0,
+    "total": 17,
+    "firstFrameMs": 43,
+    "deferredDisposeMs": 0.2,
+    "deferredN": 136,
+    "tex": 3,
+    "geo": 38
+   }
+  ]
+ }
+]

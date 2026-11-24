@@ -1,0 +1,524 @@
+{
+"low": {
+"pre": {
+"dcl": 153,
+"load": 153,
+"btn": 294,
+"paint": [
+[
+"first-paint",
+116
+],
+[
+"first-contentful-paint",
+116
+]
+],
+"res": [
+{
+"n": "index-BHFMubVh.js",
+"start": 22,
+"end": 44,
+"tr": 245115,
+"dec": 876593,
+"type": "script"
+},
+{
+"n": "index-D9P3iquo.css",
+"start": 22,
+"end": 44,
+"tr": 5918,
+"dec": 20141,
+"type": "link"
+},
+{
+"n": "synes_kit.glb",
+"start": 152,
+"end": 157,
+"tr": 225715,
+"dec": 646964,
+"type": "fetch"
+}
+],
+"heap": 12633163
+},
+"startMs": 1313,
+"post": {
+"info": {
+"geo": 38,
+"tex": 3,
+"programs": 17,
+"progNames": [
+":1",
+":1",
+":1",
+":1",
+":1",
+":7",
+":1",
+":1",
+":1",
+":1",
+":1",
+":7",
+":1",
+":1",
+":1",
+":2",
+":1"
+],
+"calls": 49,
+"tris": 47149
+},
+"pr": 0.85,
+"buf": [
+717,
+331
+],
+"texList": [
+{
+"owner": "arena_floor",
+"w": 512,
+"h": 512,
+"mip": true,
+"bytes": 1398101
+},
+{
+"owner": "Mesh",
+"w": 256,
+"h": 512,
+"mip": true,
+"bytes": 699051
+},
+{
+"owner": "arena_waterfalls",
+"w": 64,
+"h": 256,
+"mip": true,
+"bytes": 87381
+},
+{
+"owner": "arena_rim_cards",
+"w": 128,
+"h": 64,
+"mip": true,
+"bytes": 43691
+},
+{
+"owner": "Mesh",
+"w": 64,
+"h": 64,
+"mip": true,
+"bytes": 21845
+}
+],
+"texCount": 5,
+"texBytes": 2250069,
+"heap": 20658775,
+"heapTotal": 26722015,
+"sceneObjs": 234
+},
+"cdp": {
+"heap0": 5197984,
+"heap1": 11943976,
+"nodes": 573,
+"listeners": 88
+},
+"reqs": [
+{
+"url": "/?offline&seed=1&q=low",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-D9P3iquo.css",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-BHFMubVh.js",
+"enc": "gzip"
+},
+{
+"url": "/assets/models/synes_kit.glb",
+"enc": "gzip"
+},
+{
+"url": "/assets/ui/ui_stick_base_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_stick_knob_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_hp_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_boss_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_menu_settings_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_btn_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_toggle_v01.png",
+"enc": ""
+}
+]
+},
+"medium": {
+"pre": {
+"dcl": 122,
+"load": 122,
+"btn": 304,
+"paint": [
+[
+"first-paint",
+104
+],
+[
+"first-contentful-paint",
+104
+]
+],
+"res": [
+{
+"n": "index-BHFMubVh.js",
+"start": 18,
+"end": 32,
+"tr": 245115,
+"dec": 876593,
+"type": "script"
+},
+{
+"n": "index-D9P3iquo.css",
+"start": 23,
+"end": 33,
+"tr": 5918,
+"dec": 20141,
+"type": "link"
+},
+{
+"n": "synes_kit.glb",
+"start": 122,
+"end": 127,
+"tr": 225715,
+"dec": 646964,
+"type": "fetch"
+}
+],
+"heap": 12954246
+},
+"startMs": 627,
+"post": {
+"info": {
+"geo": 40,
+"tex": 4,
+"programs": 18,
+"progNames": [
+":1",
+":1",
+":1",
+":1",
+":1",
+":8",
+":1",
+":1",
+":1",
+":1",
+":1",
+":7",
+":1",
+":1",
+":1",
+":1",
+":2",
+":1"
+],
+"calls": 51,
+"tris": 73813
+},
+"pr": 1.5,
+"buf": [
+1266,
+585
+],
+"texList": [
+{
+"owner": "arena_floor",
+"w": 1024,
+"h": 1024,
+"mip": true,
+"bytes": 5592405
+},
+{
+"owner": "Mesh",
+"w": 512,
+"h": 1024,
+"mip": true,
+"bytes": 2796203
+},
+{
+"owner": "arena_waterfalls",
+"w": 64,
+"h": 256,
+"mip": true,
+"bytes": 87381
+},
+{
+"owner": "arena_rim_cards",
+"w": 128,
+"h": 64,
+"mip": true,
+"bytes": 43691
+},
+{
+"owner": "Mesh",
+"w": 64,
+"h": 64,
+"mip": true,
+"bytes": 21845
+}
+],
+"texCount": 5,
+"texBytes": 8541525,
+"heap": 21253418,
+"heapTotal": 28528082,
+"sceneObjs": 236
+},
+"cdp": {
+"heap0": 5519412,
+"heap1": 11007528,
+"nodes": 565,
+"listeners": 88
+},
+"reqs": [
+{
+"url": "/?offline&seed=1&q=medium",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-D9P3iquo.css",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-BHFMubVh.js",
+"enc": "gzip"
+},
+{
+"url": "/assets/models/synes_kit.glb",
+"enc": "gzip"
+},
+{
+"url": "/assets/ui/ui_stick_base_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_stick_knob_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_hp_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_boss_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_menu_settings_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_btn_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_toggle_v01.png",
+"enc": ""
+}
+]
+},
+"high": {
+"pre": {
+"dcl": 132,
+"load": 133,
+"btn": 267,
+"paint": [
+[
+"first-paint",
+100
+],
+[
+"first-contentful-paint",
+100
+]
+],
+"res": [
+{
+"n": "index-BHFMubVh.js",
+"start": 14,
+"end": 29,
+"tr": 245115,
+"dec": 876593,
+"type": "script"
+},
+{
+"n": "index-D9P3iquo.css",
+"start": 20,
+"end": 25,
+"tr": 5918,
+"dec": 20141,
+"type": "link"
+},
+{
+"n": "synes_kit.glb",
+"start": 132,
+"end": 138,
+"tr": 225715,
+"dec": 646964,
+"type": "fetch"
+}
+],
+"heap": 13341854
+},
+"startMs": 800,
+"post": {
+"info": {
+"geo": 40,
+"tex": 6,
+"programs": 22,
+"progNames": [
+":1",
+":1",
+":1",
+":1",
+":1",
+":1",
+":1",
+":8",
+":1",
+":1",
+":1",
+":1",
+":1",
+":7",
+":1",
+":1",
+":1",
+":1",
+":2",
+":1",
+":1",
+":1"
+],
+"calls": 68,
+"tris": 144171
+},
+"pr": 2,
+"buf": [
+1688,
+780
+],
+"texList": [
+{
+"owner": "arena_floor",
+"w": 1024,
+"h": 1024,
+"mip": true,
+"bytes": 5592405
+},
+{
+"owner": "Mesh",
+"w": 512,
+"h": 1024,
+"mip": true,
+"bytes": 2796203
+},
+{
+"owner": "arena_waterfalls",
+"w": 64,
+"h": 256,
+"mip": true,
+"bytes": 87381
+},
+{
+"owner": "arena_rim_cards",
+"w": 128,
+"h": 64,
+"mip": true,
+"bytes": 43691
+},
+{
+"owner": "Mesh",
+"w": 64,
+"h": 64,
+"mip": true,
+"bytes": 21845
+}
+],
+"texCount": 5,
+"texBytes": 8541525,
+"heap": 22325926,
+"heapTotal": 29702850,
+"sceneObjs": 236
+},
+"cdp": {
+"heap0": 5907024,
+"heap1": 10953028,
+"nodes": 536,
+"listeners": 88
+},
+"reqs": [
+{
+"url": "/?offline&seed=1&q=high",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-D9P3iquo.css",
+"enc": "gzip"
+},
+{
+"url": "/assets/index-BHFMubVh.js",
+"enc": "gzip"
+},
+{
+"url": "/assets/models/synes_kit.glb",
+"enc": "gzip"
+},
+{
+"url": "/assets/ui/ui_stick_base_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_stick_knob_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_hp_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_hud_boss_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_menu_settings_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_btn_frame_v01.png",
+"enc": ""
+},
+{
+"url": "/assets/ui/ui_toggle_v01.png",
+"enc": ""
+}
+]
+}
+}

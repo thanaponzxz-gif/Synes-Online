@@ -1,0 +1,413 @@
+{
+ "medium": {
+  "rows": 768,
+  "calls": {
+   "min": 53,
+   "mean": 58.7,
+   "max": 64
+  },
+  "peak": {
+   "tick": 412,
+   "teles": [
+    "shard:circle",
+    "shard:circle",
+    "shard:circle"
+   ],
+   "calls": 64,
+   "hooked": 62,
+   "buckets": {
+    "other:undefined {Scene}": 1,
+    "ruins/pillars/gates/lanterns": 13,
+    "env_batches(Group/Mesh)": 12,
+    "arena_floor": 1,
+    "arena_deco(rim/waterfall/spray)": 3,
+    "boss": 20,
+    "loose Mesh (ring/vfx/basic)": 2,
+    "shafts+glow": 2,
+    "sparkles(Points)": 1,
+    "telegraph(Shader Mesh)": 3,
+    "hero_ring": 1,
+    "hero": 3
+   }
+  },
+  "buckets": {
+   "shafts+glow": {
+    "min": 2,
+    "mean": 2.0,
+    "max": 2
+   },
+   "arena_floor": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "telegraph(Shader Mesh)": {
+    "min": 0,
+    "mean": 1.88,
+    "max": 5
+   },
+   "hero_ring": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "env_batches(Group/Mesh)": {
+    "min": 12,
+    "mean": 12.0,
+    "max": 12
+   },
+   "sparkles(Points)": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "hero": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   },
+   "other:undefined {Scene}": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "ruins/pillars/gates/lanterns": {
+    "min": 10,
+    "mean": 13.06,
+    "max": 17
+   },
+   "loose Mesh (ring/vfx/basic)": {
+    "min": 1,
+    "mean": 1.18,
+    "max": 3
+   },
+   "boss": {
+    "min": 20,
+    "mean": 20.0,
+    "max": 20
+   },
+   "other:Group/Group {MeshBasicMaterial,T}": {
+    "min": 0,
+    "mean": 0.09,
+    "max": 3
+   },
+   "arena_deco(rim/waterfall/spray)": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   }
+  },
+  "tris_peak": 58181,
+  "info": {
+   "shadow": false,
+   "pr": 1,
+   "p2At": {
+    "tick": 137,
+    "phase": 2,
+    "started": true
+   },
+   "bossMatUse": {
+    "353880": 1,
+    "498622": 1,
+    "d18f04": 1,
+    "96eddd": 1,
+    "f06275": 1,
+    "b73a02": 1,
+    "9906bf": 1,
+    "97fa9b": 1,
+    "eabe3f": 1,
+    "f5a987": 1,
+    "35960b": 1,
+    "8e2ffd": 1,
+    "5c8ed3": 1,
+    "f486d5": 1,
+    "88bfc9": 1,
+    "28b45b": 1,
+    "a8d599": 1,
+    "dae62f": 1,
+    "28c707": 1,
+    "d08602": 1
+   },
+   "sceneCount": {
+    "meshes": 159,
+    "inst": 15,
+    "pts": 1,
+    "vis": 0
+   }
+  }
+ },
+ "low": {
+  "rows": 768,
+  "calls": {
+   "min": 49,
+   "mean": 55.7,
+   "max": 61
+  },
+  "peak": {
+   "tick": 412,
+   "teles": [
+    "shard:circle",
+    "shard:circle",
+    "shard:circle"
+   ],
+   "calls": 61,
+   "hooked": 59,
+   "buckets": {
+    "other:undefined {Scene}": 1,
+    "ruins/pillars/gates/lanterns": 13,
+    "env_batches(Group/Mesh)": 10,
+    "arena_floor": 1,
+    "arena_deco(rim/waterfall/spray)": 3,
+    "boss": 20,
+    "loose Mesh (ring/vfx/basic)": 2,
+    "shafts+glow": 1,
+    "sparkles(Points)": 1,
+    "telegraph(Shader Mesh)": 3,
+    "hero_ring": 1,
+    "hero": 3
+   }
+  },
+  "buckets": {
+   "shafts+glow": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "arena_floor": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "telegraph(Shader Mesh)": {
+    "min": 0,
+    "mean": 1.88,
+    "max": 5
+   },
+   "hero_ring": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "env_batches(Group/Mesh)": {
+    "min": 9,
+    "mean": 9.99,
+    "max": 10
+   },
+   "sparkles(Points)": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "hero": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   },
+   "other:undefined {Scene}": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "ruins/pillars/gates/lanterns": {
+    "min": 10,
+    "mean": 13.06,
+    "max": 17
+   },
+   "loose Mesh (ring/vfx/basic)": {
+    "min": 1,
+    "mean": 1.18,
+    "max": 3
+   },
+   "boss": {
+    "min": 20,
+    "mean": 20.0,
+    "max": 20
+   },
+   "other:Group/Group {MeshBasicMaterial,T}": {
+    "min": 0,
+    "mean": 0.09,
+    "max": 3
+   },
+   "arena_deco(rim/waterfall/spray)": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   }
+  },
+  "tris_peak": 38479,
+  "info": {
+   "shadow": false,
+   "pr": 1,
+   "p2At": {
+    "tick": 137,
+    "phase": 2,
+    "started": true
+   },
+   "bossMatUse": {
+    "392090": 1,
+    "447392": 1,
+    "826764": 1,
+    "4890a5": 1,
+    "4941ce": 1,
+    "d3f31d": 1,
+    "4c48c8": 1,
+    "15d467": 1,
+    "976c11": 1,
+    "bc1742": 1,
+    "75e352": 1,
+    "07c9c7": 1,
+    "3103b0": 1,
+    "ac85df": 1,
+    "3a6f73": 1,
+    "62735e": 1,
+    "f784f4": 1,
+    "26866b": 1,
+    "49aab9": 1,
+    "10e229": 1
+   },
+   "sceneCount": {
+    "meshes": 157,
+    "inst": 14,
+    "pts": 1,
+    "vis": 0
+   }
+  }
+ },
+ "medium-envlib": {
+  "rows": 768,
+  "calls": {
+   "min": 53,
+   "mean": 58.7,
+   "max": 64
+  },
+  "peak": {
+   "tick": 412,
+   "teles": [
+    "shard:circle",
+    "shard:circle",
+    "shard:circle"
+   ],
+   "calls": 64,
+   "hooked": 62,
+   "buckets": {
+    "other:undefined {Scene}": 1,
+    "ruins/pillars/gates/lanterns": 13,
+    "env_batches(Group/Mesh)": 12,
+    "arena_floor": 1,
+    "arena_deco(rim/waterfall/spray)": 3,
+    "boss": 20,
+    "loose Mesh (ring/vfx/basic)": 2,
+    "shafts+glow": 2,
+    "sparkles(Points)": 1,
+    "telegraph(Shader Mesh)": 3,
+    "hero_ring": 1,
+    "hero": 3
+   }
+  },
+  "buckets": {
+   "shafts+glow": {
+    "min": 2,
+    "mean": 2.0,
+    "max": 2
+   },
+   "arena_floor": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "telegraph(Shader Mesh)": {
+    "min": 0,
+    "mean": 1.88,
+    "max": 5
+   },
+   "hero_ring": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "env_batches(Group/Mesh)": {
+    "min": 12,
+    "mean": 12.0,
+    "max": 12
+   },
+   "sparkles(Points)": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "hero": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   },
+   "other:undefined {Scene}": {
+    "min": 1,
+    "mean": 1.0,
+    "max": 1
+   },
+   "ruins/pillars/gates/lanterns": {
+    "min": 10,
+    "mean": 13.06,
+    "max": 17
+   },
+   "loose Mesh (ring/vfx/basic)": {
+    "min": 1,
+    "mean": 1.18,
+    "max": 3
+   },
+   "boss": {
+    "min": 20,
+    "mean": 20.0,
+    "max": 20
+   },
+   "other:Group/Group {MeshBasicMaterial,T}": {
+    "min": 0,
+    "mean": 0.09,
+    "max": 3
+   },
+   "arena_deco(rim/waterfall/spray)": {
+    "min": 3,
+    "mean": 3.0,
+    "max": 3
+   }
+  },
+  "tris_peak": 58181,
+  "info": {
+   "shadow": false,
+   "pr": 1,
+   "p2At": {
+    "tick": 137,
+    "phase": 2,
+    "started": true
+   },
+   "bossMatUse": {
+    "80c1df": 1,
+    "8c3e26": 1,
+    "f78f98": 1,
+    "06a619": 1,
+    "9626a9": 1,
+    "f65192": 1,
+    "833a75": 1,
+    "e6edf2": 1,
+    "75946d": 1,
+    "b5bc6a": 1,
+    "dc369e": 1,
+    "29cac8": 1,
+    "8a40c7": 1,
+    "dee890": 1,
+    "56a929": 1,
+    "5bd07b": 1,
+    "2787ab": 1,
+    "026065": 1,
+    "6ad263": 1,
+    "f3252a": 1
+   },
+   "sceneCount": {
+    "meshes": 166,
+    "inst": 21,
+    "pts": 1,
+    "vis": 0
+   }
+  }
+ }
+}
