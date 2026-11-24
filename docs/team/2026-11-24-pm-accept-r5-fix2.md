@@ -29,3 +29,12 @@ PM ตรวจซ้ำเองบนคลาวด์ตาม CLAUDE.md ข
 - C-1: เจ้าของอนุมัติ · Codex Local ทำบน `lane/codex-r5` ฐาน `839c9c0` · เกณฑ์ = `CODEX_PROMPTS_R5.md` งานที่ 1 + เกณฑ์ (ก)(ข)(ค) ใน `2026-11-24-pm-reply-local-art.md` · C-2…C-9 พักจนตรวจรับ C-1
 - การ push `art/env-r5-pilot` ขึ้น repo Public: ยังรอเจ้าของ (CLAUDE.md ข้อ 6)
 - Android / iPhone: ยังไม่ได้ทดสอบ · PC: Chromium headless เท่านั้น
+
+## 5. คำสั่งเจ้าของหลังรับผล (2026-11-24)
+- รับทราบผลตรวจรับ Fix2
+- **เพดาน draw calls ของพื้นที่ Golden Reference คงเดิม low 56 / medium 60**
+- Boss phase 2 (62/65) = **Known Performance Issue แยก** → `docs/qa/KNOWN_ISSUES.md` KPI-001 · ยังไม่เปิด C-9 · ไม่เพิ่มเพดานเพื่อให้ผ่าน
+- ทีม A กำลังออกแบบ R5.2: แก้ต้นไม้บัง Potion, ปรับต้นสน, Visual Identity ของ Synes Online
+- Codex ทำ C-1 ต่อในเซสชันเดิม → เสร็จแล้ว QA อิสระตรวจตามแผน
+- **ยังไม่อนุมัติ push `art/env-r5-pilot` ขึ้น repo Public**
+- ไม่รัน QA ซ้ำจนกว่าจะมีผลงานใหม่ที่ต้องตรวจ
