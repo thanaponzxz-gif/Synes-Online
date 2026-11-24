@@ -4,6 +4,7 @@
 - ปิดแชต 2-D แล้ว (⚪ + archive) · `art/env-polish`: test 155/155, typecheck, build, lifecycle 20/20
 - ยังไม่มีไฟล์ใหม่: ไม่มี branch ใหม่จาก Local Art/Codex, Drive `SYNES_ASSETS` ไม่เปลี่ยนตั้งแต่ 11-23, zip v05c/d/e ไม่อยู่ใน container
 - เตรียมเทียบ v01/v02 แล้ว: `stage1-shots.mjs --qs envlib=1` เทียบ `pixeldiff.mjs` ได้ 0 px ทั้ง 18 ภาพ (ไม่มีไฟล์ library = no-op, harness deterministic)
+- **ได้ zip v05c/d/e จากเจ้าของ (SHA256 ตรง)** → PM ตรวจซ้ำ `fix2_code.patch` บน `24f56b4`: 168/168, typecheck, build, lifecycle 20/20, ปิด flag ฉาก 3D ตรง v01, ฉากบอสกับ `envlib=1` ตรง v01 → **ตรวจรับ QA รอบแก้ 2 ผ่าน** (`docs/team/2026-11-24-pm-accept-r5-fix2.md`) · ภาพเทียบ v01/v02 ส่งเจ้าของในแชต (ไม่ commit) · ข้อใหม่: บอส phase 2 calls 62/65 เกินเพดานชั่วคราว 56/60 อยู่แล้วในเกมเดิม
 - เจ้าของอนุมัติ C-1 ให้ Codex Local, พัก C-2…C-9 จนตรวจรับ C-1 (ข้อความ Local Art) → ตอบใน `docs/team/2026-11-24-pm-reply-local-art.md` ข้อความที่ 3
 
 ## Rollover → 🟡 MAIN · Synes Online · รอบ 2-E (Environment v02) · 2026-11-24 · จาก รอบ 2-D (`session_01A1roa4t58WN2ZvXKFKGAPa`)
