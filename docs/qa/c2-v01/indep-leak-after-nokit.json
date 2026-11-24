@@ -1,0 +1,1419 @@
+{
+  "base": "http://localhost:8102",
+  "rebuilds": 10,
+  "cases": [
+    {
+      "tier": "low",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 139,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 163,
+            "t": 5,
+            "p": 19
+          },
+          "disposeCalls": 389,
+          "disposedObjects": 389,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: [.WebGL-0x9ac0038bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "warning: [.WebGL-0x9ac0038bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "warning: [.WebGL-0x9ac0038bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "warning: [.WebGL-0x9ac0038bc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": true,
+      "deltaNormal": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 142,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 166,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 397,
+          "disposedObjects": 397,
+          "doubleDispose": [],
+          "sharedDisposedCount": 15,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#f3e2c3 @",
+            "mat:MeshLambertMaterial#2bb3a3 @",
+            "mat:MeshLambertMaterial#b9b4c7 @",
+            "mat:MeshLambertMaterial#8a5a3b @",
+            "mat:MeshLambertMaterial#c89a6a @",
+            "mat:MeshLambertMaterial#5a4636 @",
+            "mat:MeshLambertMaterial#ffc857 @",
+            "mat:MeshLambertMaterial#a5734d @",
+            "mat:MeshLambertMaterial#5cf2e6 @gem",
+            "mat:MeshLambertMaterial#fff1dc @puffcap_cap",
+            "mat:MeshLambertMaterial#2a1d14 @puffcap_stem",
+            "mat:MeshLambertMaterial#ff9ec7 @puffcap_cap",
+            "mat:MeshLambertMaterial#3f8f4a @thornling_body",
+            "mat:MeshLambertMaterial#a78bfa @thornling_body",
+            "mat:MeshLambertMaterial#fff6a0 @thornling_body"
+          ],
+          "everDisposedStillInScene": 15,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    }
+  ]
+}

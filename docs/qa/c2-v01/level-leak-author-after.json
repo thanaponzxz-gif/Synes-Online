@@ -1,0 +1,416 @@
+{
+  "base": "http://localhost:8102",
+  "browser": "158.0.8127.36",
+  "rebuilds": 10,
+  "stable": true,
+  "cases": [
+    {
+      "tier": "low",
+      "envlib": false,
+      "samples": [
+        {
+          "rebuild": 0,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 1,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 2,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 3,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 4,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 5,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 6,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 7,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 8,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 9,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        },
+        {
+          "rebuild": 10,
+          "geometries": 38,
+          "textures": 3,
+          "programs": 17
+        }
+      ],
+      "deltas": [
+        {
+          "rebuild": 1,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 2,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 3,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 4,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 5,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 6,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 7,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 8,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 9,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 10,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        }
+      ],
+      "errors": [],
+      "stable": true
+    },
+    {
+      "tier": "medium",
+      "envlib": false,
+      "samples": [
+        {
+          "rebuild": 0,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 1,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 2,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 3,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 4,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 5,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 6,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 7,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 8,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 9,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        },
+        {
+          "rebuild": 10,
+          "geometries": 40,
+          "textures": 4,
+          "programs": 18
+        }
+      ],
+      "deltas": [
+        {
+          "rebuild": 1,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 2,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 3,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 4,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 5,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 6,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 7,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 8,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 9,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 10,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        }
+      ],
+      "errors": [],
+      "stable": true
+    },
+    {
+      "tier": "medium",
+      "envlib": true,
+      "samples": [
+        {
+          "rebuild": 0,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 1,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 2,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 3,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 4,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 5,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 6,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 7,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 8,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 9,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        },
+        {
+          "rebuild": 10,
+          "geometries": 47,
+          "textures": 4,
+          "programs": 20
+        }
+      ],
+      "deltas": [
+        {
+          "rebuild": 1,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 2,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 3,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 4,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 5,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 6,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 7,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 8,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 9,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        },
+        {
+          "rebuild": 10,
+          "geometries": 0,
+          "textures": 0,
+          "programs": 0
+        }
+      ],
+      "errors": [],
+      "stable": true
+    }
+  ]
+}

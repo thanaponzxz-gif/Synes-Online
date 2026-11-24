@@ -1,0 +1,935 @@
+{
+  "base": "http://localhost:8102",
+  "rebuilds": 10,
+  "cases": [
+    {
+      "tier": "low",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 38,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 39,
+            "t": 3,
+            "p": 18
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          },
+          "disposeCalls": 188,
+          "disposedObjects": 188,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: [.WebGL-0xcac003afc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: [.WebGL-0xcac003afc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 40,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 41,
+            "t": 4,
+            "p": 19
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          },
+          "disposeCalls": 193,
+          "disposedObjects": 193,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": true,
+      "deltaNormal": {
+        "g": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "t": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 47,
+            "t": 4,
+            "p": 20
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 48,
+            "t": 4,
+            "p": 21
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          },
+          "disposeCalls": 213,
+          "disposedObjects": 213,
+          "doubleDispose": [],
+          "sharedDisposedCount": 0,
+          "sharedDisposed": [],
+          "everDisposedStillInScene": 0,
+          "droppedNotDisposed": 0,
+          "droppedNotDisposedSample": []
+        }
+      ],
+      "errors": [
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    }
+  ]
+}

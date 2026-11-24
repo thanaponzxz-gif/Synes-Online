@@ -1,0 +1,1625 @@
+{
+  "base": "http://localhost:8101",
+  "rebuilds": 10,
+  "cases": [
+    {
+      "tier": "low",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          18,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 38,
+            "t": 3,
+            "p": 17
+          },
+          "forced": {
+            "g": 46,
+            "t": 5,
+            "p": 20
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 56,
+            "t": 4,
+            "p": 17
+          },
+          "forced": {
+            "g": 63,
+            "t": 6,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 73,
+            "t": 5,
+            "p": 17
+          },
+          "forced": {
+            "g": 80,
+            "t": 7,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 90,
+            "t": 6,
+            "p": 17
+          },
+          "forced": {
+            "g": 97,
+            "t": 8,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 107,
+            "t": 7,
+            "p": 17
+          },
+          "forced": {
+            "g": 114,
+            "t": 9,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 124,
+            "t": 8,
+            "p": 17
+          },
+          "forced": {
+            "g": 131,
+            "t": 10,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 141,
+            "t": 9,
+            "p": 17
+          },
+          "forced": {
+            "g": 148,
+            "t": 11,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 158,
+            "t": 10,
+            "p": 17
+          },
+          "forced": {
+            "g": 165,
+            "t": 12,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 175,
+            "t": 11,
+            "p": 17
+          },
+          "forced": {
+            "g": 182,
+            "t": 13,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 192,
+            "t": 12,
+            "p": 17
+          },
+          "forced": {
+            "g": 199,
+            "t": 14,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 209,
+            "t": 13,
+            "p": 17
+          },
+          "forced": {
+            "g": 216,
+            "t": 15,
+            "p": 20
+          },
+          "disposeCalls": 45,
+          "disposedObjects": 43,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 131,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        }
+      ],
+      "errors": [
+        "warning: [.WebGL-0x1f4c003bbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: [.WebGL-0x1f4c003bbc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": false,
+      "deltaNormal": {
+        "g": [
+          19,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 40,
+            "t": 4,
+            "p": 18
+          },
+          "forced": {
+            "g": 48,
+            "t": 6,
+            "p": 21
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 59,
+            "t": 5,
+            "p": 18
+          },
+          "forced": {
+            "g": 66,
+            "t": 7,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 77,
+            "t": 6,
+            "p": 18
+          },
+          "forced": {
+            "g": 84,
+            "t": 8,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 95,
+            "t": 7,
+            "p": 18
+          },
+          "forced": {
+            "g": 102,
+            "t": 9,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 113,
+            "t": 8,
+            "p": 18
+          },
+          "forced": {
+            "g": 120,
+            "t": 10,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 131,
+            "t": 9,
+            "p": 18
+          },
+          "forced": {
+            "g": 138,
+            "t": 11,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 149,
+            "t": 10,
+            "p": 18
+          },
+          "forced": {
+            "g": 156,
+            "t": 12,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 167,
+            "t": 11,
+            "p": 18
+          },
+          "forced": {
+            "g": 174,
+            "t": 13,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 185,
+            "t": 12,
+            "p": 18
+          },
+          "forced": {
+            "g": 192,
+            "t": 14,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 203,
+            "t": 13,
+            "p": 18
+          },
+          "forced": {
+            "g": 210,
+            "t": 15,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 221,
+            "t": 14,
+            "p": 18
+          },
+          "forced": {
+            "g": 228,
+            "t": 16,
+            "p": 21
+          },
+          "disposeCalls": 47,
+          "disposedObjects": 45,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        }
+      ],
+      "errors": [
+        "warning: The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio",
+        "warning: Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture.",
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    },
+    {
+      "tier": "medium",
+      "envlib": true,
+      "deltaNormal": {
+        "g": [
+          19,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "deltaForced": {
+        "g": [
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18,
+          18
+        ],
+        "t": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "p": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "rows": [
+        {
+          "rebuild": 0,
+          "normal": {
+            "g": 47,
+            "t": 4,
+            "p": 20
+          },
+          "forced": {
+            "g": 55,
+            "t": 6,
+            "p": 23
+          }
+        },
+        {
+          "rebuild": 1,
+          "normal": {
+            "g": 66,
+            "t": 5,
+            "p": 20
+          },
+          "forced": {
+            "g": 73,
+            "t": 7,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 2,
+          "normal": {
+            "g": 84,
+            "t": 6,
+            "p": 20
+          },
+          "forced": {
+            "g": 91,
+            "t": 8,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 3,
+          "normal": {
+            "g": 102,
+            "t": 7,
+            "p": 20
+          },
+          "forced": {
+            "g": 109,
+            "t": 9,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 4,
+          "normal": {
+            "g": 120,
+            "t": 8,
+            "p": 20
+          },
+          "forced": {
+            "g": 127,
+            "t": 10,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 5,
+          "normal": {
+            "g": 138,
+            "t": 9,
+            "p": 20
+          },
+          "forced": {
+            "g": 145,
+            "t": 11,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 6,
+          "normal": {
+            "g": 156,
+            "t": 10,
+            "p": 20
+          },
+          "forced": {
+            "g": 163,
+            "t": 12,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 7,
+          "normal": {
+            "g": 174,
+            "t": 11,
+            "p": 20
+          },
+          "forced": {
+            "g": 181,
+            "t": 13,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 8,
+          "normal": {
+            "g": 192,
+            "t": 12,
+            "p": 20
+          },
+          "forced": {
+            "g": 199,
+            "t": 14,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 9,
+          "normal": {
+            "g": 210,
+            "t": 13,
+            "p": 20
+          },
+          "forced": {
+            "g": 217,
+            "t": 15,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        },
+        {
+          "rebuild": 10,
+          "normal": {
+            "g": 228,
+            "t": 14,
+            "p": 20
+          },
+          "forced": {
+            "g": 235,
+            "t": 16,
+            "p": 23
+          },
+          "disposeCalls": 67,
+          "disposedObjects": 65,
+          "doubleDispose": [
+            "mat:MeshLambertMaterial#ffffff x3"
+          ],
+          "sharedDisposedCount": 1,
+          "sharedDisposed": [
+            "mat:MeshLambertMaterial#ffffff @thornling_body_geo_2"
+          ],
+          "everDisposedStillInScene": 1,
+          "droppedNotDisposed": 133,
+          "droppedNotDisposedSample": [
+            "geo:PlaneGeometry",
+            "mat:MeshLambertMaterial#ffffff",
+            "tex:1009",
+            "geo:BufferGeometry",
+            "mat:MeshLambertMaterial#86c95f",
+            "mat:MeshLambertMaterial#b9b4c7",
+            "mat:MeshLambertMaterial#8f89a6",
+            "mat:MeshLambertMaterial#5cf2e6",
+            "mat:MeshLambertMaterial#39cfec",
+            "mat:MeshLambertMaterial#82bef2",
+            "mat:MeshLambertMaterial#daf6ff",
+            "mat:MeshLambertMaterial#7761d9",
+            "mat:MeshLambertMaterial#a78bfa",
+            "geo:CircleGeometry",
+            "mat:MeshBasicMaterial#ffffff",
+            "mat:MeshBasicMaterial#ffc857",
+            "mat:MeshLambertMaterial#2b2440",
+            "mat:MeshLambertMaterial#dab381"
+          ]
+        }
+      ],
+      "errors": [
+        "warning: Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently"
+      ]
+    }
+  ]
+}

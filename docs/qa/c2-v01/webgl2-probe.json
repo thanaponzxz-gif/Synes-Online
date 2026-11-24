@@ -1,0 +1,47 @@
+{
+ "launch": {
+  "exe": "playwright-chromium",
+  "channel": null,
+  "args": [
+   "--use-gl=angle",
+   "--use-angle=swiftshader",
+   "--enable-unsafe-swiftshader",
+   "--enable-precise-memory-info",
+   "--ignore-gpu-blocklist"
+  ],
+  "version": "158.0.8127.36"
+ },
+ "result": {
+  "stage": "done",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "vendor": "Google Inc. (Google)",
+  "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+  "glsl": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+  "limits": {
+   "maxTexture": 8192,
+   "maxVertexAttribs": 16,
+   "maxVertexUniformVectors": 4096,
+   "maxSamples": 4
+  },
+  "ext": {
+   "EXT_color_buffer_float": true,
+   "EXT_color_buffer_half_float": true,
+   "OES_texture_float_linear": true,
+   "WEBGL_lose_context": true
+  },
+  "pixel": [
+   0,
+   255,
+   0,
+   255
+  ],
+  "glError": 0,
+  "contextLost": false,
+  "ok": true,
+  "why": ""
+ },
+ "pageErrors": [],
+ "ms": 177,
+ "ready": true
+}
+WEBGL2 READY
