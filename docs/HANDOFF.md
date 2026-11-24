@@ -1,5 +1,12 @@
 # Handoff: Synes Online
 
+## Rollover → 🟡 MAIN · Synes Online · รอบ 2-E (Environment v02) · 2026-11-24 · จาก รอบ 2-D (`session_01A1roa4t58WN2ZvXKFKGAPa`)
+- **branch งาน = `art/env-polish`** (ยังไม่ merge `main`, ไม่ขึ้น Pages ตามคำสั่งเจ้าของ) · baseline v01 = `baseline/env-v01` (`8b4f602`)
+- ประสาน Local Art (เครื่อง Windows ของเจ้าของ) ผ่านไฟล์เท่านั้น: `docs/team/2026-11-23-pm-to-local-art.md`, `docs/team/2026-11-24-pm-reply-local-art.md` (`ab3a4e2`) · เซสชันคลาวด์ส่งข้อความหาเครื่องเจ้าของไม่ได้ (เจ้าของปฏิเสธการเชื่อมข้ามเครื่อง — ห้ามขอซ้ำ)
+- คำตัดสินล่าสุด: Codex ทำบนเครื่องเจ้าของตามลำดับทีม A C-1 → C-2 → C-4 → C-5 → C-6 → C-7 → C-3 → C-8, C-9 พัก · C-1 (TD-2 กล้อง pull ค้างเมื่อหมุนเป็นแนวตั้ง, `src/render/view.ts:731/736`) เริ่มได้ทันที เกณฑ์รับอยู่ในไฟล์ตอบ · QA อิสระหลัง C-1 = เซสชัน Opus ใหม่บนเครื่องเจ้าของ
+- **ติดรอเจ้าของ:** แนบ zip (`SYNES_Handoff_v05c_r5_fix2.zip`, `v05d_r5_commit.zip`, `v05e_codex_local.zip`, `MESSAGE_TO_PM_2026-11-24.md`) · อนุมัติ push `art/env-r5-pilot`/ชุดย่อย library ขึ้น repo Public (ห้าม Hero) · Hero 001 Q4 (ตัวตน + ผ้าพันคอแดง vs teal) · Environment v02 + เทียบ v01/v02 + QA อิสระ ทำต่อได้เมื่อได้ไฟล์ library
+- ทดสอบ: Android/iPhone ยังไม่ได้ทดสอบ · PC = Chromium headless เท่านั้น
+
 ## Environment Art v01: Golden Reference ผ่านตรวจอิสระ · 2026-11-23 · 🟡 MAIN · Synes Online · รอบ 2-D
 **คำสั่งเจ้าของ (2026-11-23):** Environment Art & Visual Polish เป็นงานหลัก · Free Asset First (CC0) · Claude รับช่วง Technical Art ชั่วคราว (โควตา GPT/Codex หมด) · QA ภาพแยกจากผู้ผลิต · ทุกงานภาพมี Before/After + perf · ไม่ขยายแมพที่สอง → **ADR-010**
 - branch งาน `art/env-polish` (**ยังไม่ merge `main`, ไม่แตะ Pages**): baseline `docs/qa/env-art-v01/r0-baseline/`, พื้นที่ตัวอย่าง r1→r3 (`exp/env-sample-a` `212c989`) ตรวจอิสระ 3 รอบ ผล r3 **ผ่าน** = Golden Reference (กฎ 6 ข้อใน `docs/qa/env-art-v01/README.md`) · `?env=0` = ภาพเดิมตรงทุกพิกเซลในฉาก 3D
