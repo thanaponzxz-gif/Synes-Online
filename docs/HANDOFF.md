@@ -1,7 +1,7 @@
 # Handoff: Synes Online
 
 ## รอบ 2-F: เตรียมสั่งงาน + Checkpoint · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
-- **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` (Master Handoff + พรอมป์ต์เริ่มเซสชันใหม่) · tag `checkpoint/2F-2026-11-25`
+- **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` (Master Handoff + พรอมป์ต์เริ่มเซสชันใหม่) · checkpoint = commit `69299a1` (push tag ถูกปฏิเสธ 403)
 - คำสั่งเจ้าของ 9 ข้อ → `docs/team/2026-11-25-dispatch-2F.md` (รายการตัดสิน D0–D8, ลำดับ C-6 → C-5 → C-1 v2 → C-2b → C-4, พรอมป์ต์ Codex/ทีม A/QA คลาวด์, แผน meshopt EXP-103) · `docs/team/2026-11-25-pm-accept-c2.md` (PM รับ C-2, F1/F2/F3 เปิดต่อ → C-2b) · แพ็ก zip REQ-004/005 ส่งเจ้าของในแชต (SHA `6de10b5c…`)
 - ตรวจ license จากแหล่งทางการ (อ่านอย่างเดียว): meshoptimizer/gltfpack MIT, glTF-Transform MIT · **ไม่ได้ติดตั้ง ไม่ได้สร้าง `exp/meshopt`**
 - พัก: C-7 (จน C-4 ผ่าน QA), KTX2, C-9 · ไม่มี push/merge pilot · ไม่ได้รัน QA ซ้ำ

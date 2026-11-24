@@ -95,7 +95,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-25 | 🟡 MAIN · รอบ 2-F `session_01A1roa4D5M2pZxQPQegFexE` | ปิดแชต 2-E, ข้อมูลประกอบการตัดสิน 8 ข้อ, PM รับ C-2, ชุดสั่งงาน D0–D8 + C-2b WP + แพ็ก REQ ทีม A, ตรวจ license meshopt, Master Handoff (ไม่ implement) | `art/env-polish` tag `checkpoint/2F-2026-11-25` |
+| 2026-11-25 | 🟡 MAIN · รอบ 2-F `session_01A1roa4D5M2pZxQPQegFexE` | ปิดแชต 2-E, ข้อมูลประกอบการตัดสิน 8 ข้อ, PM รับ C-2, ชุดสั่งงาน D0–D8 + C-2b WP + แพ็ก REQ ทีม A, ตรวจ license meshopt, Master Handoff (ไม่ implement) | `art/env-polish` `69299a1` (checkpoint) |
 | 2026-11-24/25 | 🟡 MAIN · รอบ 2-E `session_01A1roa3dorP6krBJf4hzHmZ` | ปิดแชต 2-D, ตรวจรับ R5 fix2, KPI-001, QA env คลาวด์ (`webgl2-probe`), QA อิสระ C-2 (PASS with notes), **โหมดกลางคืน**: วิเคราะห์ C-1 blocker (Fable), `c1-rotate`, audit, perf/KPI-001, ชุดงาน Codex, ความพร้อมรับศิลป์ + `glb-check`, REQ-004/005 → `docs/team/2026-11-25-morning-brief.md` | `art/env-polish` `60126d1`…รอบท้าย |
 | 2026-11-24 | 🟡 MAIN · รอบ 2-D (ต่อ) `session_01A1roa4t58WN2ZvXKFKGAPa` | Env v01 Golden Reference (QA อิสระ r3), ADR-010 Free Asset First, ประสาน Local Art ผ่านไฟล์ (Codex local C-1…C-8), Hero 001 Tripo ใช้ไม่ได้ ต้องเจนใหม่ | `art/env-polish` `ab3a4e2`, `baseline/env-v01` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |

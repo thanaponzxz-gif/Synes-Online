@@ -1,6 +1,6 @@
 # Master Handoff รอบ 2-F · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
 เอกสารนี้เขียนไว้ให้ PM คนถัดไปทำงานต่อได้ทันที ไม่ว่าจะเปิดเซสชันใหม่ด้วย rollover อัตโนมัติครั้งสุดท้าย หรือเจ้าของเปิดเองจาก claude.ai
-**Checkpoint:** tag `checkpoint/2F-2026-11-25` บน `origin` (ชี้ commit ที่เพิ่มไฟล์นี้ บน `art/env-polish`)
+**Checkpoint:** commit `69299a1` บน `origin/art/env-polish` (commit ที่เพิ่มไฟล์นี้ · push tag ถูกระบบปฏิเสธ 403 จึงไม่มี tag)
 
 ## 1. lineage ของเซสชัน (ข้อเท็จจริงจาก `get_session`)
 - เซสชันนี้ depth **7 / limit 8** → rollover อัตโนมัติ (`create_session`) ได้อีก **1 ครั้ง** เซสชันที่ได้จะเป็น 8/8 และ**สร้างเซสชันลูกต่อไม่ได้**
@@ -13,7 +13,7 @@
 |---|---|
 | `main` | `b46ca7f` (stage1 + combat-2) · ไม่แตะในรอบ 2-E/2-F |
 | `gh-pages` | `1aa6088` (บิลด์ `b46ca7f`) · ห้ามอัปเดตโดยไม่ถามเจ้าของ |
-| `art/env-polish` (branch งาน) | checkpoint ข้างบน · ฐานโค้ด = `24f56b4` (Env v01 Golden Reference) · เอกสาร 2-E/2-F อยู่บนนี้ |
+| `art/env-polish` (branch งาน) | checkpoint `69299a1` (+ commit แก้เอกสารเล็กน้อยหลังจากนั้น) · ฐานโค้ด = `24f56b4` (Env v01 Golden Reference) · เอกสาร 2-E/2-F อยู่บนนี้ |
 | `baseline/env-v01` | `8b4f602` |
 | `lane/env-assets` | สาย SUB env-assets (`session_01A1roa4B7XoiVyVoHkVStEs`) · สถานะเซสชันไม่ได้ตรวจในรอบนี้ |
 | เฉพาะบน PC ของเจ้าของ (ไม่อยู่บน remote) | `839c9c0` (`lane/codex-r5`, pilot R5 fix2) · `69301b5` (`lane/codex-c2`, C-2) · `art/env-r5-pilot` (**ไม่อนุมัติ push**) |
