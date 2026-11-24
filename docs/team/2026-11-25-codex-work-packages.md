@@ -5,7 +5,7 @@
 ## 1. ภาพรวมและลำดับตามการพึ่งพากันจริง
 | ลำดับ | งาน | สถานะ | ขึ้นกับ | ต้องใช้เบราว์เซอร์ WebGL2? | ผู้ทำ / QA | ไฟล์ที่แตะ (ชนกับใคร) |
 |---|---|---|---|---|---|---|
-| — | C-1 กล้องหมุนจอ | **BLOCKED (พัก)** | ผลวิเคราะห์ข้อ 3 | ใช่ (ภาพแนวนอน + การหมุน) | Codex เขียน + vitest · คลาวด์ QA | `view.ts` updateCamera, `cameraField.ts`, comment ใน `envPilot.ts` |
+| 0 | C-1 กล้องหมุนจอ | **พัก → NEEDS OWNER (เลิกพัก)** · พรอมป์ต์ v2 พร้อม (ข้อ 3) | — (ไม่ต้องรอวินิจฉัย WebGL2) | บนคลาวด์เท่านั้น (Codex ไม่ใช้เบราว์เซอร์) | Codex เขียน + vitest · คลาวด์ QA ด้วย `c1-rotate.mjs` | `view.ts` updateCamera, `cameraField.ts`, comment ใน `envPilot.ts` |
 | — | C-2 dispose ตอน rebuild | **QA PASS with notes · รอเจ้าของรับ** | — | — | เสร็จ | `view.ts` buildLevel, `models.ts`, `arena.ts`, `opening.ts` |
 | — | C-2b (F1/F2/F3 ของ C-2) | **NEEDS OWNER** | C-2 | ใช่ (วัด program) | Codex + คลาวด์ QA | ไฟล์เดียวกับ C-2 |
 | 1 | **C-6** สคริปต์สร้าง patch | พัก → **NEEDS OWNER** | — | **ไม่ใช้** | Codex Local ทำจบได้ทั้งงาน · PM ตรวจ SHA บนคลาวด์ | `tools/qa/make-patch.mjs` (ไม่ชน) |
@@ -27,8 +27,43 @@
 Codex commit ใน worktree ของงาน → `git format-patch -1 HEAD -o C:\SYNES_ASSETS\SYNES_OUTPUT\<งาน>` → `Get-FileHash` → เจ้าของแนบ patch ในแชต PM → PM ตรวจ SHA256 + อ่านโค้ด → apply บนฐานเดียวกันบนคลาวด์ → `node tools/qa/webgl2-probe.mjs` → ชุดทดสอบเต็ม → QA อิสระ (agent ที่ไม่ได้เขียนโค้ด) → PM ตัดสิน → เจ้าของอนุมัติ
 **ไม่มีการ push** (ฐาน `839c9c0` ยังไม่อยู่บน remote และยังไม่อนุมัติ push pilot)
 
-## 3. C-1 (พัก): เส้นทางที่เสนอหลังวิเคราะห์ blocker
-_เติมหลังได้ผลวิเคราะห์ `docs/team/2026-11-25-c1-blocker-analysis.md` (Fable) และเครื่องมือ `tools/qa/c1-rotate.mjs`_
+## 3. C-1 (พัก): เส้นทางที่เสนอหลังวิเคราะห์ blocker · NEEDS OWNER (เลิกพัก)
+ที่มา: `docs/team/2026-11-25-c1-blocker-analysis.md` (Fable 5.2) + `docs/qa/c1-prep/README.md` (เครื่องมือ `tools/qa/c1-rotate.mjs`)
+- **ข้อเท็จจริง:** คลาวด์ตรวจ C-1 ได้ตรงจุด เพราะเกมตัดสินแนวตั้งจาก `camera.aspect < 1` และฟังแค่ event `resize` (ไม่มี `orientationchange`) การเปลี่ยนขนาด viewport จึงวิ่งโค้ดเส้นเดียวกับการหมุนจอ
+- **baseline บนคลาวด์ (ข้อเท็จจริง):** `c1-rotate.mjs` กับบิลด์ฐาน (ก่อนและหลัง C-2) = **FAIL 0/4** ทั้ง 2 บิลด์ = TD-2 ทำซ้ำได้ · จุด z −41.02: เฟรมแรกแนวตั้งเห็นถึง −29.96 แย่สุด −25.64 (เฟรม 21) เทียบขอบ −29.62 และค่าที่ควรเป็น −35.35 · pull ค้างถึงเฟรม 60 (~2 วินาที) · จุดเริ่ม z 1.5: แย่สุด 16.86 เทียบที่ควรเป็น 7.17 · ตัวทดสอบตัวเอง (`--emulate-fix` ล้าง pull หลังหมุน) = PASS
+- **ไม่ต้องรอการวินิจฉัย WebGL2:** C-1 ไม่ต้องใช้เบราว์เซอร์บนเครื่องเจ้าของเลย Codex เขียนโค้ด + vitest (ไม่ใช้เบราว์เซอร์) → patch → คลาวด์รันส่วนเบราว์เซอร์ทั้งหมด
+- **ห้ามรัน probe หรือวินิจฉัย WebGL2 ซ้ำบนเครื่องเจ้าของ** (เลี่ยงการวนซ้ำ) · ถ้าเจ้าของต้องการรู้สาเหตุ ให้แนบ `gaming_mode_log.csv` + รายงาน BLOCKED ของ C-1 ที่มีอยู่แล้ว (ไม่ต้องรันอะไรเพิ่ม) แล้ว PM อ่านตามตารางในรายงาน Fable ข้อ 4
+- เกณฑ์ผ่านคงเดิมจาก `CODEX_PROMPTS_R5.md` งานที่ 1 ทุกข้อ · บนคลาวด์ใช้ `c1-rotate.mjs` วัดเกณฑ์ (ก) ซึ่งตรงกับ vitest (ข) เดิม "กล้องเท่ากับแนวตั้งที่ไม่มี pull ในเฟรมแรก"
+```text
+Task ID: C-1 (Tech Debt TD-2 และ TD-1) · reasoning สูง · ทำต่อใน worktree เดิม
+<WT> = C:\SYNES_ASSETS\_repo_worktrees\codex-r5 · branch lane/codex-r5 · ฐาน 839c9c00ab8ab3a447d1f9798e2f11995c34ac8b
+เจ้าของสั่งเลิกพัก C-1 แล้ว ทางแก้ที่อนุมัติ = ข้อ 1 (ล้าง pull ในแนวตั้ง)
+
+สำคัญ: งานนี้ห้ามใช้เบราว์เซอร์บนเครื่องนี้ทั้งหมด (ไม่รัน webgl2-probe, lifecycle, stage1-shots, hud หรือ headless ใด ๆ และห้ามวินิจฉัย WebGL2 ซ้ำ)
+ส่วนที่ต้องใช้เบราว์เซอร์ PM จะรันบนคลาวด์ด้วย tools/qa/c1-rotate.mjs + stage1-shots + lifecycle แล้วให้ QA อิสระตรวจ
+ถ้ามีงาน C-1 ที่ยังไม่ commit อยู่ใน worktree ให้ตรวจว่าตรงกับขอบเขตด้านล่างก่อนใช้ต่อ
+
+ปัญหา (ตามเดิม)
+- src/render/view.ts updateCamera: ตั้ง need = 0 ในแนวตั้ง แต่ยังคูณตำแหน่งกล้องด้วย (1 + camPull) → หมุนจอขณะ pull ค้าง กล้องแนวตั้งเห็นเกิน viewLimitZ ราว 2 วินาที (คลาวด์วัดได้: แย่สุด z -25.64 เทียบขอบ -29.62)
+- comment หัว src/render/cameraField.ts อ้างว่าสูตร "can never drift" แต่ใช้ร่วมกันแค่ค่าคงที่
+- comment ใน src/render/envPilot.ts อ้างที่มา 5,724 poses ผิด (มาจาก QA_FIX1 ไม่ใช่ FIX1_NOTES)
+
+ให้ทำ
+1. ในแนวตั้งห้ามใช้ camPull ตอนวางกล้อง และตั้ง camPull = 0 เมื่อเข้าแนวตั้ง
+2. ให้ updateCamera ใช้ fieldCamera() จาก cameraField.ts แทนสูตรสำเนา ถ้าทำได้โดยตำแหน่งกล้องแนวนอนไม่เปลี่ยน ถ้าไม่ได้ ให้คงสูตรไว้แต่เพิ่ม test เทียบสองสูตร
+3. แก้ comment ทั้งสองจุดให้ตรงความจริง ห้ามใส่ path ในเครื่อง
+4. คงชื่อ field camPull และ camPullHold ของ View ไว้ (เครื่องมือ QA บนคลาวด์อ่านค่านี้) ถ้าต้องเปลี่ยนชื่อ ให้หยุดและรายงาน
+ห้าม: เปลี่ยน viewLimitZ, PILOT_OFF_SEES_Z, ค่าคงที่กล้อง, พฤติกรรม pull-back ในแนวนอน · ห้ามแตะไฟล์ที่ C-2 แก้ (models.ts, arena.ts, opening.ts, buildLevel ใน view.ts)
+
+เกณฑ์ผ่าน (ไม่ลด)
+- vitest ใหม่: (ก) ตำแหน่งกล้องจาก updateCamera เท่ากับ fieldCamera ในแนวนอนอย่างน้อยหลายพันกรณีสุ่ม (ข) หมุนเป็นแนวตั้งขณะ pull ค้าง แล้วกล้องเท่ากับแนวตั้งที่ไม่มี pull ในเฟรมแรก
+- vitest ทั้งหมดผ่าน, tsc ผ่าน, build ผ่าน (รันผ่าน gaming_run.ps1 ทีละคำสั่ง)
+- ส่วนเบราว์เซอร์ (lifecycle 20/20, ภาพแนวนอน low ตรงทุก byte เทียบ 839c9c0, medium อยู่ใน noise P-4, draw calls/tris เท่าเดิม, c1-rotate PASS) ให้เขียนว่า "ยังไม่ได้รัน รอ PM รันบนคลาวด์" (ห้ามเขียนว่าผ่าน)
+- handoff ระบุว่ายังไม่ได้ทดสอบการหมุนจอจริงบนมือถือ
+
+ส่งงาน: commit เดียว "C-1: ..." บน lane/codex-r5 (+ handoff บนสุดของ docs/HANDOFF.md) → git -C <WT> format-patch -1 HEAD -o C:\SYNES_ASSETS\SYNES_OUTPUT\c1 → Get-FileHash → รายงานเจ้าของพร้อมชื่อไฟล์ + SHA256
+```
+QA บนคลาวด์เมื่อได้ patch (ขั้นตอนเต็มใน `docs/qa/c1-prep/README.md`): ตรวจ SHA → apply บน `b84ad90` (= โค้ด `839c9c0`) → webgl2-probe → vitest/tsc/build → `c1-rotate.mjs` ต้อง PASS 4/4 → stage1-shots แนวนอน + pixeldiff เทียบ baseline 100 ภาพที่มีอยู่ → lifecycle 20/20 → QA อิสระ (Sonnet) → PM (Opus) ตัดสิน
 
 ## 4. ส่วนกลาง v2 (วางก่อนพรอมป์ต์ของทุกงานด้านล่าง)
 ```text
@@ -141,6 +176,7 @@ Task ID: C-3 สืบสาเหตุ · ทำงานอ่านอย่
 
 ## 9. C-2b (ถ้าเจ้าของเลือก) · NEEDS OWNER
 ข้อเสนออยู่ใน `2026-11-25-pm-c2-qa-and-c4-plan.md` ข้อ 3 · พรอมป์ต์จะเขียนเมื่อเจ้าของเลือกว่า "รับ C-2 ตามนี้" หรือ "ทำ C-2b ก่อน"
+**หลักฐานใหม่ (คืนนี้, `docs/qa/mobile-perf-2026-11-25.md` + `f2-deferred-dispose.json`):** ทดลองเลื่อน dispose ของด่านเก่าไปหลังเฟรมแรกของด่านใหม่ บนบิลด์ C-2 (จำลองจากภายนอก ไม่แก้ src) 6 rebuild × 2 รอบ: program ใหม่ต่อ rebuild medium 15 → 0, low 14 → 0 · เฟรมแรกบน SwiftShader medium ~330 → ~100 ms, low ~270 → ~45 ms · ไม่รั่ว → ทางแก้ F2 ใน C-2b ได้ผลจริงอย่างน้อยบนคลาวด์ (มือถือจริงยังไม่ทราบ)
 
 ## 10. โมเดลที่แนะนำ
 | งาน | เขียนโค้ด | QA/ตรวจรับ |

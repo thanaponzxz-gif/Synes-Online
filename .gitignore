@@ -7,3 +7,9 @@ tools/blender/.venv/
 tools/qa/out/
 .claude/worktrees/
 .claude/settings.local.json
+# third-party asset sources: zip/extracted stay out of git (record URL + sha256 in docs/art/ENV_ASSET_LIBRARY.md)
+assets/source/third_party/**/*.zip
+assets/source/third_party/**/extracted/
+# owner rule 2026-11-23: Hero 001 source art never goes to the public repo
+assets/source/**/*[Hh]ero*001*
+assets/_inbox/**/*[Hh]ero*001*

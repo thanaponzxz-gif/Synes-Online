@@ -3,4 +3,4 @@
 
 | ID | ประเภท | เรื่อง | ค่าที่วัดได้ | เกณฑ์ | สถานะ | ที่มา |
 |---|---|---|---|---|---|---|
-| KPI-001 | Performance | draw calls ฉากบอส phase 2 (จังหวะวงเตือนซ้อนมากสุด) | low 62 / medium 65 (844×390, Edge headless, ทั้งก่อนและหลัง R5 fix2 = มีในเกมเดิม) | ไม่ได้เพิ่มเพดาน · เพดาน Golden Reference คง low 56 / medium 60 | **เปิด** · C-9 ยังไม่เปิด (เจ้าของสั่ง 2026-11-24) | QA_FIX2 (v05c) · `docs/team/2026-11-24-pm-accept-r5-fix2.md` |
+| KPI-001 | Performance | draw calls ฉากบอส phase 2 (จังหวะวงเตือนซ้อนมากสุด) | low 62 / medium 65 (844×390, Edge headless, ทั้งก่อนและหลัง R5 fix2 = มีในเกมเดิม) | ไม่ได้เพิ่มเพดาน · เพดาน Golden Reference คง low 56 / medium 60 | **เปิด** · C-9 ยังไม่เปิด (เจ้าของสั่ง 2026-11-24) | QA_FIX2 (v05c) · `docs/team/2026-11-24-pm-accept-r5-fix2.md` · **วัดซ้ำบนคลาวด์ 2026-11-25:** medium 64 / low 61 (Chromium+SwiftShader) จุดสูงสุด = ฝนผลึก · ผู้ใช้ call มากสุด: โมเดลบอส 20 (31%), ซาก/เสา/ประตู 13, env batch 12/10 · ข้อมูลสำหรับเมื่อเปิด C-9: `docs/qa/mobile-perf-2026-11-25.md` |

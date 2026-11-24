@@ -1,5 +1,11 @@
 # Handoff: Synes Online
 
+## โหมดกลางคืน → Rollover 🟡 MAIN · Synes Online · รอบ 2-F · 2026-11-25 · จาก รอบ 2-E (`session_01A1roa3dorP6krBJf4hzHmZ`)
+- **อ่านก่อน:** `docs/team/2026-11-25-morning-brief.md` (สรุปงานกลางคืนทั้งหมด + รายการ NEEDS OWNER 8 ข้อ) · ไม่มีงานไหนที่เจ้าของอนุมัติค้างอยู่ → **รอเจ้าของตัดสินก่อนเริ่มงานใหม่**
+- งานกลางคืน (คลาวด์เท่านั้น, ไม่มี merge/Pages/push pilot): P1 วิเคราะห์ C-1 blocker (Fable) `docs/team/2026-11-25-c1-blocker-analysis.md` + `tools/qa/c1-rotate.mjs` baseline FAIL 0/4 (TD-2 ทำซ้ำได้) `docs/qa/c1-prep/` · P2 audit `docs/qa/audit-2026-11-25.md` · P3 perf + KPI-001 (บอส 20 calls = 31%) `docs/qa/mobile-perf-2026-11-25.md` · P4 ชุดงาน Codex `docs/team/2026-11-25-codex-work-packages.md` (C-1 v2, C-6, C-5, C-7, C-3) · P5 `docs/art/ART_INTEGRATION_READINESS.md` + `tools/qa/glb-check.mjs` · REQ-004/005 ถึงทีม A · `.gitignore` กัน Hero/third-party · `webgl2-probe.mjs` พิมพ์ขั้นตอน + `--timeout` (exit 3 บอกขั้นที่ค้าง)
+- ฐาน QA บนคลาวด์อยู่ใน scratchpad ของเซสชัน 2-E (หายเมื่อ container ถูกคืน): ถ้าต้องใช้ใหม่ ให้สร้างจาก `24f56b4` + `fix2_code.patch` (SHA `8E37A1B7…`) ที่เจ้าของแนบ = โค้ด `839c9c0` · ภาพ baseline 100 ภาพสร้างใหม่ตาม `docs/qa/c1-prep/README.md`
+- ทดสอบ: vitest 155/155, typecheck ผ่าน (audit) · Android/iPhone ยังไม่ได้ทดสอบ · PC = Chromium headless + SwiftShader
+
 ## รอบ 2-E เริ่ม · 2026-11-24 · 🟡 MAIN · Synes Online · รอบ 2-E (`session_01A1roa3dorP6krBJf4hzHmZ`)
 - ปิดแชต 2-D แล้ว (⚪ + archive) · `art/env-polish`: test 155/155, typecheck, build, lifecycle 20/20
 - ยังไม่มีไฟล์ใหม่: ไม่มี branch ใหม่จาก Local Art/Codex, Drive `SYNES_ASSETS` ไม่เปลี่ยนตั้งแต่ 11-23, zip v05c/d/e ไม่อยู่ใน container

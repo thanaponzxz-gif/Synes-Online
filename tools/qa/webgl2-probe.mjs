@@ -2,9 +2,11 @@
 // It does not load the game. It launches the same headless browser + flags the QA tools use, then in a blank page:
 //   1) creates a WebGL2 context (no fallback to WebGL1), 2) compiles a GLSL ES 3.00 shader pair, 3) draws one triangle into an
 //   offscreen framebuffer and reads the centre pixel back, 4) checks the extensions/limits three.js needs for this game.
-// Usage: node tools/qa/webgl2-probe.mjs [--exe <browser executable>] [--channel msedge|chrome] [--out file.json]
+// Usage: node tools/qa/webgl2-probe.mjs [--exe <browser executable>] [--channel msedge|chrome] [--out file.json] [--timeout 60]
 //   default = the pre-installed Playwright Chromium with LAUNCH_ARGS from profiles.mjs (ANGLE + SwiftShader), the runtime
-//   the cloud QA used for stage1-shots / lifecycle / pixeldiff. Exit 0 = READY, 2 = NOT READY (reason printed), 1 = the browser did not launch.
+//   the cloud QA used for stage1-shots / lifecycle / pixeldiff. Exit 0 = READY, 2 = NOT READY (reason printed), 1 = the browser did not launch,
+//   3 = TIMEOUT (whole probe exceeded --timeout seconds, default 60). Progress goes to stderr per stage ("probe: <stage> +<ms>") and on a
+//   timeout the partial JSON is still printed/written, so a hang says WHERE it stopped (launch / newPage / evaluate / close).
 // It never changes resource limits: it runs inside whatever limits the caller already applies (e.g. Gaming Mode on the owner's PC).
 import fs from 'node:fs';
 import { chromium } from './pw.mjs';
@@ -17,14 +19,23 @@ if (opt('exe')) launch.executablePath = opt('exe');
 if (opt('channel')) launch.channel = opt('channel');
 
 const t0 = Date.now();
+const step = (s) => { out.stage = s; process.stderr.write(`probe: ${s} +${Date.now() - t0}ms\n`); };
+const out = { stage: 'start' };
+const limit = Math.max(5, Number(opt('timeout') ?? 60)) * 1000;
+const finish = (code) => { out.ms = Date.now() - t0; const txt = JSON.stringify(out, null, 1); if (opt('out')) fs.writeFileSync(opt('out'), txt); console.log(txt); return code; };
+setTimeout(() => { out.ready = false; out.timeout = { seconds: limit / 1000, stoppedAt: out.stage }; console.log(`WEBGL2 TIMEOUT after ${limit / 1000}s at stage "${out.stage}"`); process.exit(finish(3)); }, limit).unref();
 let browser;
+step('launch');
 try { browser = await chromium.launch(launch); }
-catch (e) { console.log(JSON.stringify({ ready: false, stage: 'launch', error: String(e).split('\n')[0] }, null, 1)); process.exit(1); }
-const out = { launch: { exe: launch.executablePath ?? 'playwright-chromium', channel: launch.channel ?? null, args: LAUNCH_ARGS, version: browser.version() } };
+catch (e) { out.ready = false; out.error = String(e).split('\n')[0]; process.exit(finish(1)); }
+out.launch = { exe: launch.executablePath ?? 'playwright-chromium', channel: launch.channel ?? null, args: LAUNCH_ARGS, version: browser.version() };
 try {
+  step('newPage');
   const page = await browser.newPage({ viewport: { width: 64, height: 64 } });
   const errors = []; page.on('pageerror', (e) => errors.push(String(e))); page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+  step('setContent');
   await page.setContent('<canvas id=c width=64 height=64></canvas>');
+  step('evaluate');
   out.result = await page.evaluate(() => {
     const r = { stage: 'context' };
     const c = document.getElementById('c');
@@ -58,11 +69,9 @@ try {
     return { ...r, stage: 'done', ok: good, why: good ? '' : 'triangle pixel/glError/context check failed' };
   });
   out.pageErrors = errors;
-} finally { await browser.close(); }
-out.ms = Date.now() - t0;
+} finally { step('close'); await browser.close(); }
+step('done');
 out.ready = !!out.result?.ok;
-const txt = JSON.stringify(out, null, 1);
-if (opt('out')) fs.writeFileSync(opt('out'), txt);
-console.log(txt);
+const code = finish(out.ready ? 0 : 2);
 console.log(out.ready ? 'WEBGL2 READY' : `WEBGL2 NOT READY at stage "${out.result?.stage}": ${out.result?.why}`);
-process.exit(out.ready ? 0 : 2);
+process.exit(code);

@@ -79,6 +79,7 @@
 | ADR-008: ใช้ asset สำเร็จรูป (CC0) ในเกมได้แค่ไหน (ตอนนี้ขัดข้อ 1 เรื่องต้นฉบับ) | รอ |
 | ADR-008: นำร่องภาพ → 3D 1 ชิ้น (EXP-102) ต้องสมัคร Tripo แบบเสียเงิน หรือบอกรุ่น GPU เครื่องเจ้าของสำหรับ Hunyuan3D | รอ |
 | push `art/env-r5-pilot` (pilot env library ทีม B) ขึ้น repo Public | **ยังไม่อนุมัติ** (เจ้าของ 2026-11-24) · Known Performance Issue บอส phase 2 = KPI-001 |
+| Morning Brief 2026-11-25: รับ C-2 / ทำ C-2b · เลิกพัก C-1 (พรอมป์ต์ v2) · อนุมัติ C-6/C-5/C-7 (Codex) และ C-3 (Claude คลาวด์) · ส่ง REQ-004/005 ให้ทีม A · รอบแก้ audit ที่ไม่เปลี่ยนภาพ | **รอ** (`docs/team/2026-11-25-morning-brief.md` ข้อ 7) · lineage เซสชัน 6/8 (ใกล้เพดาน rollover อัตโนมัติ) |
 | ADR-008: ลดขนาด CLAUDE.md/PROJECT_SYNES.md ที่โหลดทุกเซสชัน (EXP-101) และติดตั้ง meshopt (EXP-103) | รอ |
 
 ## 6. Backlog (เรียงตามลำดับความสำคัญ เจ้าของงานระบุไว้ในวงเล็บ)
@@ -94,7 +95,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-24 | 🟡 MAIN · รอบ 2-E `session_01A1roa3dorP6krBJf4hzHmZ` | ปิดแชต 2-D, ตรวจสถานะ, ยืนยัน harness เทียบ v01/v02, ตอบ Local Art (C-1 อนุมัติ, C-2…C-9 พัก) | `art/env-polish` |
+| 2026-11-24/25 | 🟡 MAIN · รอบ 2-E `session_01A1roa3dorP6krBJf4hzHmZ` | ปิดแชต 2-D, ตรวจรับ R5 fix2, KPI-001, QA env คลาวด์ (`webgl2-probe`), QA อิสระ C-2 (PASS with notes), **โหมดกลางคืน**: วิเคราะห์ C-1 blocker (Fable), `c1-rotate`, audit, perf/KPI-001, ชุดงาน Codex, ความพร้อมรับศิลป์ + `glb-check`, REQ-004/005 → `docs/team/2026-11-25-morning-brief.md` | `art/env-polish` `60126d1`…รอบท้าย |
 | 2026-11-24 | 🟡 MAIN · รอบ 2-D (ต่อ) `session_01A1roa4t58WN2ZvXKFKGAPa` | Env v01 Golden Reference (QA อิสระ r3), ADR-010 Free Asset First, ประสาน Local Art ผ่านไฟล์ (Codex local C-1…C-8), Hero 001 Tripo ใช้ไม่ได้ ต้องเจนใหม่ | `art/env-polish` `ab3a4e2`, `baseline/env-v01` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-B (ต่อ) `session_01A1roa5G9Rcb3SnhDo5NGaP` | ปิดแชตเก่า, HUD skin DES-002, merge prismatic (เจ้าของอนุมัติโมเดลใหม่), กล้องต่ำตลอด, Auto ตาม DES-001 §4 (log v2), แถวสกิลล่าง, REQ-003, Pages 2 ครั้ง | `b5d20dc`, `4fdc1b3`, `e4e59e1`, `6edb182`, `c0af790`, gh-pages `0c9d21f` |
