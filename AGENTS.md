@@ -11,7 +11,8 @@
 | ทีม | ใคร | ทำ |
 |---|---|---|
 | A | GPT Codex | ออกแบบหรือเขียนบรีฟทุกงาน (ระบบเกม, สกิล/VFX, UI/UX, ตัวละคร, มอนสเตอร์, ฉาก, asset) และตรวจผลที่ทีม B ส่งกลับ |
-| B | Claude | ทำตามดีไซน์ ทดสอบ และส่งผลกลับ ไม่ออกแบบเอง |
+| B | Claude | ทำตามดีไซน์ ทดสอบ และส่งผลกลับ ไม่ออกแบบเอง · กำลังหลักด้าน Engineering (ADR-011) |
+| Technical Production | Codex บนเครื่องเจ้าของ (Sol: Blender MCP, asset, texture/material · Astra: วางแผน tech art, รีวิว/Engineering เสี่ยงสูง) | ผลิตตามแบบของทีม A ที่เจ้าของอนุมัติแล้วเท่านั้น ไม่เปลี่ยนแบบ · ห้ามทำงาน Engineering ที่ย้ายให้ Claude แล้ว (ADR-011, `docs/team/2026-11-25-claude-first-allocation.md`) |
 | เจ้าของ | คุณหนึ่ง | ส่งต่อระหว่างทีม ตัดสินเมื่อเห็นไม่ตรงกัน และอนุมัติ asset |
 
 ไฟล์ของทีม A: `docs/design/DES-NNN-<หัวข้อ>.md` และบรีฟ asset `docs/handoff/<asset>.md` · ทำงานบน branch `design/<หัวข้อ>` · ขั้นตอนเต็มใน `docs/design/README.md` และ `docs/ASSET_PIPELINE.md`

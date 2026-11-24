@@ -1,5 +1,12 @@
 # Handoff: Synes Online
 
+## Rollover → 🟡 MAIN · Synes Online · รอบ 2-G · 2026-11-25 · จาก รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
+- **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` → `docs/team/2026-11-25-claude-first-allocation.md` (แผนปัจจุบัน, ADR-011)
+- เจ้าของสั่ง Claude-First Quota Allocation: Claude = Engineering หลัก ~65% · Codex = Technical Production ~35% · ทีม A คุมดีไซน์ทั้งหมด → ADR-011 + แผน (ตารางจัดสรร, A1–A11, โมเดล/ที่ทำงาน/port ต่องาน, พรอมป์ต์ P1–P5, กล่องงาน SEC/PERF, ไฟล์แนบ F1–F6, ระลอก 0–4) · AGENTS.md เพิ่มแถว Technical Production
+- **ยังไม่เริ่ม implementation ใด ๆ** · ไม่ได้รัน QA ซ้ำ · ไม่มี push/merge pilot · ไม่ได้ติดตั้งเครื่องมือ · ขั้นแรกเมื่ออนุมัติ = P1 ถามสถานะ Codex (กันงานซ้ำ)
+- rollover เพราะเซสชัน 2-F ถูกบีบอัด (ใช้ rollover อัตโนมัติครั้งสุดท้าย) → **2-G = lineage 8/8 สร้างเซสชันลูกไม่ได้**
+- ทดสอบ: ไม่มีการเปลี่ยนโค้ดตั้งแต่ vitest 155/155 + typecheck ต้นรอบ 2-F · Android/iPhone ยังไม่ได้ทดสอบ
+
 ## รอบ 2-F: เตรียมสั่งงาน + Checkpoint · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-F (`session_01A1roa4D5M2pZxQPQegFexE`)
 - **อ่านก่อน:** `docs/team/2026-11-25-master-handoff-2F.md` (Master Handoff + พรอมป์ต์เริ่มเซสชันใหม่) · checkpoint = commit `69299a1` (push tag ถูกปฏิเสธ 403)
 - คำสั่งเจ้าของ 9 ข้อ → `docs/team/2026-11-25-dispatch-2F.md` (รายการตัดสิน D0–D8, ลำดับ C-6 → C-5 → C-1 v2 → C-2b → C-4, พรอมป์ต์ Codex/ทีม A/QA คลาวด์, แผน meshopt EXP-103) · `docs/team/2026-11-25-pm-accept-c2.md` (PM รับ C-2, F1/F2/F3 เปิดต่อ → C-2b) · แพ็ก zip REQ-004/005 ส่งเจ้าของในแชต (SHA `6de10b5c…`)

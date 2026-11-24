@@ -34,6 +34,8 @@
 | 007 | **กฎเหล็ก: ทีม A ออกแบบก่อน** | งานออกแบบ/ปรับดีไซน์ทุกประเภทให้ GPT Codex (ทีม A) ออกแบบหรือเขียนบรีฟก่อน → Claude (ทีม B) ทำ ทดสอบ แล้วส่งผลกลับให้ตรวจ เปลี่ยนดีไซน์ระหว่างทำต้องส่งกลับก่อน (CLAUDE.md ข้อ 0, `docs/design/README.md`) |
 | 009 | จังหวะตี | เจ้าของเลือกชุด A → ruleset `combat-2` เป็นค่าเริ่ม (`?combo=1` = เดิม) log เก่ายังเป็น `combat-1` |
 | 008 | เรียนรู้ต่อเนื่อง | เทคนิคใหม่ผ่านวงจร 7 ขั้น ทดลองบน `exp/*` ก่อนใช้จริง ความรู้อยู่ใน `docs/knowledge/` (อ่านเมื่อจำเป็น ไม่ @import) และ `AGENTS.md` สำหรับ Codex (CLAUDE.md ข้อ 7) |
+| 010 | Free Asset First | environment ทั่วไปใช้ asset ฟรี CC0 ได้ (ตรวจ license + ลงทะเบียน) · ตัวละคร/ศัตรู/บอส/UI/เสียงยังต้องเป็นต้นฉบับ · QA ภาพแยกจากผู้ผลิต + Before/After + perf |
+| 011 | Claude-First Allocation | Claude = Engineering หลัก ~65% (Opus PM/ตรวจรับ · Fable วิเคราะห์ยาก · Sonnet ลงมือ/QA) · Codex = Technical Production ~35% (Sol asset/Blender MCP/texture · Astra แผน tech art/รีวิวเสี่ยงสูง) · ทีม A คุมดีไซน์ทั้งหมด · ห้ามทำงานซ้ำกับ Codex · ห้ามผลิต asset ก่อนแบบอนุมัติ (`docs/team/2026-11-25-claude-first-allocation.md`) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
 - **ด่านแรก stage1 merge เข้า `main` แล้ว (2026-11-21, เจ้าของอนุมัติ):** `main` `b46ca7f` · จังหวะตีชุด A เป็นค่าเริ่ม (ADR-009) · test 155/155, lifecycle 20/20 · Android/iPhone ยังไม่ได้ทดสอบ · รอทีม A ตอบคำถามใน DES-006-teamB, DES-004 §8, `docs/qa/*-v01` (รวม S1–S10 spire/ศาล)
@@ -79,7 +81,7 @@
 | ADR-008: ใช้ asset สำเร็จรูป (CC0) ในเกมได้แค่ไหน (ตอนนี้ขัดข้อ 1 เรื่องต้นฉบับ) | รอ |
 | ADR-008: นำร่องภาพ → 3D 1 ชิ้น (EXP-102) ต้องสมัคร Tripo แบบเสียเงิน หรือบอกรุ่น GPU เครื่องเจ้าของสำหรับ Hunyuan3D | รอ |
 | push `art/env-r5-pilot` (pilot env library ทีม B) ขึ้น repo Public | **ยังไม่อนุมัติ** (เจ้าของ 2026-11-24) · Known Performance Issue บอส phase 2 = KPI-001 |
-| Morning Brief 2026-11-25: รับ C-2 / ทำ C-2b · เลิกพัก C-1 (พรอมป์ต์ v2) · อนุมัติ C-6/C-5/C-7 (Codex) และ C-3 (Claude คลาวด์) · ส่ง REQ-004/005 ให้ทีม A · รอบแก้ audit ที่ไม่เปลี่ยนภาพ | **รอ** (`docs/team/2026-11-25-morning-brief.md` ข้อ 7) · lineage เซสชัน 7/8 (rollover อัตโนมัติเหลือ 1 ครั้ง) · ข้อมูลประกอบ: `docs/team/2026-11-25-pm-owner-review-pack.md` · **สั่งงาน: `docs/team/2026-11-25-dispatch-2F.md` (D0–D8)** · Master Handoff: `docs/team/2026-11-25-master-handoff-2F.md` |
+| **Claude-First (ADR-011) 2026-11-25:** อนุมัติ A1–A11 (P1 ถามสถานะ Codex ก่อน → ระลอก 1 C-6/C-5/SEC → ระลอก 2 C-1 + ยืนยันรับ C-2 + C-2b → ระลอก 3 C-4/PERF) · แนบ F1 zip v05c (`fix2_code.patch`) + F2 patch C-2 · ส่งแพ็ก REQ-004/005 ให้ทีม A · meshopt/C-3 ยังไม่อนุมัติ | **รอ** · แผน + พรอมป์ต์ P1–P5: `docs/team/2026-11-25-claude-first-allocation.md` · พรอมป์ต์งาน/QA: `docs/team/2026-11-25-dispatch-2F.md` · Master Handoff: `docs/team/2026-11-25-master-handoff-2F.md` · lineage 8/8 ตั้งแต่รอบ 2-G (เซสชันถัดไปเจ้าของเปิดเอง) |
 | ADR-008: ลดขนาด CLAUDE.md/PROJECT_SYNES.md ที่โหลดทุกเซสชัน (EXP-101) และติดตั้ง meshopt (EXP-103) | รอ |
 
 ## 6. Backlog (เรียงตามลำดับความสำคัญ เจ้าของงานระบุไว้ในวงเล็บ)
@@ -95,7 +97,7 @@
 ## 7. บันทึกเซสชัน (ใหม่สุดอยู่บน)
 | วันที่ | เซสชัน | สิ่งที่ทำ | commit/branch |
 |---|---|---|---|
-| 2026-11-25 | 🟡 MAIN · รอบ 2-F `session_01A1roa4D5M2pZxQPQegFexE` | ปิดแชต 2-E, ข้อมูลประกอบการตัดสิน 8 ข้อ, PM รับ C-2, ชุดสั่งงาน D0–D8 + C-2b WP + แพ็ก REQ ทีม A, ตรวจ license meshopt, Master Handoff (ไม่ implement) | `art/env-polish` `69299a1` (checkpoint) |
+| 2026-11-25 | 🟡 MAIN · รอบ 2-F `session_01A1roa4D5M2pZxQPQegFexE` | ปิดแชต 2-E, ข้อมูลประกอบการตัดสิน 8 ข้อ, PM รับ C-2, ชุดสั่งงาน D0–D8 + C-2b WP + แพ็ก REQ ทีม A, ตรวจ license meshopt, Master Handoff, แผน Claude-First (ADR-011) (ไม่ implement) · rollover ครั้งสุดท้าย → 2-G | `art/env-polish` `69299a1` (checkpoint) |
 | 2026-11-24/25 | 🟡 MAIN · รอบ 2-E `session_01A1roa3dorP6krBJf4hzHmZ` | ปิดแชต 2-D, ตรวจรับ R5 fix2, KPI-001, QA env คลาวด์ (`webgl2-probe`), QA อิสระ C-2 (PASS with notes), **โหมดกลางคืน**: วิเคราะห์ C-1 blocker (Fable), `c1-rotate`, audit, perf/KPI-001, ชุดงาน Codex, ความพร้อมรับศิลป์ + `glb-check`, REQ-004/005 → `docs/team/2026-11-25-morning-brief.md` | `art/env-polish` `60126d1`…รอบท้าย |
 | 2026-11-24 | 🟡 MAIN · รอบ 2-D (ต่อ) `session_01A1roa4t58WN2ZvXKFKGAPa` | Env v01 Golden Reference (QA อิสระ r3), ADR-010 Free Asset First, ประสาน Local Art ผ่านไฟล์ (Codex local C-1…C-8), Hero 001 Tripo ใช้ไม่ได้ ต้องเจนใหม่ | `art/env-polish` `ab3a4e2`, `baseline/env-v01` |
 | 2026-11-21 | 🟡 MAIN · รอบ 2-D `session_01A1roa4t58WN2ZvXKFKGAPa` | ปิดแชต 2-C, spire/ศาล A/B (Opus), merge stage1/polish → main, จังหวะตี A = `combat-2` (ADR-009), Pages | `7a52680`, `b46ca7f`, gh-pages `1aa6088` |

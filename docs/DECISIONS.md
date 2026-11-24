@@ -96,3 +96,28 @@ FPS บน GPU ซอฟต์แวร์สูงกว่า 1.25–2× แ�
 - **ตัวละคร:** ใช้ Tripo สร้าง แล้ว Claude ปรับต่อ ห้าม Claude ปั้นตัวละครใหม่จากศูนย์
 - **QA ภาพ:** Agent ตรวจภาพแยกจาก Agent ผู้ผลิต ตรวจจากภาพในเกมจริง ถ้าไม่ดีขึ้นให้ย้อนกลับ · ทุกงานภาพต้องมี Before/After + ผล performance · ไม่ขยายไปแมพที่สองจนด่านแรกผ่านมาตรฐาน
 - **เครือข่าย:** environment ใหม่ `synes-online` (เจ้าของอนุมัติ) เปิดเฉพาะ quaternius.itch.io, itch.io, quaternius.com, kenney.nl, polyhaven.com, api.polyhaven.com, dl.polyhaven.org, ambientcg.com
+
+## ADR-011: Claude-First Quota Allocation · 2026-11-25
+- **เจ้าของสั่ง:** Claude Code (Claude Max) เป็นกำลังหลักด้าน Engineering เป้าประมาณ 65% ของงาน · Codex เป็นกำลังเฉพาะทางด้าน Technical Production ประมาณ 35% · สัดส่วนนี้ใช้จัดสรรงาน ไม่ได้วัดจาก token จริง
+- **บทบาทโมเดล:**
+  - Opus 5.5: PM, สถาปัตยกรรม, วางแผน, ตัดสินเรื่องซับซ้อน, ตรวจรับขั้นสุดท้าย
+  - Fable 5.2: วิเคราะห์ลึก, รีวิวสถาปัตยกรรมและแผนที่ซับซ้อน, perf, บั๊กยาก
+  - Sonnet: implementation, แก้บั๊ก, integration, เครื่องมือ, เอกสาร และ QA อิสระของงานที่ตัวเองไม่ได้ทำ
+  - Codex Sol: Blender MCP, ผลิต asset, Technical Art, Texture/Material, Engineering ตาม work package
+  - Codex Astra: วางแผน Technical Art, Engineering เสี่ยงสูง, Code Review ที่ซับซ้อน, ปัญหาเฉพาะทาง
+- **สิ่งที่เปลี่ยน:**
+  - งาน Engineering C-1, C-2b, C-4, C-5, C-6, C-3 และ SEC/PERF ย้ายให้ Claude ได้ (Fable วิเคราะห์งานยาก → Sonnet ลงมือ) โดยทำบนคลาวด์เพื่อเลี่ยงปัญหา WebGL2 บน PC
+  - งานใดที่ Codex ทำอยู่แล้วห้ามทำซ้ำ: ต้องถามสถานะ Codex ก่อน และแต่ละงานต้องได้รับอนุมัติก่อนย้าย
+  - โควตา Codex สงวนไว้สำหรับ R5.2 asset, ต้นไม้/หินตามแบบ, Blender MCP, Texture/Material, Technical Art Pipeline, Golden Reference K2, optimize asset ที่ต้นทาง และงานที่ Claude ทำได้ไม่คุ้ม
+  - **ห้ามผลิต asset ก่อนแบบผ่านอนุมัติ**
+  - ส่วน "Claude รับช่วง Technical Art ชั่วคราว" ของ ADR-010 สิ้นสุดสำหรับงานผลิต asset ใหม่ (Free Asset First คงเดิม) · Claude ยังนำเข้า asset และทำ QA/perf
+- **สิ่งที่ไม่เปลี่ยน:**
+  - ทีม A (ChatGPT) ถือสิทธิ์ Design และ Artwork ทั้งหมด (ADR-007)
+  - Claude ห้ามเปลี่ยนหรือแทนแบบ แต่วิเคราะห์ความเป็นไปได้ทางเทคนิค เตรียมระบบ และนำแบบที่อนุมัติแล้วเข้าเกมได้
+  - การอนุมัติตาม CLAUDE.md ข้อ 5.2 และข้อ 6 คงเดิม · ห้าม push/merge งาน pilot · ห้ามติดตั้งเครื่องมือโดยไม่ได้อนุมัติ · ไม่ลดคุณภาพงานศิลป์หรือเกณฑ์ผ่าน
+- **กฎประหยัด token:**
+  - ใช้ Sonnet ก่อน · Opus/Fable เฉพาะงานที่ระบุเหตุผลไว้
+  - ไม่วิเคราะห์หรือ QA ซ้ำ · ใช้ checkpoint/handoff · แบ่งงานเป็นชิ้นที่อิสระต่อกัน
+  - วินิจฉัย blocker ได้จำกัดรอบ แล้วไปทำงานอื่น
+  - คง Gaming Mode บน PC
+- **แผน:** `docs/team/2026-11-25-claude-first-allocation.md`
