@@ -1,18 +1,19 @@
 // C-1 / TD-2 acceptance (ก): camera pull-back must not leak into the portrait camera after a landscape -> portrait rotation.
-//   node tools/qa/c1-rotate.mjs --dist <dir> | --base <url>  [--out file.json] [--tiers low,medium] [--spots off,opening] [--port 8111] [--label name]
+//   node tools/qa/c1-rotate.mjs --dist <dir> | --base <url>  [--out file.json] [--tiers low,medium] [--spots off,opening] [--port 8111] [--label name] [--frames 90] [--src <repo root>] [--emulate-fix (harness self-test: zero camPull right after the rotation)]
 // What it does (per tier x spot): open ?offline&seed=1&autostart&qafreeze&q=<tier> at 844x390, optionally QA-teleport the player (world.player.x/z, same as stage1-shots),
 // settle the camera, FORCE the pull through the live View (view.camPull = 1.2, view.camPullHold = 0.7: the hold View.updateCamera sets when pull rises), draw one landscape frame,
 // page.setViewportSize(390x844), then step 1 tick + 1 drawn frame at a time for ~3 s (90 frames) and record per frame: camPull, camPullHold, camera pos / fov / aspect and the ground z
 // that the bottom screen edge reaches (centre-column ray of the LIVE three.js camera against y=0; yaw is 0 so the whole edge has this z). Then the reverse (portrait -> landscape), information only.
 // Reference numbers are the formulas of src/render/cameraField.ts REIMPLEMENTED below (constants copied from that file; --src <repo root> additionally imports the real file via Node type stripping and checks they agree).
 // Verdict: PASS iff in EVERY portrait frame reach <= limit + 0.05 m, limit = max(expected portrait reach(player z), viewLimitZ(-41)) for the 'off' spot (player pinned at z -41.02, pilot OFF zone, acceptance ก),
-//   else expected portrait reach(player z). STRICT (extra, printed): reach <= expected portrait reach + 0.05 in every frame (should hold after a correct fix; at the OFF edge the PASS limit is much looser).
+//   else expected portrait reach(player z). STRICT (extra, printed): reach <= expected portrait reach + 0.3 m in every frame (0.3 = pinned-player push + camera lag jitter seen with the emulated fix; should hold after a correct fix; the 'off' PASS limit is much looser).
 // LIMITS: headless Chromium + SwiftShader, setViewportSize is not a real device rotation (no orientationchange event); frames are tick-exact via __synesQA.stepTicks (frozen sim, no wall-clock).
 import fs from 'node:fs'; import path from 'node:path'; import http from 'node:http';
 import { chromium } from './pw.mjs';
 import { LAUNCH_ARGS } from './profiles.mjs';
 
 const args = process.argv.slice(2);
+const flag = (k) => args.includes('--' + k);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
 const TIERS = opt('tiers', 'low,medium').split(','), SPOTS = opt('spots', 'off,opening').split(',');
 const label = opt('label', 'run'), outFile = opt('out', ''), FRAMES = Number(opt('frames', 90));
@@ -92,6 +93,7 @@ async function runCase(tier, spot) {
     // rotate
     await withTimeout(page.setViewportSize({ width: 390, height: 844 }), 15000, 'setViewportSize portrait');
     await page.waitForFunction(() => innerWidth === 390 && window.__synes.view.camera.aspect < 1, null, { timeout: 10000 }).catch(async () => { await page.evaluate(() => window.dispatchEvent(new Event('resize'))); res.manualResize = true; });
+    if (flag('emulate-fix')) await page.evaluate(() => { window.__synes.view.camPull = 0; }); // harness self-test only: what the approved fix does on entering portrait
     for (let i = 0; i < FRAMES; i++) {
       await step(1); const o = await page.evaluate(SNAP);
       const portrait = o.aspect < 1, ex = fieldGroundZ(o.pz, 0, true);
@@ -125,7 +127,7 @@ for (const c of cases) {
     if (!wc || ex > wc.excess) wc = { frame: f.i, reach: f.reach, limit: +limit.toFixed(3), excess: +ex.toFixed(3), camPull: f.camPull, pz: f.pz };
     if (!ws || f.over > ws.over) ws = { frame: f.i, over: f.over, camPull: f.camPull };
   }
-  c.worst = wc; c.strictWorst = ws; c.pass = wc.excess <= 0; c.strict = ws.over <= 0.05; c.verdict = c.pass ? 'PASS' : 'FAIL';
+  c.worst = wc; c.strictWorst = ws; c.pass = wc.excess <= 0; c.strict = ws.over <= 0.3; c.verdict = c.pass ? 'PASS' : 'FAIL';
   c.pullFrames = c.frames.filter((f) => f.camPull > 0.002).length; c.lastPullFrame = c.frames.filter((f) => f.camPull > 0.002).pop()?.i ?? 0;
   if (!c.pass) allPass = false; if (!c.strict) strictPass = false;
 }
