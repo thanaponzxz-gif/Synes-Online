@@ -22,4 +22,10 @@
 | ขอบลานบอส (วาง `rock_a`/`crystal_cluster` จากชุดเดิม) | `src/render/view.ts` | ใช้โมเดลชุดเดิม | placeholder |
 | โมเดลทั้งชุด `synes_kit.glb` | `public/assets/models/` | โมเดลใหม่ทำตามมติ ข-2 (ใบสั่งงาน + ภาพเทียบในเกม) | placeholder ที่ใช้งานอยู่ (มติ ข-2) |
 
-ยังไม่มีการดาวน์โหลด asset หรือ plugin จากภายนอก จึงยังไม่มี plugin ที่ต้องตรวจโค้ด
+## เครื่องมือภายนอกที่ไม่อยู่ใน build (ตรวจโค้ดก่อนใช้ ตาม CLAUDE.md ข้อ 3)
+| เครื่องมือ | ติดตั้งที่ | ผู้สร้าง | แหล่งที่มา | license | การตั้งค่า | ตรวจโดย/วันที่ |
+|---|---|---|---|---|---|---|
+| MCP for Blender 2.3.3 (เดิมชื่อ `blender-mcp`) ให้ Claude Code สั่ง Blender ผ่าน socket `127.0.0.1:9876` | Claude Code ระดับผู้ใช้บนเครื่อง Windows ของเจ้าของ (`~/.claude.json` ชื่อ `blender`) + add-on `blender_mcp.py` ใน Blender 5.3 ที่ติดตั้งไว้ก่อนแล้ว (protocol 16 ตรงกับ server) | Siddharth Ahuja (ไม่ใช่ Blender Foundation) | PyPI `mcp-for-blender==2.3.3` (sdist sha256 `094caade…ec27`, wheel `ca06b6be…a869` ไฟล์ใน wheel ตรงกับซอร์สทุกไฟล์) · ซอร์ส github.com/ahujasid/blender-mcp | MIT | `DISABLE_TELEMETRY=true` (ไม่ส่งข้อมูลการใช้งานไป Supabase ของผู้พัฒนา), `BLENDER_MCP_SAFE_MODE=1` (ตรวจโค้ดก่อนส่งเข้า Blender ห้าม os/subprocess/network) · ตัวดึงโมเดลภายนอก (Poly Haven, Sketchfab, Hyper3D, Tripo, Meshy ฯลฯ) ปิดเป็นค่าเริ่มต้นใน add-on **ห้ามเปิดโดยไม่ถามเจ้าของ** (ADR-006) | PM · 2026-11-27 อ่าน telemetry, trajectory, ตัวอัปเดต, setup, socket, safe mode: ส่งข้อมูลออกนอกเครื่องเฉพาะ telemetry (ปิดแล้ว) และการเช็กเวอร์ชัน add-on จาก GitHub ตอนเปิด Blender (ติดตั้งต้องกดเอง) · ทดสอบ: เรียก `get_addon_status`, `get_scene_info` ผ่าน MCP ได้ |
+
+การใช้ Blender MCP สร้างหรือแก้งานศิลป์ยังต้องทำตาม ADR-006/007 (ทีม A ออกแบบหรือเขียนบรีฟก่อน และเจ้าของอนุมัติ asset ก่อนใช้จริง)
+ยังไม่มี asset จากภายนอกใน build
