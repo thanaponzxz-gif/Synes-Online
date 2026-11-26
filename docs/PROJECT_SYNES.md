@@ -39,7 +39,7 @@
 | 012 | เดินอิสระ `roam-1` | ด่านผูกกับ ruleset · `roam-1` = ทุ่งเดินอิสระ + สิ่งกีดขวางวงกลม + ประตูลานบอส · ค่าด่านชั่วคราวรอทีม A (REQ-006) · `lane/free-roam` เปิดเป็นค่าเริ่ม (`?roam=0` = เดิม) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
-- **รอบ 3-A (2026-11-27): เดินอิสระขั้น 1 เสร็จบน `lane/free-roam`** (ยังไม่ merge) · test 165/165, lifecycle 20/20 · tris +24% FPS ไม่ต่างใน SwiftShader · Android/iPhone ยังไม่ได้ทดสอบ · `docs/qa/roam-v01/` · ค่าด่านรอทีม A (REQ-006) · หญ้าพริ้วไหว r4 (`d7ff5c5`) ยังไม่อยู่บน remote
+- **รอบ 3-A (2026-11-27): เดินอิสระขั้น 1 เสร็จบน `lane/free-roam`** (ยังไม่ merge) · test 165/165, lifecycle 20/20 · tris +24% FPS ไม่ต่างใน SwiftShader · Android/iPhone ยังไม่ได้ทดสอบ · `docs/qa/roam-v01/` · ค่าด่านรอทีม A (REQ-006) · หญ้าพริ้วไหว r4 (`d7ff5c5`) ยังไม่อยู่บน remote · ลิงก์ลองเล่น https://claude.ai/artifact/T4LK7cJv8fKgAqtDNr45nE
 - **ด่านแรก stage1 merge เข้า `main` แล้ว (2026-11-21, เจ้าของอนุมัติ):** `main` `b46ca7f` · จังหวะตีชุด A เป็นค่าเริ่ม (ADR-009) · test 155/155, lifecycle 20/20 · Android/iPhone ยังไม่ได้ทดสอบ · รอทีม A ตอบคำถามใน DES-006-teamB, DES-004 §8, `docs/qa/*-v01` (รวม S1–S10 spire/ศาล)
 - **รอบ 1 เสร็จแล้ว:** vertical slice "ทุ่งน้ำค้างแสง" เล่นจบได้, test 16/16, QA lifecycle 20/20
 - **เพลย์เทสต์ agent รอบ 1** (`docs/qa/playtest-agent-round1.md`): ชนะ 1:17 · คะแนน เข้าใจ 7 / **ชัด 5** / สนุก 7 / ภาพ 7 / เล่นซ้ำ 6

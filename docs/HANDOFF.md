@@ -5,6 +5,7 @@
 - เจ้าของตัดสิน 2026-11-27: ด่านแรกต้องยาว+ท้าทายขึ้น, มอนเกิดใหม่ไม่จำกัด, อนุมัติแก้กติกา (ทีม A ออกแบบค่า ทีม B เขียนโค้ด) → ADR-012
 - **branch `lane/free-roam`:** ruleset `roam-1` (ด่าน `shared/data/roam.ts`), สิ่งกีดขวางวงกลมใน sim, ประตูผลึกย้ายไปปากทางลานบอส, Auto ทั้งทุ่ง, render (`src/render/roam.ts`): โมเดลตรงวงชน, ขอบป่า 2 แถว + หินผา, บ่อน้ำ · กล้องเดิม (ตรวจแล้วที่ขอบ) · ค่าเริ่มของ branch นี้ = roam (`?roam=0` = เดิม)
 - ทดสอบ: vitest 165/165, typecheck, lifecycle 20/20 · bench: tris 75k → 91–93k, draw calls +3 ถึง +6, FPS ไม่ต่าง (SwiftShader) · ด่านเดิมฉากนิ่งต่าง 0 px · **Android/iPhone ยังไม่ได้ทดสอบ** → `docs/qa/roam-v01/README.md`
+- **ลิงก์ลองเล่น (Artifact ส่วนตัว, บิลด์ `3dcc35d`, ออฟไลน์):** https://claude.ai/artifact/T4LK7cJv8fKgAqtDNr45nE
 - ส่งทีม A: `docs/design/REQ-006-free-roam-values.md` (Q1–Q9: ขนาดทุ่ง, สิ่งกีดขวาง, ขอบ, ประตู, กล้อง, โซนเกิด, ความท้าทาย)
 - **งานถัดไป:** ขั้น 2 มอนเกิดสุ่มในโซน (PRNG ของ sim + ruleset ใหม่) เมื่อได้ค่าจากทีม A หรือเจ้าของสั่งให้ใช้ค่าทดลอง · ไม่ merge `main` ไม่ขึ้น Pages
 - **ขั้นถัดไปควรใช้โมเดล:** ขั้น 2 (กติกาใหม่ใน sim) **Opus** · QA ซ้ำ/วัดผล **Sonnet**
