@@ -57,7 +57,7 @@
 ## 5. รอเจ้าของตัดสินใจหรือดำเนินการ
 | เรื่อง | สถานะ |
 |---|---|
-| ติดตั้ง Blender MCP ให้ Claude Code (เจ้าของขอ 2026-11-27) | **เสร็จ 2026-11-27** บนเครื่อง Windows: ระดับผู้ใช้, ล็อกเวอร์ชัน 2.3.3, ปิด telemetry, เปิด safe mode, ตรวจโค้ดแล้ว (`docs/ASSETS.md`) · รอตัดสิน: ฝั่ง Codex (ทีม A) ยังไม่ล็อกเวอร์ชันและยังไม่ปิด telemetry |
+| ติดตั้ง Blender MCP ให้ Claude Code (เจ้าของขอ 2026-11-27) | **เสร็จ 2026-11-27** บนเครื่อง Windows: ระดับผู้ใช้, ล็อกเวอร์ชัน 2.3.3, ปิด telemetry, เปิด safe mode, ตรวจโค้ดแล้ว (`docs/ASSETS.md`) · ฝั่ง Codex (ทีม A): เจ้าของสั่งให้ล็อก 2.3.3 + ปิด telemetry ด้วย ทำแล้ว 2026-11-27 |
 | สร้าง GitHub repo + เชื่อม GitHub กับ Claude | **เสร็จ 2026-11-20**: https://github.com/thanaponzxz-gif/Synes-Online (Public) |
 | ตั้ง `CLAUDE_CODE_AUTO_COMPACT_WINDOW=450000` ใน Settings ของ environment "Default" (ตั้งจากในเซสชันไม่ได้) และ/หรือพิมพ์ `/autocompact 450k` | รอ |
 | รัน `tools/setup/setup-windows.ps1` บนเครื่อง Windows หลัง clone repo เพื่อทำโฟลเดอร์โปรเจค + Remote Control อัตโนมัติ | รอ |
