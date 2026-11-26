@@ -4,7 +4,7 @@
 // log is the settings changes (see the log format in input.ts): the server's replay re-derives everything Auto does.
 //
 // Rules implemented (all from DES-001 §4 unless marked Q-n = a neutral choice listed for team A in DES-001-teamB.md):
-//  - On enable, the player's position becomes the centre; the zones (LEVEL.autoZones) containing it bound the area.
+//  - On enable, the player's position becomes the centre; the zones (level.autoZones) containing it bound the area.
 //  - Targets: alive enemies matching the kind filter, inside the area, with a straight walkable path (no closed gate, no leaving the
 //    zones); nearest to the player first (Q50), ties -> lowest id. The boss is never a target (Auto is off in the boss area anyway).
 //  - Keep the target until it dies / leaves the area / becomes unreachable, then re-pick. No target -> walk back to the centre, wait.
@@ -16,7 +16,7 @@
 //  - Leaving every zone (boss approach / arena) or the boss starting turns Auto off; it is never turned back on by itself.
 //  - Death clears target + pending input; with keep-after-respawn the respawn point becomes the new centre, otherwise Auto is off.
 import { PLAYER, SKILLS, TICK, type EnemyKind } from '../data/tuning.ts';
-import { LEVEL, type Shape } from '../data/level.ts';
+import { type LevelDef, type Shape } from '../data/level.ts';
 import { BTN, quantize, type TickInput } from './input.ts';
 import { norm, dist, dist2 } from './math.ts';
 import type { World, Actor } from './world.ts';
@@ -60,6 +60,14 @@ export function unpackAuto(c: AutoCmd): AutoSettings | null {
   return { enabled: !!(c.a & 1), hall: !!(c.a & 2), skills: [!!(c.a & 4), !!(c.a & 8), !!(c.a & 16)], keep: !!(c.a & 32), kinds, radius };
 }
 
+/** squared distance from point (px,pz) to segment (x0,z0)-(x1,z1) */
+function segDist2(x0: number, z0: number, x1: number, z1: number, px: number, pz: number): number {
+  const ax = x1 - x0, az = z1 - z0, l2 = ax * ax + az * az;
+  let k = l2 > 1e-12 ? ((px - x0) * ax + (pz - z0) * az) / l2 : 0;
+  k = k < 0 ? 0 : k > 1 ? 1 : k;
+  return dist2(px, pz, x0 + ax * k, z0 + az * k);
+}
+
 // ---------------------------------------------------------------- zones / walkability (no pathfinding: straight lines only, Q55)
 function inShape(s: Shape, x: number, z: number): boolean {
   if (s.type === 'circle') return dist2(x, z, s.x, s.z) <= s.r * s.r;
@@ -68,10 +76,16 @@ function inShape(s: Shape, x: number, z: number): boolean {
   k = k < 0 ? 0 : k > 1 ? 1 : k;
   return dist2(x, z, s.ax + abx * k, s.az + abz * k) <= s.r * s.r;
 }
-const ZONE_SHAPES = LEVEL.autoZones.map((z) => z.shapes.map((id) => LEVEL.walkable.find((s) => s.id === id)!));
+const zoneCache = new Map<LevelDef, Shape[][]>();
+function zoneShapes(L: LevelDef): Shape[][] {
+  let z = zoneCache.get(L);
+  if (!z) zoneCache.set(L, (z = L.autoZones.map((zn) => zn.shapes.map((id) => L.walkable.find((s) => s.id === id)!))));
+  return z;
+}
 /** bitmask of the auto zones containing (x,z); shapes behind a closed gate do not count */
 export function zonesAt(w: World, x: number, z: number): number {
   let m = 0;
+  const ZONE_SHAPES = zoneShapes(w.level);
   for (let i = 0; i < ZONE_SHAPES.length; i++) for (const s of ZONE_SHAPES[i]) if ((!s.gate || w.gates[s.gate]) && inShape(s, x, z)) { m |= 1 << i; break; }
   return m;
 }
@@ -129,6 +143,8 @@ export class AutoState {
   }
   /** straight line from (x0,z0) to (x1,z1) stays inside the centre's zones on open ground */
   private pathOk(w: World, x0: number, z0: number, x1: number, z1: number): boolean {
+    // free roam: a straight line through a solid obstacle is not a path (no obstacles in the path-only level: unchanged)
+    for (const o of w.level.obstacles) if (segDist2(x0, z0, x1, z1, o.x, o.z) < (o.r + PLAYER.radius) * (o.r + PLAYER.radius)) return false;
     const d = dist(x0, z0, x1, z1), n = Math.max(1, Math.ceil(d / PATH_STEP));
     for (let k = 1; k <= n; k++) {
       const t = k / n;

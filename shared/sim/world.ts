@@ -1,13 +1,13 @@
 // Synes Online — deterministic gameplay simulation (runs identically on client and server).
 // Rules: no engine/DOM imports, no Math.random/Date, no trig. Fixed tick = 1/30 s.
 import { PLAYER, ENEMIES, TICK, SKILLS, CONE_INNER_R, type AttackDef, type EnemyKind } from '../data/tuning.ts';
-import { LEVEL, type Shape } from '../data/level.ts';
+import { type LevelDef, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
 import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
 import { AutoState } from './auto.ts';
-import { DEFAULT_RULESET, comboFor, type Ruleset, type TickCombo } from './ruleset.ts';
+import { DEFAULT_RULESET, comboFor, levelFor, type Ruleset, type TickCombo } from './ruleset.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
 
@@ -62,7 +62,9 @@ export class World {
   tele: Telegraph[] = [];
   events: SimEvent[] = [];
   gates: Record<string, boolean> = {};
-  pillars = LEVEL.pillars.map((p) => ({ ...p, alive: true }));
+  /** the level this run plays on (decided by the ruleset: roam-1 = free-roam meadow) */
+  readonly level: LevelDef;
+  pillars: { x: number; z: number; r: number; alive: boolean }[];
   boss: Actor;
   bossStarted = false;
   phase = 1;
@@ -70,7 +72,7 @@ export class World {
   bossNext: string | null = null;
   private p2Moves = 0;
   clearingTriggered = false;
-  checkpoint = { id: 'camp', x: LEVEL.start.x, z: LEVEL.start.z };
+  checkpoint: { id: string; x: number; z: number };
   finished = false;
   victory = false;
   stats: Stats = { damageTaken: 0, perfect: 0, deaths: 0, dodges: 0, potionsUsed: 0, hitsLanded: 0 };
@@ -104,6 +106,9 @@ export class World {
   constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT, ruleset: Ruleset = DEFAULT_RULESET) {
     this.seed = seed;
     this.ruleset = ruleset; this.tc = comboFor(ruleset);
+    const LEVEL = (this.level = levelFor(ruleset));
+    this.pillars = LEVEL.pillars.map((p) => ({ ...p, alive: true }));
+    this.checkpoint = { id: 'camp', x: LEVEL.start.x, z: LEVEL.start.z };
     this.variant = variant;
     this.rng = new Rng(seed);
     for (const g of LEVEL.gates) this.gates[g.id] = g.startsOpen;
@@ -123,7 +128,7 @@ export class World {
     for (const e of this.actors) if (e.kind !== 'player' && e.kind !== 'prismback') { e.alive = false; e.hp = 0; }
     this.clearingTriggered = true;
     this.gates.clearingExit = true;
-    const s = LEVEL.spring;
+    const s = this.level.spring;
     this.checkpoint = { id: 'spring', x: s.x, z: s.z + 1.2 };
     this.player.x = this.checkpoint.x; this.player.z = this.checkpoint.z; this.player.fx = 0; this.player.fz = -1;
   }
@@ -482,8 +487,9 @@ export class World {
       const nx = a.x + a.dx * D.rushSpeed * TICK, nz = a.z + a.dz * D.rushSpeed * TICK;
       const [cx, cz] = this.clampWalk(nx, nz, a.r);
       a.x = cx; a.z = cz;
+      const blocked = this.pushFromObstacles(a); // free roam: a rush into a tree/rock ends there
       if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
-      if (a.st <= 0 || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.atkToken.delete(a.id); this.hint('counter'); }
+      if (a.st <= 0 || blocked || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.atkToken.delete(a.id); this.hint('counter'); }
     } else if (a.state === 'recover') {
       if (a.st <= 0) a.state = 'approach';
     }
@@ -622,7 +628,7 @@ export class World {
 
   clampWalk(x: number, z: number, r: number): [number, number] {
     let bx = x, bz = z, bd = 1e18;
-    for (const s of LEVEL.walkable) {
+    for (const s of this.level.walkable) {
       if (!this.shapeOpen(s)) continue;
       let cx: number, cz: number;
       if (s.type === 'circle') { cx = s.x; cz = s.z; }
@@ -641,7 +647,7 @@ export class World {
   }
 
   private clampArena(x: number, z: number, r: number): [number, number] {
-    const A = LEVEL.walkable.find((s) => s.id === 'arena')!;
+    const A = this.level.walkable.find((s) => s.id === 'arena')!;
     if (A.type !== 'circle') return [x, z];
     const dx = x - A.x, dz = z - A.z, d = len(dx, dz), R = A.r - r;
     return d <= R ? [x, z] : [A.x + (dx / d) * R, A.z + (dz / d) * R];
@@ -658,10 +664,31 @@ export class World {
         else { p.x += (dx / d) * push * 0.5; p.z += (dz / d) * push * 0.5; e.x -= (dx / d) * push * 0.5; e.z -= (dz / d) * push * 0.5; }
       }
       if (e.kind === 'prismback') { this.pushFromPillars(e); [e.x, e.z] = this.clampArena(e.x, e.z, e.r); }
-      else [e.x, e.z] = this.clampWalk(e.x, e.z, e.r);
+      else { this.pushFromObstacles(e); [e.x, e.z] = this.clampWalk(e.x, e.z, e.r); }
     }
     this.pushFromPillars(p);
+    this.pushFromObstacles(p);
     [p.x, p.z] = this.clampWalk(p.x, p.z, p.r);
+  }
+
+  /** Free roam: trees, rocks, ruins and water are solid circles. Pushes `a` out along the line from the centre (it slides around).
+   *  Returns true when it moved. No obstacles in the path-only level, so old runs are unchanged. */
+  pushFromObstacles(a: { x: number; z: number; r: number }): boolean {
+    let moved = false;
+    // two passes: touching obstacles (fence posts, pond lobes) can push back into the one just resolved
+    for (let pass = 0; pass < 2; pass++) {
+      let any = false;
+      for (const o of this.level.obstacles) {
+        const dx = a.x - o.x, dz = a.z - o.z, m = a.r + o.r, d2 = dx * dx + dz * dz;
+        if (d2 >= m * m) continue;
+        const d = Math.sqrt(d2);
+        if (d > 1e-6) { a.x = o.x + (dx / d) * m; a.z = o.z + (dz / d) * m; } else { a.x = o.x; a.z = o.z + m; }
+        any = true;
+      }
+      if (!any) break;
+      moved = true;
+    }
+    return moved;
   }
 
   private pushFromPillars(a: Actor) {
@@ -674,7 +701,7 @@ export class World {
   }
 
   private triggers() {
-    const p = this.player, L = LEVEL;
+    const p = this.player, L = this.level;
     if (!this.clearingTriggered && dist(p.x, p.z, L.clearingTrigger.x, L.clearingTrigger.z) < L.clearingTrigger.r) {
       this.clearingTriggered = true;
       for (const e of this.actors) if (e.group === 'clearing' && e.alive) { e.active = true; e.state = 'approach'; e.st = 0; }

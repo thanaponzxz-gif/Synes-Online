@@ -1,5 +1,14 @@
 # Handoff: Synes Online
 
+## รอบ 3-A: เดินอิสระขั้น 1 · 2026-11-27 · 🟡 MAIN · Synes Online · รอบ 3-A
+- ต่อจากแชต "หญ้าพริ้วไหว": **หญ้า r4 (`d7ff5c5` บน `art/grass-wind`) ไม่อยู่บน remote และไม่ได้แนบ patch มาในแชตนี้** → งานนี้แตกจาก `art/env-polish` `c33fa5b` (ไม่มีหญ้า r4) · ได้ patch เมื่อไรให้ `git am` แล้ว rebase/merge
+- เจ้าของตัดสิน 2026-11-27: ด่านแรกต้องยาว+ท้าทายขึ้น, มอนเกิดใหม่ไม่จำกัด, อนุมัติแก้กติกา (ทีม A ออกแบบค่า ทีม B เขียนโค้ด) → ADR-012
+- **branch `lane/free-roam`:** ruleset `roam-1` (ด่าน `shared/data/roam.ts`), สิ่งกีดขวางวงกลมใน sim, ประตูผลึกย้ายไปปากทางลานบอส, Auto ทั้งทุ่ง, render (`src/render/roam.ts`): โมเดลตรงวงชน, ขอบป่า 2 แถว + หินผา, บ่อน้ำ · กล้องเดิม (ตรวจแล้วที่ขอบ) · ค่าเริ่มของ branch นี้ = roam (`?roam=0` = เดิม)
+- ทดสอบ: vitest 165/165, typecheck, lifecycle 20/20 · bench: tris 75k → 91–93k, draw calls +3 ถึง +6, FPS ไม่ต่าง (SwiftShader) · ด่านเดิมฉากนิ่งต่าง 0 px · **Android/iPhone ยังไม่ได้ทดสอบ** → `docs/qa/roam-v01/README.md`
+- ส่งทีม A: `docs/design/REQ-006-free-roam-values.md` (Q1–Q9: ขนาดทุ่ง, สิ่งกีดขวาง, ขอบ, ประตู, กล้อง, โซนเกิด, ความท้าทาย)
+- **งานถัดไป:** ขั้น 2 มอนเกิดสุ่มในโซน (PRNG ของ sim + ruleset ใหม่) เมื่อได้ค่าจากทีม A หรือเจ้าของสั่งให้ใช้ค่าทดลอง · ไม่ merge `main` ไม่ขึ้น Pages
+- **ขั้นถัดไปควรใช้โมเดล:** ขั้น 2 (กติกาใหม่ใน sim) **Opus** · QA ซ้ำ/วัดผล **Sonnet**
+
 ## รอบ 2-G: เตรียมความพร้อม Claude-First (Preparation เท่านั้น) · 2026-11-25 · 🟡 MAIN · Synes Online · รอบ 2-G (`session_01A1roa5SiRHs91xT3uQQqXP`)
 - ปิดแชต 2-F แล้ว (⚪ + archive หลังตรวจ `0a8c27c` บน remote) · lineage **8/8** (สร้างเซสชันลูกไม่ได้ · เปลี่ยนเซสชัน = เจ้าของเปิดเองพร้อมพรอมป์ต์ master handoff ข้อ 8)
 - เจ้าของอนุมัติ **Preparation เท่านั้น (ไม่ใช่ A2)** → `docs/team/2026-11-25-2G-prep.md`: ตรวจ A1–A11 + dependency, WP C-6 (AC-1…8, Test Plan T0–T3, ความเสี่ยง SHA ข้ามเวอร์ชัน git), วิเคราะห์ C-5/SEC คู่ขนาน

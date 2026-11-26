@@ -37,11 +37,13 @@ describe('ruleset parsing + hashing', () => {
     for (const r of RULESETS) expect(parseRuleset(r)).toBe(r);
     for (const bad of ['combo-D', 'combo-a', 'combat-3', '', 1, {}, [], 'COMBAT-1']) expect(parseRuleset(bad), String(bad)).toBeNull();
   });
-  it('?combo=A|B|C selects a ruleset; ?combo=1 is combat-1; anything else is combat-2 (owner pick A)', () => {
+  it('?combo=A|B|C selects a ruleset; ?combo=1 is combat-1; ?roam=0 is combat-2 (owner pick A); anything else is free roam (lane/free-roam)', () => {
     expect(rulesetFromQuery(new URLSearchParams('combo=A'))).toBe('combo-A');
     expect(rulesetFromQuery(new URLSearchParams('combo=c'))).toBe('combo-C');
     expect(rulesetFromQuery(new URLSearchParams('combo=1'))).toBe('combat-1');
-    for (const q of ['', 'combo=D', 'combo=', 'combo=combo-A']) expect(rulesetFromQuery(new URLSearchParams(q))).toBe('combat-2');
+    expect(rulesetFromQuery(new URLSearchParams('roam=0'))).toBe('combat-2');
+    for (const q of ['', 'combo=D', 'combo=', 'combo=combo-A', 'roam=1']) expect(rulesetFromQuery(new URLSearchParams(q))).toBe('roam-1');
+    expect(comboFor('roam-1')).toEqual(comboFor('combat-2'));
   });
   it('combat-2 uses exactly the combo-A numbers but has its own name and hash', () => {
     expect(comboFor('combat-2')).toEqual(comboFor('combo-A'));
@@ -53,7 +55,7 @@ describe('ruleset parsing + hashing', () => {
   it('tuning hash is stable, 16 hex chars, and differs per ruleset', () => {
     const hs = RULESETS.map(tuningHash);
     for (const h of hs) expect(h).toMatch(/^[0-9a-f]{16}$/);
-    expect(new Set(hs).size).toBe(5);
+    expect(new Set(hs).size).toBe(RULESETS.length);
     expect(tuningHash('combo-B')).toBe(hs[2]);
   });
   it('the three variants match DES-006 §1 and total 42/46/52 ticks', () => {
@@ -177,8 +179,9 @@ describe('server run envelope', () => {
     const lg = new InputLog();
     for (let i = 0; i < 90; i++) lg.push(i === 0 ? { ...NO_INPUT, auto: packAuto({ ...defaultAuto(), enabled: true, hall: true, skills: [true, true, true] }) } : NO_INPUT);
     for (const [name, log] of [['v1', v1], ['v2', lg.data]] as const) {
-      // combo-A is skipped here only to stay under the server rate limit (30/IP): combat-2 has the same numbers (tested above)
-      for (const r of RULESETS.filter((x) => x !== 'combo-A')) {
+      // combo-A/B are skipped here only to stay under the server rate limit (30/IP): combat-2 has the combo-A numbers (tested above)
+      // and combo-B goes through the server in the test before this one
+      for (const r of RULESETS.filter((x) => x !== 'combo-A' && x !== 'combo-B')) {
         const st = await post('/api/run/start', { rulesetVersion: r });
         const fin = await post('/api/run/finish', { runId: st.body.runId, log });
         expect([name, r, fin.status, fin.body.rulesetVersion]).toEqual([name, r, 200, r]);

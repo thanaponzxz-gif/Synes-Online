@@ -1,0 +1,140 @@
+{
+  "tag": "after",
+  "qs": "",
+  "shots": [
+    {
+      "name": "overview",
+      "cx": 0,
+      "cz": -42,
+      "bounds": {
+        "x0": -34,
+        "x1": 34,
+        "z0": -100,
+        "z1": 16
+      }
+    },
+    {
+      "name": "camp",
+      "want": [
+        0,
+        1.5
+      ],
+      "px": 0,
+      "pz": 1.5,
+      "calls": 54,
+      "tris": 90434
+    },
+    {
+      "name": "trail",
+      "want": [
+        1.6,
+        -18
+      ],
+      "px": 1.6,
+      "pz": -18,
+      "calls": 59,
+      "tris": 95126
+    },
+    {
+      "name": "clearing",
+      "want": [
+        3,
+        -34
+      ],
+      "px": 2.76,
+      "pz": -32.58,
+      "calls": 56,
+      "tris": 92753
+    },
+    {
+      "name": "spring",
+      "want": [
+        -0.4,
+        -50.5
+      ],
+      "px": -0.4,
+      "pz": -50.5,
+      "calls": 61,
+      "tris": 90203
+    },
+    {
+      "name": "field-west",
+      "want": [
+        -14,
+        -22
+      ],
+      "px": -14,
+      "pz": -22,
+      "calls": 48,
+      "tris": 91066
+    },
+    {
+      "name": "field-east",
+      "want": [
+        16,
+        -30
+      ],
+      "px": 16,
+      "pz": -30,
+      "calls": 39,
+      "tris": 86667
+    },
+    {
+      "name": "field-pond",
+      "want": [
+        -9,
+        -40
+      ],
+      "px": -9,
+      "pz": -40,
+      "calls": 49,
+      "tris": 91887
+    },
+    {
+      "name": "boss-gate",
+      "want": [
+        -2,
+        -58
+      ],
+      "px": -2,
+      "pz": -58,
+      "calls": 60,
+      "tris": 87127
+    },
+    {
+      "name": "edge-south",
+      "want": [
+        0,
+        9
+      ],
+      "px": 0,
+      "pz": 7.58,
+      "calls": 52,
+      "tris": 90032
+    },
+    {
+      "name": "edge-east",
+      "want": [
+        22,
+        -12
+      ],
+      "px": 20.54,
+      "pz": -12.13,
+      "calls": 49,
+      "tris": 93133
+    },
+    {
+      "name": "edge-north",
+      "want": [
+        8,
+        -52
+      ],
+      "px": 6.04,
+      "pz": -50.97,
+      "calls": 35,
+      "tris": 85351
+    }
+  ],
+  "perf": {},
+  "errors": []
+}

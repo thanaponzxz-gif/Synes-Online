@@ -36,8 +36,10 @@
 | 008 | เรียนรู้ต่อเนื่อง | เทคนิคใหม่ผ่านวงจร 7 ขั้น ทดลองบน `exp/*` ก่อนใช้จริง ความรู้อยู่ใน `docs/knowledge/` (อ่านเมื่อจำเป็น ไม่ @import) และ `AGENTS.md` สำหรับ Codex (CLAUDE.md ข้อ 7) |
 | 010 | Free Asset First | environment ทั่วไปใช้ asset ฟรี CC0 ได้ (ตรวจ license + ลงทะเบียน) · ตัวละคร/ศัตรู/บอส/UI/เสียงยังต้องเป็นต้นฉบับ · QA ภาพแยกจากผู้ผลิต + Before/After + perf |
 | 011 | Claude-First Allocation | Claude = Engineering หลัก ~65% (Opus PM/ตรวจรับ · Fable วิเคราะห์ยาก · Sonnet ลงมือ/QA) · Codex = Technical Production ~35% (Sol asset/Blender MCP/texture · Astra แผน tech art/รีวิวเสี่ยงสูง) · ทีม A คุมดีไซน์ทั้งหมด · ห้ามทำงานซ้ำกับ Codex · ห้ามผลิต asset ก่อนแบบอนุมัติ (`docs/team/2026-11-25-claude-first-allocation.md`) |
+| 012 | เดินอิสระ `roam-1` | ด่านผูกกับ ruleset · `roam-1` = ทุ่งเดินอิสระ + สิ่งกีดขวางวงกลม + ประตูลานบอส · ค่าด่านชั่วคราวรอทีม A (REQ-006) · `lane/free-roam` เปิดเป็นค่าเริ่ม (`?roam=0` = เดิม) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
+- **รอบ 3-A (2026-11-27): เดินอิสระขั้น 1 เสร็จบน `lane/free-roam`** (ยังไม่ merge) · test 165/165, lifecycle 20/20 · tris +24% FPS ไม่ต่างใน SwiftShader · Android/iPhone ยังไม่ได้ทดสอบ · `docs/qa/roam-v01/` · ค่าด่านรอทีม A (REQ-006) · หญ้าพริ้วไหว r4 (`d7ff5c5`) ยังไม่อยู่บน remote
 - **ด่านแรก stage1 merge เข้า `main` แล้ว (2026-11-21, เจ้าของอนุมัติ):** `main` `b46ca7f` · จังหวะตีชุด A เป็นค่าเริ่ม (ADR-009) · test 155/155, lifecycle 20/20 · Android/iPhone ยังไม่ได้ทดสอบ · รอทีม A ตอบคำถามใน DES-006-teamB, DES-004 §8, `docs/qa/*-v01` (รวม S1–S10 spire/ศาล)
 - **รอบ 1 เสร็จแล้ว:** vertical slice "ทุ่งน้ำค้างแสง" เล่นจบได้, test 16/16, QA lifecycle 20/20
 - **เพลย์เทสต์ agent รอบ 1** (`docs/qa/playtest-agent-round1.md`): ชนะ 1:17 · คะแนน เข้าใจ 7 / **ชัด 5** / สนุก 7 / ภาพ 7 / เล่นซ้ำ 6

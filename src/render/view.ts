@@ -5,7 +5,8 @@ import {
   MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry, ShaderMaterial,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
-import { LEVEL, type Shape } from '../../shared/data/level.ts';
+import { LEVEL, type LevelDef, type Shape } from '../../shared/data/level.ts';
+import { makeRoamWater, roamScatter, type RoamWater } from './roam.ts';
 import { PLAYER, CONE_INNER_R } from '../../shared/data/tuning.ts';
 import { makeHero, makePuffcap, makeThornling, makePrismback, makeProp, flattenPropMerged, PAL } from './models.ts';
 import { Particles, Rings, telegraphMaterial, blobShadow } from './fx.ts';
@@ -26,9 +27,9 @@ const HEAVY = new Set(['slam', 'charge']);
 const BOUNDS = { x0: -34, x1: 34, z0: -100, z1: 16 };
 
 /** Signed distance (negative inside) from a point to the union of walkable shapes (all gates treated open). */
-export function walkSDF(x: number, z: number): number {
+export function walkSDF(x: number, z: number, shapes: Shape[] = LEVEL.walkable): number {
   let best = 1e9;
-  for (const s of LEVEL.walkable) best = Math.min(best, shapeSDF(s, x, z));
+  for (const s of shapes) best = Math.min(best, shapeSDF(s, x, z));
   return best;
 }
 function shapeSDF(s: Shape, x: number, z: number) {
@@ -99,6 +100,12 @@ export class View {
   atmosW = 0;
   private sunOffset = new Vector3().copy(this.envArt?.sun ?? BASE_SUN_OFFSET);
   env = new Group();
+  /** level being drawn (set by buildLevel from world.level; the path-only level until then) */
+  private L: LevelDef = LEVEL;
+  /** distance to the walkable area (where actors stand) / to the painted dirt trail. Same shapes in the path-only level. */
+  private fieldSDF = (x: number, z: number) => walkSDF(x, z, this.L.walkable);
+  private pathSDF = (x: number, z: number) => walkSDF(x, z, this.L.paths);
+  private water: RoamWater | null = null;
   private camTarget = new Vector3(); private camPos = new Vector3(); private shake = 0;
   /** DES-006 §1 pull-back: smoothed base pose (camBase), current pull amount (0 = low angle), hold timer, scratch camera for the visibility test */
   private camBase = new Vector3(); private camPull = 0; private camPullHold = 0; private noPull = /[?&]nopull\b/.test(location.search); /* QA only: ?nopull = the pre-pull-back camera, for before/after */ private pullCam = new PerspectiveCamera(48, 16 / 9, 0.5, 90); private pullPts: number[] = [];
@@ -163,7 +170,7 @@ export class View {
     this.prepaintQueued = true;
     setTimeout(() => { this.prepaintQueued = false; if (this.envGen === 0) this.paintedGround(7); }, 0);
   }
-  private groundKey(seed: number) { return `${seed}|${this.q.groundRes}|${JSON.stringify(this.tone)}|${this.opening ? 1 : 0}`; }
+  private groundKey(seed: number) { return `${seed}|${this.q.groundRes}|${JSON.stringify(this.tone)}|${this.opening ? 1 : 0}|${this.L.paths === LEVEL.walkable ? 'trail' : this.L.id}`; }
   /** The painted ground canvas (cached; the caller must not draw on it). */
   private paintedGround(seed: number): HTMLCanvasElement {
     const key = this.groundKey(seed);
@@ -179,9 +186,9 @@ export class View {
   private building = false;
   private groundCtx(g: CanvasRenderingContext2D, W: number, H: number, seed: number): GroundCtx {
     const sx = W / (BOUNDS.x1 - BOUNDS.x0), sz = H / (BOUNDS.z1 - BOUNDS.z0), t = this.tone;
-    const V = (z: number) => (z - BOUNDS.z0) * sz, arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    const V = (z: number) => (z - BOUNDS.z0) * sz, arena = this.L.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
     return {
-      g, W, H, sx, sz, U: (x: number) => (x - BOUNDS.x0) * sx, V, bounds: BOUNDS, tone: t, walkable: LEVEL.walkable, sdf: walkSDF, seed,
+      g, W, H, sx, sz, U: (x: number) => (x - BOUNDS.x0) * sx, V, bounds: BOUNDS, tone: t, walkable: this.L.paths, sdf: this.pathSDF, seed,
       pathFill: this.opening ? openingPathFill(g, this.opening, V) : hex(t.path), arena: arena?.type === 'circle' ? arena : null,
     };
   }
@@ -213,6 +220,9 @@ export class View {
   envProf: Record<string, number> = {};
   buildLevel(world: World, seed = 1) {
     const buildT0 = performance.now();
+    this.L = world.level;
+    const L = this.L, roam = L.roam;
+    this.water?.dispose(); this.water = null;
     this.arenaFloor?.material.map?.dispose();
     this.arenaFloor?.material.dispose();
     this.arenaFloor?.geometry.dispose();
@@ -237,7 +247,7 @@ export class View {
     const sx = W / (BOUNDS.x1 - BOUNDS.x0), sz = H / (BOUNDS.z1 - BOUNDS.z0);
     const U = (x: number) => (x - BOUNDS.x0) * sx, V = (z: number) => (z - BOUNDS.z0) * sz;
     const t = this.tone;
-    const arena = LEVEL.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
+    const arena = L.walkable.find((shape) => shape.id === 'arena' && shape.type === 'circle');
     let rs = seed * 9301 + 49297; const rnd = () => ((rs = (rs * 9301 + 49297) % 233280) / 233280);
     const env = this.envArt;
     const gctx: GroundCtx | null = env ? this.groundCtx(g, W, H, seed) : null;
@@ -261,7 +271,7 @@ export class View {
     for (let i = 0; i < W * H / 60; i++) { g.fillStyle = rnd() < 0.5 ? 'rgba(255,255,255,0.06)' : 'rgba(0,40,0,0.06)'; g.fillRect(rnd() * W, rnd() * H, 2 + rnd() * 3, 2 + rnd() * 3); }
     const drawShapes = (pad: number, style: string | CanvasGradient) => {
       g.fillStyle = style;
-      for (const s of LEVEL.walkable) {
+      for (const s of L.paths) {
         g.beginPath();
         if (s.type === 'circle') { g.arc(U(s.x), V(s.z), (s.r + pad) * sx, 0, Math.PI * 2); g.fill(); }
         else { g.lineCap = 'round'; g.strokeStyle = style; g.lineWidth = (s.r + pad) * 2 * sx; g.moveTo(U(s.ax), V(s.az)); g.lineTo(U(s.bx), V(s.bz)); g.stroke(); }
@@ -297,9 +307,11 @@ export class View {
     };
     const dens = this.q.decoDensity;
     const tries = Math.round(2600 * dens);
-    for (let i = 0; i < tries; i++) {
+    // free roam: obstacle models at the sim's collision circles + forest/cliff edge + walk-through small props (roam.ts)
+    if (roam) roamScatter({ L, bounds: BOUNDS, dens, rnd, add, field: this.fieldSDF, path: this.pathSDF, treeMix: t.treeMix });
+    for (let i = 0; i < (roam ? 0 : tries); i++) {
       const x = BOUNDS.x0 + rnd() * (BOUNDS.x1 - BOUNDS.x0), z = BOUNDS.z0 + rnd() * (BOUNDS.z1 - BOUNDS.z0);
-      const d = walkSDF(x, z), r = rnd(), rot = rnd() * 6.28;
+      const d = walkSDF(x, z, L.walkable), r = rnd(), rot = rnd() * 6.28;
       if (d > 2.2 && d < 16) { if (r < 0.06 + 0.25 / (1 + d * 0.3)) add(t.treeMix[Math.floor(rnd() * t.treeMix.length)], x, z, 0.8 + rnd() * 0.6, rot); }
       else if (d > 0.4 && d <= 2.2) {
         if (r < 0.05) add('rock_a', x, z, 0.6 + rnd() * 0.7, rot);
@@ -321,14 +333,18 @@ export class View {
     // env art: a few more rocks/bushes in the mid-ground and small stones along the path edge (own random stream)
     const avoid = [...(this.opening?.guides.map((gd) => ({ x: gd.x, z: gd.z, r: 1.4 })) ?? [])];
     if (arena?.type === 'circle') avoid.push({ x: arena.x, z: arena.z, r: arena.r + 3 });
+    // free roam: no grass or added props inside water, rocks or ruins (trees: grass may grow under them)
+    for (const o of L.obstacles) if (o.kind === 'water' || o.kind === 'rock' || o.kind === 'ruin') avoid.push({ x: o.x, z: o.z, r: o.r + (o.kind === 'water' ? 0.5 : 0.1) });
     this.envProf.hudDrop = 0;
     const baseN = new Map(Object.entries(place).map(([n, m]) => [n, m.length]));
     if (env) {
       const er = prng(seed * 977 + 5), free = (x: number, z: number) => !avoid.some((a) => Math.hypot(x - a.x, z - a.z) < a.r);
       const put3 = (name: string, x: number, z: number, s: Vector3, rot: number) => (place[name] ??= []).push(new Matrix4().compose(new Vector3(x, 0, z), new Quaternion().setFromEuler(new Euler(0, rot, 0)), s));
       for (let i = 0, n = Math.round(520 * dens); i < n; i++) {
-        const x = BOUNDS.x0 + er() * (BOUNDS.x1 - BOUNDS.x0), z = BOUNDS.z0 + er() * (BOUNDS.z1 - BOUNDS.z0), d = walkSDF(x, z), r = er(), rot = er() * 6.28;
+        const x = BOUNDS.x0 + er() * (BOUNDS.x1 - BOUNDS.x0), z = BOUNDS.z0 + er() * (BOUNDS.z1 - BOUNDS.z0), d = this.pathSDF(x, z), r = er(), rot = er() * 6.28;
         if (!free(x, z)) continue;
+        // free roam: these rocks/bushes have no collision, so only pebbles (the last branch) may lie inside the meadow
+        if (roam && d > 1.0 && this.fieldSDF(x, z) < 1.2) continue;
         if (d > 1.2 && d < 9) {
           if (r < 0.12) { const s = 0.4 + er() * 0.5; put3('rock_a', x, z, new Vector3(s * (0.85 + er() * 0.35), s * (0.7 + er() * 0.45), s * (0.85 + er() * 0.35)), rot); }
           else if (r < 0.34) { const s = 0.55 + er() * 0.6; put3('bush', x, z, new Vector3(s, s * (0.8 + er() * 0.3), s), rot); }
@@ -339,7 +355,7 @@ export class View {
       // hides added props anyway) and drop it if any view puts its bounding sphere into a HUD zone while it is that far away.
       const hudT0 = performance.now(), spots: number[] = [];
       for (let z = BOUNDS.z0; z < BOUNDS.z1; z += 1.5) for (let x = BOUNDS.x0; x < BOUNDS.x1; x += 1.5) {
-        if (walkSDF(x, z) > -0.3 || (arena?.type === 'circle' && Math.hypot(x - arena.x, z - arena.z) < arena.r + 1.5)) continue;
+        if (this.fieldSDF(x, z) > -0.3 || (arena?.type === 'circle' && Math.hypot(x - arena.x, z - arena.z) < arena.r + 1.5)) continue;
         spots.push(x, z);
       }
       for (const name of ['rock_a', 'bush']) {
@@ -396,7 +412,7 @@ export class View {
       if (!this.q.shadows) bakeContactShadows(gctx, casters, env.sun);
       paintUnderTrees(gctx, casters);
       this.envProf.bake = performance.now() - t0;
-      if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: walkSDF, casters, avoid }); this.env.add(this.grass.mesh); }
+      if (this.flags.get('envgrass') !== '0') { this.grass = buildGrass({ q: this.q, art: env, tone: t, seed, bounds: BOUNDS, sdf: this.pathSDF, casters, avoid }); this.env.add(this.grass.mesh); }
       this.envProf.grass = performance.now() - t0 - this.envProf.bake; this.envProf.tufts = this.grass?.tufts ?? 0; this.envProf.flowers = this.grass?.flowers ?? 0;
     }
     this.envGen++;
@@ -407,11 +423,12 @@ export class View {
     put('signpost', 2.6, -4.2, -0.5); put('lantern_post', -2.4, -6); put('lantern_post', 2.8, -10);
     put('fence', -4.5, 3.5, 0.3); put('fence', 4.8, 3.2, -0.4);
     put('lantern_post', 6.5, -44); put('lantern_post', -0.4, -46);
-    const spring = put('lumen_spring', LEVEL.spring.x, LEVEL.spring.z);
+    const spring = put('lumen_spring', L.spring.x, L.spring.z);
     this.springGem = spring.getObjectByName('gem') ?? null;
-    for (const pl of LEVEL.pillars) { const o = put('crystal_pillar', pl.x, pl.z, pl.x * 0.3); this.pillars.push(o); this.addOccluder(o, pl.r + 0.2, 4.5); }
+    if (roam) { this.water = makeRoamWater(L, gctx ?? { g, U, V, sx }); if (this.water) this.env.add(this.water.mesh); }
+    for (const pl of L.pillars) { const o = put('crystal_pillar', pl.x, pl.z, pl.x * 0.3); this.pillars.push(o); this.addOccluder(o, pl.r + 0.2, 4.5); }
     glowPillars(this.pillars); // DES-006 §3, ?arena=B only
-    for (const gd of LEVEL.gates) {
+    for (const gd of L.gates) {
       const gate = put('crystal_gate', gd.x, gd.z, Math.atan2(-gd.dirz, gd.dirx));
       const open = world.gates[gd.id];
       gate.position.y = open ? -4 : 0; gate.visible = !open;
@@ -498,7 +515,7 @@ export class View {
         }
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
         case 'death': { const v = this.actors.get(e.id); if (v) { this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
-        case 'pillar-break': { const pl = LEVEL.pillars[e.i]; this.pillars[e.i].visible = false; this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
+        case 'pillar-break': { const pl = this.L.pillars[e.i]; this.pillars[e.i].visible = false; this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
         case 'stun': this.shake = Math.max(this.shake, e.long ? 0.5 : 0.25); break;
         case 'gate': { const gv = this.gates.get(e.id); if (gv) { gv.open = e.open; gv.g.visible = true; } break; }
         case 'heal': { const p = world.player; this.particles.burst(p.x, 1, p.z, 0x8dffb0, 12, 1.2, 2, 0.8, 1, -1); break; }
@@ -564,7 +581,7 @@ export class View {
    *  (E11) a prop may stay solid at the screen side only when its projected bounding sphere covers < 12% of the screen and misses
    *  the HUD zones (joystick + AUTO bottom-left, button column right, skill row bottom). Normalised zones from the 844x390 layout. */
   private updateEnvArt(world: World) {
-    const ar = LEVEL.walkable.find((sh) => sh.id === 'arena');
+    const ar = this.L.walkable.find((sh) => sh.id === 'arena');
     const pv = this.actors.get(world.player.id);
     const inArena = (world.bossStarted && world.boss.alive) || (!!pv && ar?.type === 'circle' && Math.hypot(pv.root.position.x - ar.x, pv.root.position.z - ar.z) < ar.r + 1.5);
     if (inArena !== this.bossHidden) {

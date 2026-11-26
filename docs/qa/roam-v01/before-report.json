@@ -1,0 +1,140 @@
+{
+  "tag": "before",
+  "qs": "&roam=0",
+  "shots": [
+    {
+      "name": "overview",
+      "cx": 0,
+      "cz": -42,
+      "bounds": {
+        "x0": -34,
+        "x1": 34,
+        "z0": -100,
+        "z1": 16
+      }
+    },
+    {
+      "name": "camp",
+      "want": [
+        0,
+        1.5
+      ],
+      "px": 0,
+      "pz": 1.5,
+      "calls": 51,
+      "tris": 73813
+    },
+    {
+      "name": "trail",
+      "want": [
+        1.6,
+        -18
+      ],
+      "px": 1.6,
+      "pz": -18,
+      "calls": 56,
+      "tris": 78505
+    },
+    {
+      "name": "clearing",
+      "want": [
+        3,
+        -34
+      ],
+      "px": 2.76,
+      "pz": -32.58,
+      "calls": 55,
+      "tris": 76345
+    },
+    {
+      "name": "spring",
+      "want": [
+        -0.4,
+        -50.5
+      ],
+      "px": -1.28,
+      "pz": -53.52,
+      "calls": 57,
+      "tris": 72013
+    },
+    {
+      "name": "field-west",
+      "want": [
+        -14,
+        -22
+      ],
+      "px": -0.63,
+      "pz": -20.4,
+      "calls": 55,
+      "tris": 78377
+    },
+    {
+      "name": "field-east",
+      "want": [
+        16,
+        -30
+      ],
+      "px": 10.11,
+      "pz": -33.17,
+      "calls": 48,
+      "tris": 76295
+    },
+    {
+      "name": "field-pond",
+      "want": [
+        -9,
+        -40
+      ],
+      "px": -4.84,
+      "pz": -38.96,
+      "calls": 46,
+      "tris": 75391
+    },
+    {
+      "name": "boss-gate",
+      "want": [
+        -2,
+        -58
+      ],
+      "px": -2,
+      "pz": -58,
+      "calls": 56,
+      "tris": 71661
+    },
+    {
+      "name": "edge-south",
+      "want": [
+        0,
+        9
+      ],
+      "px": 0,
+      "pz": 6.58,
+      "calls": 49,
+      "tris": 73411
+    },
+    {
+      "name": "edge-east",
+      "want": [
+        22,
+        -12
+      ],
+      "px": 3.82,
+      "pz": -14.18,
+      "calls": 53,
+      "tris": 78673
+    },
+    {
+      "name": "edge-north",
+      "want": [
+        8,
+        -52
+      ],
+      "px": 5.56,
+      "pz": -44.67,
+      "calls": 48,
+      "tris": 74737
+    }
+  ],
+  "perf": {},
+  "errors": []
+}
