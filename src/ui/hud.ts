@@ -131,10 +131,10 @@ export class Hud {
     void project;
     if (evts.some((e) => e.t === 'respawn')) this.floaters.clear(); // retry: no number survives into the new attempt
     // DES-008: damage numbers / status words for this tick, as one batch (§5.2); "หลบเร็วไป" keeps its HUD throttle (DES-006 Q29)
-    this.floaters.ingest(w, Floaters.fromEvents(w, evts, () => {
+    this.floaters.take(w, evts, () => {
       if (this.earlyAt.w === w && w.tick - this.earlyAt.tick < EARLY_GAP_TICKS) return false;
       this.earlyAt.w = w; this.earlyAt.tick = w.tick; return true;
-    }));
+    });
     for (const e of evts) {
       // teach perfect dodge right after the first hit from a dodgeable area attack (the moment the lesson is relevant)
       if (e.t === 'hit' && !e.byPlayer && !this.taughtPerfect && w.stats.perfect === 0 && w.ps.cause && !['rush', 'charge'].includes(w.ps.cause.attackId)) { this.taughtPerfect = true; this.queueHint('perfectTeach'); }

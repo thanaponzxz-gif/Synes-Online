@@ -1,0 +1,1098 @@
+{
+  "tag": "debug-live",
+  "root": "dist",
+  "debug": true,
+  "scenarios": [
+    {
+      "name": "roam",
+      "shots": [],
+      "live": {
+        "created": 53,
+        "painted": 53,
+        "readable": 22,
+        "merged": 0,
+        "deduped": 0,
+        "dropCap": 0,
+        "dropPlace": 11,
+        "replaced": 0,
+        "retiredSafety": 41,
+        "retiredLife": 12,
+        "cleared": 0,
+        "retiredUnpainted": 0,
+        "safetyUnread": 31,
+        "invalid": 0,
+        "why": {
+          "above:prot:body": 1,
+          "left:full(bar+body+hud#hint+hud#top-left+label)": 1,
+          "right:full(bar+body+label+player+warn)": 2,
+          "below:prot:warn": 6,
+          "above:prot:warn": 1,
+          "left:full(hud#auto-bar+hud#hint+label)": 1,
+          "below:edge": 4,
+          "above:edge": 9,
+          "left:full(hud#boss+hud#hint+hud#top-left+warn)": 2,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)": 4,
+          "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+warn)": 1,
+          "left:full(hud#boss+hud#top-left+warn)": 3,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn-near)": 1,
+          "left:full(hud#boss+hud#hint+hud#top-left+warn-near)": 1,
+          "below:prot:warn-near": 1,
+          "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-ult+hud#top-right)": 3,
+          "left:full(hud#boss+hud#top-left+label+player)": 2,
+          "left:full(hud#boss+hud#top-left+player+warn)": 1
+        },
+        "retireWhy": {
+          "prot:player": 5,
+          "prot:warn": 24,
+          "prot:hud#top-left": 1,
+          "prot:body": 2,
+          "label": 1,
+          "prot:hud#banner": 3,
+          "prot:hud#btn-attack": 1,
+          "prot:hud#btn-dodge": 3,
+          "prot:hud#boss": 1
+        },
+        "byKind": {
+          "damage": {
+            "created": 48,
+            "painted": 48,
+            "readable": 20,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 11,
+            "replaced": 0,
+            "retiredSafety": 37,
+            "retiredLife": 11,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 28
+          },
+          "interrupt": {
+            "created": 1,
+            "painted": 1,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 0,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          },
+          "stagger": {
+            "created": 2,
+            "painted": 2,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 1,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 1
+          },
+          "bonus": {
+            "created": 2,
+            "painted": 2,
+            "readable": 0,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 2,
+            "retiredLife": 0,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 2
+          }
+        },
+        "live": 0,
+        "quality": "medium",
+        "reduced": false,
+        "S": 1,
+        "pool": 52,
+        "maxDomLive": 12,
+        "frames": 1535,
+        "paintedOverlap": 0,
+        "domOutsideR": 0,
+        "cpuMs": {
+          "n": 1535,
+          "p50": 0.1,
+          "p95": 0.9,
+          "max": 16.6,
+          "over8": 1,
+          "eventFrames": {
+            "n": 60,
+            "p50": 0.5,
+            "p95": 2.8,
+            "max": 4.4
+          },
+          "quietFrames": {
+            "n": 1360,
+            "p50": 0.1,
+            "p95": 0.3,
+            "max": 0.5
+          },
+          "hudMoving": {
+            "n": 66,
+            "p50": 1,
+            "p95": 3.2,
+            "max": 6.7
+          },
+          "hudFullRead": {
+            "n": 54,
+            "p50": 1,
+            "p95": 1.4,
+            "max": 16.6
+          },
+          "newMeasure": {
+            "n": 7,
+            "p50": 1,
+            "p95": 3.4,
+            "max": 3.4
+          }
+        },
+        "samplesOver8": 1,
+        "firstHit": {
+          "frame": 87,
+          "clock": 4572,
+          "tick": 88,
+          "ms": 2.8,
+          "parts": {
+            "intake": 0,
+            "screen": 0,
+            "warn": 0.1,
+            "body": 0,
+            "flush": 0,
+            "hud": 0,
+            "book": 2.2,
+            "paint": 0.5
+          },
+          "events": 1,
+          "labels": 1,
+          "flags": 17,
+          "measures": 1,
+          "hudReads": [],
+          "heapDeltaKB": null
+        },
+        "worst": {
+          "frame": 1,
+          "clock": 0,
+          "tick": 0,
+          "ms": 16.6,
+          "parts": {
+            "intake": 0.1,
+            "screen": 2.8,
+            "warn": 0,
+            "body": 0.4,
+            "flush": 0,
+            "hud": 13,
+            "book": 0.2,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 4,
+          "measures": 0,
+          "hudReads": [
+            "hud#btn-attack",
+            "hud#btn-dodge",
+            "hud#btn-skill",
+            "hud#btn-skill2",
+            "hud#btn-skill3",
+            "hud#btn-ult",
+            "hud#btn-potion",
+            "hud#top-left",
+            "hud#top-right",
+            "hud#hint",
+            "hud#auto-bar"
+          ],
+          "heapDeltaKB": null
+        },
+        "spikes": [
+          {
+            "frame": 1,
+            "clock": 0,
+            "tick": 0,
+            "ms": 16.6,
+            "parts": {
+              "intake": 0.1,
+              "screen": 2.8,
+              "warn": 0,
+              "body": 0.4,
+              "flush": 0,
+              "hud": 13,
+              "book": 0.2,
+              "paint": 0
+            },
+            "events": 0,
+            "labels": 0,
+            "flags": 4,
+            "measures": 0,
+            "hudReads": [
+              "hud#btn-attack",
+              "hud#btn-dodge",
+              "hud#btn-skill",
+              "hud#btn-skill2",
+              "hud#btn-skill3",
+              "hud#btn-ult",
+              "hud#btn-potion",
+              "hud#top-left",
+              "hud#top-right",
+              "hud#hint",
+              "hud#auto-bar"
+            ],
+            "heapDeltaKB": null
+          }
+        ],
+        "toolMsPerFrame": {
+          "check": 0.003,
+          "debug": 0.205
+        },
+        "hudRead": {
+          "dirty": 34,
+          "timer": 20,
+          "busy": {
+            "hud#hint": 42,
+            "hud#banner": 16,
+            "hud#boss": 7
+          },
+          "fresh": 12
+        },
+        "dropLog": [
+          {
+            "t": 12283.4,
+            "kind": "damage",
+            "actor": 4,
+            "a": {
+              "l": 306.9282744466805,
+              "t": 181.44303993637692,
+              "r": 360.40132397416863,
+              "b": 252.96065476957813
+            },
+            "R": {
+              "w": 101.615625,
+              "h": 102.916
+            },
+            "why": [
+              "above:prot:body",
+              "left:full(bar+body+hud#hint+hud#top-left+label)",
+              "right:full(bar+body+label+player+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 12283.4,
+            "kind": "damage",
+            "actor": 7,
+            "a": {
+              "l": 259.8285968669659,
+              "t": 255.30373943836204,
+              "r": 335.95970403133384,
+              "b": 397.10877281053075
+            },
+            "R": {
+              "w": 101.615625,
+              "h": 102.916
+            },
+            "why": [
+              "above:prot:warn",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          },
+          {
+            "t": 28561,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 306.0126039067951,
+              "t": 57.051271146467144,
+              "r": 537.4927675798319,
+              "b": 264.91269247563633
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#hint+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 29061,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 306.52925601772944,
+              "t": 42.246872507477825,
+              "r": 536.774460412783,
+              "b": 238.6831728421101
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#hint+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 36649.9,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 297.1660695523334,
+              "t": 45.84965009566583,
+              "r": 546.0777089206372,
+              "b": 265.9798036748532
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+warn)",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 37072.1,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 305.2487488083524,
+              "t": 44.33756624250086,
+              "r": 537.9911777334214,
+              "b": 243.50674275981922
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 39772.1,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 301.93441446920855,
+              "t": 48.82794315213246,
+              "r": 541.5052075845565,
+              "b": 257.9301613098632
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 48188.7,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 331.864237454053,
+              "t": 61.222543635587925,
+              "r": 509.9166964694879,
+              "b": 241.60975853162876
+            },
+            "R": {
+              "w": 101.615625,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn-near)",
+              "left:full(hud#boss+hud#hint+hud#top-left+warn-near)",
+              "below:prot:warn-near"
+            ]
+          },
+          {
+            "t": 54288.7,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 352.2265206201895,
+              "t": 91.24784419035504,
+              "r": 672.0015083258173,
+              "b": 383.27272471988016
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-ult+hud#top-right)",
+              "left:full(hud#boss+hud#top-left+label+player)",
+              "below:edge"
+            ]
+          },
+          {
+            "t": 56688.7,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 354.50298364141565,
+              "t": 90.69496025634696,
+              "r": 680.1380834833153,
+              "b": 378.2005160556124
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-ult+hud#top-right)",
+              "left:full(hud#boss+hud#top-left+label+player)",
+              "below:edge"
+            ]
+          },
+          {
+            "t": 57188.7,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 352.7764465847295,
+              "t": 89.34774526245903,
+              "r": 680.8444913259091,
+              "b": 382.1109932599807
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-ult+hud#top-right)",
+              "left:full(hud#boss+hud#top-left+player+warn)",
+              "below:edge"
+            ]
+          }
+        ],
+        "protected": [
+          {
+            "l": 426.7511351917691,
+            "t": 200.18130569746114,
+            "r": 526.7314687639199,
+            "b": 360.3691594485051,
+            "k": "player"
+          },
+          {
+            "l": 306.9037870812533,
+            "t": 7.673274116127956,
+            "r": 413.4203720603914,
+            "b": 132.26786808731038,
+            "k": "body"
+          },
+          {
+            "l": 717.21875,
+            "t": 258.8125,
+            "r": 808.890625,
+            "b": 350.484375,
+            "k": "hud#btn-attack"
+          },
+          {
+            "l": 735.703125,
+            "t": 197.21875,
+            "r": 803.609375,
+            "b": 265.125,
+            "k": "hud#btn-dodge"
+          },
+          {
+            "l": 484.890625,
+            "t": 318.65625,
+            "r": 551.046875,
+            "b": 384.8125,
+            "k": "hud#btn-skill"
+          },
+          {
+            "l": 542.96875,
+            "t": 318.65625,
+            "r": 609.125,
+            "b": 384.8125,
+            "k": "hud#btn-skill2"
+          },
+          {
+            "l": 601.046875,
+            "t": 318.65625,
+            "r": 667.203125,
+            "b": 384.8125,
+            "k": "hud#btn-skill3"
+          },
+          {
+            "l": 660.890625,
+            "t": 321.296875,
+            "r": 722.640625,
+            "b": 383.046875,
+            "k": "hud#btn-ult"
+          },
+          {
+            "l": 755.046875,
+            "t": 145.28125,
+            "r": 815.046875,
+            "b": 205.28125,
+            "k": "hud#btn-potion"
+          },
+          {
+            "l": 4,
+            "t": 4,
+            "r": 247.875,
+            "b": 54.171875,
+            "k": "hud#top-left"
+          },
+          {
+            "l": 674.5,
+            "t": 0,
+            "r": 842,
+            "b": 58,
+            "k": "hud#top-right"
+          },
+          {
+            "l": 241.8828125,
+            "t": 0,
+            "r": 602.1171875,
+            "b": 68.03125,
+            "k": "hud#boss"
+          }
+        ],
+        "partMsPerFrame": {
+          "intake": 0.001,
+          "screen": 0.003,
+          "warn": 0.012,
+          "body": 0.081,
+          "flush": 0,
+          "hud": 0.098,
+          "book": 0.034,
+          "paint": 0.008
+        }
+      },
+      "errors": [],
+      "bodyWidthPx": {
+        "player": {
+          "n": 120,
+          "min": 33,
+          "p50": 84,
+          "max": 191
+        },
+        "puffcap": {
+          "n": 92,
+          "min": 12,
+          "p50": 25,
+          "max": 77
+        },
+        "thornling": {
+          "n": 28,
+          "min": 13,
+          "p50": 19,
+          "max": 75
+        },
+        "prismback": {
+          "n": 86,
+          "min": 56,
+          "p50": 184,
+          "max": 307
+        }
+      },
+      "fps": 25.252525252525228
+    },
+    {
+      "name": "boss",
+      "shots": [],
+      "live": {
+        "created": 43,
+        "painted": 43,
+        "readable": 25,
+        "merged": 0,
+        "deduped": 0,
+        "dropCap": 2,
+        "dropPlace": 6,
+        "replaced": 0,
+        "retiredSafety": 26,
+        "retiredLife": 16,
+        "cleared": 0,
+        "retiredUnpainted": 0,
+        "safetyUnread": 17,
+        "invalid": 0,
+        "why": {
+          "above:edge": 6,
+          "left:full(hud#boss+hud#hint+hud#top-left+warn)": 2,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)": 4,
+          "below:prot:warn": 5,
+          "left:full(hud#boss+hud#top-left+warn)": 4,
+          "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+warn)": 1,
+          "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+hud#btn-ult+warn)": 1,
+          "below:edge": 1
+        },
+        "retireWhy": {
+          "prot:warn": 20,
+          "prot:hud#banner": 3,
+          "prot:player": 3
+        },
+        "byKind": {
+          "damage": {
+            "created": 37,
+            "painted": 37,
+            "readable": 22,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 1,
+            "dropPlace": 6,
+            "replaced": 0,
+            "retiredSafety": 23,
+            "retiredLife": 13,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 14
+          },
+          "stagger": {
+            "created": 1,
+            "painted": 1,
+            "readable": 0,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 0,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 1
+          },
+          "bonus": {
+            "created": 5,
+            "painted": 5,
+            "readable": 3,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 1,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 2,
+            "retiredLife": 3,
+            "cleared": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 2
+          }
+        },
+        "live": 1,
+        "quality": "medium",
+        "reduced": false,
+        "S": 1,
+        "pool": 52,
+        "maxDomLive": 12,
+        "frames": 950,
+        "paintedOverlap": 0,
+        "domOutsideR": 0,
+        "cpuMs": {
+          "n": 950,
+          "p50": 0.2,
+          "p95": 1,
+          "max": 16.4,
+          "over8": 1,
+          "eventFrames": {
+            "n": 51,
+            "p50": 0.5,
+            "p95": 2.1,
+            "max": 5.3
+          },
+          "quietFrames": {
+            "n": 828,
+            "p50": 0.2,
+            "p95": 0.3,
+            "max": 0.6
+          },
+          "hudMoving": {
+            "n": 37,
+            "p50": 1,
+            "p95": 5.3,
+            "max": 6.8
+          },
+          "hudFullRead": {
+            "n": 39,
+            "p50": 1.1,
+            "p95": 1.7,
+            "max": 16.4
+          },
+          "newMeasure": {
+            "n": 7,
+            "p50": 1.4,
+            "p95": 5.3,
+            "max": 5.3
+          }
+        },
+        "samplesOver8": 1,
+        "firstHit": {
+          "frame": 118,
+          "clock": 6294,
+          "tick": 152,
+          "ms": 2.9,
+          "parts": {
+            "intake": 0.2,
+            "screen": 0,
+            "warn": 0,
+            "body": 0.2,
+            "flush": 0,
+            "hud": 0,
+            "book": 2.1,
+            "paint": 0.4
+          },
+          "events": 1,
+          "labels": 1,
+          "flags": 17,
+          "measures": 1,
+          "hudReads": [],
+          "heapDeltaKB": null
+        },
+        "worst": {
+          "frame": 1,
+          "clock": 0,
+          "tick": 0,
+          "ms": 16.4,
+          "parts": {
+            "intake": 0.1,
+            "screen": 2.5,
+            "warn": 0,
+            "body": 0.4,
+            "flush": 0,
+            "hud": 13.1,
+            "book": 0.2,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 4,
+          "measures": 0,
+          "hudReads": [
+            "hud#btn-attack",
+            "hud#btn-dodge",
+            "hud#btn-skill",
+            "hud#btn-skill2",
+            "hud#btn-skill3",
+            "hud#btn-ult",
+            "hud#btn-potion",
+            "hud#top-left",
+            "hud#top-right",
+            "hud#hint",
+            "hud#auto-bar"
+          ],
+          "heapDeltaKB": null
+        },
+        "spikes": [
+          {
+            "frame": 1,
+            "clock": 0,
+            "tick": 0,
+            "ms": 16.4,
+            "parts": {
+              "intake": 0.1,
+              "screen": 2.5,
+              "warn": 0,
+              "body": 0.4,
+              "flush": 0,
+              "hud": 13.1,
+              "book": 0.2,
+              "paint": 0
+            },
+            "events": 0,
+            "labels": 0,
+            "flags": 4,
+            "measures": 0,
+            "hudReads": [
+              "hud#btn-attack",
+              "hud#btn-dodge",
+              "hud#btn-skill",
+              "hud#btn-skill2",
+              "hud#btn-skill3",
+              "hud#btn-ult",
+              "hud#btn-potion",
+              "hud#top-left",
+              "hud#top-right",
+              "hud#hint",
+              "hud#auto-bar"
+            ],
+            "heapDeltaKB": null
+          }
+        ],
+        "toolMsPerFrame": {
+          "check": 0.003,
+          "debug": 0.31
+        },
+        "hudRead": {
+          "dirty": 26,
+          "timer": 13,
+          "busy": {
+            "hud#boss": 6,
+            "hud#banner": 13,
+            "hud#hint": 19
+          },
+          "fresh": 8
+        },
+        "dropLog": [
+          {
+            "t": 15461.099999999999,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 305.1325753963012,
+              "t": 46.07110642483598,
+              "r": 538.5992762970295,
+              "b": 246.01557672982298
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#hint+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 18327.8,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 300.85412355106166,
+              "t": 49.280715735987236,
+              "r": 542.8816922169332,
+              "b": 261.9803029756968
+            },
+            "R": {
+              "w": 101.615625,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 18816.6,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 306.0187243708085,
+              "t": 37.18469976887016,
+              "r": 537.729523664351,
+              "b": 235.2669593658035
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 23872.2,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 293.59604469548475,
+              "t": 47.34662681734879,
+              "r": 550.1402512454262,
+              "b": 274.0229863967865
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+hud#btn-ult+warn)",
+              "below:edge"
+            ]
+          },
+          {
+            "t": 24377.7,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 307.92695134489867,
+              "t": 44.82082104895814,
+              "r": 535.8636304455683,
+              "b": 239.0143968653951
+            },
+            "R": {
+              "w": 96.61031249999999,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          },
+          {
+            "t": 32766.5,
+            "kind": "damage",
+            "actor": 8,
+            "a": {
+              "l": 305.2203228384874,
+              "t": 46.71607117200953,
+              "r": 538.6307038105742,
+              "b": 246.5909155450551
+            },
+            "R": {
+              "w": 100.831875,
+              "h": 102.916
+            },
+            "why": [
+              "above:edge",
+              "left:full(hud#boss+hud#hint+hud#top-left+warn)",
+              "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)",
+              "below:prot:warn"
+            ]
+          }
+        ],
+        "protected": [
+          {
+            "l": 407.4452253808684,
+            "t": 166.50167474013205,
+            "r": 492.82147965454794,
+            "b": 280.2205946810844,
+            "k": "player"
+          },
+          {
+            "l": 182.5932818419271,
+            "t": 125.50183659527161,
+            "r": 478.91205495008785,
+            "b": 430.2850204585816,
+            "k": "body"
+          },
+          {
+            "l": 717.21875,
+            "t": 258.8125,
+            "r": 808.890625,
+            "b": 350.484375,
+            "k": "hud#btn-attack"
+          },
+          {
+            "l": 735.703125,
+            "t": 197.21875,
+            "r": 803.609375,
+            "b": 265.125,
+            "k": "hud#btn-dodge"
+          },
+          {
+            "l": 484.890625,
+            "t": 318.65625,
+            "r": 551.046875,
+            "b": 384.8125,
+            "k": "hud#btn-skill"
+          },
+          {
+            "l": 542.96875,
+            "t": 318.65625,
+            "r": 609.125,
+            "b": 384.8125,
+            "k": "hud#btn-skill2"
+          },
+          {
+            "l": 601.046875,
+            "t": 318.65625,
+            "r": 667.203125,
+            "b": 384.8125,
+            "k": "hud#btn-skill3"
+          },
+          {
+            "l": 660.890625,
+            "t": 321.296875,
+            "r": 722.640625,
+            "b": 383.046875,
+            "k": "hud#btn-ult"
+          },
+          {
+            "l": 755.046875,
+            "t": 145.28125,
+            "r": 815.046875,
+            "b": 205.28125,
+            "k": "hud#btn-potion"
+          },
+          {
+            "l": 4,
+            "t": 4,
+            "r": 247.875,
+            "b": 54.171875,
+            "k": "hud#top-left"
+          },
+          {
+            "l": 674.5,
+            "t": 0,
+            "r": 842,
+            "b": 58,
+            "k": "hud#top-right"
+          }
+        ],
+        "partMsPerFrame": {
+          "intake": 0.001,
+          "screen": 0.004,
+          "warn": 0.011,
+          "body": 0.092,
+          "flush": 0,
+          "hud": 0.109,
+          "book": 0.051,
+          "paint": 0.012
+        }
+      },
+      "errors": [],
+      "bodyWidthPx": {
+        "player": {
+          "n": 81,
+          "min": 29,
+          "p50": 93,
+          "max": 135
+        },
+        "prismback": {
+          "n": 80,
+          "min": 56,
+          "p50": 173,
+          "max": 306
+        }
+      },
+      "fps": 23.999999999999996
+    }
+  ]
+}

@@ -1,0 +1,1391 @@
+{
+  "viewport": "844x390 dpr 1",
+  "sets": [
+    {
+      "set": "crowd",
+      "quality": "medium",
+      "batches": [
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 258,
+          "warnings": 0,
+          "rects": [
+            [
+              509,
+              154,
+              579,
+              220
+            ],
+            [
+              288,
+              134,
+              337,
+              187
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 70,
+              "h": 66,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 49,
+              "h": 53,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "above"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 270,
+          "warnings": 2,
+          "rects": [
+            [
+              458,
+              191,
+              509,
+              251
+            ],
+            [
+              273,
+              161,
+              324,
+              219
+            ],
+            [
+              388,
+              185,
+              433,
+              222
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 50,
+              "h": 60,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 51,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 45,
+              "h": 37,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              374,
+              205,
+              418,
+              253
+            ],
+            [
+              324,
+              196,
+              360,
+              230
+            ],
+            [
+              325,
+              154,
+              364,
+              198
+            ],
+            [
+              219,
+              181,
+              277,
+              236
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 48,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 34,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 40,
+              "h": 44,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 58,
+              "h": 55,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:warn",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 294,
+          "warnings": 1,
+          "rects": [
+            [
+              296,
+              171,
+              358,
+              238
+            ],
+            [
+              266,
+              230,
+              307,
+              269
+            ],
+            [
+              295,
+              167,
+              339,
+              211
+            ],
+            [
+              204,
+              194,
+              258,
+              245
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 62,
+              "h": 67,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 39,
+              "roomAlone": false
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 51,
+              "roomAlone": true
+            }
+          ],
+          "created": 1,
+          "shown": 1,
+          "dropPlace": 3,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "drop-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            [
+              "above:prot:body",
+              "right:full(label+player)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#auto-bar+hud#hint+warn)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 306,
+          "warnings": 0,
+          "rects": [
+            [
+              248,
+              228,
+              324,
+              316
+            ],
+            [
+              208,
+              269,
+              298,
+              351
+            ],
+            [
+              255,
+              196,
+              303,
+              247
+            ],
+            [
+              327,
+              170,
+              371,
+              216
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 76,
+              "h": 88,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 90,
+              "h": 83,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 48,
+              "h": 51,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            [
+              "above:label",
+              "right:full(label+player)",
+              "left:full(bar+body+hud#hint+hud#top-left+label)",
+              "below:prot:player"
+            ],
+            [
+              "above:prot:body",
+              "right:full(body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 318,
+          "warnings": 0,
+          "rects": [
+            [
+              289,
+              217,
+              353,
+              300
+            ],
+            [
+              312,
+              196,
+              356,
+              248
+            ],
+            [
+              362,
+              174,
+              406,
+              220
+            ],
+            [
+              261,
+              255,
+              336,
+              338
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 64,
+              "h": 82,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 52,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 74,
+              "h": 83,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 1,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            "left",
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 330,
+          "warnings": 1,
+          "rects": [
+            [
+              372,
+              189,
+              416,
+              231
+            ],
+            [
+              281,
+              264,
+              351,
+              340
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 43,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 69,
+              "h": 76,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 342,
+          "warnings": 1,
+          "rects": [
+            [
+              395,
+              201,
+              436,
+              243
+            ],
+            [
+              318,
+              289,
+              377,
+              349
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 42,
+              "h": 42,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 59,
+              "h": 59,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              460,
+              189,
+              524,
+              250
+            ],
+            [
+              270,
+              158,
+              326,
+              216
+            ],
+            [
+              390,
+              153,
+              431,
+              204
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 63,
+              "h": 61,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 52,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 294,
+          "warnings": 2,
+          "rects": [
+            [
+              392,
+              201,
+              447,
+              251
+            ],
+            [
+              348,
+              166,
+              384,
+              212
+            ],
+            [
+              239,
+              180,
+              295,
+              234
+            ],
+            [
+              340,
+              151,
+              381,
+              194
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 50,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 54,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 41,
+              "h": 43,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+hud#btn-skill+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+hud#btn-skill+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        }
+      ],
+      "total": 10,
+      "batchesWithOneShown": 10,
+      "ineligibleMomentsSkipped": [],
+      "repeatedLayoutsSkipped": 15,
+      "verdicts": {
+        "placed-ok": 22,
+        "drop-ok": 10
+      },
+      "errors": 0
+    },
+    {
+      "set": "crowd",
+      "quality": "low",
+      "batches": [
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 258,
+          "warnings": 0,
+          "rects": [
+            [
+              509,
+              154,
+              579,
+              220
+            ],
+            [
+              288,
+              134,
+              337,
+              187
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 70,
+              "h": 66,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 49,
+              "h": 53,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "above"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 270,
+          "warnings": 2,
+          "rects": [
+            [
+              458,
+              191,
+              509,
+              251
+            ],
+            [
+              273,
+              161,
+              324,
+              219
+            ],
+            [
+              388,
+              185,
+              433,
+              222
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 50,
+              "h": 60,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 51,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 45,
+              "h": 37,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              374,
+              205,
+              418,
+              253
+            ],
+            [
+              324,
+              196,
+              360,
+              230
+            ],
+            [
+              325,
+              154,
+              364,
+              198
+            ],
+            [
+              219,
+              181,
+              277,
+              236
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 48,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 34,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 40,
+              "h": 44,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 58,
+              "h": 55,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 1,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "above",
+            [
+              "above:prot:warn",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 294,
+          "warnings": 1,
+          "rects": [
+            [
+              296,
+              171,
+              358,
+              238
+            ],
+            [
+              266,
+              230,
+              307,
+              269
+            ],
+            [
+              295,
+              167,
+              339,
+              211
+            ],
+            [
+              204,
+              194,
+              258,
+              245
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 62,
+              "h": 67,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 39,
+              "roomAlone": false
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 51,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 306,
+          "warnings": 0,
+          "rects": [
+            [
+              248,
+              228,
+              324,
+              316
+            ],
+            [
+              208,
+              269,
+              298,
+              351
+            ],
+            [
+              255,
+              196,
+              303,
+              247
+            ],
+            [
+              327,
+              170,
+              371,
+              216
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 76,
+              "h": 88,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 90,
+              "h": 83,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 48,
+              "h": 51,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            [
+              "above:label",
+              "right:full(label+player)",
+              "left:full(bar+body+hud#hint+hud#top-left+label)",
+              "below:prot:player"
+            ],
+            [
+              "above:prot:body",
+              "right:full(body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 318,
+          "warnings": 0,
+          "rects": [
+            [
+              289,
+              217,
+              353,
+              300
+            ],
+            [
+              312,
+              196,
+              356,
+              248
+            ],
+            [
+              362,
+              174,
+              406,
+              220
+            ],
+            [
+              261,
+              255,
+              336,
+              338
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 64,
+              "h": 82,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 52,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 74,
+              "h": 83,
+              "roomAlone": true
+            }
+          ],
+          "created": 4,
+          "shown": 4,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            "left",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 330,
+          "warnings": 1,
+          "rects": [
+            [
+              372,
+              189,
+              416,
+              231
+            ],
+            [
+              281,
+              264,
+              351,
+              340
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 43,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 69,
+              "h": 76,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 342,
+          "warnings": 1,
+          "rects": [
+            [
+              395,
+              201,
+              436,
+              243
+            ],
+            [
+              318,
+              289,
+              377,
+              349
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 42,
+              "h": 42,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 59,
+              "h": 59,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              460,
+              189,
+              524,
+              250
+            ],
+            [
+              270,
+              158,
+              326,
+              216
+            ],
+            [
+              390,
+              153,
+              431,
+              204
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 63,
+              "h": 61,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 52,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 294,
+          "warnings": 2,
+          "rects": [
+            [
+              392,
+              201,
+              447,
+              251
+            ],
+            [
+              348,
+              166,
+              384,
+              212
+            ],
+            [
+              239,
+              180,
+              295,
+              234
+            ],
+            [
+              340,
+              151,
+              381,
+              194
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 50,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 54,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 41,
+              "h": 43,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 1,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "above",
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        }
+      ],
+      "total": 10,
+      "batchesWithOneShown": 10,
+      "ineligibleMomentsSkipped": [],
+      "repeatedLayoutsSkipped": 15,
+      "verdicts": {
+        "placed-ok": 26,
+        "drop-ok": 6
+      },
+      "errors": 0
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "viewport": "844x390 dpr 1",
+  "sets": [
+    {
+      "set": "resets",
+      "quality": "medium",
+      "floatersOnly": {
+        "before": {
+          "heapMB": 7.18,
+          "nodes": 555,
+          "listeners": 228,
+          "elements": 275,
+          "floatEls": 52,
+          "ebars": 0,
+          "live": 0,
+          "pool": 52
+        },
+        "after20": {
+          "heapMB": 7.87,
+          "nodes": 572,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        }
+      },
+      "maxLiveSeenInBursts": {
+        "total": 4,
+        "num": 3,
+        "status": 1,
+        "actorNum": 2,
+        "actorStatus": 1
+      },
+      "gameRestarts": [
+        {
+          "restart": 1,
+          "heapMB": 8.23,
+          "nodes": 567,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        },
+        {
+          "restart": 5,
+          "heapMB": 8.78,
+          "nodes": 567,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        },
+        {
+          "restart": 10,
+          "heapMB": 9.58,
+          "nodes": 567,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        },
+        {
+          "restart": 15,
+          "heapMB": 9.97,
+          "nodes": 567,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        },
+        {
+          "restart": 20,
+          "heapMB": 10.44,
+          "nodes": 567,
+          "listeners": 228,
+          "elements": 279,
+          "floatEls": 52,
+          "ebars": 2,
+          "live": 0,
+          "pool": 52
+        }
+      ],
+      "afterFinalClear": {
+        "heapMB": 10.44,
+        "nodes": 567,
+        "listeners": 228,
+        "elements": 279,
+        "floatEls": 52,
+        "ebars": 2,
+        "live": 0,
+        "pool": 52
+      },
+      "errors": 0
+    },
+    {
+      "set": "resets",
+      "quality": "low",
+      "floatersOnly": {
+        "before": {
+          "heapMB": 7.16,
+          "nodes": 536,
+          "listeners": 228,
+          "elements": 257,
+          "floatEls": 34,
+          "ebars": 0,
+          "live": 0,
+          "pool": 34
+        },
+        "after20": {
+          "heapMB": 7.99,
+          "nodes": 562,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        }
+      },
+      "maxLiveSeenInBursts": {
+        "total": 4,
+        "num": 4,
+        "status": 1,
+        "actorNum": 1,
+        "actorStatus": 1
+      },
+      "gameRestarts": [
+        {
+          "restart": 1,
+          "heapMB": 8.24,
+          "nodes": 557,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        },
+        {
+          "restart": 5,
+          "heapMB": 8.84,
+          "nodes": 557,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        },
+        {
+          "restart": 10,
+          "heapMB": 9.65,
+          "nodes": 557,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        },
+        {
+          "restart": 15,
+          "heapMB": 10.05,
+          "nodes": 557,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        },
+        {
+          "restart": 20,
+          "heapMB": 10.42,
+          "nodes": 557,
+          "listeners": 228,
+          "elements": 267,
+          "floatEls": 34,
+          "ebars": 5,
+          "live": 0,
+          "pool": 34
+        }
+      ],
+      "afterFinalClear": {
+        "heapMB": 10.42,
+        "nodes": 557,
+        "listeners": 228,
+        "elements": 267,
+        "floatEls": 34,
+        "ebars": 5,
+        "live": 0,
+        "pool": 34
+      },
+      "errors": 0
+    }
+  ]
+}

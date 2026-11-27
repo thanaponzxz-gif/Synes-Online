@@ -32,7 +32,7 @@ const SCEN = [
   { name: 'roam', qs: 'seed=3&bot=1&botskills=1' },
   { name: 'boss', qs: 'seed=5&bot=1&botskills=1&start=boss' },
 ];
-const report = { tag, root, debug: flags.has('--debug'), scenarios: [] };
+const report = { tag, root: path.relative(process.cwd(), root).split(path.sep).join('/'), debug: flags.has('--debug'), scenarios: [] }; // relative: the repo is public
 const DBG = flags.has('--debug') ? '&floatdebug' : '';
 
 /** labels on screen: new build → __synesQA.floaters(), old build → .floater elements */
@@ -107,7 +107,7 @@ for (const sc of SCEN.filter((x) => !ONLY || x.name === ONLY)) {
     const vid = flags.has('--video') ? { recordVideo: { dir: outDir, size: { width: 844, height: 390 } } } : {};
     const page = await browser.newPage({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, ...vid });
     page.on('pageerror', (e) => rec.errors.push(String(e)));
-    await page.goto(`http://localhost:${port}/?offline&autostart&${sc.qs}`);
+    await page.goto(`http://localhost:${port}/?offline&autostart&${sc.qs}${DBG}`); // --debug: also the DOM-outside-R check and debug cost
     await page.waitForFunction(() => window.__synes?.state === 'playing', null, { timeout: 90000 });
     const widths = [];
     for (let s = 0; s < secs * 2; s++) {

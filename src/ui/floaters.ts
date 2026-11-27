@@ -1,10 +1,12 @@
 // DES-008 damage numbers: the DOM layer. Pooled label elements (no element created per hit), glyph measuring with a 2D canvas
 // (no layout reads per label), the protected screen areas gathered every frame (warnings, bodies, enemy bars, visible HUD), and
 // painting with transform/opacity only. The rules live in floatCore.ts.
+// A tick's events wait in a queue until the frame that paints them, so they are placed against that frame's camera, bodies, HP bars,
+// HUD and warnings, with one gather per rendered frame.
 import type { World, SimEvent, Telegraph } from '../../shared/sim/world.ts';
 import {
   FloatBook, STYLE, NUMERIC, CAPS, SPARK, scaleAt, opacityAt, pathPoints, bezier, sparkSpots, grow, overlapArea,
-  type FKind, type FIn, type FQuality, type GlyphBox, type Geo, type Label, type Rect,
+  type FKind, type FIn, type FQuality, type GlyphBox, type Geo, type Label, type Rect, type Attempt,
 } from './floatCore.ts';
 
 export interface FloatHost {
@@ -30,6 +32,15 @@ interface NumEl { root: HTMLElement; o: HTMLElement; i: HTMLElement; f: HTMLElem
 interface StEl { root: HTMLElement; s: HTMLElement; uid: number; text: string }
 interface SparkEl { a: HTMLElement; b: HTMLElement; uid: number }
 
+/** per-frame flags of the CPU samples (QA): events placed this frame; HUD re-read because a part was moving / everything re-read
+ *  (a change or the 2 s timer) / a newly shown part; a glyph measured for the first time */
+export const FF = { events: 1, hudBusy: 2, hudAll: 4, hudShow: 8, measure: 16 } as const;
+const RING = 7200, SPIKE_MS = 8;
+const noParts = () => ({ intake: 0, screen: 0, warn: 0, body: 0, flush: 0, hud: 0, book: 0, paint: 0 });
+type Parts = ReturnType<typeof noParts>;
+/** QA: one frame worth keeping (over 8 ms, the first with events, or the worst) */
+export interface Spike { frame: number; clock: number; tick: number; ms: number; parts: Parts; events: number; labels: number; flags: number; measures: number; hudReads: string[]; heapDeltaKB: number | null }
+
 export class Floaters {
   readonly book = new FloatBook();
   private host: FloatHost | null = null;
@@ -54,8 +65,16 @@ export class Floaters {
   private noClip = !CSS.supports('(-webkit-background-clip: text) or (background-clip: text)');
   private noStroke = !CSS.supports('-webkit-text-stroke', '1px black');
   private debug: HTMLCanvasElement | null = null;
-  /** QA: CPU ms of frame() (ring), DOM high-water mark, painted-overlap checks */
-  qa = { ms: new Float32Array(3600), n: 0, maxDom: 0, paintedOverlap: 0, domOutsideR: 0, frames: 0, part: { warn: 0, body: 0, hud: 0, book: 0, paint: 0 }, hudRead: { dirty: 0, timer: 0, busy: {} as Record<string, number>, fresh: 0 } };
+  /** batches waiting for the frame that paints them */
+  private queue: FIn[][] = [];
+  /** QA: overlay CPU per rendered frame = event intake since the last frame + screen + gather + placement + paint (ring + flags). The
+   *  overlap / DOM checks and the debug drawing are tool costs: timed apart (toolMs), not in the sample. */
+  qa = { ms: new Float32Array(RING), flags: new Uint8Array(RING), n: 0, over8: 0, spikes: [] as Spike[], worst: null as Spike | null, firstHit: null as Spike | null,
+    maxDom: 0, paintedOverlap: 0, domOutsideR: 0, frames: 0, part: noParts(), toolMs: { check: 0, debug: 0 }, deep: false,
+    hudRead: { dirty: 0, timer: 0, busy: {} as Record<string, number>, fresh: 0 }, attempts: [] as Attempt[],
+    ends: [] as { uid: number; cause: string; why: string; age: number; readable: boolean; painted: boolean }[] };
+  private recording = false;
+  private cur = noParts(); private curFlags = 0; private curMeasures = 0; private curHudReads: string[] = []; private curEvents = 0;
 
   private layer: HTMLElement;
 
@@ -84,7 +103,10 @@ export class Floaters {
       this.debug = document.createElement('canvas'); this.debug.className = 'fl-debug';
       layer.appendChild(this.debug);
     }
-    this.book.onRetire = (l) => this.free(l);
+    this.book.onRetire = (l, cause, why) => {
+      this.free(l);
+      if (this.recording) this.qa.ends.push({ uid: l.uid, cause, why, age: Math.round(this.book.clock - l.born), readable: l.readable, painted: l.painted });
+    };
     const dirty = () => { this.screenDirty = true; this.hudDirty = true; };
     addEventListener('resize', dirty); addEventListener('orientationchange', dirty);
     this.buildPool('medium');
@@ -92,7 +114,21 @@ export class Floaters {
 
   setHost(h: FloatHost) { this.host = h; }
   setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear(); this.book.q = q; this.buildPool(q); }
-  clear() { this.book.clear(); this.teleSeen.clear(); }
+  clear() { this.book.clear(); this.teleSeen.clear(); this.queue.length = 0; this.curEvents = 0; }
+  /** QA: keep the geometry of every placement attempt, for a checker script that shares no code with floatCore */
+  record(on: boolean) {
+    const list = this.qa.attempts;
+    this.recording = on;
+    this.book.onAttempt = on ? (a) => { list.push(a); if (list.length > 6000) list.shift(); } : null;
+    if (!on) { list.length = 0; this.qa.ends.length = 0; }
+  }
+  /** QA: take what record() collected since the last call */
+  drain() { return { attempts: this.qa.attempts.splice(0), ends: this.qa.ends.splice(0) }; }
+  /** QA: start a new CPU window (after a warm-up); the cold first-hit sample is kept. deep: also note the JS heap change of kept frames */
+  perfReset(deep = false) {
+    const q = this.qa; q.n = 0; q.over8 = 0; q.spikes.length = 0; q.worst = null; q.maxDom = 0; q.paintedOverlap = 0; q.domOutsideR = 0; q.frames = 0;
+    q.part = noParts(); q.toolMs = { check: 0, debug: 0 }; q.hudRead = { dirty: 0, timer: 0, busy: {}, fresh: 0 }; q.deep = deep;
+  }
 
   // ------------------------------------------------------------------ pool (§5.2 DOM budget: Medium 52, Low 34 elements)
   private buildPool(q: FQuality) {
@@ -155,6 +191,7 @@ export class Floaters {
   private box = (kind: FKind, text: string, count: number): GlyphBox | null => {
     const key = `${kind}|${this.S.toFixed(3)}|${text}|${count > 1 ? count : 0}`;
     if (this.measures.has(key)) return this.measures.get(key)!;
+    this.curMeasures++; this.curFlags |= FF.measure;
     const st = STYLE[kind], num = NUMERIC[kind], S = this.S;
     const maxW = (num ? 180 : 170) * S, minSize = num ? 24 : 18;
     let size = Math.max(minSize, st.size * S), out: GlyphBox | null = null;
@@ -180,12 +217,17 @@ export class Floaters {
   }
 
   // ------------------------------------------------------------------ events → batch (§2)
+  /** one sim tick's events (its cost is added to the next frame's CPU sample) */
+  take(w: World, evts: readonly SimEvent[], earlyOk: (e: SimEvent) => boolean) {
+    const t0 = performance.now();
+    this.ingest(w, Floaters.fromEvents(w, evts, earlyOk));
+    this.cur.intake += performance.now() - t0;
+  }
+  /** one batch; the next frame() places it */
   ingest(w: World, evts: readonly FIn[]) {
     if (w !== this.world) { this.clear(); this.world = w; }
     if (!this.host || !evts.length) return;
-    this.refreshScreen();
-    this.gather(w);
-    this.book.ingest(evts, this.geo());
+    this.queue.push(evts.slice()); this.curEvents += evts.length;
   }
   static fromEvents(w: World, evts: readonly SimEvent[], earlyOk: (e: SimEvent) => boolean): FIn[] {
     const out: FIn[] = [], p = w.player;
@@ -211,7 +253,7 @@ export class Floaters {
     const S = Math.min(1.25, Math.max(0.85, Math.min((this.safe.r - this.safe.l) / 844, (this.safe.b - this.safe.t) / 390)));
     if (Math.abs(S - this.S) > 1e-3) { this.S = S; this.measures.clear(); }
   }
-  private gather(w: World, bars: readonly Rect[] = []) {
+  private gather(w: World, bars: readonly Rect[]) {
     const S = this.S, prot = this.prot; prot.length = 0;
     const q0 = performance.now();
     // 1. every warning being drawn, plus the flash right after it ends
@@ -230,22 +272,25 @@ export class Floaters {
     for (const x of w.actors) if (this.host!.actorRect(x.id, a) === 0) prot.push(tag(grow(a, 6 * S), x.id === w.player.id ? 'player' : 'body'));
     for (const b of bars) prot.push(tag(grow(b, 4 * S), 'bar'));
     // 3. visible HUD (+8); touch zones without a picture are not reserved
+    // QA deep mode only: flush any pending style/layout of the whole page first, so the HUD reads below are timed without it
+    const f0 = performance.now(); if (this.qa.deep) { void document.body.offsetHeight; this.cur.flush += performance.now() - f0; }
     const q2 = performance.now();
     const all = this.hudDirty || q2 - this.hudAt > 2000;
-    if (all) { if (this.hudDirty) this.qa.hudRead.dirty++; else this.qa.hudRead.timer++; this.hudDirty = false; this.hudAt = q2; }
+    if (all) { if (this.hudDirty) this.qa.hudRead.dirty++; else this.qa.hudRead.timer++; this.hudDirty = false; this.hudAt = q2; this.curFlags |= FF.hudAll; }
     for (const h of this.hudEls) {
       const shown = !h.on || h.el.classList.contains(h.on);
       if (shown !== h.shown) { h.shown = shown; h.r = null; h.busy = 0; } // a show re-reads at once; its slide-in fires transitionrun
       if (!shown) continue;
-      if (!all && h.busy > 0) this.qa.hudRead.busy[h.tag] = (this.qa.hudRead.busy[h.tag] || 0) + 1;
-      if (!all && !h.r) this.qa.hudRead.fresh++;
+      if (!all && h.busy > 0) { this.qa.hudRead.busy[h.tag] = (this.qa.hudRead.busy[h.tag] || 0) + 1; this.curFlags |= FF.hudBusy; }
+      if (!all && !h.r) { this.qa.hudRead.fresh++; this.curFlags |= FF.hudShow; }
       if (all || h.busy > 0 || !h.r) {
+        this.curHudReads.push(h.tag);
         const r = h.el.getBoundingClientRect();
         h.r = r.width > 0 && r.height > 0 ? { l: r.left, t: r.top, r: r.right, b: r.bottom } : { l: 0, t: 0, r: 0, b: 0 };
       }
       if (h.r.r > h.r.l) prot.push(tag(grow({ ...h.r }, 8 * S), h.tag));
     }
-    const p = this.qa.part; p.warn += q1 - q0; p.body += q2 - q1; p.hud += performance.now() - q2;
+    const p = this.cur; p.warn += q1 - q0; p.body += f0 - q1; p.hud += performance.now() - q2;
   }
   /** Conservative screen AABB of a warning: the shape's world outline (grown by EDGE) projected; null = a point could not be projected. */
   private teleRect(t: Telegraph, after: boolean): Rect | null {
@@ -276,16 +321,24 @@ export class Floaters {
   // ------------------------------------------------------------------ per frame
   /** dtSec: UI clock step (0 while paused / frozen). bars: enemy HP bar rects drawn in this layer. */
   frame(w: World, dtSec: number, bars: readonly Rect[]) {
+    const qa = this.qa, heap0 = qa.deep ? heapKB() : null; // QA only, read outside the timed span
+    const t0 = performance.now();
     if (w !== this.world) { this.clear(); this.world = w; }
     if (!this.host) return;
-    const t0 = performance.now();
-    this.book.advance(dtSec * 1000);
+    const book = this.book, happened = book.clock; // queued events happened before this clock step
+    book.advance(dtSec * 1000);
     this.refreshScreen();
-    this.gather(w, bars);
     const t1 = performance.now();
-    const book = this.book;
-    book.frame(this.geo());
-    const t2 = performance.now();
+    this.gather(w, bars);
+    const t2 = performance.now(), geo = this.geo();
+    book.frame(geo); // live labels move to this frame's geometry first, so new ones are placed against where they really are
+    const events = this.curEvents;
+    if (this.queue.length) {
+      for (const batch of this.queue) book.ingest(batch, geo, happened);
+      this.queue.length = 0; this.curEvents = 0; this.curFlags |= FF.events;
+      book.frame(geo); // a merge made some R wider: checked again before it is painted
+    }
+    const t3 = performance.now();
     const q = book.q, R = book.reduced, S = this.S;
     for (const l of book.labels) {
       const el = this.bind(l); if (!el) continue;
@@ -296,6 +349,7 @@ export class Floaters {
       if (el.text !== l.text) { el.text = l.text; this.fill(el, l); }
       el.root.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${sc.toFixed(3)})`;
       el.root.style.opacity = op.toFixed(3);
+      book.notePaint(l, op); // §10.3 painted / readable counters follow what was really painted
       if (l.spark && age < SPARK.life) {
         let k = this.sparks.find((s) => s.uid === l.uid) ?? this.sparks.find((s) => !s.uid);
         if (k) {
@@ -308,13 +362,55 @@ export class Floaters {
         }
       } else for (const k of this.sparks) if (k.uid === l.uid) { k.a.style.display = k.b.style.display = 'none'; k.uid = 0; }
     }
-    // QA bookkeeping (cheap): painted R against protected rects must be zero by construction
-    const qa = this.qa; qa.frames++;
-    qa.part.book += t2 - t1; qa.part.paint += performance.now() - t2;
+    // the overlay's own cost for this rendered frame
+    const t4 = performance.now(), c = this.cur;
+    c.screen = t1 - t0; c.book = t3 - t2; c.paint = t4 - t3;
+    const ms = t4 - t0 + c.intake;
+    const i = qa.n % RING; qa.ms[i] = ms; qa.flags[i] = this.curFlags; qa.n++;
+    const first = !qa.firstHit && events > 0, worst = !qa.worst || ms > qa.worst.ms;
+    if (ms > SPIKE_MS || first || worst) {
+      const heap1 = heap0 === null ? null : heapKB();
+      const rec: Spike = { frame: qa.n, clock: Math.round(book.clock), tick: w.tick, ms: +ms.toFixed(2), parts: rounded(c), events, labels: book.labels.length, flags: this.curFlags,
+        measures: this.curMeasures, hudReads: this.curHudReads.slice(), heapDeltaKB: heap0 === null || heap1 === null ? null : Math.round(heap1 - heap0) };
+      if (ms > SPIKE_MS) { qa.over8++; if (qa.spikes.length < 100) qa.spikes.push(rec); }
+      if (first) qa.firstHit = rec;
+      if (worst) qa.worst = rec;
+    }
+    for (const k in c) { qa.part[k as keyof Parts] += c[k as keyof Parts]; c[k as keyof Parts] = 0; }
+    this.curFlags = 0; this.curMeasures = 0; this.curHudReads.length = 0;
+    // QA bookkeeping (tool cost, outside the sample): painted R against protected rects must be zero by construction
+    const t5 = performance.now();
+    qa.frames++;
     for (const l of book.labels) for (const p of this.prot) qa.paintedOverlap += overlapArea(l.screen, p);
     const dom = this.domLive(); if (dom > qa.maxDom) qa.maxDom = dom;
-    if (this.debug) this.drawDebug();
-    qa.ms[qa.n++ % qa.ms.length] = performance.now() - t0;
+    const t6 = performance.now(); qa.toolMs.check += t6 - t5;
+    if (this.debug) { this.drawDebug(); qa.toolMs.debug += performance.now() - t6; }
+  }
+  /** QA: counters (created ≠ painted ≠ readable), live labels, CPU of the current window and the kept frames (__synesQA.floaters) */
+  report() {
+    const q = this.qa, book = this.book, n = Math.min(q.n, RING);
+    const stat = (keep: (flags: number) => boolean) => {
+      const a: number[] = [];
+      for (let i = 0; i < n; i++) if (keep(q.flags[i])) a.push(q.ms[i]);
+      a.sort((x, y) => x - y);
+      const pc = (p: number) => (a.length ? +a[Math.min(a.length - 1, Math.floor(p * a.length))].toFixed(3) : 0);
+      return { n: a.length, p50: pc(0.5), p95: pc(0.95), max: a.length ? +a[a.length - 1].toFixed(3) : 0 };
+    };
+    const actor: Rect = { l: 0, t: 0, r: 0, b: 0 };
+    return {
+      ...structuredClone(book.stats),
+      labels: book.labels.map((l) => ({ kind: l.kind, text: l.text, count: l.count, actor: l.actor, age: Math.round(book.clock - l.born), life: l.life, place: l.place,
+        painted: l.painted, readable: l.readable, R: { ...l.screen }, body: this.host?.actorRect(l.actor, actor) === 0 ? { ...actor } : null })),
+      live: book.labels.length, quality: book.q, reduced: book.reduced, S: this.S, pool: this.domPool(), maxDomLive: q.maxDom, frames: q.frames,
+      paintedOverlap: q.paintedOverlap, domOutsideR: q.domOutsideR,
+      cpuMs: { ...stat(() => true), over8: q.over8,
+        eventFrames: stat((f) => (f & FF.events) !== 0), quietFrames: stat((f) => f === 0),
+        hudMoving: stat((f) => (f & (FF.hudBusy | FF.hudShow)) !== 0), hudFullRead: stat((f) => (f & FF.hudAll) !== 0), newMeasure: stat((f) => (f & FF.measure) !== 0) },
+      samplesOver8: q.over8, firstHit: q.firstHit, worst: q.worst, spikes: q.spikes.slice(),
+      toolMsPerFrame: { check: +(q.toolMs.check / Math.max(1, q.frames)).toFixed(3), debug: +(q.toolMs.debug / Math.max(1, q.frames)).toFixed(3) },
+      hudRead: structuredClone(q.hudRead), dropLog: book.dropLog.slice(), protected: this.prot.map((p) => ({ ...p })),
+      partMsPerFrame: Object.fromEntries(Object.entries(q.part).map(([k, v]) => [k, +(v / Math.max(1, q.frames)).toFixed(3)])),
+    };
   }
   private domLive() {
     let n = 0;
@@ -355,8 +451,10 @@ export class Floaters {
   }
 }
 
-/** QA: name the kind of protected area (counted when it refuses a slot) */
-function tag(r: Rect, k: string) { (r as Rect & { k?: string }).k = k; return r; }
+/** QA: name the kind of protected area (counted when it refuses a pattern or retires a label) */
+function tag(r: Rect, k: string) { r.k = k; return r; }
+const heapKB = () => { const m = (performance as unknown as { memory?: { usedJSHeapSize: number } }).memory; return m ? m.usedJSHeapSize / 1024 : null; };
+const rounded = (p: Parts) => { const o = noParts(); for (const k in p) o[k as keyof Parts] = +p[k as keyof Parts].toFixed(2); return o; };
 
 /** 8-direction text-shadow outline (fallback when -webkit-text-stroke is missing) */
 function ring(r: number, c: string) {

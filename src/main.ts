@@ -80,11 +80,16 @@ const qaLog: { t: number; e: string }[] = [];
   log: qaLog,
   /** QA only: run exactly n sim ticks (same step as the live loop, bot/input included), then draw one frame at the end state. */
   stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); hud.floatStep(world, qaPend * TICK); qaPend = 0; } return i; },
-  /** QA: damage-number stats (DES-008 §10): counters, pool size, frame CPU samples, painted overlap with protected areas */
-  /** QA: show style samples (DES-008 §10.2) without touching the sim: labels on actor `actor` (default the player). */
+  /** QA: show style samples (DES-008 §10.2) without touching the sim: labels on actor `actor` (default the player). Placed by the next frame. */
   floatSample(list: { kind: FKind; amount?: number; actor?: number }[]) { if (!world) return; const w = world; hud.floaters.ingest(w, list.map((e, order) => ({ kind: e.kind, amount: e.amount ?? 0, actor: e.actor ?? w.player.id, dist: 0, order }))); },
-  floaters() { const f = hud.floaters, q = f.qa, ms = Array.from(q.ms.slice(0, Math.min(q.n, q.ms.length))).sort((a, b) => a - b), pc = (p: number) => ms.length ? ms[Math.min(ms.length - 1, Math.floor(p * ms.length))] : 0;
-    return { ...f.book.stats, labels: f.book.labels.map((l) => ({ kind: l.kind, text: l.text, count: l.count, age: Math.round(f.book.clock - l.born), life: l.life, slot: l.slot, R: l.screen })), live: f.book.labels.length, quality: f.book.q, reduced: f.book.reduced, pool: f.domPool(), maxDomLive: q.maxDom, frames: q.frames, paintedOverlap: q.paintedOverlap, domOutsideR: q.domOutsideR, cpuMs: { p50: pc(0.5), p95: pc(0.95), max: ms.length ? ms[ms.length - 1] : 0 }, hudRead: q.hudRead, dropLog: f.book.dropLog, partMsPerFrame: Object.fromEntries(Object.entries(q.part).map(([k, v]) => [k, +(v / Math.max(1, q.frames)).toFixed(3)])) }; },
+  /** QA, with the sim frozen: advance only the damage-number clock and paint one frame (the scene and its protected areas stay put) */
+  floatAdvance(ms: number) { if (world) hud.floatStep(world, ms / 1000); },
+  /** QA: damage-number stats (DES-008 §10): counters (created / painted / readable ≥ 180 ms, drops and why), CPU, painted overlap */
+  floaters() { return hud.floaters.report(); },
+  floatRecord(on: boolean) { hud.floaters.record(on); },
+  floatAttempts() { return hud.floaters.drain(); },
+  floatPerfReset(deep = false) { hud.floaters.perfReset(deep); },
+  floatClear() { hud.floaters.clear(); },
 };
 
 // ------------------------------------------------------------------ boot

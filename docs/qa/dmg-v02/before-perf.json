@@ -1,0 +1,145 @@
+{
+  "tag": "before",
+  "root": "dist",
+  "warm": 10,
+  "secs": 60,
+  "oracle": false,
+  "deep": false,
+  "viewport": "844x390 dpr 1",
+  "machine": {
+    "cpu": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+    "cores": 16,
+    "os": "win32 10.0.19045",
+    "browser": "158.0.4370.33"
+  },
+  "configs": [
+    {
+      "name": "roam-medium",
+      "scen": "roam",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.3,
+      "frame": {
+        "n": 1379,
+        "p50": 38.9,
+        "p95": 94.4,
+        "max": 511.3,
+        "fps": 22.9
+      },
+      "longTasks": {
+        "count": 75,
+        "totalMs": 9467,
+        "max": 434
+      },
+      "dom": {
+        "totalMax": 248,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 227,
+        "totalLast": 248,
+        "layerFirst": 5,
+        "layerLast": 10,
+        "nodesAtEnd": 730
+      }
+    },
+    {
+      "name": "boss-medium",
+      "scen": "boss",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.3,
+      "frame": {
+        "n": 1313,
+        "p50": 38.9,
+        "p95": 122.2,
+        "max": 488.9,
+        "fps": 21.8
+      },
+      "longTasks": {
+        "count": 96,
+        "totalMs": 13269,
+        "max": 393
+      },
+      "dom": {
+        "totalMax": 241,
+        "layerMax": 3,
+        "ebarMax": 0,
+        "totalFirst": 222,
+        "totalLast": 240,
+        "layerFirst": 0,
+        "layerLast": 2,
+        "nodesAtEnd": 571
+      }
+    },
+    {
+      "name": "roam-low",
+      "scen": "roam",
+      "quality": "low",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.3,
+      "frame": {
+        "n": 1462,
+        "p50": 38.9,
+        "p95": 61.1,
+        "max": 372.3,
+        "fps": 24.3
+      },
+      "longTasks": {
+        "count": 73,
+        "totalMs": 8722,
+        "max": 315
+      },
+      "dom": {
+        "totalMax": 249,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 238,
+        "totalLast": 248,
+        "layerFirst": 16,
+        "layerLast": 10,
+        "nodesAtEnd": 877
+      }
+    },
+    {
+      "name": "boss-low",
+      "scen": "boss",
+      "quality": "low",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.1,
+      "frame": {
+        "n": 1383,
+        "p50": 38.9,
+        "p95": 116.6,
+        "max": 377.8,
+        "fps": 23
+      },
+      "longTasks": {
+        "count": 98,
+        "totalMs": 12906,
+        "max": 332
+      },
+      "dom": {
+        "totalMax": 240,
+        "layerMax": 3,
+        "ebarMax": 0,
+        "totalFirst": 224,
+        "totalLast": 239,
+        "layerFirst": 2,
+        "layerLast": 1,
+        "nodesAtEnd": 674
+      }
+    }
+  ]
+}

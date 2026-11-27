@@ -1,0 +1,571 @@
+[
+  {
+    "file": "boss-side-medium.png",
+    "note": "boss: the above spot fails (head under the boss HP bar), the number sits in a free side lane",
+    "tick": 129,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "28",
+        "actor": 8,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 505.5934757036543,
+          "r": 606.4253507036543,
+          "t": 156.09375,
+          "b": 259.00975
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 8,
+        "result": "right",
+        "why": [
+          "above:edge"
+        ],
+        "verdict": "placed-ok"
+      }
+    ],
+    "bossRect": {
+      "l": 346.0288870728009,
+      "t": 49.1298386716106,
+      "r": 495.5934757036543,
+      "b": 188.8691903758357
+    }
+  },
+  {
+    "file": "small-enemies-medium.png",
+    "note": "two small enemies, one number each",
+    "tick": 258,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "11",
+        "actor": 4,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 266.42126159658443,
+          "r": 358.8100115965844,
+          "t": 20.95379466873956,
+          "b": 123.86979466873956
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "10",
+        "actor": 5,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 495.426676451429,
+          "r": 592.036988951429,
+          "t": 40.76742183496734,
+          "b": 143.68342183496733
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      }
+    ]
+  },
+  {
+    "file": "crowd-medium.png",
+    "note": "four enemies near the player: numbers only where a pattern passes",
+    "tick": 294,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "13",
+        "actor": 4,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 268.0986258569427,
+          "r": 364.70893835694267,
+          "t": 57.19016337831502,
+          "b": 160.10616337831502
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "right",
+        "why": [
+          "above:prot:hud#hint"
+        ],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "none",
+        "why": [
+          "above:prot:body",
+          "right:full(label+player)",
+          "left:full(body+hud#hint+hud#top-left+label+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 6,
+        "result": "none",
+        "why": [
+          "above:label",
+          "right:full(bar+body+label+player+warn)",
+          "left:full(body+hud#hint+hud#top-left+label+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 7,
+        "result": "none",
+        "why": [
+          "above:prot:body",
+          "right:full(bar+body+label+player+warn)",
+          "left:full(body+hud#auto-bar+hud#hint+warn)",
+          "below:edge"
+        ],
+        "verdict": "drop-ok"
+      }
+    ]
+  },
+  {
+    "file": "drop-medium.png",
+    "note": "correct drop: white = target body, yellow dashed = the four patterns at their start position (the two side lanes are then searched up and down within 128 px; no free height exists), red = protected",
+    "tick": 294,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "13",
+        "actor": 4,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 268.0986258569427,
+          "r": 364.70893835694267,
+          "t": 57.19016337831502,
+          "b": 160.10616337831502
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "none",
+        "why": [
+          "above:prot:body",
+          "right:full(label+player)",
+          "left:full(body+hud#hint+hud#top-left+label+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      }
+    ],
+    "dropped": [
+      "above:prot:body",
+      "right:full(label+player)",
+      "left:full(body+hud#hint+hud#top-left+label+warn)",
+      "below:prot:warn"
+    ],
+    "candidates": [
+      {
+        "l": 278.8278556155388,
+        "t": 58.15587292789726,
+        "w": 96.61031249999999,
+        "h": 102.916,
+        "text": "1 above: prot:body",
+        "i": 0
+      },
+      {
+        "l": 367.9392422834604,
+        "t": 152.96250818480937,
+        "w": 96.61031249999999,
+        "h": 102.916,
+        "text": "2 right: full(label+player)",
+        "i": 1
+      },
+      {
+        "l": 189.71646894761722,
+        "t": 152.96250818480937,
+        "w": 96.61031249999999,
+        "h": 102.916,
+        "text": "3 left: full(body+hud#hint+hud#top-left+label+warn)",
+        "i": 2
+      },
+      {
+        "l": 278.8278556155388,
+        "t": 247.76914344172152,
+        "w": 96.61031249999999,
+        "h": 102.916,
+        "text": "4 below: prot:warn",
+        "i": 3
+      }
+    ]
+  },
+  {
+    "file": "boss-side-low.png",
+    "note": "boss: the above spot fails (head under the boss HP bar), the number sits in a free side lane",
+    "tick": 129,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "28",
+        "actor": 8,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 505.5934757036543,
+          "r": 596.5716007036543,
+          "t": 156.09375,
+          "b": 246.93375000000003
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 8,
+        "result": "right",
+        "why": [
+          "above:edge"
+        ],
+        "verdict": "placed-ok"
+      }
+    ],
+    "bossRect": {
+      "l": 346.0288870728009,
+      "t": 49.1298386716106,
+      "r": 495.5934757036543,
+      "b": 188.8691903758357
+    }
+  },
+  {
+    "file": "small-enemies-low.png",
+    "note": "two small enemies, one number each",
+    "tick": 258,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "11",
+        "actor": 4,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 271.20001159658443,
+          "r": 354.0312615965844,
+          "t": 33.029794668739555,
+          "b": 123.86979466873956
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "10",
+        "actor": 5,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 500.27948895142896,
+          "r": 587.1841764514289,
+          "t": 52.84342183496733,
+          "b": 143.68342183496733
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      }
+    ]
+  },
+  {
+    "file": "crowd-low.png",
+    "note": "four enemies near the player: numbers only where a pattern passes",
+    "tick": 294,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "13",
+        "actor": 4,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 268.0986258569427,
+          "r": 355.0033133569427,
+          "t": 69.26616337831503,
+          "b": 160.10616337831505
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "10",
+        "actor": 5,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 367.9392422834604,
+          "r": 454.8439297834604,
+          "t": 99.0843948284482,
+          "b": 189.92439482844821
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "right",
+        "why": [
+          "above:prot:hud#hint"
+        ],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "right",
+        "why": [
+          "above:prot:body"
+        ],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 6,
+        "result": "none",
+        "why": [
+          "above:label",
+          "right:full(bar+body+label+player+warn)",
+          "left:full(body+hud#hint+hud#top-left+label+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 7,
+        "result": "none",
+        "why": [
+          "above:prot:body",
+          "right:full(bar+body+label+player+warn)",
+          "left:full(body+hud#hint+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      }
+    ]
+  },
+  {
+    "file": "boss-side-reduced.png",
+    "note": "boss: the above spot fails (head under the boss HP bar), the number sits in a free side lane",
+    "tick": 129,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "28",
+        "actor": 8,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 505.59347570365435,
+          "r": 567.9372257036543,
+          "t": 156.09375,
+          "b": 211.49374999999998
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 8,
+        "result": "right",
+        "why": [
+          "above:edge"
+        ],
+        "verdict": "placed-ok"
+      }
+    ],
+    "bossRect": {
+      "l": 346.0288870728009,
+      "t": 49.1298386716106,
+      "r": 495.5934757036543,
+      "b": 188.8691903758357
+    }
+  },
+  {
+    "file": "small-enemies-reduced.png",
+    "note": "two small enemies, one number each",
+    "tick": 258,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "11",
+        "actor": 4,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 285.1468865965844,
+          "r": 340.0843865965844,
+          "t": 68.46979466873955,
+          "b": 123.86979466873956
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "10",
+        "actor": 5,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 514.411520201429,
+          "r": 573.052145201429,
+          "t": 88.28342183496733,
+          "b": 143.68342183496733
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      }
+    ]
+  },
+  {
+    "file": "crowd-reduced.png",
+    "note": "four enemies near the player: numbers only where a pattern passes",
+    "tick": 294,
+    "paintedOverlap": 0,
+    "labels": [
+      {
+        "kind": "damage",
+        "text": "13",
+        "actor": 4,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 201.81843011742222,
+          "r": 260.4590551174222,
+          "t": 128.89339864385443,
+          "b": 184.2933986438544
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "10",
+        "actor": 5,
+        "place": "right",
+        "age": 192,
+        "R": {
+          "l": 367.9392422834604,
+          "r": 426.5798672834604,
+          "t": 134.52439482844824,
+          "b": 189.92439482844821
+        }
+      },
+      {
+        "kind": "damage",
+        "text": "12",
+        "actor": 6,
+        "place": "above",
+        "age": 192,
+        "R": {
+          "l": 287.6873865568888,
+          "r": 346.3280115568888,
+          "t": 101.20616337831503,
+          "b": 156.60616337831502
+        }
+      }
+    ],
+    "attempts": [
+      {
+        "kind": "damage",
+        "actor": 4,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 5,
+        "result": "right",
+        "why": [
+          "above:prot:body"
+        ],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 6,
+        "result": "above",
+        "why": [],
+        "verdict": "placed-ok"
+      },
+      {
+        "kind": "damage",
+        "actor": 7,
+        "result": "none",
+        "why": [
+          "above:prot:body",
+          "right:full(bar+body+label+warn)",
+          "left:full(body+hud#hint+label+warn)",
+          "below:prot:warn"
+        ],
+        "verdict": "drop-ok"
+      }
+    ]
+  }
+]

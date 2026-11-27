@@ -1,10 +1,12 @@
 // DES-008 damage numbers: the DOM-free core. Timing curves (§4), merge / caps / priority (§5) and placement against protected
-// screen areas (§6). The DOM layer (floaters.ts) measures glyphs, gathers the protected rects every frame and paints; everything
-// here is plain arithmetic on CSS px and a UI clock in ms, so it can be unit-tested without a browser. No Math.random (§4.2).
+// screen areas (§6, v2: four patterns, the side lanes searched for free y intervals once, at spawn). The DOM layer (floaters.ts)
+// measures glyphs, gathers the protected rects every frame and paints; everything here is plain arithmetic on CSS px and a UI clock
+// in ms, so it can be unit-tested without a browser. No Math.random (§4.2).
 
 export type FKind = 'damage' | 'bonus' | 'hurt' | 'heal' | 'perfect' | 'stagger' | 'interrupt' | 'early';
 export type FQuality = 'medium' | 'low';
-export interface Rect { l: number; t: number; r: number; b: number }
+/** k: optional name of a protected area (QA: which kind of area refused or retired a label) */
+export interface Rect { l: number; t: number; r: number; b: number; k?: string }
 
 export const NUMERIC: Record<FKind, boolean> = { damage: true, bonus: true, hurt: true, heal: true, perfect: false, stagger: false, interrupt: false, early: false };
 /** §5.2: most important first */
@@ -43,6 +45,8 @@ export const CAPS = {
 } as const;
 /** a label is safe from cap replacement for this long (§5.2) */
 export const MIN_READ = 180;
+/** §10.3 "seen": painted at this opacity or more, without a gap, for MIN_READ ms */
+export const READ_OPACITY = 0.8;
 export const STATUS_DEDUP = 180;
 export const SPARK = { life: 160, gap: 180, max: 2 } as const;
 export const FADE_IN = 40;
@@ -128,28 +132,98 @@ export function sparkSpots(box: GlyphBox, S: number) {
   return { ax: gx + 4 * S, ay: gy - 1 * S, bx: gx + 10 * S, by: gy + 3 * S };
 }
 
-/** Centre of R for candidate slot i (§6.2), around the target's body rect `a` (not grown). */
-export function slotCentre(i: number, a: Rect, w: number, h: number, S: number, out: { x: number; y: number }) {
-  const cx = (a.l + a.r) / 2, g = 10 * S, up = i >= 3 ? h + 6 * S : 0;
-  const k = i % 3;
-  if (k === 0) { out.x = cx; out.y = a.t - g - h / 2; }
-  else if (k === 1) { out.x = a.r + g + w / 2; out.y = a.t - h / 4; }
-  else { out.x = a.l - g - w / 2; out.y = a.t - h / 4; }
-  out.y -= up;
+// ---------------------------------------------------------------- §6.2 (v2) the four patterns
+export type Place = 'above' | 'right' | 'left' | 'below';
+const ODD: readonly Place[] = ['above', 'right', 'left', 'below'], EVEN: readonly Place[] = ['above', 'left', 'right', 'below'];
+/** try order for the actor's n-th label (1-based) */
+export const placeOrder = (n: number) => (n % 2 === 1 ? ODD : EVEN);
+/** px at S = 1: gap g to the body, safe-view inset, spawn rounding margin ε, farthest R centre from the nearest point of the body */
+export const LAYOUT = { gap: 10, edge: 8, eps: 0.5, near: 128 } as const;
+/** float tolerance: boxes that only touch do not overlap */
+const TOL = 1e-6;
+
+/** middle of the part of the body inside the safe view: the y a side lane prefers at spawn and follows afterwards */
+export const bodyMidY = (a: Rect, safe: Rect) => (Math.max(a.t, safe.t) + Math.min(a.b, safe.b)) / 2;
+
+/** centre of a w x h R in pattern `place` around body rect `a` (not grown); side lanes sit `dy` from the visible-body middle */
+function placeCentre(place: Place, a: Rect, safe: Rect, w: number, h: number, dy: number, S: number, out: { x: number; y: number }) {
+  const g = LAYOUT.gap * S;
+  if (place === 'right' || place === 'left') {
+    out.x = place === 'right' ? a.r + g + w / 2 : a.l - g - w / 2;
+    out.y = bodyMidY(a, safe) + dy;
+  } else {
+    out.x = (a.l + a.r) / 2;
+    out.y = place === 'above' ? a.t - g - h / 2 : a.b + g + h / 2;
+  }
   return out;
 }
-/** try order for the actor's n-th label (1-based): odd = above, right, left, ...; even swaps right/left */
-export const slotOrder = (n: number) => (n % 2 === 1 ? [0, 1, 2, 3, 4, 5] : [0, 2, 1, 3, 5, 4]);
+
+/** Steps 1–3 of the side search: the lane's centre x and the centre-y range that keeps all of R in the safe view and its centre
+ *  within 128·S of the body; or why this side has no lane. */
+function sideLane(place: 'right' | 'left', a: Rect, w: number, h: number, safe: Rect, S: number): { x: number; lo: number; hi: number } | 'edge' | 'far' | 'noheight' {
+  const e = LAYOUT.eps * S, m = LAYOUT.edge * S, near = LAYOUT.near * S;
+  const x = placeCentre(place, a, safe, w, h, 0, S, { x: 0, y: 0 }).x;
+  if (x - w / 2 - e < safe.l + m - TOL || x + w / 2 + e > safe.r - m + TOL) return 'edge'; // x is never clamped back over the body
+  const dx = LAYOUT.gap * S + w / 2;
+  if (dx > near + TOL) return 'far';
+  const v = Math.sqrt(Math.max(0, near * near - dx * dx));
+  const lo = Math.max(safe.t + m + h / 2 + e, a.t - v), hi = Math.min(safe.b - m - h / 2 - e, a.b + v);
+  return lo > hi + TOL ? 'noheight' : { x, lo, hi: Math.max(lo, hi) };
+}
+
+/** Steps 4–5: every area sharing width with the lane's column forbids the open centre range (area.t − hh, area.b + hh). The free y
+ *  nearest `want` in what is left of [lo, hi] wins, a tie takes the smaller y; a range that only touches stays free. */
+function nearestFree(colL: number, colR: number, hh: number, lo: number, hi: number, want: number, lists: readonly (readonly Rect[])[], cutBy: Set<string>): number | null {
+  const ranges: [number, number][] = [];
+  for (const list of lists) for (const p of list) {
+    if (!(p.l < colR - TOL && p.r > colL + TOL)) continue;
+    const from = p.t - hh, to = p.b + hh;
+    if (to <= lo + TOL || from >= hi - TOL) continue;
+    ranges.push([from, to]); cutBy.add(p.k ?? '?');
+  }
+  ranges.sort((a, b) => a[0] - b[0]);
+  let best: number | null = null, start = lo;
+  const take = (s: number, end: number) => {
+    if (s > end + TOL) return;
+    const y = Math.min(Math.max(want, s), Math.max(s, end));
+    if (best === null || Math.abs(y - want) < Math.abs(best - want) - TOL) best = y; // pieces come in rising y: a tie keeps the smaller
+  };
+  for (const [from, to] of ranges) { take(start, Math.min(from, hi)); if (to > start) start = to; }
+  take(start, hi);
+  return best;
+}
+
+/** side pattern at spawn: the chosen centre y, or why this side has no room */
+function seekSide(place: 'right' | 'left', a: Rect, w: number, h: number, geo: Geo, others: readonly Rect[]): number | string {
+  const lane = sideLane(place, a, w, h, geo.safe, geo.S);
+  if (typeof lane === 'string') return lane;
+  const e = LAYOUT.eps * geo.S, cut = new Set<string>();
+  const y = nearestFree(lane.x - w / 2 - e, lane.x + w / 2 + e, h / 2 + e, lane.lo, lane.hi, bodyMidY(a, geo.safe), [geo.prot, others], cut);
+  return y ?? `full(${[...cut].sort().join('+')})`;
+}
+
+/** why R (placed with its centre at c) may not be here, or null. eps: the spawn-only rounding margin of §6.2 (0 for the per-frame check) */
+function refusal(r: Rect, c: { x: number; y: number }, a: Rect, geo: Geo, others: readonly Rect[], eps: number): string | null {
+  const S = geo.S, m = LAYOUT.edge * S, g = grow(r, eps - TOL);
+  if (g.l < geo.safe.l + m - 2 * TOL || g.r > geo.safe.r - m + 2 * TOL || g.t < geo.safe.t + m - 2 * TOL || g.b > geo.safe.b - m + 2 * TOL) return 'edge';
+  if (Math.hypot(Math.max(a.l - c.x, 0, c.x - a.r), Math.max(a.t - c.y, 0, c.y - a.b)) > LAYOUT.near * S + TOL) return 'far';
+  for (const p of geo.prot) if (hits(g, p)) return 'prot:' + (p.k ?? '?');
+  for (const o of others) if (hits(g, o)) return 'label';
+  return null;
+}
 
 // ---------------------------------------------------------------- the book of live labels
 export interface FIn { kind: FKind; actor: number; amount: number; /** world distance to the player (tie-break) */ dist: number; /** event index in the tick */ order: number }
 export interface Label {
   uid: number; kind: FKind; actor: number; total: number; count: number; text: string;
-  born: number; life: number; seq: number; s: 1 | -1; slot: number; spark: boolean;
+  born: number; life: number; seq: number; s: 1 | -1; place: Place; spark: boolean;
   box: GlyphBox; local: Rect; screen: Rect; ax: number; ay: number; lastActor: Rect | null; alive: boolean;
-  /** slot frame fixed at spawn: R size used for the slot centre, and the wrapper start relative to that centre. A merge (wider text)
-   *  or the end of the sparks changes `local` but never moves the words: R is re-checked around the same start point. */
-  fw: number; fh: number; ox: number; oy: number;
+  /** frame fixed at spawn: the R size the pattern centre is computed with, the wrapper start (P0) relative to that centre, and for the
+   *  side patterns the offset from the visible-body middle. A merge (wider text) or the end of the sparks changes `local` but never
+   *  moves the words: R is re-checked around the same start point. */
+  fw: number; fh: number; ox: number; oy: number; dy: number;
+  /** §10.3 counters: painted at all / painted at ≥ 0.8 for 180 ms; `since` = clock of the first frame of the current such run (−1 none) */
+  painted: boolean; readable: boolean; since: number; paintedAt: number;
 }
 /** what the DOM layer supplies for one placement / frame */
 export interface Geo {
@@ -163,60 +237,117 @@ export interface Geo {
   /** glyph box for this text; null when it cannot fit the width limit even at the minimum size (§3.3) */
   box(kind: FKind, text: string, count: number): GlyphBox | null;
 }
-export interface FStats { made: number; merged: number; deduped: number; invalid: number; dropCap: number; dropPlace: number; replaced: number; retiredSafety: number; retiredLife: number;
-  /** QA: for dropped labels, how often each rule refused a slot (offscreen / tooWide / edge / far / prot / label) */
-  why: Record<string, number> }
+
+/** counters kept per kind and in total. A "group" asking for a new label ends as created, dropCap or dropPlace; a created label ends
+ *  as retiredLife, retiredSafety, replaced or cleared. created ≠ shown: see painted / readable. */
+export interface KindStats {
+  created: number; painted: number; readable: number; merged: number; deduped: number; dropCap: number; dropPlace: number;
+  replaced: number; retiredSafety: number; retiredLife: number; cleared: number;
+  /** of the above: left without a single painted frame / retired for safety before it was readable */
+  retiredUnpainted: number; safetyUnread: number;
+}
+const zeroKind = (): KindStats => ({ created: 0, painted: 0, readable: 0, merged: 0, deduped: 0, dropCap: 0, dropPlace: 0, replaced: 0, retiredSafety: 0, retiredLife: 0, cleared: 0, retiredUnpainted: 0, safetyUnread: 0 });
+export interface FStats extends KindStats {
+  invalid: number;
+  /** drops: how often each pattern was refused for each reason */
+  why: Record<string, number>;
+  /** safety retirements of live labels by reason */
+  retireWhy: Record<string, number>;
+  byKind: Partial<Record<FKind, KindStats>>;
+}
+export const zeroStats = (): FStats => ({ ...zeroKind(), invalid: 0, why: {}, retireWhy: {}, byKind: {} });
+
+/** QA: the geometry of one placement attempt, so a checker that shares no code with this file can decide whether a legal spot existed */
+export interface Attempt {
+  t: number; kind: FKind; actor: number; n: number; S: number; safe: Rect; a: Rect | null;
+  /** R size without the sparks (the smallest layout tried) */
+  w: number; h: number;
+  /** protected areas (grown by their margins) + live labels (grown by 6·S) */
+  blocks: Rect[];
+  result: Place | 'cap' | 'offscreen' | 'gone' | 'tooWide' | 'none';
+  /** the R that was accepted, and the id of the label made from it */
+  R: Rect | null;
+  uid?: number;
+  why: string[];
+}
+
+export type Cause = 'life' | 'safety' | 'replaced' | 'clear';
 
 export class FloatBook {
   q: FQuality = 'medium';
   reduced = false;
   /** UI clock in ms (advances only while the game runs) */
   clock = 0;
+  private prevClock = 0;
   labels: Label[] = [];
-  stats: FStats = { made: 0, merged: 0, deduped: 0, invalid: 0, dropCap: 0, dropPlace: 0, replaced: 0, retiredSafety: 0, retiredLife: 0, why: {} };
-  private whyNow: string[] = [];
-  /** QA: the last 40 labels dropped for lack of a slot (actor rect on screen, R size, refusals per slot) */
-  dropLog: { kind: FKind; a: Rect; R: { w: number; h: number }; why: string[] }[] = [];
-  private note(w: string) { this.stats.why[w] = (this.stats.why[w] ?? 0) + 1; }
+  stats: FStats = zeroStats();
+  /** QA: the last 40 labels dropped for lack of room (actor rect on screen, R size, the refusal of each pattern) */
+  dropLog: { t: number; kind: FKind; actor: number; a: Rect; R: { w: number; h: number }; why: string[] }[] = [];
+  /** QA: called for every placement attempt when set (off in normal play) */
+  onAttempt: ((a: Attempt) => void) | null = null;
   /** called when a label leaves (life over, safety, replaced, cleared) so the DOM layer can return its element to the pool */
-  onRetire: (l: Label) => void = () => {};
+  onRetire: (l: Label, cause: Cause, why: string) => void = () => {};
   private uid = 0;
   private seq = new Map<number, number>();
   private lastSpark = new Map<number, number>();
   private tmpA: Rect = { l: 0, t: 0, r: 0, b: 0 };
   private pt = { x: 0, y: 0 };
 
-  advance(ms: number) { if (ms > 0) this.clock += ms; }
-  clear() { for (const l of this.labels) this.retire(l); this.labels = []; this.seq.clear(); this.lastSpark.clear(); }
-  sparksLive() { let n = 0; for (const l of this.labels) if (l.spark && this.clock - l.born < SPARK.life) n++; return n; }
+  advance(ms: number) { if (ms > 0) { this.prevClock = this.clock; this.clock += ms; } }
+  clear() { for (const l of this.labels) this.retire(l, 'clear'); this.labels = []; this.seq.clear(); this.lastSpark.clear(); }
+  sparksLive(at = this.clock) { let n = 0; for (const l of this.labels) if (l.alive && l.spark && at - l.born < SPARK.life) n++; return n; }
 
-  private retire(l: Label) { if (!l.alive) return; l.alive = false; this.onRetire(l); }
-  private expire() {
-    let k = 0;
-    for (const l of this.labels) {
-      if (l.alive && this.clock - l.born >= l.life) { this.retire(l); this.stats.retiredLife++; }
-      if (l.alive) this.labels[k++] = l;
+  private count(key: keyof KindStats, kind: FKind) { this.stats[key]++; (this.stats.byKind[kind] ??= zeroKind())[key]++; }
+  private retire(l: Label, cause: Cause, why = '') {
+    if (!l.alive) return;
+    l.alive = false;
+    if (cause === 'life') this.count('retiredLife', l.kind);
+    else if (cause === 'replaced') this.count('replaced', l.kind);
+    else if (cause === 'clear') this.count('cleared', l.kind);
+    else {
+      this.count('retiredSafety', l.kind);
+      if (!l.readable) this.count('safetyUnread', l.kind);
+      this.stats.retireWhy[why] = (this.stats.retireWhy[why] ?? 0) + 1;
     }
-    this.labels.length = k;
+    if (!l.painted) this.count('retiredUnpainted', l.kind);
+    this.onRetire(l, cause, why);
+  }
+  private compact() { this.labels = this.labels.filter((l) => l.alive); }
+  private expire() {
+    for (const l of this.labels) if (this.clock - l.born >= l.life) this.retire(l, 'life');
+    this.compact();
   }
 
-  /** One sim tick's worth of events, handled as a batch in importance order (§5.2). */
-  ingest(batch: readonly FIn[], geo: Geo) {
+  /** The DOM layer calls this right after painting a label, with the opacity it set (§10.3 painted / readable ≥ 180 ms). */
+  notePaint(l: Label, opacity: number) {
+    if (!l.alive || !(opacity > 0)) { l.since = -1; return; }
+    if (!l.painted) { l.painted = true; this.count('painted', l.kind); }
+    // a gap = the clock stepped past a frame in which this label was not painted
+    const gap = l.paintedAt !== this.clock && l.paintedAt !== this.prevClock;
+    l.paintedAt = this.clock;
+    if (opacity < READ_OPACITY - TOL) { l.since = -1; return; }
+    if (l.since < 0 || gap) l.since = this.clock;
+    if (!l.readable && this.clock - l.since >= MIN_READ - TOL) { l.readable = true; this.count('readable', l.kind); }
+  }
+
+  /** One sim tick's worth of events, handled as a batch in importance order (§5.2). `at`: the UI time the events happened, when they
+   *  are placed later (with the geometry of the frame about to be painted); it is their birth time and drives merge / dedup / caps. */
+  ingest(batch: readonly FIn[], geo: Geo, at = this.clock) {
     this.expire();
     const list = batch.slice().sort((a, b) => RANK[a.kind] - RANK[b.kind] || a.dist - b.dist || a.actor - b.actor || a.order - b.order);
     for (const e of list) {
       if (NUMERIC[e.kind]) {
         if (!Number.isFinite(e.amount) || e.amount < 0 || !Number.isInteger(e.amount)) { this.stats.invalid++; continue; }
         if (e.amount === 0) continue;
-        const g = this.labels.find((l) => l.alive && l.actor === e.actor && l.kind === e.kind && this.clock - l.born <= CAPS[this.q].merge);
+        const g = this.labels.find((l) => l.alive && l.actor === e.actor && l.kind === e.kind && at - l.born <= CAPS[this.q].merge);
         if (g) {
-          g.total += e.amount; g.count++; g.text = labelText(g.kind, g.total); this.stats.merged++;
+          g.total += e.amount; g.count++; g.text = labelText(g.kind, g.total); this.count('merged', g.kind);
           const nb = geo.box(g.kind, g.text, g.count);
-          if (!nb) { this.retire(g); this.stats.retiredSafety++; this.labels = this.labels.filter((l) => l !== g); continue; } // §3.3: no longer fits, never abbreviated
+          if (!nb) { this.retire(g, 'safety', 'tooWide'); this.compact(); continue; } // §3.3: no longer fits, never abbreviated
           g.box = nb; this.relocal(g, geo.S); continue;
         }
-      } else if (this.labels.some((l) => l.alive && l.actor === e.actor && l.kind === e.kind && this.clock - l.born < STATUS_DEDUP)) { this.stats.deduped++; continue; }
-      this.spawn(e, geo);
+      } else if (this.labels.some((l) => l.alive && l.actor === e.actor && l.kind === e.kind && at - l.born < STATUS_DEDUP)) { this.count('deduped', e.kind); continue; }
+      this.spawn(e, geo, at);
     }
   }
 
@@ -224,7 +355,7 @@ export class FloatBook {
     l.local = localR(l.box, peakScale(l.kind, this.q, this.reduced), pathPoints(l.kind, l.s, S, this.q, this.reduced), l.spark && this.clock - l.born < SPARK.life, S);
   }
 
-  private victimFor(e: FIn): { need: boolean; victim: Label | null } {
+  private victimFor(e: FIn, at: number): { need: boolean; victim: Label | null } {
     const c = CAPS[this.q], num = NUMERIC[e.kind];
     const same = (l: Label) => NUMERIC[l.kind] === num;
     const live = this.labels.filter((l) => l.alive);
@@ -233,66 +364,70 @@ export class FloatBook {
     const totalFull = live.length >= c.total;
     const pool = actorFull ? live.filter((l) => l.actor === e.actor && same(l)) : subFull ? live.filter(same) : totalFull ? live : null;
     if (!pool) return { need: false, victim: null };
-    const ok = pool.filter((l) => RANK[l.kind] > RANK[e.kind] && this.clock - l.born >= MIN_READ).sort((a, b) => a.born - b.born || a.uid - b.uid);
+    const ok = pool.filter((l) => RANK[l.kind] > RANK[e.kind] && at - l.born >= MIN_READ).sort((a, b) => a.born - b.born || a.uid - b.uid);
     return { need: true, victim: ok[0] ?? null };
   }
 
-  private spawn(e: FIn, geo: Geo) {
-    const { need, victim } = this.victimFor(e);
-    if (need && !victim) { this.stats.dropCap++; return; }
-    if (geo.actor(e.actor, this.tmpA) !== 0) { this.stats.dropPlace++; this.note('offscreen'); return; } // not on screen: no label, never clamped to the edge
+  private spawn(e: FIn, geo: Geo, at: number) {
+    const S = geo.S, { need, victim } = this.victimFor(e, at);
+    const n = (this.seq.get(e.actor) ?? 0) + 1;
+    const report = (result: Attempt['result'], extra: Partial<Attempt> = {}) => this.onAttempt?.({ t: at, kind: e.kind, actor: e.actor, n, S, safe: { ...geo.safe }, a: null, w: 0, h: 0, blocks: [], result, R: null, why: [], ...extra });
+    if (need && !victim) { this.count('dropCap', e.kind); report('cap'); return; }
+    const st = geo.actor(e.actor, this.tmpA);
+    const refuse = (result: 'offscreen' | 'gone' | 'tooWide') => { this.count('dropPlace', e.kind); this.stats.why[result] = (this.stats.why[result] ?? 0) + 1; report(result); };
+    if (st !== 0) return refuse(st === 2 ? 'offscreen' : 'gone'); // not on screen: no label, never clamped to the edge
     const text = labelText(e.kind, e.amount);
     const box = geo.box(e.kind, text, 1);
-    if (!box) { this.stats.dropPlace++; this.note('tooWide'); return; }
-    const n = (this.seq.get(e.actor) ?? 0) + 1;
+    if (!box) return refuse('tooWide');
+    const a = this.tmpA;
     const s: 1 | -1 = n % 2 === 1 ? 1 : -1;
     const wantSpark = CAPS[this.q].sparks && !this.reduced && (e.kind === 'bonus' || e.kind === 'perfect')
-      && this.sparksLive() < SPARK.max && this.clock - (this.lastSpark.get(e.actor) ?? -1e9) >= SPARK.gap;
-    const others = this.labels.filter((l) => l.alive && l !== victim).map((l) => grow(l.screen, 6 * geo.S));
-    const path = pathPoints(e.kind, s, geo.S, this.q, this.reduced), peak = peakScale(e.kind, this.q, this.reduced);
-    this.whyNow.length = 0;
+      && this.sparksLive(at) < SPARK.max && at - (this.lastSpark.get(e.actor) ?? -1e9) >= SPARK.gap;
+    const others = this.labels.filter((l) => l.alive && l !== victim).map((l) => { const o = grow(l.screen, 6 * S); o.k = 'label'; return o; });
+    const path = pathPoints(e.kind, s, S, this.q, this.reduced), peak = peakScale(e.kind, this.q, this.reduced);
+    const why: string[] = [];
+    const bare = localR(box, peak, path, false, S);
+    const snapshot = () => ({ a: { ...a }, w: bare.r - bare.l, h: bare.b - bare.t, blocks: [...geo.prot, ...others].map((p) => ({ ...p })), why: [...why] });
     for (const spark of wantSpark ? [true, false] : [false]) {
-      const local = localR(box, peak, path, spark, geo.S);
-      for (const slot of slotOrder(n)) {
-        const fw = local.r - local.l, fh = local.b - local.t, ox = -(local.l + local.r) / 2, oy = -(local.t + local.b) / 2;
-        const scr = this.fit(local, fw, fh, ox, oy, slot, this.tmpA, geo, others);
-        if (!scr) continue;
-        if (victim) { this.retire(victim); this.stats.replaced++; this.labels = this.labels.filter((l) => l !== victim); }
-        const l: Label = { uid: ++this.uid, kind: e.kind, actor: e.actor, total: e.amount, count: 1, text, born: this.clock, life: lifeMs(e.kind, this.q, this.reduced),
-          seq: n, s, slot, spark, box, local, screen: scr.r, ax: scr.ax, ay: scr.ay, lastActor: { ...this.tmpA }, alive: true, fw, fh, ox, oy };
+      why.length = 0;
+      const local = spark ? localR(box, peak, path, true, S) : bare;
+      const fw = local.r - local.l, fh = local.b - local.t, ox = -(local.l + local.r) / 2, oy = -(local.t + local.b) / 2;
+      for (const place of placeOrder(n)) {
+        let dy = 0;
+        if (place === 'right' || place === 'left') { // search the lane once, now
+          const y = seekSide(place, a, fw, fh, geo, others);
+          if (typeof y === 'string') { why.push(`${place}:${y}`); continue; }
+          dy = y - bodyMidY(a, geo.safe);
+        }
+        const c = placeCentre(place, a, geo.safe, fw, fh, dy, S, this.pt);
+        const ax = c.x + ox, ay = c.y + oy;
+        const screen: Rect = { l: ax + local.l, r: ax + local.r, t: ay + local.t, b: ay + local.b };
+        const bad = refusal(screen, c, a, geo, others, LAYOUT.eps * S);
+        if (bad) { why.push(`${place}:${bad}`); continue; }
+        if (victim) { this.retire(victim, 'replaced'); this.compact(); }
         this.seq.set(e.actor, n);
-        if (spark) this.lastSpark.set(e.actor, this.clock);
-        this.labels.push(l); this.stats.made++;
+        if (spark) this.lastSpark.set(e.actor, at);
+        this.labels.push({ uid: ++this.uid, kind: e.kind, actor: e.actor, total: e.amount, count: 1, text, born: at, life: lifeMs(e.kind, this.q, this.reduced),
+          seq: n, s, place, spark, box, local, screen, ax, ay, lastActor: { ...a }, alive: true, fw, fh, ox, oy, dy,
+          painted: false, readable: false, since: -1, paintedAt: -1 });
+        this.count('created', e.kind);
+        if (this.onAttempt) report(place, { ...snapshot(), R: { ...screen }, uid: this.uid });
         return;
       }
     }
-    this.stats.dropPlace++; // §6.2 no slot: drop it, no queue, no other spot
-    for (const w of this.whyNow) this.note(w);
-    const a = this.tmpA, L = localR(box, peak, path, false, geo.S);
-    this.dropLog.push({ kind: e.kind, a: { l: Math.round(a.l), t: Math.round(a.t), r: Math.round(a.r), b: Math.round(a.b) }, R: { w: Math.round(L.r - L.l), h: Math.round(L.b - L.t) }, why: [...this.whyNow] });
+    this.count('dropPlace', e.kind); // §6.2 no pattern passes: drop it, no queue, no other spot
+    for (const w of why) this.stats.why[w] = (this.stats.why[w] ?? 0) + 1;
+    this.dropLog.push({ t: at, kind: e.kind, actor: e.actor, a: { l: a.l, t: a.t, r: a.r, b: a.b }, R: { w: bare.r - bare.l, h: bare.b - bare.t }, why: [...why] });
     if (this.dropLog.length > 40) this.dropLog.shift();
+    if (this.onAttempt) report('none', snapshot());
   }
 
-  /** R in screen space for slot `slot` around actor rect `a`, or null when it breaks a rule (safe edge, distance, protected, other labels).
-   *  fw/fh: R size the slot centre is computed with; ox/oy: wrapper start (P0) relative to that centre. */
-  private fit(local: Rect, fw: number, fh: number, ox: number, oy: number, slot: number, a: Rect, geo: Geo, others: readonly Rect[]) {
-    const S = geo.S;
-    const c = slotCentre(slot, a, fw, fh, S, this.pt);
-    const ax = c.x + ox, ay = c.y + oy;
-    const r: Rect = { l: ax + local.l, r: ax + local.r, t: ay + local.t, b: ay + local.b };
-    const m = 8 * S;
-    if (r.l < geo.safe.l + m || r.r > geo.safe.r - m || r.t < geo.safe.t + m || r.b > geo.safe.b - m) { this.whyNow.push('edge'); return null; }
-    if (Math.hypot(c.x - (a.l + a.r) / 2, c.y - a.t) > 144 * S) { this.whyNow.push('far'); return null; }
-    for (const p of geo.prot) if (hits(r, p)) { this.whyNow.push('prot:' + ((p as Rect & { k?: string }).k ?? '?')); return null; }
-    for (const o of others) if (hits(r, o)) { this.whyNow.push('label'); return null; }
-    return { r, ax, ay };
-  }
-
-  /** Every frame before paint (§6.2): expire, then re-place each label in its own slot around the actor's current rect; a label whose
-   *  R now meets a warning / body / HUD / a more important label is retired at once (no fade over the warning, no flicker back). */
+  /** Every frame before paint (§6.2): expire, then hold each label in its own pattern around the actor's current rect (side lanes keep
+   *  their offset from the body middle, no new search). One whose R now meets a warning / body / HUD / a more important label, leaves
+   *  the safe view or is no longer close to its actor is retired at once (no fade over the warning, no flicker back). */
   frame(geo: Geo) {
     this.expire();
-    const order = this.labels.filter((l) => l.alive).sort((a, b) => RANK[a.kind] - RANK[b.kind] || a.born - b.born || a.uid - b.uid);
+    const order = this.labels.slice().sort((a, b) => RANK[a.kind] - RANK[b.kind] || a.born - b.born || a.uid - b.uid);
     const accepted: Rect[] = [];
     for (const l of order) {
       if (l.spark && this.clock - l.born >= SPARK.life) { l.spark = false; this.relocal(l, geo.S); } // sparks gone: R shrinks back
@@ -300,11 +435,15 @@ export class FloatBook {
       let a: Rect | null = null;
       if (st === 0) { a = this.tmpA; l.lastActor = { ...a }; }
       else if (st === 1) a = l.lastActor; // dead and removed: stay at the last spot until the life ends
-      const scr = a ? this.fit(l.local, l.fw, l.fh, l.ox, l.oy, l.slot, a, geo, accepted) : null;
-      if (!scr) { this.retire(l); this.stats.retiredSafety++; continue; }
-      l.screen = scr.r; l.ax = scr.ax; l.ay = scr.ay;
-      accepted.push(grow(scr.r, 6 * geo.S));
+      if (!a) { this.retire(l, 'safety', 'offscreen'); continue; }
+      const c = placeCentre(l.place, a, geo.safe, l.fw, l.fh, l.dy, geo.S, this.pt);
+      const ax = c.x + l.ox, ay = c.y + l.oy;
+      const screen: Rect = { l: ax + l.local.l, r: ax + l.local.r, t: ay + l.local.t, b: ay + l.local.b };
+      const bad = refusal(screen, c, a, geo, accepted, 0);
+      if (bad) { this.retire(l, 'safety', bad); continue; }
+      l.screen = screen; l.ax = ax; l.ay = ay;
+      accepted.push(grow(screen, 6 * geo.S));
     }
-    this.labels = this.labels.filter((l) => l.alive);
+    this.compact();
   }
 }
