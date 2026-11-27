@@ -1,0 +1,2681 @@
+{
+  "viewport": "844x390 dpr 1",
+  "mode": "model-readable",
+  "inset": 7.5,
+  "sets": [
+    {
+      "set": "open",
+      "setting": "medium",
+      "groups": 10,
+      "shown": 10,
+      "rows": [
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        }
+      ],
+      "oracle": {
+        "placed-ok": 10
+      },
+      "errors": 0
+    },
+    {
+      "set": "boss",
+      "setting": "medium",
+      "moments": [
+        {
+          "tick": 129,
+          "bossRect": {
+            "l": 346.0288870728009,
+            "t": 49.1298386716106,
+            "r": 495.5934757036543,
+            "b": 188.8691903758357
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 100.8,
+              "h": 102.9
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            215.1,
+            215.1,
+            127.5,
+            165.6,
+            127.5,
+            165.6,
+            127.5,
+            165.6,
+            127.5,
+            165.6
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 3,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 650,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 505.5934757036543,
+                  "r": 606.4253507036543,
+                  "t": 163.59375,
+                  "b": 266.50975
+                },
+                "body": {
+                  "l": 346.0288870728009,
+                  "t": 49.1298386716106,
+                  "r": 495.5934757036543,
+                  "b": 188.8691903758357
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 361.6169953082051,
+                "t": 183.74222113853077,
+                "r": 472.85800346244014,
+                "b": 335.5880556375072,
+                "k": "player"
+              },
+              {
+                "l": 340.0288870728009,
+                "t": 43.1298386716106,
+                "r": 501.5934757036543,
+                "b": 194.8691903758357,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              },
+              {
+                "l": 4,
+                "t": 43,
+                "r": 247.875,
+                "b": 106.1875,
+                "k": "hud#hint"
+              },
+              {
+                "l": 294.359375,
+                "t": 109.59375,
+                "r": 549.640625,
+                "b": 155.59375,
+                "k": "hud#banner"
+              }
+            ]
+          }
+        },
+        {
+          "tick": 219,
+          "bossRect": {
+            "l": 323.8079026359948,
+            "t": 50.44501426466721,
+            "r": 518.5142650026614,
+            "b": 228.7790022960017
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 100.8,
+              "h": 102.9
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            139.6,
+            181.2,
+            139.6,
+            181.2,
+            139.6,
+            181.2,
+            139.6,
+            181.2,
+            139.6,
+            181.2
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 16,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 650,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 528.5142650026614,
+                  "r": 629.3461400026615,
+                  "t": 88.15400828033447,
+                  "b": 191.07000828033446
+                },
+                "body": {
+                  "l": 323.8079026359948,
+                  "t": 50.44501426466721,
+                  "r": 518.5142650026614,
+                  "b": 228.7790022960017
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 351.4005549549847,
+                "t": 190.8366338024279,
+                "r": 477.72101879879585,
+                "b": 349.031460860672,
+                "k": "player"
+              },
+              {
+                "l": 317.8079026359948,
+                "t": 44.44501426466721,
+                "r": 524.5142650026614,
+                "b": 234.7790022960017,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              },
+              {
+                "l": -1.6391406059265137,
+                "t": 43,
+                "r": 242.2358593940735,
+                "b": 121.78125,
+                "k": "hud#hint"
+              }
+            ]
+          }
+        },
+        {
+          "tick": 309,
+          "bossRect": {
+            "l": 317.0577037579212,
+            "t": 62.24167476054452,
+            "r": 526.5077952353387,
+            "b": 253.13128744413237
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 100.8,
+              "h": 102.9
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            157.7,
+            181.2,
+            157.7,
+            181.2,
+            157.7,
+            181.2,
+            157.7,
+            181.2,
+            157.7,
+            181.2
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 32,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 650,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 536.5077952353387,
+                  "r": 637.3396702353388,
+                  "t": 106.22848110233843,
+                  "b": 209.14448110233843
+                },
+                "body": {
+                  "l": 317.0577037579212,
+                  "t": 62.24167476054452,
+                  "r": 526.5077952353387,
+                  "b": 253.13128744413237
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 361.2689863532318,
+                "t": 187.16919728475068,
+                "r": 478.15988341282264,
+                "b": 340.0669226745526,
+                "k": "player"
+              },
+              {
+                "l": 311.0577037579212,
+                "t": 56.24167476054452,
+                "r": 532.5077952353387,
+                "b": 259.13128744413234,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              },
+              {
+                "l": 4,
+                "t": 43,
+                "r": 247.875,
+                "b": 121.78125,
+                "k": "hud#hint"
+              }
+            ]
+          }
+        }
+      ],
+      "errors": 0
+    },
+    {
+      "set": "crowd",
+      "setting": "medium",
+      "batches": [
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 258,
+          "warnings": 0,
+          "rects": [
+            [
+              509,
+              154,
+              579,
+              220
+            ],
+            [
+              288,
+              134,
+              337,
+              187
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 70,
+              "h": 66,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 49,
+              "h": 53,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "above"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 270,
+          "warnings": 2,
+          "rects": [
+            [
+              458,
+              191,
+              509,
+              251
+            ],
+            [
+              273,
+              161,
+              324,
+              219
+            ],
+            [
+              388,
+              185,
+              433,
+              222
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 50,
+              "h": 60,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 51,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 45,
+              "h": 37,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 1,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            [
+              "above:prot:warn",
+              "right:full(body+hud#btn-skill+label+player+warn)",
+              "left:full(body+label+player+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              374,
+              205,
+              418,
+              253
+            ],
+            [
+              324,
+              196,
+              360,
+              230
+            ],
+            [
+              325,
+              154,
+              364,
+              198
+            ],
+            [
+              219,
+              181,
+              277,
+              236
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 48,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 34,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 40,
+              "h": 44,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 58,
+              "h": 55,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:warn",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 294,
+          "warnings": 1,
+          "rects": [
+            [
+              296,
+              171,
+              358,
+              238
+            ],
+            [
+              266,
+              230,
+              307,
+              269
+            ],
+            [
+              295,
+              167,
+              339,
+              211
+            ],
+            [
+              204,
+              194,
+              258,
+              245
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 62,
+              "h": 67,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 39,
+              "roomAlone": false
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 51,
+              "roomAlone": true
+            }
+          ],
+          "created": 1,
+          "shown": 1,
+          "dropPlace": 3,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "drop-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            [
+              "above:prot:body",
+              "right:full(label+player)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#auto-bar+hud#hint+warn)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 306,
+          "warnings": 0,
+          "rects": [
+            [
+              248,
+              228,
+              324,
+              316
+            ],
+            [
+              208,
+              269,
+              298,
+              351
+            ],
+            [
+              255,
+              196,
+              303,
+              247
+            ],
+            [
+              327,
+              170,
+              371,
+              216
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 76,
+              "h": 88,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 90,
+              "h": 83,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 48,
+              "h": 51,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            [
+              "above:label",
+              "right:full(label+player)",
+              "left:full(bar+body+hud#hint+hud#top-left+label)",
+              "below:prot:player"
+            ],
+            [
+              "above:prot:body",
+              "right:full(body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 318,
+          "warnings": 0,
+          "rects": [
+            [
+              289,
+              217,
+              353,
+              300
+            ],
+            [
+              312,
+              196,
+              356,
+              248
+            ],
+            [
+              362,
+              174,
+              406,
+              220
+            ],
+            [
+              261,
+              255,
+              336,
+              338
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 64,
+              "h": 82,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 52,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 74,
+              "h": 83,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 1,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            "left",
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 330,
+          "warnings": 1,
+          "rects": [
+            [
+              372,
+              189,
+              416,
+              231
+            ],
+            [
+              281,
+              264,
+              351,
+              340
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 43,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 69,
+              "h": 76,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 342,
+          "warnings": 1,
+          "rects": [
+            [
+              395,
+              201,
+              436,
+              243
+            ],
+            [
+              318,
+              289,
+              377,
+              349
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 42,
+              "h": 42,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 59,
+              "h": 59,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              460,
+              189,
+              524,
+              250
+            ],
+            [
+              270,
+              158,
+              326,
+              216
+            ],
+            [
+              390,
+              153,
+              431,
+              204
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 63,
+              "h": 61,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 52,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 294,
+          "warnings": 2,
+          "rects": [
+            [
+              392,
+              201,
+              447,
+              251
+            ],
+            [
+              348,
+              166,
+              384,
+              212
+            ],
+            [
+              239,
+              180,
+              295,
+              234
+            ],
+            [
+              340,
+              151,
+              381,
+              194
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 50,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 54,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 41,
+              "h": 43,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+hud#btn-skill+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+hud#btn-skill+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        }
+      ],
+      "total": 10,
+      "batchesWithOneShown": 10,
+      "ineligibleMomentsSkipped": [],
+      "repeatedLayoutsSkipped": 15,
+      "verdicts": {
+        "placed-ok": 21,
+        "drop-ok": 11
+      },
+      "errors": 0
+    },
+    {
+      "set": "open",
+      "setting": "low",
+      "groups": 10,
+      "shown": 10,
+      "rows": [
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        },
+        {
+          "created": 1,
+          "painted": 1,
+          "readable": 1,
+          "merged": 0,
+          "deduped": 0,
+          "dropCap": 0,
+          "dropPlace": 0,
+          "retiredSafety": 0,
+          "replaced": 0
+        }
+      ],
+      "oracle": {
+        "placed-ok": 10
+      },
+      "errors": 0
+    },
+    {
+      "set": "boss",
+      "setting": "low",
+      "moments": [
+        {
+          "tick": 129,
+          "bossRect": {
+            "l": 346.0288870728009,
+            "t": 49.1298386716106,
+            "r": 495.5934757036543,
+            "b": 188.8691903758357
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 91,
+              "h": 90.8
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            209,
+            209,
+            209,
+            209,
+            209,
+            209,
+            121.5,
+            159.6,
+            121.5,
+            159.6
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 3,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 600,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 505.5934757036543,
+                  "r": 596.5716007036543,
+                  "t": 163.59375,
+                  "b": 254.43375000000003
+                },
+                "body": {
+                  "l": 346.0288870728009,
+                  "t": 49.1298386716106,
+                  "r": 495.5934757036543,
+                  "b": 188.8691903758357
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 361.6169953082051,
+                "t": 183.74222113853077,
+                "r": 472.85800346244014,
+                "b": 335.5880556375072,
+                "k": "player"
+              },
+              {
+                "l": 340.0288870728009,
+                "t": 43.1298386716106,
+                "r": 501.5934757036543,
+                "b": 194.8691903758357,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              },
+              {
+                "l": 4,
+                "t": 43,
+                "r": 247.875,
+                "b": 106.1875,
+                "k": "hud#hint"
+              },
+              {
+                "l": 294.359375,
+                "t": 109.59375,
+                "r": 549.640625,
+                "b": 155.59375,
+                "k": "hud#banner"
+              }
+            ]
+          }
+        },
+        {
+          "tick": 219,
+          "bossRect": {
+            "l": 323.8079026359948,
+            "t": 50.44501426466721,
+            "r": 518.5142650026614,
+            "b": 228.7790022960017
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 91,
+              "h": 90.8
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            139.6,
+            175.2,
+            139.6,
+            175.2,
+            139.6,
+            175.2,
+            139.6,
+            175.2,
+            139.6,
+            175.2
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 16,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 600,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 528.5142650026614,
+                  "r": 619.4923900026615,
+                  "t": 94.19200828033446,
+                  "b": 185.03200828033448
+                },
+                "body": {
+                  "l": 323.8079026359948,
+                  "t": 50.44501426466721,
+                  "r": 518.5142650026614,
+                  "b": 228.7790022960017
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 351.4005549549847,
+                "t": 190.8366338024279,
+                "r": 477.72101879879585,
+                "b": 349.031460860672,
+                "k": "player"
+              },
+              {
+                "l": 317.8079026359948,
+                "t": 44.44501426466721,
+                "r": 524.5142650026614,
+                "b": 234.7790022960017,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              },
+              {
+                "l": 4,
+                "t": 43,
+                "r": 247.875,
+                "b": 121.78125,
+                "k": "hud#hint"
+              }
+            ]
+          }
+        },
+        {
+          "tick": 309,
+          "bossRect": {
+            "l": 317.0577037579212,
+            "t": 62.24167476054452,
+            "r": 526.5077952353387,
+            "b": 253.13128744413237
+          },
+          "probe": {
+            "above": false,
+            "right": true,
+            "left": true,
+            "R": {
+              "w": 91,
+              "h": 90.8
+            }
+          },
+          "groups": 10,
+          "shown": 10,
+          "places": [
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left",
+            "right",
+            "left"
+          ],
+          "centreY": [
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7,
+            157.7
+          ],
+          "oracle": {
+            "placed-ok": 10
+          },
+          "sampleAt192ms": {
+            "labels": [
+              {
+                "uid": 31,
+                "kind": "damage",
+                "text": "28",
+                "count": 1,
+                "actor": 8,
+                "age": 208,
+                "life": 600,
+                "place": "right",
+                "painted": true,
+                "readable": false,
+                "R": {
+                  "l": 536.5077952353387,
+                  "r": 627.4859202353388,
+                  "t": 112.26648110233843,
+                  "b": 203.10648110233842
+                },
+                "body": {
+                  "l": 317.0577037579212,
+                  "t": 62.24167476054452,
+                  "r": 526.5077952353387,
+                  "b": 253.13128744413237
+                }
+              }
+            ],
+            "protected": [
+              {
+                "l": 361.2689863532318,
+                "t": 187.16919728475068,
+                "r": 478.15988341282264,
+                "b": 340.0669226745526,
+                "k": "player"
+              },
+              {
+                "l": 311.0577037579212,
+                "t": 56.24167476054452,
+                "r": 532.5077952353387,
+                "b": 259.13128744413234,
+                "k": "body"
+              },
+              {
+                "l": 717.21875,
+                "t": 258.8125,
+                "r": 808.890625,
+                "b": 350.484375,
+                "k": "hud#btn-attack"
+              },
+              {
+                "l": 735.703125,
+                "t": 197.21875,
+                "r": 803.609375,
+                "b": 265.125,
+                "k": "hud#btn-dodge"
+              },
+              {
+                "l": 484.890625,
+                "t": 318.65625,
+                "r": 551.046875,
+                "b": 384.8125,
+                "k": "hud#btn-skill"
+              },
+              {
+                "l": 542.96875,
+                "t": 318.65625,
+                "r": 609.125,
+                "b": 384.8125,
+                "k": "hud#btn-skill2"
+              },
+              {
+                "l": 601.046875,
+                "t": 318.65625,
+                "r": 667.203125,
+                "b": 384.8125,
+                "k": "hud#btn-skill3"
+              },
+              {
+                "l": 660.890625,
+                "t": 321.296875,
+                "r": 722.640625,
+                "b": 383.046875,
+                "k": "hud#btn-ult"
+              },
+              {
+                "l": 755.046875,
+                "t": 145.28125,
+                "r": 815.046875,
+                "b": 205.28125,
+                "k": "hud#btn-potion"
+              },
+              {
+                "l": 4,
+                "t": 4,
+                "r": 247.875,
+                "b": 54.171875,
+                "k": "hud#top-left"
+              },
+              {
+                "l": 674.5,
+                "t": 0,
+                "r": 842,
+                "b": 58,
+                "k": "hud#top-right"
+              },
+              {
+                "l": 241.8828125,
+                "t": 0,
+                "r": 602.1171875,
+                "b": 68.03125,
+                "k": "hud#boss"
+              }
+            ]
+          }
+        }
+      ],
+      "errors": 0
+    },
+    {
+      "set": "crowd",
+      "setting": "low",
+      "batches": [
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 258,
+          "warnings": 0,
+          "rects": [
+            [
+              509,
+              154,
+              579,
+              220
+            ],
+            [
+              288,
+              134,
+              337,
+              187
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 70,
+              "h": 66,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 49,
+              "h": 53,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "above"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 270,
+          "warnings": 2,
+          "rects": [
+            [
+              458,
+              191,
+              509,
+              251
+            ],
+            [
+              273,
+              161,
+              324,
+              219
+            ],
+            [
+              388,
+              185,
+              433,
+              222
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 50,
+              "h": 60,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 51,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 45,
+              "h": 37,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              374,
+              205,
+              418,
+              253
+            ],
+            [
+              324,
+              196,
+              360,
+              230
+            ],
+            [
+              325,
+              154,
+              364,
+              198
+            ],
+            [
+              219,
+              181,
+              277,
+              236
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 48,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 34,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 40,
+              "h": 44,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 58,
+              "h": 55,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:warn",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 294,
+          "warnings": 1,
+          "rects": [
+            [
+              296,
+              171,
+              358,
+              238
+            ],
+            [
+              266,
+              230,
+              307,
+              269
+            ],
+            [
+              295,
+              167,
+              339,
+              211
+            ],
+            [
+              204,
+              194,
+              258,
+              245
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 62,
+              "h": 67,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 39,
+              "roomAlone": false
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 51,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 306,
+          "warnings": 0,
+          "rects": [
+            [
+              248,
+              228,
+              324,
+              316
+            ],
+            [
+              208,
+              269,
+              298,
+              351
+            ],
+            [
+              255,
+              196,
+              303,
+              247
+            ],
+            [
+              327,
+              170,
+              371,
+              216
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 76,
+              "h": 88,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 90,
+              "h": 83,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 48,
+              "h": 51,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "left",
+            [
+              "above:label",
+              "right:full(label+player)",
+              "left:full(bar+body+hud#hint+hud#top-left+label)",
+              "below:prot:player"
+            ],
+            [
+              "above:prot:body",
+              "right:full(body+label+player)",
+              "left:full(hud#auto-bar+hud#hint+label)",
+              "below:edge"
+            ]
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1&botskills=1",
+          "tick": 318,
+          "warnings": 0,
+          "rects": [
+            [
+              289,
+              217,
+              353,
+              300
+            ],
+            [
+              312,
+              196,
+              356,
+              248
+            ],
+            [
+              362,
+              174,
+              406,
+              220
+            ],
+            [
+              261,
+              255,
+              336,
+              338
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 64,
+              "h": 82,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 44,
+              "h": 52,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 46,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 74,
+              "h": 83,
+              "roomAlone": true
+            }
+          ],
+          "created": 4,
+          "shown": 4,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            "left",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 330,
+          "warnings": 1,
+          "rects": [
+            [
+              372,
+              189,
+              416,
+              231
+            ],
+            [
+              281,
+              264,
+              351,
+              340
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 45,
+              "h": 43,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 69,
+              "h": 76,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=4&bot=1&botskills=1",
+          "tick": 342,
+          "warnings": 1,
+          "rects": [
+            [
+              395,
+              201,
+              436,
+              243
+            ],
+            [
+              318,
+              289,
+              377,
+              349
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 42,
+              "h": 42,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 59,
+              "h": 59,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "right",
+            "left"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 282,
+          "warnings": 2,
+          "rects": [
+            [
+              460,
+              189,
+              524,
+              250
+            ],
+            [
+              270,
+              158,
+              326,
+              216
+            ],
+            [
+              390,
+              153,
+              431,
+              204
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 63,
+              "h": 61,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 58,
+              "roomAlone": true
+            },
+            {
+              "kind": "thornling",
+              "w": 42,
+              "h": 52,
+              "roomAlone": true
+            }
+          ],
+          "created": 3,
+          "shown": 3,
+          "dropPlace": 0,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "placed-ok"
+          ],
+          "why": [
+            "above",
+            "right",
+            "right"
+          ],
+          "overlap": 0
+        },
+        {
+          "run": "seed=3&bot=1",
+          "tick": 294,
+          "warnings": 2,
+          "rects": [
+            [
+              392,
+              201,
+              447,
+              251
+            ],
+            [
+              348,
+              166,
+              384,
+              212
+            ],
+            [
+              239,
+              180,
+              295,
+              234
+            ],
+            [
+              340,
+              151,
+              381,
+              194
+            ]
+          ],
+          "targets": [
+            {
+              "kind": "puffcap",
+              "w": 54,
+              "h": 50,
+              "roomAlone": false
+            },
+            {
+              "kind": "thornling",
+              "w": 36,
+              "h": 45,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 56,
+              "h": 54,
+              "roomAlone": true
+            },
+            {
+              "kind": "puffcap",
+              "w": 41,
+              "h": 43,
+              "roomAlone": true
+            }
+          ],
+          "created": 2,
+          "shown": 2,
+          "dropPlace": 2,
+          "dropCap": 0,
+          "retiredSafety": 0,
+          "verdicts": [
+            "placed-ok",
+            "placed-ok",
+            "drop-ok",
+            "drop-ok"
+          ],
+          "why": [
+            "right",
+            "right",
+            [
+              "above:label",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+hud#hint+hud#top-left+label+warn)",
+              "below:prot:warn"
+            ],
+            [
+              "above:prot:body",
+              "right:full(bar+body+label+player+warn)",
+              "left:full(body+label+warn)",
+              "below:prot:warn"
+            ]
+          ],
+          "overlap": 0
+        }
+      ],
+      "total": 10,
+      "batchesWithOneShown": 10,
+      "ineligibleMomentsSkipped": [],
+      "repeatedLayoutsSkipped": 15,
+      "verdicts": {
+        "placed-ok": 24,
+        "drop-ok": 8
+      },
+      "errors": 0
+    }
+  ]
+}

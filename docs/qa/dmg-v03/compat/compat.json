@@ -1,0 +1,2393 @@
+{
+ "cases": [
+  {
+   "name": "normal",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7029220775066,
+        "t": 233.18604690523554,
+        "b": 310.9860469052355
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 218.44113099699013,
+        "r": 352.7451934969901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 584.3214181712567,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "no-gradient-no-stroke",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7029220775066,
+        "t": 233.18604690523554,
+        "b": 310.9860469052355
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 218.44113099699013,
+        "r": 352.7451934969901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 584.3214181712567,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num nostroke noclip",
+      "fl fl-num nostroke noclip",
+      "fl fl-st nostroke",
+      "fl fl-st nostroke"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 9
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 8
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(255, 232, 244)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "font-tahoma",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 608.4192306712566,
+        "t": 232.63604690523556,
+        "b": 311.53604690523554
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 213.48058412199012,
+        "r": 352.84245912199015,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962566,
+        "r": 589.3400900462566,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "font-courier",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7996017650066,
+        "t": 233.51584381047104,
+        "b": 309.11584381047106
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 213.88699037199012,
+        "r": 352.8344903719901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 580.0352853587567,
+        "t": 50.51942183496734,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 711.33900035375,
+        "t": 118.87984381047106,
+        "b": 219.51584381047104
+       }
+      }
+     ],
+     "count": 5,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "right"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "normal",
+   "quality": "low",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 594.7029220775066,
+        "t": 233.51584381047107,
+        "b": 306.31584381047105
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 228.60605287199013,
+        "r": 362.9101153719901,
+        "t": 228.66921589960714,
+        "b": 293.19721589960716
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "right",
+       "R": {
+        "l": 468.1188693427818,
+        "r": 571.5306662177818,
+        "t": 77.85942183496732,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "above",
+       "R": {
+        "l": 259.0543084715844,
+        "r": 366.1769647215844,
+        "t": 11.569794668739547,
+        "b": 123.86979466873956
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 696.53806285375,
+        "t": 128.67584381047106,
+        "b": 219.5158438104711
+       }
+      }
+     ],
+     "count": 5,
+     "attempts": [
+      "right",
+      "left",
+      "cap",
+      "right",
+      "above",
+      "right"
+     ],
+     "minSafeMargin": 11.57,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:body": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "no-gradient-no-stroke",
+   "quality": "low",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 594.7029220775066,
+        "t": 233.51584381047107,
+        "b": 306.31584381047105
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 228.60605287199013,
+        "r": 362.9101153719901,
+        "t": 228.66921589960714,
+        "b": 293.19721589960716
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "right",
+       "R": {
+        "l": 468.1188693427818,
+        "r": 571.5306662177818,
+        "t": 77.85942183496732,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "above",
+       "R": {
+        "l": 259.0543084715844,
+        "r": 366.1769647215844,
+        "t": 11.569794668739547,
+        "b": 123.86979466873956
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 696.53806285375,
+        "t": 128.67584381047106,
+        "b": 219.5158438104711
+       }
+      }
+     ],
+     "count": 5,
+     "attempts": [
+      "right",
+      "left",
+      "cap",
+      "right",
+      "above",
+      "right"
+     ],
+     "minSafeMargin": 11.57,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num nostroke noclip",
+      "fl fl-num nostroke noclip",
+      "fl fl-num nostroke noclip",
+      "fl fl-st nostroke",
+      "fl fl-st nostroke"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 9
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 8
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgb(255, 232, 244)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:body": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "font-tahoma",
+   "quality": "low",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 604.4192306712566,
+        "t": 233.51584381047104,
+        "b": 307.415843810471
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 223.54824037199015,
+        "r": 362.9101153719902,
+        "t": 228.66921589960714,
+        "b": 293.19721589960716
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "right",
+       "R": {
+        "l": 468.1188693427818,
+        "r": 571.5306662177818,
+        "t": 77.85942183496732,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "above",
+       "R": {
+        "l": 257.4000115965844,
+        "r": 367.8312615965844,
+        "t": 9.369794668739559,
+        "b": 123.86979466873956
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 704.5818128537499,
+        "t": 127.57584381047104,
+        "b": 219.51584381047104
+       }
+      }
+     ],
+     "count": 5,
+     "attempts": [
+      "right",
+      "left",
+      "cap",
+      "right",
+      "above",
+      "right"
+     ],
+     "minSafeMargin": 9.37,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "Tahoma",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "font-courier",
+   "quality": "low",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 594.7996017650066,
+        "t": 233.51584381047104,
+        "b": 304.11584381047106
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 223.96261537199013,
+        "r": 362.9101153719901,
+        "t": 228.66921589960714,
+        "b": 293.19721589960716
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "right",
+       "R": {
+        "l": 468.1188693427818,
+        "r": 571.5306662177818,
+        "t": 77.85942183496732,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "above",
+       "R": {
+        "l": 259.0113397215844,
+        "r": 366.2199334715844,
+        "t": 14.869794668739559,
+        "b": 123.86979466873956
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 700.7146253537499,
+        "t": 130.87584381047105,
+        "b": 219.51584381047104
+       }
+      }
+     ],
+     "count": 5,
+     "attempts": [
+      "right",
+      "left",
+      "cap",
+      "right",
+      "above",
+      "right"
+     ],
+     "minSafeMargin": 14.87,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "\"Courier New\", monospace",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:body": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "safe-area",
+   "quality": "medium",
+   "extra": "CDP Emulation.setSafeAreaInsetsOverride",
+   "steps": [
+    {
+     "step": "group",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 0.889,
+     "usedS": 0.8886255924170616,
+     "safe": {
+      "l": 47,
+      "t": 0,
+      "r": 797,
+      "b": 369
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 497.47618972042727,
+        "r": 586.4218050531528,
+        "t": 226.9435113602118,
+        "b": 296.4513312654251
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 235.6780892608032,
+        "r": 354.9904013593018,
+        "t": 236.29962585221378,
+        "b": 293.64085807970196
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 497.47618972042727,
+        "r": 573.6560201106704,
+        "t": 58.71081519989623,
+        "b": 141.24266354112848
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 320.4179604859394,
+        "r": 412.27488195943795,
+        "t": 43.668058244187854,
+        "b": 98.60644686978027
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "left",
+       "R": {
+        "l": 171.73457639320952,
+        "r": 279.4084642748094,
+        "t": 105.98023354222063,
+        "b": 222.21009136212584
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 587.4305687779206,
+        "r": 692.69114655233,
+        "t": 78.03367890995264,
+        "b": 170.00074052132703
+       }
+      }
+     ],
+     "count": 6,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "left",
+      "right"
+     ],
+     "minSafeMargin": 43.67,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "26.6588px",
+       "stroke": "7.109px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "26.6588px",
+       "stroke": "1.77725px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "26.6588px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {},
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  },
+  {
+   "name": "resize",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "844x390",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7029220775066,
+        "t": 233.18604690523554,
+        "b": 310.9860469052355
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 218.44113099699013,
+        "r": 352.7451934969901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 584.3214181712567,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "667x375 live",
+     "viewport": [
+      667,
+      375
+     ],
+     "S": 0.85,
+     "usedS": null,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 667,
+      "b": 375
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 406.0287824964007,
+        "r": 506.14177077765066,
+        "t": 223.1501539860199,
+        "b": 300.95015398601987
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 133.32920348268283,
+        "r": 267.6332659826828,
+        "t": 223.1763229803915,
+        "b": 287.7043229803915
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 406.02878249640065,
+        "r": 491.7602668714007,
+        "t": 37.063528915751675,
+        "b": 129.64752891575168
+       }
+      }
+     ],
+     "count": 3,
+     "attempts": [],
+     "minSafeMargin": 37.06,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "667x375 new",
+     "viewport": [
+      667,
+      375
+     ],
+     "S": 0.85,
+     "usedS": 0.85,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 667,
+      "b": 375
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 406.02878249640065,
+        "r": 491.1248225354631,
+        "t": 222.97292674083755,
+        "b": 289.26792674083754
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 154.99957915406952,
+        "r": 269.1580037146164,
+        "t": 227.3344729803915,
+        "b": 282.1832729803915
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 406.02878249640065,
+        "r": 479.3416262464006,
+        "t": 57.13052099516089,
+        "b": 135.87252099516087
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 236.2934379439746,
+        "r": 324.19340181116206,
+        "t": 42.325758811172264,
+        "b": 94.87615881117226
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "left",
+      "none"
+     ],
+     "minSafeMargin": 42.33,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "6.8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "1.7px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "932x430 live",
+     "viewport": [
+      932,
+      430
+     ],
+     "S": 1.103,
+     "usedS": null,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 932,
+      "b": 430
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 550.4453116215137,
+        "r": 635.5413516605763,
+        "t": 259.77120077796167,
+        "b": 326.0662007779616
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 278.0510056808886,
+        "r": 392.2094302414355,
+        "t": 264.1327470175156,
+        "b": 318.9815470175156
+       }
+      }
+     ],
+     "count": 2,
+     "attempts": [],
+     "minSafeMargin": 103.93,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "6.8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "1.7px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "932x430 new",
+     "viewport": [
+      932,
+      430
+     ],
+     "S": 1.103,
+     "usedS": 1.1025641025641026,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 932,
+      "b": 430
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 550.4453116215137,
+        "r": 660.8125869182385,
+        "t": 257.46618676539117,
+        "b": 343.0764431756476
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 241.57061334220924,
+        "r": 389.6419929871411,
+        "t": 257.1314175303361,
+        "b": 328.27767394059254
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 550.4453116215137,
+        "r": 644.9657741427978,
+        "t": 51.98859330522035,
+        "b": 154.00992663855368
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 340.05588524867414,
+        "r": 454.0494597178248,
+        "t": 38.83584159065698,
+        "b": 107.00076466758007
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 38.84,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "33.0769px",
+       "stroke": "8.82051px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "33.0769px",
+       "stroke": "2.20513px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "33.0769px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "568x320 live",
+     "viewport": [
+      568,
+      320
+     ],
+     "S": 0.85,
+     "usedS": null,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 568,
+      "b": 320
+     },
+     "labels": [],
+     "count": 0,
+     "attempts": [],
+     "minSafeMargin": null,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [],
+     "number": null,
+     "tap": []
+    },
+    {
+     "step": "568x320 new",
+     "viewport": [
+      568,
+      320
+     ],
+     "S": 0.85,
+     "usedS": 0.85,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 568,
+      "b": 320
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "left",
+       "R": {
+        "l": 150.12508026616015,
+        "r": 235.22112030522266,
+        "t": 176.76125,
+        "b": 243.05625
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "right",
+       "R": {
+        "l": 347.1378943969285,
+        "r": 461.2963189574754,
+        "t": 65.3367589579353,
+        "b": 120.18555895793531
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 186.91173901167082,
+        "r": 274.8117028788583,
+        "t": 26.665255518867,
+        "b": 79.215655518867
+       }
+      }
+     ],
+     "count": 3,
+     "attempts": [
+      "left",
+      "right",
+      "none",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 26.67,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "6.8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "1.7px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "844x390 live",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": null,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "left",
+       "R": {
+        "l": 277.81407533292764,
+        "r": 362.9101153719901,
+        "t": 223.59541695633973,
+        "b": 289.8904169563397
+       }
+      }
+     ],
+     "count": 1,
+     "attempts": [],
+     "minSafeMargin": 100.11,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "6.8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "1.7px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "25.5px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through"
+     ]
+    },
+    {
+     "step": "844x390 new",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7029220775066,
+        "t": 233.18604690523554,
+        "b": 310.9860469052355
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 218.44113099699013,
+        "r": 352.7451934969901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 584.3214181712567,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {
+    "retry": 6
+   },
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1,
+    "far": 1,
+    "prot:hud#hint": 1,
+    "prot:body": 5,
+    "prot:hud#btn-skill": 1,
+    "edge": 2
+   },
+   "errors": 0
+  },
+  {
+   "name": "reduced-switch",
+   "quality": "medium",
+   "steps": [
+    {
+     "step": "before",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 598.7029220775066,
+        "t": 233.18604690523554,
+        "b": 310.9860469052355
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 218.44113099699013,
+        "r": 352.7451934969901,
+        "t": 233.21221589960714,
+        "b": 297.74021589960716
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 584.3214181712567,
+        "t": 47.09942183496733,
+        "b": 139.68342183496733
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "left",
+       "R": {
+        "l": 307.7493410086085,
+        "r": 411.16113788360855,
+        "t": 35.223205163619134,
+        "b": 97.04720516361914
+       }
+      }
+     ],
+     "count": 4,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "left",
+      "none",
+      "none"
+     ],
+     "minSafeMargin": 35.22,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    },
+    {
+     "step": "switched",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": null,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [],
+     "count": 0,
+     "attempts": [],
+     "minSafeMargin": null,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [],
+     "number": null,
+     "tap": []
+    },
+    {
+     "step": "after",
+     "viewport": [
+      844,
+      390
+     ],
+     "S": 1,
+     "usedS": 1,
+     "safe": {
+      "l": 0,
+      "t": 0,
+      "r": 844,
+      "b": 390
+     },
+     "labels": [
+      {
+       "kind": "hurt",
+       "text": "−18",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 576.5108322337567,
+        "t": 233.93321589960715,
+        "b": 287.93321589960715
+       }
+      },
+      {
+       "kind": "perfect",
+       "text": "PERFECT!",
+       "place": "left",
+       "R": {
+        "l": 233.15620912199012,
+        "r": 362.9101153719901,
+        "t": 236.33321589960715,
+        "b": 285.53321589960717
+       }
+      },
+      {
+       "kind": "heal",
+       "text": "+24",
+       "place": "right",
+       "R": {
+        "l": 498.5899337962567,
+        "r": 575.7579025462567,
+        "t": 88.08342183496735,
+        "b": 139.68342183496736
+       }
+      },
+      {
+       "kind": "stagger",
+       "text": "เสียหลัก",
+       "place": "right",
+       "R": {
+        "l": 468.11886934278186,
+        "r": 568.1686740302819,
+        "t": 29.11496054940299,
+        "b": 75.71496054940299
+       }
+      },
+      {
+       "kind": "bonus",
+       "text": "56",
+       "place": "above",
+       "R": {
+        "l": 276.1507928465844,
+        "r": 349.0804803465844,
+        "t": 59.86979466873956,
+        "b": 123.86979466873956
+       }
+      },
+      {
+       "kind": "damage",
+       "text": "128",
+       "place": "right",
+       "R": {
+        "l": 588.54431285375,
+        "r": 666.35681285375,
+        "t": 158.89963282271918,
+        "b": 214.29963282271916
+       }
+      }
+     ],
+     "count": 6,
+     "attempts": [
+      "right",
+      "left",
+      "right",
+      "right",
+      "above",
+      "right"
+     ],
+     "minSafeMargin": 29.11,
+     "safeMarginOk": true,
+     "paintedOverlap": 0,
+     "domOutsideR": 0,
+     "classes": [
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-num",
+      "fl fl-st",
+      "fl fl-st"
+     ],
+     "number": {
+      "o": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "8px",
+       "fill": "rgb(48, 33, 63)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 1
+      },
+      "i": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "2px",
+       "fill": "rgb(255, 245, 251)",
+       "clip": "border-box",
+       "background": "none",
+       "shadows": 0
+      },
+      "f": {
+       "fontFamily": "system-ui, -apple-system, \"Segoe UI\", \"Noto Sans Thai\", Thon",
+       "fontSize": "30px",
+       "stroke": "0px",
+       "fill": "rgba(0, 0, 0, 0)",
+       "clip": "text",
+       "background": "linear-gradient(rgb(255, 232, 244) 0%, r",
+       "shadows": 0
+      }
+     },
+     "tap": [
+      "through",
+      "through",
+      "through",
+      "through",
+      "through",
+      "through"
+     ]
+    }
+   ],
+   "clearWhy": {
+    "motion": 4
+   },
+   "retireWhy": {
+    "prot:player": 2,
+    "prot:bar": 1,
+    "prot:warn": 1
+   },
+   "errors": 0
+  }
+ ]
+}
