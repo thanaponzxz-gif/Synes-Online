@@ -93,6 +93,9 @@ export const NINJA = {
   },
   /** melee areas: within this distance of the target's edge (d <= r + touchPad) the angle is not checked */
   touchPad: 0.6,
+  /** team A (DES-009 §10.6): a needle contact up to this far past the end of a 0.5 m move still counts, and contacts within this
+   *  of the nearest one are a tie (scenery first, then the lowest actor id); the needle itself never moves more than 0.5 m */
+  contactEpsilonM: 1e-9,
   dodge: { end: 9, stepM: 0.4, lastMoveTick: 8, lastIframeTick: 8, lastPerfectTick: 2, cdTicks: 24 },
   counterEcho: { ticks: 90, mul: 1.5 },
   potion: { charges: 2, heal: 45, healTick: 18, end: 19, moveMul: 0.4 },

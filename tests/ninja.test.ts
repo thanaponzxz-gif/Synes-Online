@@ -12,7 +12,7 @@ import { segmentCrossesCircle, rayCircle, walkReach } from '../shared/sim/ninjaG
 import type { NinjaWorld } from '../shared/sim/ninjaWorld.ts';
 import type { Telegraph } from '../shared/sim/world.ts';
 import type { LevelDef } from '../shared/data/level.ts';
-import { TICK } from '../shared/data/tuning.ts';
+import { TICK, NINJA } from '../shared/data/tuning.ts';
 import { fingerprint } from './rulesetDigest.ts';
 
 const golden = JSON.parse(fs.readFileSync(new URL('./fixtures/ruleset-golden.json', import.meta.url), 'utf8'));
@@ -644,6 +644,54 @@ describe('team A review, round 1', () => {
     const r = [...step(w, S1), ...until(w, 30)];
     expect(dealt(r)).toEqual([]);
     expect(of(r, 'needle-despawn').map((x) => x.e.reason)).toEqual(['scene']);
+  });
+  // ---- team A review, round 2 (DES-009 §10.6)
+  /** a needle on its 12th move from (x0, z0 - 5.5) towards -z; the target's contact distance is 0.5 + `past` */
+  const lastMove = (past: number, r = 0.38) => {
+    const w = lab(), t = dummy(w, 'puffcap', 0, -6.5);
+    t.r = r; t.z = z0 - 5.5 - (0.5 + past) - (r + 0.12);
+    return { w, t, r: [...step(w, S1), ...until(w, 30)] };
+  };
+  it('needle contact tolerance is 1e-9 m (NINJA.contactEpsilonM, in the tuning hash)', () => {
+    expect(NINJA.contactEpsilonM).toBe(1e-9);
+    // team A's case: radius 0.5 at 1.12 m from the move start computes as 0.5000000000000044 at this origin
+    const a = lastMove(0, 0.5);
+    expect(rayCircle(x0, z0 - 5.5, 0, -1, a.t.x, a.t.z, 0.62)).toBeGreaterThan(0.5);
+    expect(dealt(a.r)).toEqual([[17, a.t.id, 16]]);
+    const half = lastMove(0.5e-9);
+    expect(dealt(half.r)).toEqual([[17, half.t.id, 16]]);
+    const two = lastMove(2e-9);
+    expect(dealt(two.r)).toEqual([]);
+    expect(of(two.r, 'needle-despawn').map((x) => x.e.reason)).toEqual(['range']);
+    // the needle never moves more than 0.5 m in one move: 6 m in all
+    expect(of(half.r, 'needle-move').map((x) => x.e.z).at(-1)).toBeCloseTo(z0 - 6, 12);
+  });
+  it('needle contacts within 1e-9 m of the nearest are one tie: scenery first, then the lowest actor id (not array order)', () => {
+    const w = lab(), first = dummy(w, 'puffcap', 0.3, -3), second = dummy(w, 'puffcap', -0.3, -3 + 0.5e-9);
+    expect(first.id).toBeLessThan(second.id); // `second` is nearer by 0.5e-9 m
+    expect(dealt([...step(w, S1), ...until(w, 30)]).map((h) => h[1])).toEqual([first.id]);
+    const s = lab(), boss = dummy(s, 'prismback', 0, -4);
+    (s as unknown as { level: LevelDef }).level = { ...s.level, obstacles: [{ kind: 'rock', x: boss.x, z: boss.z - 0.5e-9, r: boss.r }] }; // the rock 0.5e-9 m farther
+    const r = [...step(s, S1), ...until(s, 30)];
+    expect([dealt(r), of(r, 'needle-despawn').map((x) => x.e.reason)]).toEqual([[], ['scene']]);
+  });
+  /** two open discs with a 0.02 m strip of no ground between them; `bridge` adds a gated disc over the strip */
+  const strip = (w: NinjaWorld, bridge: boolean | null) => {
+    (w as unknown as { level: LevelDef }).level = { ...w.level, obstacles: [], walkable: [
+      { id: 'a', type: 'circle', x: 100, z: 100, r: 2 }, { id: 'c', type: 'circle', x: 104.02, z: 100, r: 2 },
+      ...(bridge === null ? [] : [{ id: 'g', type: 'circle' as const, x: 102.01, z: 100, r: 0.1, gate: 'g' }])] };
+    if (bridge !== null) w.gates.g = bridge;
+    Object.assign(w.player, { x: 101.4, z: 100 });
+    const t = dummy(w, 'puffcap', 1.17, 0, { active: false }); // centre at 102.57, across the strip
+    return { t, r: [...step(w, S2, 1, 0), ...until(w, 18, 1, 0)] };
+  };
+  it('shadow thread line of sight: ground that is not there, or a closed gate, between the path and a target blocks it (Q10)', () => {
+    const gap = strip(lab(), null);
+    expect(dealt(gap.r)).toEqual([]);
+    const closed = strip(lab(), false);
+    expect(dealt(closed.r)).toEqual([]);
+    const open = strip(lab(), true); // the 0.1 m bridge is too narrow for the body but carries the line of sight
+    expect(dealt(open.r).map((h) => [h[1], h[2]])).toEqual([[open.t.id, 18]]);
   });
   it('a hopping puffcap still stops the shadow thread (living enemies block, no exception for the hop)', () => {
     const w = lab(), h = dummy(w, 'puffcap', 0, -1.8);

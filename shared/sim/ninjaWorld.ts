@@ -339,7 +339,7 @@ export class NinjaWorld extends World {
   }
 
   /** shadow_thread: the segment walked this tick, widened by halfWidth + the target's radius; each target once per action; nothing
-   *  is reached through scenery, a pillar or the enemy that stopped the dash */
+   *  is reached through scenery, a pillar, the enemy that stopped the dash, or across ground that is not there (lineBlocked) */
   protected corridorPulse(a: NinjaAction, idx: number, now: number) {
     const s = a.seg!;
     this.events.push({ t: 'attack-pulse', actionId: a.id, kind: a.kind, pulseIndex: idx, tick: now, x: s.x0, z: s.z0, fx: a.fx, fz: a.fz, ex: s.x1, ez: s.z1 });
@@ -356,8 +356,11 @@ export class NinjaWorld extends World {
     this.deal(a.id, a.kind, idx, targets, N.shadow.dmg, true, a, now);
   }
 
-  /** a straight line crosses a solid: an obstacle, a standing pillar, or (when given) that actor */
+  /** a straight line (radius 0) is blocked: it leaves open ground on the way (the walkable edge, a closed gate; team A Q10, DES-009
+   *  §10.6), or crosses a solid: an obstacle, a standing pillar, or (when given) that actor */
   protected lineBlocked(x0: number, z0: number, x1: number, z1: number, actorId: number): boolean {
+    const d = dist(x0, z0, x1, z1);
+    if (d > 0 && this.walkLimit(x0, z0, (x1 - x0) / d, (z1 - z0) / d, d, 0) < d) return true;
     for (const o of this.level.obstacles) if (segmentCrossesCircle(x0, z0, x1, z1, o)) return true;
     for (const pl of this.pillars) if (pl.alive && segmentCrossesCircle(x0, z0, x1, z1, pl)) return true;
     if (actorId) { const b = this.actors.find((x) => x.id === actorId); if (b?.alive && segmentCrossesCircle(x0, z0, x1, z1, b)) return true; }
@@ -392,24 +395,27 @@ export class NinjaWorld extends World {
     if (gain && !gain.stunGain && kind !== 'lumen_loom' && !ns.down && plan.some((h) => h.stunned)) { gain.stunGain = true; this.meterGain += N.meter.stunnedHit; }
   }
 
-  /** one move of a needle: a swept circle 0.5 m along its line; it stops at the first thing it touches on the way, the end of the
-   *  move included (by distance, then scenery before an actor, then the lowest id), never breaks a pillar, and is gone after 12
-   *  moves (6 m). The edge of the walkable ground counts as scenery when the ground ends inside the move. */
+  /** one move of a needle: a swept circle 0.5 m along its line; it stops at the first thing it touches, counting contacts up to
+   *  contactEpsilonM past the end of the move; contacts within contactEpsilonM of the nearest are one tie, won by scenery, then by
+   *  the lowest actor id (team A, DES-009 §10.6). It never moves more than 0.5 m, never breaks a pillar, and is gone after 12 moves
+   *  (6 m). The edge of the walkable ground counts as scenery. */
   protected moveNeedle(n: Needle, now: number) {
-    const R = N.needle.radius, L: number = N.needle.stepM;
+    const R = N.needle.radius, L: number = N.needle.stepM, eps = N.contactEpsilonM, reach = L + eps;
     n.moves++;
-    let t = Infinity, scene = false, hit: Actor | null = null;
-    const touchScene = (s: number) => { if (s <= L && s < t) { t = s; scene = true; } };
-    for (const o of this.level.obstacles) touchScene(rayCircle(n.x, n.z, n.dx, n.dz, o.x, o.z, o.r + R));
-    for (const pl of this.pillars) if (pl.alive) touchScene(rayCircle(n.x, n.z, n.dx, n.dz, pl.x, pl.z, pl.r + R));
-    const w = this.walkLimit(n.x, n.z, n.dx, n.dz, L, R);
-    if (w < L) touchScene(w);
-    for (const e of this.actors) {
-      if (!this.hittable(e)) continue;
-      const s = rayCircle(n.x, n.z, n.dx, n.dz, e.x, e.z, e.r + R);
-      if (s <= L && (s < t || (s === t && hit !== null && e.id < hit.id))) { t = s; hit = e; scene = false; }
-    }
-    if (t === Infinity) t = L;
+    const scenery: number[] = [], foes: { s: number; e: Actor }[] = [];
+    for (const o of this.level.obstacles) scenery.push(rayCircle(n.x, n.z, n.dx, n.dz, o.x, o.z, o.r + R));
+    for (const pl of this.pillars) if (pl.alive) scenery.push(rayCircle(n.x, n.z, n.dx, n.dz, pl.x, pl.z, pl.r + R));
+    const w = this.walkLimit(n.x, n.z, n.dx, n.dz, reach, R);
+    if (w < reach) scenery.push(w);
+    for (const e of this.actors) if (this.hittable(e)) foes.push({ s: rayCircle(n.x, n.z, n.dx, n.dz, e.x, e.z, e.r + R), e });
+    let first = Infinity;
+    for (const s of scenery) if (s <= reach && s < first) first = s;
+    for (const f of foes) if (f.s <= reach && f.s < first) first = f.s;
+    const tie = first + eps;
+    const scene = scenery.some((s) => s <= reach && s <= tie);
+    let hit: Actor | null = null;
+    if (!scene) for (const f of foes) if (f.s <= reach && f.s <= tie && (hit === null || f.e.id < hit.id)) hit = f.e;
+    const t = first < L ? first : L;
     n.x += n.dx * t; n.z += n.dz * t;
     this.events.push({ t: 'needle-move', id: n.id, x: n.x, z: n.z });
     if (hit) {
