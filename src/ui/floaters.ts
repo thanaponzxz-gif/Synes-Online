@@ -37,6 +37,12 @@ const HUD: { sel: string; on?: string }[] = [
   { sel: '#hint', on: 'show' }, { sel: '#banner', on: 'show' }, { sel: '#auto-bar' }, { sel: '.overlay', on: 'show' },
 ];
 
+/** QA (R3-4): one entry of the frame trace replayed by tools/qa/dmg-replay.mjs */
+export type TraceEntry =
+  | { start: { clock: number; uid: number } }
+  | { clear: string }
+  | { resync: number }
+  | { c: number; q: FQuality; reduced: boolean; S: number; safe: Rect; prot: Rect[]; actors: Record<number, [0 | 1 | 2, Rect]>; batches: { eventMs: number; list: FIn[] }[] };
 /** QA fixture: an extra protected area, optionally moving one edge outwards by `px` over `ms` of the picture clock from `from` */
 export interface QaBlocker extends Rect { move?: { edge: 't' | 'b'; px: number; ms: number; from: number } }
 interface NumEl { root: HTMLElement; o: HTMLElement; i: HTMLElement; f: HTMLElement; badge: HTMLElement; uid: number; text: string }
@@ -92,6 +98,8 @@ export class Floaters {
     ends: [] as { uid: number; cause: string; why: string; age: number; readable: boolean; painted: boolean }[] };
   private recording = false;
   private blockers: QaBlocker[] = [];
+  private trace: TraceEntry[] | null = null;
+  private boxLog: Record<string, GlyphBox | null> = {};
   private cur = noParts(); private curFlags = 0; private curMeasures = 0; private curHudReads: string[] = []; private curEvents = 0;
 
   private layer: HTMLElement;
@@ -116,7 +124,7 @@ export class Floaters {
       for (const k of ['transitionend', 'transitioncancel', 'animationend', 'animationcancel']) h.el.addEventListener(k, end);
     }
     this.book.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => { this.book.reduced = e.matches; this.book.clear('motion'); }); } catch { /* old Safari */ }
+    try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => { this.book.reduced = e.matches; this.book.clear('motion'); this.trace?.push({ clear: 'motion' }); }); } catch { /* old Safari */ }
     if (opts.debug) {
       this.debug = document.createElement('canvas'); this.debug.className = 'fl-debug';
       layer.appendChild(this.debug);
@@ -131,9 +139,9 @@ export class Floaters {
   }
 
   setHost(h: FloatHost) { this.host = h; }
-  setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear('quality'); this.book.q = q; this.buildPool(q); }
+  setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear('quality'); this.trace?.push({ clear: 'quality' }); this.book.q = q; this.buildPool(q); }
   /** retry (or a QA wipe): no label and no waiting batch from before survives into what comes next */
-  clear(why = 'retry') { this.book.clear(why); this.teleSeen.clear(); this.queue.length = 0; this.curEvents = 0; this.run++; }
+  clear(why = 'retry') { this.book.clear(why); this.trace?.push({ clear: why }); this.teleSeen.clear(); this.queue.length = 0; this.curEvents = 0; this.run++; }
   /** the result screen of `w` appears: its labels and waiting batches are cleared before it paints (§14.7 G1) */
   resultScreen(w: World) { if (w === this.world) this.clear('result-screen'); }
   /** the labels follow one run at a time: a new world drops the old one's labels and batches and starts its clock at 0 */
@@ -142,6 +150,7 @@ export class Floaters {
     this.clear('run');
     this.world = w; this.qaOffset = 0; this.finished = false;
     this.book.resync(0);
+    this.trace?.push({ resync: 0 });
   }
   /** §14.3 / §14.7: the picture clock of a frame. alpha: 0..1 between ticks while playing, null = hold (paused / frozen);
    *  dtSec: UI seconds of this frame (0 while paused / frozen), used only once the world is finished */
@@ -160,6 +169,24 @@ export class Floaters {
     this.recording = on;
     this.book.onAttempt = on ? (a) => { list.push(a); if (list.length > 6000) list.shift(); } : null;
     if (!on) { list.length = 0; this.qa.ends.length = 0; }
+  }
+  /** QA (R3-4): record what every frame gives the book, from a clean start (the live labels are cleared first) */
+  qaTrace(on: boolean) {
+    if (!on) { this.trace = null; return; }
+    this.clear('trace'); this.boxLog = {};
+    this.trace = [{ start: { clock: this.book.clock, uid: (this.book as unknown as { uid: number }).uid } }];
+  }
+  qaTraceLength() { return this.trace?.length ?? 0; }
+  qaTakeTrace() { const t = this.trace ?? []; if (this.trace) this.trace = []; return t; }
+  /** QA: the text sizes measured while tracing, and one more measured now (for sizes only a replay needs) */
+  qaTraceBoxes() { return this.boxLog; }
+  qaBox(kind: FKind, text: string, count: number) { return this.box(kind, text, count); }
+  private traceFrame(w: World, due: readonly Batch[]) {
+    const ids = new Set([...w.actors.map((x) => x.id), ...this.book.labels.map((l) => l.actor), ...due.flatMap((b) => b.list.map((e) => e.actor))]);
+    const actors: Record<number, [0 | 1 | 2, Rect]> = {};
+    for (const id of ids) { const r = { l: 0, t: 0, r: 0, b: 0 }; actors[id] = [this.host!.actorRect(id, r), r]; }
+    this.trace!.push({ c: this.book.clock, q: this.book.q, reduced: this.book.reduced, S: this.S, safe: { ...this.safe }, prot: this.prot.map((p) => ({ ...p })), actors,
+      batches: due.map((b) => ({ eventMs: b.eventMs, list: b.list.slice() })) });
   }
   /** QA: protected areas for a fixture, added to the real ones every frame until replaced */
   qaBlockers(list: QaBlocker[]) { this.blockers = list.map((b) => ({ ...b })); }
@@ -389,7 +416,10 @@ export class Floaters {
     }
     return out;
   }
-  private geo(): Geo { return { S: this.S, safe: this.safe, prot: this.prot, actor: (id, out) => this.host!.actorRect(id, out), box: this.box }; }
+  private geo(): Geo {
+    const box = !this.trace ? this.box : (kind: FKind, text: string, count: number) => (this.boxLog[`${kind}|${this.S.toFixed(3)}|${text}|${count > 1 ? count : 0}`] = this.box(kind, text, count));
+    return { S: this.S, safe: this.safe, prot: this.prot, actor: (id, out) => this.host!.actorRect(id, out), box };
+  }
 
   // ------------------------------------------------------------------ per frame
   /** one rendered frame. alpha: 0..1 between ticks while playing, null while paused / frozen; dtSec: UI seconds of this frame (0 while
@@ -406,9 +436,9 @@ export class Floaters {
     this.gather(w, bars);
     const t2 = performance.now(), geo = this.geo();
     book.frame(geo); // live labels move to this frame's geometry first, so new ones are placed against where they really are
-    const events = this.curEvents;
+    const events = this.curEvents, due = this.queue.length ? this.waiting() : [];
     if (this.queue.length) {
-      for (const batch of this.waiting()) book.ingest(batch.list, geo, batch.eventMs);
+      for (const batch of due) book.ingest(batch.list, geo, batch.eventMs);
       this.queue.length = 0; this.curEvents = 0; this.curFlags |= FF.events;
       book.frame(geo); // a merge made some R wider: checked again before it is painted
     }
@@ -452,6 +482,7 @@ export class Floaters {
     }
     for (const k in c) { qa.part[k as keyof Parts] += c[k as keyof Parts]; c[k as keyof Parts] = 0; }
     this.curFlags = 0; this.curMeasures = 0; this.curHudReads.length = 0;
+    if (this.trace) this.traceFrame(w, due); // QA only, after the timed span
     // QA bookkeeping (tool cost, outside the sample): painted R against protected rects must be zero by construction
     const t5 = performance.now();
     qa.frames++;

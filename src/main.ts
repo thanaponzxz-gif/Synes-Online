@@ -95,6 +95,12 @@ const qaLog: { t: number; e: string }[] = [];
   floatLive(on: boolean) { qaFloatLive = !!on; },
   floatPaintState() { return hud.floaters.paintState(); },
   floatBlockers(list: Parameters<typeof hud.floaters.qaBlockers>[0]) { hud.floaters.qaBlockers(list); },
+  /** QA (R3-4): record the frame trace that tools/qa/dmg-replay.mjs replays */
+  floatTrace(on: boolean) { hud.floaters.qaTrace(on); },
+  floatTraceLength() { return hud.floaters.qaTraceLength(); },
+  floatTraceTake() { return hud.floaters.qaTakeTrace(); },
+  floatTraceBoxes() { return hud.floaters.qaTraceBoxes(); },
+  floatBox(kind: Parameters<typeof hud.floaters.qaBox>[0], text: string, count: number) { return hud.floaters.qaBox(kind, text, count); },
 };
 
 // ------------------------------------------------------------------ boot
