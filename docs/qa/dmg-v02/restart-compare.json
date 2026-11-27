@@ -1,0 +1,132 @@
+{
+ "note": "60 plain game restarts (1 s of bot play each), roam seed 3, Medium, heap after forced GC; no number-overlay QA hooks used, so the same script runs on both builds. PC Edge + SwiftShader only.",
+ "before_des008": [
+  {
+   "restart": 0,
+   "heapMB": 6.99
+  },
+  {
+   "restart": 1,
+   "heapMB": 7.31
+  },
+  {
+   "restart": 5,
+   "heapMB": 7.93
+  },
+  {
+   "restart": 10,
+   "heapMB": 8.73
+  },
+  {
+   "restart": 15,
+   "heapMB": 9.26
+  },
+  {
+   "restart": 20,
+   "heapMB": 9.62
+  },
+  {
+   "restart": 25,
+   "heapMB": 9.84
+  },
+  {
+   "restart": 30,
+   "heapMB": 10.07
+  },
+  {
+   "restart": 35,
+   "heapMB": 10.32
+  },
+  {
+   "restart": 40,
+   "heapMB": 10.59
+  },
+  {
+   "restart": 45,
+   "heapMB": 10.97
+  },
+  {
+   "restart": 50,
+   "heapMB": 11.18
+  },
+  {
+   "restart": 55,
+   "heapMB": 11.43
+  },
+  {
+   "restart": 60,
+   "heapMB": 11.64
+  }
+ ],
+ "des008_v2": [
+  {
+   "restart": 0,
+   "heapMB": 7.26
+  },
+  {
+   "restart": 1,
+   "heapMB": 7.68
+  },
+  {
+   "restart": 5,
+   "heapMB": 8.28
+  },
+  {
+   "restart": 10,
+   "heapMB": 9.1
+  },
+  {
+   "restart": 15,
+   "heapMB": 9.76
+  },
+  {
+   "restart": 20,
+   "heapMB": 10.16
+  },
+  {
+   "restart": 25,
+   "heapMB": 10.37
+  },
+  {
+   "restart": 30,
+   "heapMB": 10.61
+  },
+  {
+   "restart": 35,
+   "heapMB": 10.8
+  },
+  {
+   "restart": 40,
+   "heapMB": 11.12
+  },
+  {
+   "restart": 45,
+   "heapMB": 11.52
+  },
+  {
+   "restart": 50,
+   "heapMB": 11.73
+  },
+  {
+   "restart": 55,
+   "heapMB": 11.98
+  },
+  {
+   "restart": 60,
+   "heapMB": 12.19
+  }
+ ],
+ "domAfterRestart1": {
+  "before_des008": {
+   "nodes": 496,
+   "listeners": 87,
+   "elements": 222
+  },
+  "des008_v2": {
+   "nodes": 555,
+   "listeners": 228,
+   "elements": 277
+  }
+ },
+ "domChangeRestart1to60": "none in either build"
+}
