@@ -63,6 +63,9 @@ export const ENEMIES = {
 } as const;
 
 export type EnemyKind = keyof typeof ENEMIES;
+type Plain<T> = T extends AttackDef ? AttackDef : T extends number ? number : T extends string ? string : T extends boolean ? boolean : { readonly [K in keyof T]: Plain<T[K]> };
+/** The shape of ENEMIES with plain number/string types: a ruleset may carry its own snapshot of it (`ninja-roam-1`). */
+export type EnemyTable = Plain<typeof ENEMIES>;
 
 /** Combo rulesets (DES-006 §1, REQ-003). `combat-1` = the shipped combo above (seconds, 62% chain window). The `combo-*` rulesets
  *  use INTEGER ticks at 30 Hz. dur = ticks per swing; hit = tick (counted from the swing's start tick = 0) at which the hit resolves.
@@ -75,4 +78,33 @@ export const COMBO_TICKS = {
     B: { dur: [13, 13, 20], hit: [6, 6, 9] },
     C: { dur: [15, 15, 22], hit: [6, 6, 10] },
   },
+} as const;
+
+/** Ruleset `ninja-roam-1` (DES-007 rev 4 §3, ADR-014): Seyrin. Baseline values from team A for a fun test, not a playtested
+ *  balance. Integer ticks at 30 Hz; an action started on tick t0 runs on local ticks [0, end) and "hit 5" means tick t0+5. A
+ *  cooldown is ready when now >= acceptedTick + cdTicks. Distances in m. The level and enemies of this ruleset are the roam-1
+ *  snapshot in shared/data/ninjaStage.ts. Nothing here is read by the Wayfarer rulesets, and their tuning hashes do not cover it. */
+export const NINJA = {
+  id: 'seyrin', nameTh: 'เซย์ริน', radius: 0.42, maxHp: 120, speed: 5.2,
+  dodgeFacingMode: 'hold-start', canJump: false,
+  combo: {
+    bufferTicks: 8, resetTicks: 18, moveMul: 0.35, aimRange: 3.0, cosHalf: 0.5,
+    steps: [{ end: 11, hit: 5, dmg: 10, range: 1.9 }, { end: 12, hit: 5, dmg: 12, range: 2.0 }, { end: 18, hit: 9, dmg: 20, range: 2.2 }],
+  },
+  /** melee areas: within this distance of the target's edge (d <= r + touchPad) the angle is not checked */
+  touchPad: 0.6,
+  dodge: { end: 9, stepM: 0.4, lastMoveTick: 8, lastIframeTick: 8, lastPerfectTick: 2, cdTicks: 24 },
+  counterEcho: { ticks: 90, mul: 1.5 },
+  potion: { charges: 2, heal: 45, healTick: 18, end: 19, moveMul: 0.4 },
+  needle: { id: 'echo_needle', slot: 1, releaseTick: 5, end: 18, cdTicks: 90, dmg: 16, radius: 0.12, stepM: 0.5, moves: 12 },
+  shadow: { id: 'shadow_thread', slot: 2, firstDashTick: 3, lastDashTick: 8, stepM: 0.5, end: 18, cdTicks: 150, halfWidth: 0.45, dmg: 18 },
+  knot: { id: 'resonant_knot', slot: 3, hit: 14, end: 24, cdTicks: 210, dmg: 32, stunnedBonus: 12, range: 2.5, cosHalf: 0.70710678 },
+  loom: { id: 'lumen_loom', meterCost: 4, end: 33, hits: [9, 15, 21], dmg: [18, 18, 36], range: 2.8, cosHalf: 0.5 },
+  mark: { ticks: 90, bonus: 8 },
+  meter: { max: 4, perfect: 1, stunnedHit: 1, pillar: 2 },
+  bossStunMul: 1.5,
+  /** exact boss stun windows in ticks (the Wayfarer seconds timer gives 78 / 28) */
+  bossStunTicks: { pillar: 78, miss: 27 },
+  /** team B carry-over (not in DES-007): retry is accepted from this many ticks after the fall, as the old 0.8 s */
+  retryTicks: 25,
 } as const;

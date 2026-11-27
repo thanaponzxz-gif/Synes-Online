@@ -1,12 +1,13 @@
 // Touch + keyboard input → quantized TickInput once per sim tick. Engine-agnostic.
 import { BTN, quantize, type TickInput, type AutoCmd } from '../shared/sim/input.ts';
 
-type BtnName = 'attack' | 'dodge' | 'skill' | 'skill2' | 'skill3' | 'potion' | 'retry';
-const BIT: Record<BtnName, number> = { attack: BTN.ATTACK, dodge: BTN.DODGE, skill: BTN.SKILL, skill2: BTN.SKILL2, skill3: BTN.SKILL3, potion: BTN.POTION, retry: BTN.RETRY };
+// 'ult' is pressed only by the ninja-roam-1 playtest entry (src/seyrin/ninjaQa.ts); the Wayfarer rulesets ignore BTN.ULT
+type BtnName = 'attack' | 'dodge' | 'skill' | 'skill2' | 'skill3' | 'potion' | 'retry' | 'ult';
+const BIT: Record<BtnName, number> = { attack: BTN.ATTACK, dodge: BTN.DODGE, skill: BTN.SKILL, skill2: BTN.SKILL2, skill3: BTN.SKILL3, potion: BTN.POTION, retry: BTN.RETRY, ult: BTN.ULT };
 
 export class Input {
-  private pending: Record<BtnName, number> = { attack: 0, dodge: 0, skill: 0, skill2: 0, skill3: 0, potion: 0, retry: 0 };
-  private held: Record<BtnName, boolean> = { attack: false, dodge: false, skill: false, skill2: false, skill3: false, potion: false, retry: false };
+  private pending: Record<BtnName, number> = { attack: 0, dodge: 0, skill: 0, skill2: 0, skill3: 0, potion: 0, retry: 0, ult: 0 };
+  private held: Record<BtnName, boolean> = { attack: false, dodge: false, skill: false, skill2: false, skill3: false, potion: false, retry: false, ult: false };
   private lastBits = 0;
   private stickId: number | null = null; private ox = 0; private oy = 0;
   sx = 0; sy = 0; // stick vector, screen space (y down)

@@ -8,8 +8,8 @@ import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { replayRun } from '../shared/rules/validate.ts';
-import { parseVariant, type RunVariant } from '../shared/sim/variant.ts';
-import { parseRuleset, tuningHash, type Ruleset } from '../shared/sim/ruleset.ts';
+import { parseVariant, DEFAULT_VARIANT, type RunVariant } from '../shared/sim/variant.ts';
+import { parseRuleset, tuningHash, isNinja, type Ruleset } from '../shared/sim/ruleset.ts';
 import { rewardFor } from '../shared/rules/reward.ts';
 
 const PORT = +(process.env.PORT || 8080);
@@ -17,6 +17,9 @@ const SECRET = process.env.SYNES_SECRET || crypto.randomBytes(32).toString('hex'
 const ROOT = path.resolve(process.env.SYNES_STATIC || 'dist');
 const runs = new Map<string, { seed: number; startedAt: number; done: boolean; ip: string; variant: RunVariant; ruleset: Ruleset; tuning: string }>();
 const hits = new Map<string, { n: number; t: number }>();
+/** `ninja-roam-1` is in review (DES-009): the server takes it only when started with SYNES_REVIEW_RULESETS=1, and never gives a
+ *  reward for it. Read on every request so a test (or a QA server) can switch it. */
+const reviewRulesets = () => process.env.SYNES_REVIEW_RULESETS === '1';
 
 function rateLimited(ip: string, max = 30) {
   const now = Date.now(), h = hits.get(ip) ?? { n: 0, t: now };
@@ -67,6 +70,9 @@ export const server = http.createServer(async (req, res) => {
       // run envelope (DES-006 §1): rulesetVersion is separate from the input-log format version; missing = combat-1, unknown = reject
       const ruleset = parseRuleset(body?.rulesetVersion);
       if (!ruleset) return json(res, 422, { error: 'bad-ruleset' });
+      if (isNinja(ruleset) && !reviewRulesets()) return json(res, 422, { error: 'ruleset-in-review' });
+      // the ninja's dodge has its own fixed cooldown: the Wayfarer dodge-cooldown variant means nothing there
+      if (isNinja(ruleset) && variant.dodgeCdTicks !== DEFAULT_VARIANT.dodgeCdTicks) return json(res, 422, { error: 'bad-variant' });
       const tuning = tuningHash(ruleset);
       if (body?.tuningHash !== undefined && body.tuningHash !== tuning) return json(res, 422, { error: 'tuning-mismatch' });
       const runId = crypto.randomUUID(), seed = crypto.randomBytes(4).readUInt32BE(0);
@@ -84,6 +90,7 @@ export const server = http.createServer(async (req, res) => {
       if (!verdict.ok) return json(res, 422, { error: verdict.reason });
       run.done = true;
       const s = verdict.summary!;
+      if (isNinja(run.ruleset)) return json(res, 200, { verified: true, review: true, summary: s, reward: null, rulesetVersion: run.ruleset, tuningHash: run.tuning });
       const reward = rewardFor({ victory: s.victory, seconds: s.seconds, damageTaken: s.damageTaken, deaths: s.deaths, perfect: s.perfect }, roll(String(body.runId)));
       // NOTE: no persistence yet (vertical slice). Next step: account/guest id + DB write here.
       return json(res, 200, { verified: true, summary: s, reward, rulesetVersion: run.ruleset, tuningHash: run.tuning });

@@ -104,6 +104,8 @@ export class AutoState {
   paused = false;
   /** buttons Auto sent last tick: a button is only sent when it was not sent the tick before, so the sim always sees a rising edge */
   lastB = 0;
+  /** centre distance minus the target radius at which Auto presses attack (the ninja uses her combo-1 range) */
+  protected attackReach: number = ATTACK_EXTRA;
 
   /** Apply a settings snapshot (from the input log). Turning it on saves the position as the centre. */
   apply(w: World, c: AutoCmd) {
@@ -136,8 +138,8 @@ export class AutoState {
   }
 
   // ---------------------------------------------------------------- target selection
-  private kindOk(e: Actor): boolean { const bit = kindBit(e.kind); return bit !== 0 && (this.s.kinds === 0 || (this.s.kinds & bit) !== 0); }
-  private inArea(w: World, e: Actor): boolean {
+  protected kindOk(e: Actor): boolean { const bit = kindBit(e.kind); return bit !== 0 && (this.s.kinds === 0 || (this.s.kinds & bit) !== 0); }
+  protected inArea(w: World, e: Actor): boolean {
     if (!(zonesAt(w, e.x, e.z) & this.zones)) return false;
     return this.s.hall || dist(e.x, e.z, this.cx, this.cz) <= this.s.radius;
   }
@@ -200,14 +202,14 @@ export class AutoState {
     let want = 0;
     const free = !ps.cast && ps.castT <= 0 && ps.dodgeT <= 0 && ps.drinkT <= 0;
     if (free && (this.s.skills[0] || this.s.skills[1] || this.s.skills[2])) want = this.skillChoice(w, fx, fz);
-    if (!want && d <= e.r + ATTACK_EXTRA) want = BTN.ATTACK;
+    if (!want && d <= e.r + this.attackReach) want = BTN.ATTACK;
     q.b = want & ~this.lastB;
     this.lastB = q.b;
     return q;
   }
 
   /** DES-001 §4 fixed rule order. Returns a BTN bit or 0. */
-  private skillChoice(w: World, fx: number, fz: number): number {
+  protected skillChoice(w: World, fx: number, fz: number): number {
     const p = w.player, ps = w.ps, sk = this.s.skills;
     const foes = w.actors.filter((e) => e.kind !== 'player' && e.alive && this.kindOk(e) && this.inArea(w, e));
     if (sk[0] && ps.skillCd <= 0) {

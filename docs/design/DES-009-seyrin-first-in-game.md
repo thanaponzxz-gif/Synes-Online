@@ -168,3 +168,65 @@ P2ระหว่างREVIEWใช้วิธีเลือกไฟล์ส
 
 ## 10. ผลการทำ (ทีม B)
 
+> 2026-11-28 · เซสชันสายงาน Claude Code บนเครื่องเจ้าของ · branch `claude/seyrin-engine-0af27e` (ยังไม่ merge, ไม่ได้อัปเดต Pages)
+> **ยังไม่มีไฟล์ G1/P1 ใด ๆ** → ทุกอย่างทดสอบด้วยกล่องทดสอบจากโค้ดหรือตัวสำรอง Wayfarer = **ยังไม่ผ่าน asset** · ไม่ได้นำไฟล์ Hero 001 เข้าเอนจิน (§5)
+
+### 10.1 สิ่งที่ทำ (ข้อเท็จจริง)
+| commit | งาน | หลักฐาน |
+|---|---|---|
+| `f29c772` | §3.4 golden replay ของ ruleset เก่าทั้งหมด **ก่อนแตะ `shared/`** · ฐาน implementation `fc1ada5` (แก้ `shared/` ล่าสุด `3dcc35d`) · 30 เกมบันทึก (`combat-1`, `combo-A/B/C`, `combat-2`, `roam-1`) digest ราย tick ของ event + สถานะโลกทั้งหมด + tuningHash + fingerprint ด่าน/ศัตรู + log ไม่มี ruleset = `combat-1` | `tests/rulesetGolden.test.ts`, `tests/fixtures/ruleset-golden.json` · **39/39 ผ่านเหมือนเดิมหลังงานทั้งหมด** |
+| `c90401a` | §3.3 ทางโหลด SkinnedMesh แยกจาก `loadKit`/`lambertize` (เก็บ skin/UV/PBR+ORM) · ตรวจ GLB+manifest (allowlist ตาม stage, ความยาว/marker/hold/lift ของคลิปตาม DES-007, sha256) แล้ววัดงบ/45 กระดูก/sockets/anchors/root motion/วัสดุ/texture/weight · `PreviewClock` | `src/seyrin/{inspect,loader,previewClock,spec}.ts` + 3 ไฟล์เทสต์ |
+| `5dbe2ab` | §2.2 โหมดดูท่า `?seyrin=preview` เฉพาะ dev server บน loopback (บิลด์ production ตัดออก) · world ไม่ถูก step, ไม่เรียก `/api/run/*` | `docs/qa/seyrin-p1-tool/` · `tools/qa/seyrin-preview.mjs` 28/28 |
+| (commit นี้) | §2.1/P2 กติกา `ninja-roam-1` ตาม DES-007 §3, §8.3, §8.4 ใน `shared/` + server replay + เทสต์ + ทางเข้าเล่นแบบ dev ด้วยตัวสำรอง | ด้านล่าง |
+
+**`ninja-roam-1` (sim):** `shared/sim/ninjaWorld.ts` (`NinjaWorld extends World`), `ninjaGeom.ts`, `ninjaAuto.ts`, `createWorld.ts` · ตัวเลขทั้งหมดใน `NINJA` (`shared/data/tuning.ts`) · ด่าน/ศัตรูเป็นสำเนาคงที่ของ `roam-1` ณ `fc1ada5` ใน `shared/data/ninjaStage.ts` (แก้ `roam.ts`/`ENEMIES` ภายหลังจะไม่ไหลมาที่ ruleset นี้ fingerprint ถูกตรึงกับ golden)
+- ครบตาม §3/§8.4: คอมโบ 1–3 (buffer 8, reset 18), หลบแบบหันตามทิศตอนกดค้าง (`hold-start`) เพอร์เฟกต์ tick 0–2 → counterEcho 90 tick ×1.5, ยา 2 ขวด, `echo_needle` (เข็มเป็นวงกลม r 0.12 กวาดตามเส้น), `shadow_thread` (พุ่งด้วย sweep + ทางเดินขอบเขต), `resonant_knot` (+12 เมื่อเป้ามึน), อัลติ `lumen_loom` (เกจ 4), mark 90 tick +8, เกจ (perfect +1, ตีเป้ามึน +1 ต่อท่า, ล่อชนเสา +2) · ไม่มีปัด ไม่มีกระโดด (`canJump=false`)
+- event ขั้นต่ำ §8.3 ครบ: `action-start/cancel`, `attack-pulse`, `needle-spawn/move/hit/despawn`, `mark-set/consume/expire`, `meter-change` และ `hit` มีที่มา (actionId/pulse/skill) · ลำดับใน tick ตายตัว (ศัตรูตีผู้เล่นเรียงตาม id ของผู้ตี, เข็มเก่าก่อน)
+- `shared/` ยังใช้แค่ + − × ÷ และ sqrt: ไม่มี trig, `Math.random`, `Date` (มีเทสต์สแกนทั้งโฟลเดอร์)
+- **ค่าเริ่มที่เผยแพร่ไม่เปลี่ยน:** `rulesetFromQuery` ไม่คืน `ninja-roam-1` · บิลด์ production ไม่มี `NinjaWorld` (โหลดแบบ lazy เฉพาะ `import.meta.env.DEV`) · ขนาด bundle 915.01 kB (เดิม 907.7 kB, +7.3 kB จากตัวเลข NINJA + สำเนาด่านที่ `ruleset.ts` อ้างถึง)
+
+**server:** รับ `ninja-roam-1` เฉพาะเมื่อตั้ง `SYNES_REVIEW_RULESETS=1` (อ่านทุก request) · ไม่ตั้ง → 422 `ruleset-in-review` · โหมดตรวจ: finish ตอบ `verified: true, review: true, reward: null` (ไม่ให้รางวัล) · ninja ที่ `dodgeCdTicks ≠ 17` → 422 `bad-variant` · Wayfarer ยังได้รางวัลเหมือนเดิม
+
+**client (dev เท่านั้น):** `?ruleset=ninja-roam-1` บน vite dev server ที่ loopback (`src/seyrin/gate.ts` → `ninjaQaAllowed`) · ป้ายทองบนจอ "ninja-roam-1 · ตัวสำรอง Wayfarer · ยังไม่ผ่าน asset" (`src/seyrin/ninjaQa.ts`) · ปุ่มอัลติเป็นคำสั่งจริง (ปุ่ม `ult` ใหม่ใน `src/input.ts`, คีย์ 4 บน PC) · แก้ `src/main.ts` 3 จุดสั้น ๆ, ไม่แตะ `view.ts`/HUD/`floaters.ts`/`floatCore.ts`/`tools/qa/dmg-*`
+
+### 10.2 ผลทดสอบ (PC เท่านั้น)
+- `npm test` **426/426** (18 ไฟล์; ใหม่ `ninja.test.ts` 63, `ninjaRun.test.ts` 9) · `npm run typecheck` ผ่าน · `npm run build` ผ่าน (มีคำเตือน chunk ขนาดใหญ่เดิม) · `tools/qa/lifecycle.mjs` **20/20** (บิลด์ production บน :8081 เพราะ :8080 มีโปรเซสอื่นใช้อยู่)
+- `tools/qa/ninja-placeholder.mjs` **9/9** (Edge headless + SwiftShader): dev ใช้ `NinjaWorld` + ป้าย, บอทเล่น 25 วินาทีมีท่า/หลบ/ตีโดน, บอทชนะที่ tick 2395, ไม่มี page error, ไม่เรียก run API, ปุ่มอัลติเริ่ม `lumen_loom` และใช้เกจ, **บิลด์ production ไม่สนใจ flag** (ยังเป็น `roam-1`, ไม่มีป้าย) · ภาพ `docs/qa/ninja-roam-v01/`
+- `tools/qa/seyrin-preview.mjs` 28/28 · golden ruleset เก่า 39/39 ไม่เปลี่ยน
+- tuningHash: `combat-1` d9699b1bb707439f · `combo-A` 147fa93b437e0667 · `combo-B` 5ab59eaceebd7208 · `combo-C` c8ef7bf147e0e655 · `combat-2` ec49cf340b27e848 · `roam-1` f8d13a066823f0aa (ทั้ง 6 ตรงกับ golden) · **`ninja-roam-1` 2b75fe5c62d333f8** · fingerprint สำเนาด่าน 16e20c153bafbaa1 / ศัตรู 9dfe59c9201daa4d
+- replay: log เดียวกันเล่นซ้ำได้ผลตรงกันทุก tick (seed 1, 2 และเริ่มที่บอส seed 4) และเล่นด้วย `roam-1` ได้ผลต่างกัน · mutation test 10 จุด (เช่น หน้าต่างเพอร์เฟกต์, tick ตีของคอมโบ, ระยะเข็ม, มึนตอนพลาด, โบนัส knot, buffer, ลำดับการตี, การใช้ counter, ผู้ตีที่ตายแล้ว, LOS ของเงา) ถูกจับได้ทั้งหมด ยกเว้นกรณีเสมอกันแบบพอดีของฉาก/ศัตรูซึ่งทดสอบด้วยทศนิยมไม่ได้
+- **บอททดสอบ** (`tests/bot.ts` เขียนไว้สำหรับ Wayfarer, ไม่เคยได้เพอร์เฟกต์ จึงวัดความยากหรือความสนุกไม่ได้ L-007):
+
+| ruleset / เริ่ม | seed 1–5 | เวลา |
+|---|---|---|
+| `ninja-roam-1` ปกติ | ชนะ 5/5, ตาย 0 | 79.8–84.1 s (ตี 86–92 ครั้ง, เข็ม 11–14) |
+| `roam-1` ปกติ | ชนะ 5/5 | 64.6–76.4 s |
+| `ninja-roam-1` เริ่มที่บอส | ชนะ 5/5 | 52.6–61.8 s |
+| `roam-1` เริ่มที่บอส | ชนะ 5/5 | 46.2–53.9 s |
+
+- **Android: ยังไม่ได้ทดสอบ · iPhone: ยังไม่ได้ทดสอบ** · ตัวเลข SwiftShader ไม่ใช่ผลมือถือ · ยังไม่มีคนเล่นจริง
+
+### 10.3 ยังไม่ได้ทำ
+- P1/P2 ฝั่ง asset ทั้งหมด (รอ G1 + ด่านสิทธิ์ hy3d): โมเดล, 20 คลิป, ผ้า, VFX, เสียง, กล้องสั่นของนินจา, HUD/ไอคอน/เกจของนินจา (HUD ยังเป็นของ Wayfarer และปุ่มอัลติยังเขียน "ล็อก"), event ที่ใช้ขับท่า/เสียงตอนเหวี่ยง
+- perf ที่มีความหมายกับตัวจริง, มือถือจริง, การเล่นโดยคน
+
+### 10.4 คำถามถึงทีม A (ทีม B ตีความไว้ชั่วคราวเพื่อให้เทสต์ได้ ทุกข้อแก้ได้ใน `NINJA`/`ninjaWorld.ts` โดยไม่กระทบ ruleset เก่า)
+1. ✦ (ศัตรูเสียหลัก) ใช้เฉพาะ `state === 'stunned'` ซึ่งตอนนี้มีแค่บอส ถูกไหม
+2. มึนตอนพุ่งพลาด: sim เดิมได้ **28 tick** แต่ DES-007 เขียน 27 · ninja ใช้ 78/27 ตรงตามแบบ ต้องการให้ `roam-1` เดิมคงไว้ใช่ไหม (เราไม่แตะ)
+3. หลบไม่มี input buffer (กดระหว่างคูลดาวน์ = ไม่เกิด) ถูกไหม
+4. สกิลนินจาไม่ขัดจังหวะท่าศัตรู (ไม่มี interrupt) ถูกไหม
+5. เล็งคอมโบ = ศัตรูที่ active ระยะถึงผิว ≤ 3.0 ม. (รวมค่าเท่ากัน) เลือก id น้อยสุด ถูกไหม
+6. "input ไม่เป็นศูนย์" ของ hold-start = ค่าดิบ mx/mz ≠ 0 (ไม่มี deadzone เพิ่ม) ถูกไหม
+7. หลบตัดคอมโบแล้ว ช่วงต่อคอมโบยังนับจากตอนเริ่มท่าเดิม (ไม่ต่อเวลาให้) ถูกไหม
+8. `shadow_thread` ช่วงเตรียม/ฟื้นตัวเดินไม่ได้ ถูกไหม
+9. พุ่งของ `shadow_thread` แต่ละ tick (3–8) นับเป็น pulse แยก (แต่ละเป้ายังโดนได้ครั้งเดียวต่อ action) → counterEcho ×1.5 ได้เฉพาะเป้าที่โดนใน tick แรกที่โดน เป้าที่โดนใน tick ถัดไปไม่ได้ ถูกไหม
+10. LOS ของเงา = จากจุดบนเส้นทางที่ใกล้เป้าที่สุดไปยังศูนย์เป้า ถูกบังด้วยสิ่งกีดขวาง เสาที่ยังอยู่ และ blocker · พัฟแคปที่กำลังกระโดดไม่บังและไม่ถูกข้าม ถูกไหม
+11. เข็มถูกบังด้วยสิ่งกีดขวางทุกชนิด (รวมน้ำในบ่อและพร็อพ), ขอบที่เดินได้ และประตูที่ปิด ถูกไหม
+12. counterEcho หายเมื่อผู้เล่นล้ม · ยาใช้ได้เฉพาะเมื่อ HP ไม่เต็ม · เข็มที่ค้างอยู่ฆ่าบอสหลังผู้เล่นล้ม = ชนะ ถูกไหม
+13. Auto: "ไม่มี mark ที่ใช้ได้" = `mark === null` · ทางของสกิล 2 ต้องว่างจากฉากนิ่ง ขอบเดินได้ และวงเตือน (ตรวจ 13 จุด) · กฎสกิล 3 แทบไม่เกิดในโซน Auto (ศัตรูมึนมีแค่บอส) ต้องการแบบนี้ไหม
+14. `view.ts` วาดผู้เล่นทับวงเตือน (ต่างจาก ADR-005 ที่ให้วงเตือนอยู่บนสุด) ให้ทำอย่างไรตอน P2
+15. ขนาดในฉาก: ตัวสำรองใช้สเกล 1.22 แต่ DES-007 ให้ตัวสูง 1.5 ม. ยึดอะไร
+16. PBR โลหะ (ดาบ) ในฉากที่ไม่มี env map จะดูทึบ ต้องการ env map หรือปรับวัสดุ
+17. ชื่อ field ใน manifest, สมมติฐานว่า ORM อยู่ภาพเดียวกัน, preview หันเริ่ม 180°, ค่าคลาด weight 0.02 เป็นข้อเสนอของทีม B ต้องการให้ Codex ใช้ตามนี้ไหม
+- ทีม B เลือกเองแล้ว (บอกไว้ให้ตรวจ): กดตีใหม่ทับ buffer เดิม · ลองใหม่หลังล้ม ≥ 25 tick (ค่ารอบก่อน) · หลบใช้แบบเดิม "เดินแล้วดันออก" (ไถลตามสิ่งกีดขวาง) ไม่ใช่ sweep · fx/fz ใน `action-start` = ทิศที่หัน (หลบ = ทิศก่อนหลบ) · ธง crit = counter หรือบอสมึน
+

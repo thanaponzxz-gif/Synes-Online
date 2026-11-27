@@ -1,5 +1,15 @@
 # Handoff: Synes Online
 
+## เซย์ริน: ระบบโหลด P1 + `ninja-roam-1` (DES-009) · 2026-11-28 · เซสชันสายงาน Claude Code บนเครื่องเจ้าของ
+- **ทำอะไร (branch `claude/seyrin-engine-0af27e`, ยังไม่ merge, ไม่ได้อัปเดต Pages):** `f29c772` golden replay ruleset เก่า (ฐาน `fc1ada5`) · `c90401a` ทางโหลด SkinnedMesh + ตรวจ manifest · `5dbe2ab` โหมดดูท่า `?seyrin=preview` (dev + loopback) · commit ถัดมา: กติกา `ninja-roam-1` ครบตาม DES-007 §3/§8.3/§8.4 ใน `shared/sim/ninjaWorld.ts` + server (ต้องตั้ง `SYNES_REVIEW_RULESETS=1`, ไม่ให้รางวัล) + ทางเข้า dev `?ruleset=ninja-roam-1` ด้วยตัวสำรอง Wayfarer · รายละเอียด DES-009 §10
+- **ผลทดสอบ (PC เท่านั้น):** `npm test` 426/426, typecheck, build, lifecycle 20/20, `ninja-placeholder` 9/9, `seyrin-preview` 28/28, golden ruleset เก่า 39/39 ไม่เปลี่ยน · tuningHash `ninja-roam-1` = `2b75fe5c62d333f8` · บิลด์ production ไม่สนใจ flag · **Android: ยังไม่ได้ทดสอบ · iPhone: ยังไม่ได้ทดสอบ**
+- **ยังไม่มีไฟล์ G1/P1:** ไม่ได้นำไฟล์ Hero 001 ใดเข้าเอนจิน · ภาพ/QA ใช้กล่องทดสอบจากโค้ดหรือ Wayfarer = **ยังไม่ผ่าน asset**
+- **คำถามถึงทีม A:** 17 ข้อใน DES-009 §10.4 (✦ เฉพาะบอส, มึนพลาด 28 vs 27, buffer หลบ, LOS ของเงา/เข็ม, Auto สกิล 3, ผู้เล่นทับวงเตือน, สเกล 1.22 vs 1.5 ม., ชื่อ field manifest ฯลฯ)
+- **ไฟล์ที่ชนกับ DES-008 รอบ 3 ได้:** `src/main.ts` (3 hunk สั้น: import, เลือก ruleset, lazy import), `src/input.ts` (ปุ่ม `ult`) · ไม่แตะ `view.ts`/HUD/`floaters.ts`/`floatCore.ts`/`tools/qa/dmg-*`
+- **ข้อควรรู้:** พอร์ต 8080 บนเครื่องเจ้าของมีโปรเซส `server/index.ts` อื่นค้างอยู่ (ไม่ทราบของใคร ไม่ได้ปิด) จึงรัน lifecycle บน :8081 · Playwright ใช้ `NODE_PATH` ของ Codex runtime (`docs/knowledge/LESSONS_LEARNED.md` L-027)
+- **งานค้าง:** P2 ทั้งชุด (โมเดล/20 คลิป/ผ้า/VFX/เสียง/HUD นินจา) รอ G1 + ด่านสิทธิ์ hy3d · เพลย์เทสต์โดยคน · มือถือจริง
+- **ขั้นถัดไปควรใช้โมเดล:** ตรวจคำตอบทีม A / ตรวจรับ **Opus** · แก้ตามคำตอบ + นำเข้า P1 **Sonnet** · ท่า/rig/texture **Codex 6.1+**
+
 ## เลขดาเมจ DES-008 ฉบับ 2 (รอบ 2 ของทีม B) · 2026-11-27 · เซสชันสายงานของ Claude Code บนเครื่องเจ้าของ
 - **ทำอะไร:** `489bbdb` บน `lane/free-roam` · วางเลข 4 แบบ + หาช่วง y ว่างข้างลำตัวครั้งเดียวตอน spawn (§6.2) · แก้บั๊กรอบ 1 (วางเลขด้วยกล้องเฟรมก่อน และไม่มีแถบ HP ศัตรูในพื้นที่ป้องกัน) · แยกตัวนับ created / painted / readable · ยังไม่ merge เข้า `main` และไม่ได้อัปเดต Pages
 - **ผลทดสอบ (PC Edge + SwiftShader จำลองเท่านั้น):** `npm test` 220/220, typecheck, build, lifecycle 20/20 · ชุดควบคุม Medium/Low: ฉากโล่ง 10/10, บอส 30/30, มอน 2–4 ตัว 10/10 batch · พื้นที่ทับตอน paint = 0 · CPU overlay p95 0.7–0.9 ms (เกณฑ์ PC ชั่วคราว ≤1.5) · **Android: ยังไม่ได้ทดสอบ · iPhone: ยังไม่ได้ทดสอบ** · เจ้าของยังไม่ได้ดูในเกม
