@@ -8,7 +8,10 @@ import { createWorld } from '../shared/sim/createWorld.ts';
 import { BTN } from '../shared/sim/input.ts';
 import { DEFAULT_VARIANT } from '../shared/sim/variant.ts';
 import { levelFor, enemiesFor, tuningHash, parseRuleset, rulesetFromQuery, NINJA_RULESET, RULESETS, ALL_RULESETS } from '../shared/sim/ruleset.ts';
-import { segmentCrossesCircle } from '../shared/sim/ninjaGeom.ts';
+import { segmentCrossesCircle, rayCircle, walkReach } from '../shared/sim/ninjaGeom.ts';
+import type { NinjaWorld } from '../shared/sim/ninjaWorld.ts';
+import type { Telegraph } from '../shared/sim/world.ts';
+import type { LevelDef } from '../shared/data/level.ts';
 import { TICK } from '../shared/data/tuning.ts';
 import { fingerprint } from './rulesetDigest.ts';
 
@@ -566,5 +569,116 @@ describe('what the renderer and HUD read stays consistent', () => {
     until(w, 80); expect(w.ps.dodgeCd).toBeLessThanOrEqual(0);
     step(w, S1); expect([w.ps.cast, w.skillCooldown(1).total]).toEqual([null, 90 * TICK]);
     expect(w.skillCooldown(1).remaining).toBeCloseTo(89 * TICK, 9);
+  });
+});
+
+// Team A review of DES-009, round 1 (DES-009 §10.5): sweeps over the whole path, the needle's last contact, hopping enemies,
+// a continuous Auto path check, and Auto choosing after things expire.
+describe('team A review, round 1', () => {
+  type Geo = { walkLimit(sx: number, sz: number, dx: number, dz: number, L: number, r: number): number; walkableAt(x: number, z: number, r: number): boolean };
+  const geo = (w: NinjaWorld) => w as unknown as Geo;
+  /** a ground of two circles far from everything, with a 0.04 m strip between them that a 0.42 m body cannot stand on */
+  const twoCircles = (w: NinjaWorld, secondX: number) => {
+    (w as unknown as { level: LevelDef }).level = { ...w.level, obstacles: [], walkable: [
+      { id: 'a', type: 'circle', x: 100, z: 100, r: 2 }, { id: 'b', type: 'circle', x: secondX, z: 100, r: 2 }] };
+  };
+  const tele = (w: NinjaWorld, t: Partial<Telegraph>) => w.tele.push({ id: 7000 + w.tele.length, owner: 0, atk: { id: 'lab', nameTh: 'lab', shape: 'circle', windup: 1, dmg: 1, r: 1, tipTh: '' },
+    enemyTh: 'lab', shape: 'circle', x: 0, z: 0, dx: 0, dz: 1, r: 1, w: 0, cos: 0, t: 1, total: 1, area: true, ...t });
+
+  it('the shadow thread does not cross ground it could not stand on, even when the end of the step is open again', () => {
+    const w = lab(); twoCircles(w, 103.2);
+    Object.assign(w.player, { x: 101.4, z: 100 });
+    step(w, S2, 1, 0); until(w, 4, 1, 0); // first dash tick: 101.4 -> 101.9 would jump the strip 101.58..101.62
+    expect(w.player.x).toBeCloseTo(101.58, 9);
+    until(w, 18, 1, 0);
+    expect(w.player.x).toBeCloseTo(101.58, 9);
+  });
+  it('a needle stops at the same kind of strip (scene) instead of flying through it', () => {
+    const w = lab(); twoCircles(w, 104);
+    Object.assign(w.player, { x: 101.2, z: 100, fx: 1, fz: 0 });
+    const t = dummy(w, 'puffcap', 2.5, 0, { active: false });
+    Object.assign(t, { x: 103.7, z: 100 });
+    const r = [...step(w, S1, 1, 0), ...until(w, 30)];
+    expect(dealt(r)).toEqual([]);
+    expect(of(r, 'needle-despawn').map((x) => x.e.reason)).toEqual(['scene']);
+    expect(of(r, 'needle-move').map((x) => x.e.x).at(-1)).toBeCloseTo(101.88, 9);
+  });
+  it('on the real stage every point of a walk-limited path is ground the body can stand on', () => {
+    const w = createWorld(1, undefined, NINJA_RULESET) as NinjaWorld, g = geo(w);
+    const dirs = [[1, 0], [0, 1], [-1, 0], [0, -1], [0.6, 0.8], [-0.8, 0.6], [-0.6, -0.8], [0.8, -0.6]];
+    let checked = 0;
+    for (let x = -26; x <= 26; x += 0.93) for (let z = -90; z <= 10; z += 1.07) {
+      for (const r of [0.42, 0.12]) {
+        if (!g.walkableAt(x, z, r)) continue;
+        for (const [dx, dz] of dirs) {
+          const reach = g.walkLimit(x, z, dx, dz, 3, r);
+          for (let s = 0; s <= reach; s += 0.02) if (!g.walkableAt(x + dx * s, z + dz * s, r)) throw new Error(`gap crossed from (${x}, ${z}) along (${dx}, ${dz}) at ${s}, reach ${reach}`);
+          checked++;
+        }
+      }
+    }
+    expect(checked).toBeGreaterThan(5000);
+  });
+  it('walkReach is exact on circles and capsules, joins overlapping shapes, and is 0 off the ground', () => {
+    const cap = { id: 'c', type: 'capsule', ax: 0, az: 0, bx: 10, bz: 0, r: 2 } as const;
+    expect(walkReach([cap], 1, 0, 1, 0, 20, 0.5)).toBeCloseTo(10.5, 12); // to the round end: 10 + 1.5 - 1
+    expect(walkReach([cap], 5, 0, 0, 1, 20, 0.5)).toBeCloseTo(1.5, 12); // across the band
+    expect(walkReach([cap], 0, 0, 0.6, 0.8, 20, 0.5)).toBeCloseTo(1.875, 12); // out through the side: 1.5 / 0.8
+    expect(walkReach([cap], 1, 0, 1, 0, 3, 0.5)).toBe(3); // capped at L
+    const disc = { id: 'd', type: 'circle', x: 12, z: 0, r: 2 } as const, far = { id: 'f', type: 'circle', x: 16, z: 0, r: 2 } as const;
+    expect(walkReach([cap, disc, far], 1, 0, 1, 0, 30, 0.5)).toBeCloseTo(12.5, 12); // on to x 13.5 through the disc that overlaps, not past the gap to the next
+    expect(walkReach([cap], 1, 5, 1, 0, 3, 0.5)).toBe(0);
+    expect(walkReach([{ ...cap, r: 0.4 }], 1, 0, 1, 0, 3, 0.5)).toBe(0); // too narrow for the body
+  });
+  it('a needle that touches a target exactly at the end of its 6 m still hits it', () => {
+    const w = lab(), t = dummy(w, 'puffcap', 0, -6.5);
+    t.r = 0.38; // 0.38 + needle 0.12 = 0.5: contact at exactly 0.5 m on the 12th move
+    expect(rayCircle(x0, z0 - 5.5, 0, -1, t.x, t.z, t.r + 0.12)).toBe(0.5);
+    const r = [...step(w, S1), ...until(w, 30)];
+    expect(dealt(r)).toEqual([[17, t.id, 16]]);
+    expect(of(r, 'needle-despawn').map((x) => x.e.reason)).toEqual(['hit']);
+  });
+  it('a needle meeting scenery and an enemy at the same distance stops at the scenery', () => {
+    const w = lab(), t = dummy(w, 'prismback', 0, -4); // the boss is never pushed out of scenery, so the two circles stay identical
+    (w as unknown as { level: LevelDef }).level = { ...w.level, obstacles: [{ kind: 'rock', x: t.x, z: t.z, r: t.r }] };
+    const r = [...step(w, S1), ...until(w, 30)];
+    expect(dealt(r)).toEqual([]);
+    expect(of(r, 'needle-despawn').map((x) => x.e.reason)).toEqual(['scene']);
+  });
+  it('a hopping puffcap still stops the shadow thread (living enemies block, no exception for the hop)', () => {
+    const w = lab(), h = dummy(w, 'puffcap', 0, -1.8);
+    Object.assign(h, { state: 'hop', st: 1e9, ox: h.x, oz: h.z, tx: h.x, tz: h.z });
+    const r = [...step(w, S2), ...until(w, 9)];
+    expect(w.player.z).toBeCloseTo(z0 - (1.8 - 0.97), 6);
+    expect(dealt(r).map((x) => x[1])).toEqual([h.id]);
+  });
+  it('Auto calls a shadow-thread path clear only when the whole 3 m sweep of a 0.42 m body misses every telegraph and enemy', () => {
+    const clear = (setup: (w: NinjaWorld) => void) => { const w = lab(); setup(w); return w.shadowPathClear(0, -1); };
+    expect(clear(() => {})).toBe(true);
+    // circle between the old sample points (every 0.25 m): touches the swept body at 0.46 - 0.05 <= 0.42, misses at 0.48 - 0.05
+    expect(clear((w) => tele(w, { shape: 'circle', x: x0 + 0.46, z: z0 - 0.125, r: 0.05 }))).toBe(false);
+    expect(clear((w) => tele(w, { shape: 'circle', x: x0 + 0.48, z: z0 - 0.125, r: 0.05 }))).toBe(true);
+    // a thin band beside the path: its near edge at 0.415 m touches the body, at 0.425 m it does not
+    expect(clear((w) => tele(w, { shape: 'line', x: x0 + 0.425, z: z0, dx: 0, dz: -1, r: 3, w: 0.02 }))).toBe(false);
+    expect(clear((w) => tele(w, { shape: 'line', x: x0 + 0.435, z: z0, dx: 0, dz: -1, r: 3, w: 0.02 }))).toBe(true);
+    // a cone pointing at the path from 2 m away: 1.6 m reaches within 0.4 m, 1.5 m leaves 0.5 m; pointing away only its 1.2 m core counts
+    expect(clear((w) => tele(w, { shape: 'cone', x: x0 + 2, z: z0 - 1.5, dx: -1, dz: 0, r: 1.6, cos: 0.5 }))).toBe(false);
+    expect(clear((w) => tele(w, { shape: 'cone', x: x0 + 2, z: z0 - 1.5, dx: -1, dz: 0, r: 1.5, cos: 0.5 }))).toBe(true);
+    expect(clear((w) => tele(w, { shape: 'cone', x: x0 + 2, z: z0 - 1.5, dx: 1, dz: 0, r: 1.6, cos: 0.5 }))).toBe(true);
+    // living enemies on the way, hopping or not; a dead one does not count
+    expect(clear((w) => dummy(w, 'puffcap', 0.5, -2))).toBe(false);
+    expect(clear((w) => { const h = dummy(w, 'puffcap', 0.5, -2); h.state = 'hop'; })).toBe(false);
+    expect(clear((w) => { dummy(w, 'puffcap', 0.5, -2).alive = false; })).toBe(true);
+  });
+  it('Auto chooses after this tick\'s ends: an expired mark or a finished action is already gone when it looks', () => {
+    const w = lab(), t = dummy(w, 'puffcap', 8, 0, { active: false });
+    w.ns.mark = { target: t.id, at: 0 };
+    const seen: { mark: unknown; action: unknown }[] = [];
+    const orig = w.auto.resolve.bind(w.auto);
+    w.auto.resolve = (ww, inp) => { seen[ww.tick] = { mark: (ww as NinjaWorld).ns.mark, action: (ww as NinjaWorld).ns.action?.kind ?? null }; return orig(ww, inp); };
+    step(w, A); until(w, 91);
+    expect([seen[10].action, seen[11].action]).toEqual(['attack', null]);
+    expect(seen[89].mark).not.toBeNull();
+    expect(seen[90].mark).toBeNull();
   });
 });

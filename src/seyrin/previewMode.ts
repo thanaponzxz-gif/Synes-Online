@@ -16,8 +16,10 @@ import { FPS, PREVIEW_CLIPS, STAGE_CLIPS, type ClipSpec, type Stage } from './sp
 
 export const PREVIEW_LABEL = 'ตัวอย่างเซย์ริน · ยังไม่ใช่รอบเล่น';
 const LEVEL_SEED = 7; // the same scenery seed as a normal run (main.ts)
-/** the current hero is drawn at 1.22x (view.ts); the delivered file is 1.5 m tall. Which one P1 is judged at is a team A question. */
+/** the current hero is drawn at 1.22x (view.ts); the delivered file is 1.5 m tall. Team A (DES-009 §10.5 Q15): P1/P2 are judged at
+ *  world scale 1.00 (1.5 m); 1.22 stays only as a side-by-side comparison with the old hero, not the acceptance size. */
 const GAME_SCALE = 1.22;
+const ACCEPT_SCALE = 1;
 
 const CSS = `
 #sp-root{position:fixed;inset:0;pointer-events:none;z-index:60;font:12px/1.35 system-ui,"Segoe UI","Noto Sans Thai",sans-serif;color:#fff}
@@ -57,7 +59,7 @@ export async function startSeyrinPreview(view: View, hostname: string, query: UR
   let holder: Group | null = null, hidden: Object3D[] = [];
   let clock = new PreviewClock(PREVIEW_CLIPS);
   let specs: readonly ClipSpec[] = PREVIEW_CLIPS;
-  let scale = GAME_SCALE, yawDeg = 180; // 0 = facing the camera
+  let scale: number = ACCEPT_SCALE, yawDeg = 180; // 0 = facing the camera
   let report: InspectReport | null = null;
   let loadSeq = 0, loading = false, firstFrameMs: number | null = null, pendingFirstFrame = false;
   let callsPlaceholder = 0, trisPlaceholder = 0;
@@ -136,7 +138,7 @@ export async function startSeyrinPreview(view: View, hostname: string, query: UR
   const yawButtons = ([['หน้า', 0], ['ข้าง', 90], ['หลัง', 180], ['อีกข้าง', 270]] as const).map(([l, d]) => button(l, () => { yawDeg = d; }, { 'data-yaw': String(d) }));
   const turn = [button('↺ 15°', () => { yawDeg = (yawDeg + 345) % 360; }, { 'data-turn': '-15' }), button('↻ 15°', () => { yawDeg = (yawDeg + 15) % 360; }, { 'data-turn': '15' })];
   const qButtons = (['medium', 'low'] as const).map((v) => button(v === 'medium' ? 'กลาง' : 'ต่ำ', () => { if (quality !== v) { quality = v; build(); } }, { 'data-q': v }));
-  const sButtons = ([[GAME_SCALE, '1.22 (เท่าตัวเดิม)'], [1, '1.00 (ตามไฟล์)']] as const).map(([v, l]) => button(l, () => { scale = v; }, { 'data-scale': String(v) }));
+  const sButtons = ([[ACCEPT_SCALE, '1.00 (ตามไฟล์ · ขนาดตรวจรับ)'], [GAME_SCALE, '1.22 (เทียบตัวเดิม · ไม่ใช่ขนาดตรวจรับ)']] as const).map(([v, l]) => button(l, () => { scale = v; }, { 'data-scale': String(v) }));
   const perf = el('div', { id: 'sp-perf' });
   const reportBox = el('div', { id: 'sp-report' });
   const panel = el('aside', { id: 'sp-panel' },
@@ -211,7 +213,7 @@ export async function startSeyrinPreview(view: View, hostname: string, query: UR
     if (now < nextText) return;
     nextText = now + 100;
     const spec = specs.find((c) => c.name === s.clip)!;
-    const marks = Object.entries(spec.markers ?? {}).map(([k, v]) => `${k} ${v.join('/')}`).concat(spec.poseHold ? [`hold ${spec.poseHold.join('→')}`] : [], spec.yLift ? [`lift ${spec.yLift.fromTick}-${spec.yLift.toTick} peak ${spec.yLift.peakTick}`] : []);
+    const marks = Object.entries(spec.markers ?? {}).map(([k, v]) => `${k} ${v.join('/')}`).concat((spec.poseHolds ?? []).map((h) => `hold ${h.join('→')}`), spec.yLift ? [`lift ${spec.yLift.fromTick}-${spec.yLift.toTick} peak ${spec.yLift.peakTick}`] : []);
     time.textContent = `${s.clip} · tick ${s.tick}/${spec.ticks}${spec.loop ? ' loop' : ''} (${(s.seconds).toFixed(3)} s @${FPS})\n${marks.join(' · ') || 'ไม่มี marker'}`;
     time.classList.toggle('marker', Object.values(spec.markers ?? {}).some((v) => v.includes(s.tick)));
     const sorted = [...frames].sort((a, b) => a - b), q = (f: number) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * f))] ?? 0;

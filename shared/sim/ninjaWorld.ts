@@ -9,13 +9,13 @@
 // enemy damage on the player (by source actor id; a source killed this tick does nothing) -> meter, triggers.
 //
 // The fields the renderer / HUD / Auto / test bot already read (`ps`) are mirrored from `ns` at the end of every tick.
-import { NINJA, TICK, type AttackDef } from '../data/tuning.ts';
+import { NINJA, TICK, CONE_INNER_R, type AttackDef } from '../data/tuning.ts';
 import { World, type Actor, type NinjaActionKind, type SimEvent, type Telegraph } from './world.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
 import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2 } from './math.ts';
 import { NINJA_RULESET } from './ruleset.ts';
-import { rayCircle, segClosest, segDist2, segmentCrossesCircle } from './ninjaGeom.ts';
+import { rayCircle, segClosest, segDist2, segmentCrossesCircle, walkReach, sweepTouchesTele } from './ninjaGeom.ts';
 import { NinjaAuto } from './ninjaAuto.ts';
 
 const N = NINJA;
@@ -78,7 +78,8 @@ export class NinjaWorld extends World {
     if (this.finished) return this.events;
     if (inp.auto) this.auto.apply(this, inp.auto);
     const ns = this.ns, now = this.tick;
-    if (!ns.down) inp = this.auto.resolve(this, inp);
+    // ends and expiries first, so Auto chooses from this tick's state (team A, DES-009 §10.5)
+    if (!ns.down) { this.expire(now); inp = this.auto.resolve(this, inp); }
     const edges = inp.b & ~this.prevB;
     this.prevB = inp.b;
     this.hurtQ = []; this.meterGain = 0; this.died = false;
@@ -88,7 +89,6 @@ export class NinjaWorld extends World {
       this.mirror(now); this.tick++;
       return this.events;
     }
-    this.expire(now);
     this.accept(inp, edges, now);
     this.movePlayer(inp, now);
     for (const a of this.actors) {
@@ -170,7 +170,7 @@ export class NinjaWorld extends World {
     for (const e of this.actors) {
       if (e.kind === 'player' || !e.alive || !e.active) continue;
       const d = dist(e.x, e.z, p.x, p.z) - e.r;
-      if (d <= N.combo.aimRange && d < bd) { bd = d; best = e; }
+      if (d <= N.combo.aimRange && (d < bd || (d === bd && best !== null && e.id < best.id))) { bd = d; best = e; } // id compared, not array order (team A Q5)
     }
     return best;
   }
@@ -234,7 +234,7 @@ export class NinjaWorld extends World {
     for (const pl of this.pillars) if (pl.alive) t = Math.min(t, rayCircle(sx, sz, a.fx, a.fz, pl.x, pl.z, pl.r + p.r));
     t = this.walkLimit(sx, sz, a.fx, a.fz, t, p.r);
     for (const e of this.actors) {
-      if (e.kind === 'player' || !e.alive || e.state === 'hop') continue; // a hopping puffcap is in the air (as in resolveCollisions)
+      if (e.kind === 'player' || !e.alive) continue; // every living enemy blocks, a hopping puffcap too (team A, DES-009 §10.5)
       const te = rayCircle(sx, sz, a.fx, a.fz, e.x, e.z, e.r + p.r);
       if (te < t) { t = te; blocker = e.id; }
     }
@@ -243,12 +243,9 @@ export class NinjaWorld extends World {
     a.seg = { x0: sx, z0: sz, x1: p.x, z1: p.z, blocker };
   }
 
-  /** how far (<= L) a circle of radius r can go from (sx,sz) along (dx,dz) and still stand on open walkable ground */
+  /** how far (<= L) a circle of radius r can go from (sx,sz) along (dx,dz) and stand on open walkable ground all the way */
   protected walkLimit(sx: number, sz: number, dx: number, dz: number, L: number, r: number): number {
-    if (this.walkableAt(sx + dx * L, sz + dz * L, r)) return L;
-    let lo = 0, hi = L;
-    for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (this.walkableAt(sx + dx * m, sz + dz * m, r)) lo = m; else hi = m; }
-    return lo;
+    return walkReach(this.level.walkable.filter((s) => this.shapeOpen(s)), sx, sz, dx, dz, L, r);
   }
   protected walkableAt(x: number, z: number, r: number): boolean { const [cx, cz] = this.clampWalk(x, z, r); return dist2(cx, cz, x, z) <= 1e-18; }
 
@@ -395,22 +392,24 @@ export class NinjaWorld extends World {
     if (gain && !gain.stunGain && kind !== 'lumen_loom' && !ns.down && plan.some((h) => h.stunned)) { gain.stunGain = true; this.meterGain += N.meter.stunnedHit; }
   }
 
-  /** one move of a needle: a swept circle 0.5 m along its line; it stops at the first thing on the way (scenery before an actor at
-   *  the same distance, then the lowest id), never breaks a pillar, and is gone after 12 moves (6 m) */
+  /** one move of a needle: a swept circle 0.5 m along its line; it stops at the first thing it touches on the way, the end of the
+   *  move included (by distance, then scenery before an actor, then the lowest id), never breaks a pillar, and is gone after 12
+   *  moves (6 m). The edge of the walkable ground counts as scenery when the ground ends inside the move. */
   protected moveNeedle(n: Needle, now: number) {
-    const R = N.needle.radius;
+    const R = N.needle.radius, L: number = N.needle.stepM;
     n.moves++;
-    let t: number = N.needle.stepM, scene = false;
-    for (const o of this.level.obstacles) { const s = rayCircle(n.x, n.z, n.dx, n.dz, o.x, o.z, o.r + R); if (s < t) { t = s; scene = true; } }
-    for (const pl of this.pillars) if (pl.alive) { const s = rayCircle(n.x, n.z, n.dx, n.dz, pl.x, pl.z, pl.r + R); if (s < t) { t = s; scene = true; } }
-    const w = this.walkLimit(n.x, n.z, n.dx, n.dz, t, R);
-    if (w < t) { t = w; scene = true; }
-    let hit: Actor | null = null;
+    let t = Infinity, scene = false, hit: Actor | null = null;
+    const touchScene = (s: number) => { if (s <= L && s < t) { t = s; scene = true; } };
+    for (const o of this.level.obstacles) touchScene(rayCircle(n.x, n.z, n.dx, n.dz, o.x, o.z, o.r + R));
+    for (const pl of this.pillars) if (pl.alive) touchScene(rayCircle(n.x, n.z, n.dx, n.dz, pl.x, pl.z, pl.r + R));
+    const w = this.walkLimit(n.x, n.z, n.dx, n.dz, L, R);
+    if (w < L) touchScene(w);
     for (const e of this.actors) {
       if (!this.hittable(e)) continue;
       const s = rayCircle(n.x, n.z, n.dx, n.dz, e.x, e.z, e.r + R);
-      if (s < t) { t = s; hit = e; scene = false; }
+      if (s <= L && (s < t || (s === t && hit !== null && e.id < hit.id))) { t = s; hit = e; scene = false; }
     }
+    if (t === Infinity) t = L;
     n.x += n.dx * t; n.z += n.dz * t;
     this.events.push({ t: 'needle-move', id: n.id, x: n.x, z: n.z });
     if (hit) {
@@ -493,17 +492,16 @@ export class NinjaWorld extends World {
   protected override refillAtSpring() { this.ns.potions = N.potion.charges; }
 
   // ---------------------------------------------------------------- Auto helper
-  /** Auto (DES-007 §3.3): would a shadow_thread from here along (fx,fz) run its whole length past scenery, pillars and the ground's
-   *  edge, without its path touching a telegraph that is up? */
+  /** Auto (DES-007 §3.3; team A, DES-009 §10.5): would a shadow_thread from here along (fx,fz) run its whole 3 m past scenery,
+   *  pillars, the ground's edge and every living enemy, with the player's whole body (0.42 m) never touching the drawn shape of a
+   *  telegraph that is up, anywhere along the way (continuous, not sampled)? */
   shadowPathClear(fx: number, fz: number): boolean {
-    const p = this.player, L = N.shadow.stepM * DASH_TICKS;
+    const p = this.player, L = N.shadow.stepM * DASH_TICKS, ex = p.x + fx * L, ez = p.z + fz * L;
     for (const o of this.level.obstacles) if (rayCircle(p.x, p.z, fx, fz, o.x, o.z, o.r + p.r) < L) return false;
     for (const pl of this.pillars) if (pl.alive && rayCircle(p.x, p.z, fx, fz, pl.x, pl.z, pl.r + p.r) < L) return false;
     if (this.walkLimit(p.x, p.z, fx, fz, L, p.r) < L) return false;
-    for (let i = 0; i <= 12; i++) {
-      const x = p.x + (fx * L * i) / 12, z = p.z + (fz * L * i) / 12;
-      for (const t of this.tele) if (this.insideTele(t, x, z, p.r * 0.5)) return false;
-    }
+    for (const e of this.actors) if (e.kind !== 'player' && e.alive && rayCircle(p.x, p.z, fx, fz, e.x, e.z, e.r + p.r) < L) return false;
+    for (const t of this.tele) if (sweepTouchesTele(p.x, p.z, ex, ez, p.r, t, CONE_INNER_R)) return false;
     return true;
   }
 

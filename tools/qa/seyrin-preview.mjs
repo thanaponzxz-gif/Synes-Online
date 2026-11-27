@@ -105,10 +105,12 @@ for (const [yaw, name] of [[0, 'front'], [90, 'side'], [180, 'back']]) {
   await page.waitForTimeout(400);
   await shot(`03-yaw-${name}`);
 }
-await page.click('#sp-panel button[data-scale="1"]');
-await page.waitForTimeout(300);
-await shot('04-scale-1');
+// team A (DES-009 §10.5 Q15): the viewer opens at world scale 1.00 (the acceptance size); 1.22 is only a comparison
+check('opens at world scale 1.00 (acceptance size)', await page.getAttribute('#sp-panel button[data-scale="1"]', 'aria-pressed') === 'true');
 await page.click('#sp-panel button[data-scale="1.22"]');
+await page.waitForTimeout(300);
+await shot('04-scale-1.22-compare');
+await page.click('#sp-panel button[data-scale="1"]');
 await page.click('#sp-panel button[data-q="low"]');
 await page.waitForTimeout(1500);
 s = await snap();

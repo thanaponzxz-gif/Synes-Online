@@ -146,7 +146,8 @@ export class AutoState {
   /** straight line from (x0,z0) to (x1,z1) stays inside the centre's zones on open ground */
   private pathOk(w: World, x0: number, z0: number, x1: number, z1: number): boolean {
     // free roam: a straight line through a solid obstacle is not a path (no obstacles in the path-only level: unchanged)
-    for (const o of w.level.obstacles) if (segDist2(x0, z0, x1, z1, o.x, o.z) < (o.r + PLAYER.radius) * (o.r + PLAYER.radius)) return false;
+    const pr = w.player.r; // the body of this ruleset's hero (Wayfarer: PLAYER.radius; ninja: NINJA.radius)
+    for (const o of w.level.obstacles) if (segDist2(x0, z0, x1, z1, o.x, o.z) < (o.r + pr) * (o.r + pr)) return false;
     const d = dist(x0, z0, x1, z1), n = Math.max(1, Math.ceil(d / PATH_STEP));
     for (let k = 1; k <= n; k++) {
       const t = k / n;

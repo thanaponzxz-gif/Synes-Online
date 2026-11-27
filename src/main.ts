@@ -15,6 +15,7 @@ import type { FKind } from './ui/floatCore.ts';
 import { ButtonFade } from './ui/buttonFade.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
+import { rewardHtml } from './rewardText.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
 import { rulesetFromQuery, isNinja, NINJA_RULESET } from '../shared/sim/ruleset.ts';
 import { ninjaQaAllowed } from './seyrin/gate.ts';
@@ -258,13 +259,7 @@ async function onVictory() {
     return;
   }
   const res = await net.finish(ticket.runId, log.data);
-  const show = () => {
-    if (res.verified) {
-      const r = res.reward;
-      hud.setReward(`✅ บันทึกผลแล้ว: อันดับ <b>${r.rank}</b><br>💰 ${r.gold} ทอง · ✨ ${r.exp} EXP${r.drop ? `<br>ได้รับ <span class="${r.drop.rarity}">${r.drop.nameTh}</span>` : ''}`);
-    } else hud.setReward(`⚠ บันทึกผลไม่สำเร็จ จึงยังไม่ได้รับรางวัล <small>(${res.error})</small>`);
-  };
-  setTimeout(show, 1500);
+  setTimeout(() => hud.setReward(rewardHtml(res)), 1500);
 }
 
 // ------------------------------------------------------------------ menus & lifecycle

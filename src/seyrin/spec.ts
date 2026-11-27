@@ -1,12 +1,13 @@
 // The delivery contract for Seyrin (Hero 001), copied from DES-007 rev 4 §6-8 and DES-009 §3.2/§4.
-// The manifest FIELD NAMES are team B's proposal (DES lists the content, not the JSON keys) — to be confirmed by team A.
+// Manifest field names: team B's proposal, accepted by team A in the DES-009 review (§10.5 Q17), with `poseHolds` as a list of
+// [from, to] tick ranges so every held impact pose of DES-007 §8.4 fits (the clip length does not stretch).
 export const FPS = 30;
 export const MANIFEST_SCHEMA = 'synes.hero-manifest/1';
 export type Stage = 'preview' | 'full';
 
 export interface ClipSpec {
   name: string; ticks: number; loop: boolean;
-  markers?: Record<string, number[]>; poseHold?: [number, number];
+  markers?: Record<string, number[]>; poseHolds?: [number, number][];
   yLift?: { fromTick: number; peakTick: number; toTick: number; peakM: number };
   additive?: boolean; holdLast?: boolean;
 }
@@ -18,8 +19,8 @@ const loop = (name: string, ticks: number, extra: Partial<ClipSpec> = {}): ClipS
 export const PREVIEW_CLIPS: readonly ClipSpec[] = [
   loop('idle', 48),
   loop('run', 10, { markers: { step: [0, 5] } }),
-  once('attack_01', 11, { markers: { hit: [5] } }),
-  once('attack_03', 18, { markers: { hit: [9] }, poseHold: [9, 10], yLift: { fromTick: 3, peakTick: 6, toTick: 9, peakM: 0.12 } }),
+  once('attack_01', 11, { markers: { hit: [5] }, poseHolds: [[5, 6]] }),
+  once('attack_03', 18, { markers: { hit: [9] }, poseHolds: [[9, 10]], yLift: { fromTick: 3, peakTick: 6, toTick: 9, peakM: 0.12 } }),
   once('skill_shadow_thread', 18, { markers: { dashStart: [3], dashEnd: [8] } }),
   once('dodge_f', 9),
 ];
@@ -29,11 +30,11 @@ export const FULL_CLIPS: readonly ClipSpec[] = [
   ...PREVIEW_CLIPS,
   loop('ready', 36),
   loop('walk', 24, { markers: { step: [0, 12] } }),
-  once('attack_02', 12, { markers: { hit: [5] } }),
+  once('attack_02', 12, { markers: { hit: [5] }, poseHolds: [[5, 6]] }),
   once('dodge_b', 9), once('dodge_l', 9), once('dodge_r', 9),
   once('skill_echo_needle', 18, { markers: { emit: [5] } }),
-  once('skill_resonant_knot', 24, { markers: { hit: [14] } }),
-  once('ult_lumen_loom', 33, { markers: { hit: [9, 15, 21] } }),
+  once('skill_resonant_knot', 24, { markers: { hit: [14] }, poseHolds: [[14, 15]] }),
+  once('ult_lumen_loom', 33, { markers: { hit: [9, 15, 21] }, poseHolds: [[9, 10], [15, 16], [21, 22]] }),
   once('potion', 19, { markers: { heal: [18] } }),
   once('hit_add', 6, { additive: true }),
   once('down', 18, { holdLast: true }),

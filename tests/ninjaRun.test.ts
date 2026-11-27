@@ -4,7 +4,8 @@ import type { AddressInfo } from 'node:net';
 import { createWorld } from '../shared/sim/createWorld.ts';
 import type { NinjaWorld } from '../shared/sim/ninjaWorld.ts';
 import type { SimEvent } from '../shared/sim/world.ts';
-import { InputLog, quantize } from '../shared/sim/input.ts';
+import { InputLog, quantize, type TickInput } from '../shared/sim/input.ts';
+import { PLAYER, SKILLS, ULT, ENEMIES } from '../shared/data/tuning.ts';
 import { packAuto, defaultAuto } from '../shared/sim/auto.ts';
 import { replayRun } from '../shared/rules/validate.ts';
 import { NINJA_RULESET, tuningHash } from '../shared/sim/ruleset.ts';
@@ -60,6 +61,47 @@ describe('Auto with the ninja', () => {
     expect(kinds.has('echo_needle')).toBe(true);
     for (const k of ['dodge', 'potion', 'lumen_loom', 'shadow_thread']) expect(kinds.has(k), k).toBe(false);
     expect(ev.some((e) => e.t === 'death')).toBe(true);
+  });
+});
+
+/** Multiplies every number reachable from `roots` (each object once); returns the undo. */
+function scaleNumbers(roots: object[], k: number): () => void {
+  const undo: (() => void)[] = [], seen = new Set<object>();
+  const walk = (o: Record<string, unknown>) => {
+    if (seen.has(o)) return; seen.add(o);
+    for (const key of Object.keys(o)) {
+      const v = o[key];
+      if (typeof v === 'number') { o[key] = v * k; undo.push(() => { o[key] = v; }); }
+      else if (v && typeof v === 'object') walk(v as Record<string, unknown>);
+    }
+  };
+  for (const r of roots) walk(r as Record<string, unknown>);
+  return () => { for (const u of undo.reverse()) u(); };
+}
+
+describe('the ninja reads only its own tables (team A review, round 1)', () => {
+  const trace = (w: NinjaWorld, inputs: Iterable<TickInput>) => {
+    const t: string[] = [];
+    for (const i of inputs) { t.push(JSON.stringify(w.step(i)), JSON.stringify([w.player.x, w.player.z, w.player.hp, w.ns.meter, w.ns.mark])); if (w.finished) break; }
+    return t;
+  };
+  const autoInputs = function* () {
+    yield { ...quantize(0, 0, 0), auto: packAuto({ ...defaultAuto(), enabled: true, hall: true, skills: [true, true, true] }) };
+    for (let i = 1; i < 30 * 60; i++) yield quantize(0, 0, 0);
+  };
+  it('changing every Wayfarer number (and the shared enemy table) changes nothing in a ninja game, Auto included', () => {
+    const recorded = botRun(2).log.data;
+    const play = () => [
+      ...trace(createWorld(3, undefined, NINJA_RULESET) as NinjaWorld, autoInputs()),
+      ...trace(createWorld(2, { dodgeCdTicks: 17, start: 'normal' }, NINJA_RULESET) as NinjaWorld, InputLog.iterate(recorded)),
+    ];
+    const base = play();
+    const undo = scaleNumbers([PLAYER, SKILLS, ULT, ENEMIES], 3);
+    let changed: string[];
+    try { changed = play(); } finally { undo(); }
+    expect(changed.length).toBe(base.length);
+    expect(changed.findIndex((s, i) => s !== base[i])).toBe(-1);
+    expect(play()).toEqual(base);
   });
 });
 

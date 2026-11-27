@@ -100,7 +100,7 @@ function contractProblems(spec: ClipSpec, c: any): string[] {
   if (c.ticks !== spec.ticks) p.push(`${spec.name}: ticks ${c.ticks} != ${spec.ticks}`);
   if (c.loop !== spec.loop) p.push(`${spec.name}: loop ${c.loop} != ${spec.loop}`);
   for (const [k, v] of Object.entries(spec.markers ?? {})) if (!eq(c.markers?.[k], v)) p.push(`${spec.name}: markers.${k} ${JSON.stringify(c.markers?.[k])} != ${JSON.stringify(v)}`);
-  if (spec.poseHold && !eq(c.poseHold, spec.poseHold)) p.push(`${spec.name}: poseHold ${JSON.stringify(c.poseHold)} != ${JSON.stringify(spec.poseHold)}`);
+  if (spec.poseHolds && !eq(c.poseHolds, spec.poseHolds)) p.push(`${spec.name}: poseHolds ${JSON.stringify(c.poseHolds)} != ${JSON.stringify(spec.poseHolds)}`);
   if (spec.yLift) for (const [k, v] of Object.entries(spec.yLift)) if (!(typeof c.yLift?.[k] === 'number' && near(c.yLift[k], v, 1e-6))) p.push(`${spec.name}: yLift.${k} ${c.yLift?.[k]} != ${v}`);
   if (spec.additive && c.additive !== true) p.push(`${spec.name}: additive must be true`);
   if (spec.holdLast && c.holdLast !== true) p.push(`${spec.name}: holdLast must be true`);
@@ -177,7 +177,7 @@ export async function inspectHeroFiles(bytes: Uint8Array, manifestText: string):
   }
 
   // ---- measured delivery rules --------------------------------------------------------------------------------------
-  const draws: Json[] = nodes.filter((n) => n.mesh !== undefined).flatMap((n) => (j.meshes?.[n.mesh]?.primitives ?? []).map((p: Json) => ({ ...p, skinned: n.skin !== undefined })));
+  const draws: Json[] = nodes.filter((n) => n.mesh !== undefined).flatMap((n) => (j.meshes?.[n.mesh]?.primitives ?? []).map((p: Json) => ({ ...p, skinned: n.skin !== undefined, skin: n.skin })));
   let tris = 0, nonTriangles = 0;
   for (const p of draws) {
     if ((p.mode ?? 4) !== 4) { nonTriangles++; continue; }
@@ -252,18 +252,37 @@ export async function inspectHeroFiles(bytes: Uint8Array, manifestText: string):
   const negative = nodes.filter((n) => (n.scale ?? []).some((v: number) => v < 0) || (n.matrix && det3(n.matrix) < 0)).map((n) => n.name);
   add('transforms', 'check', !negative.length, negative.length ? `negative scale: ${negative.join(', ')}` : 'no negative scale');
 
-  const weightProblems: string[] = [];
+  // team A (DES-009 §10.5 Q17): every weight finite and in [0,1]; FLOAT sums within 0.0001 of 1; normalised UNSIGNED_BYTE/SHORT
+  // sums exactly 255/65535 before normalising (glTF), i.e. within half a step after it; every joint index inside the skin
+  const weightProblems: string[] = [], weightKinds = new Set<string>();
   for (const p of draws.filter((d) => d.skinned)) {
     if (p.attributes.JOINTS_1 !== undefined) weightProblems.push('more than 4 influences (JOINTS_1 present)');
     if (p.attributes.WEIGHTS_0 === undefined) { weightProblems.push('skinned primitive without WEIGHTS_0'); continue; }
     try {
+      const acc = j.accessors?.[p.attributes.WEIGHTS_0] ?? {}, ct = acc.componentType;
+      const kind = ct === 5126 ? 'FLOAT' : ct === 5121 && acc.normalized ? 'UNSIGNED_BYTE normalised' : ct === 5123 && acc.normalized ? 'UNSIGNED_SHORT normalised' : '';
+      if (!kind) { weightProblems.push(`WEIGHTS_0 must be FLOAT or a normalised UNSIGNED_BYTE/SHORT (componentType ${ct})`); continue; }
+      weightKinds.add(kind);
+      const tol = ct === 5126 ? 1e-4 : 0.5 / (ct === 5121 ? 255 : 65535);
       const { data } = readAccessor(g, p.attributes.WEIGHTS_0);
-      let bad = 0;
-      for (let v = 0; v < data.length; v += 4) if (!near(data[v] + data[v + 1] + data[v + 2] + data[v + 3], 1, 0.02)) bad++;
-      if (bad) weightProblems.push(`${bad} vertex(es) whose weights do not sum to 1`);
+      let range = 0, sum = 0;
+      for (let v = 0; v < data.length; v += 4) {
+        const w4 = [data[v], data[v + 1], data[v + 2], data[v + 3]];
+        if (w4.some((x) => !Number.isFinite(x) || x < 0 || x > 1)) range++;
+        else if (!near(w4[0] + w4[1] + w4[2] + w4[3], 1, tol)) sum++;
+      }
+      if (range) weightProblems.push(`${kind}: ${range} vertex(es) with a weight that is not a finite number in [0, 1]`);
+      if (sum) weightProblems.push(`${kind}: ${sum} vertex(es) whose weights do not sum to 1 (tolerance ${tol.toPrecision(3)})`);
+      const joints = j.skins?.[p.skin]?.joints?.length ?? 0;
+      if (p.attributes.JOINTS_0 === undefined) weightProblems.push('skinned primitive without JOINTS_0');
+      else {
+        const bad = readAccessor(g, p.attributes.JOINTS_0).data.filter((k) => !Number.isInteger(k) || k < 0 || k >= joints).length;
+        if (bad) weightProblems.push(`${bad} joint index(es) outside the skin's ${joints} joints`);
+      }
     } catch (e) { weightProblems.push((e as Error).message); }
   }
-  add('weights', 'check', !weightProblems.length, weightProblems.join('; ') || 'every skinned vertex is weighted (max 4, normalised)');
+  add('weights', 'check', !weightProblems.length, weightProblems.join('; ') ||
+    `every skinned vertex: max 4 influences, weights in [0, 1] summing to 1 (${[...weightKinds].join(', ') || 'no weights'}), joint indices inside the skin`);
 
   let minY = Infinity, maxY = -Infinity;
   for (const p of draws.filter((d) => d.skinned)) {

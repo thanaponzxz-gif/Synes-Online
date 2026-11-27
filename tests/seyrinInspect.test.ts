@@ -66,7 +66,9 @@ describe('rejected files (blocking)', () => {
     ['a clip is missing from the manifest', (m: any) => { m.clips.pop(); }, 'clip-allowlist'],
     ['attack_03 hit marker moved', (m: any) => { m.clips.find((c: any) => c.name === 'attack_03').markers.hit = [8]; }, 'clip-contract'],
     ['attack_03 lift differs', (m: any) => { m.clips.find((c: any) => c.name === 'attack_03').yLift.peakM = 0.2; }, 'clip-contract'],
-    ['attack_03 hold differs', (m: any) => { delete m.clips.find((c: any) => c.name === 'attack_03').poseHold; }, 'clip-contract'],
+    ['attack_03 hold differs', (m: any) => { delete m.clips.find((c: any) => c.name === 'attack_03').poseHolds; }, 'clip-contract'],
+    ['attack_01 hold missing (DES-007 §8.4 holds on every impact)', (m: any) => { delete m.clips.find((c: any) => c.name === 'attack_01').poseHolds; }, 'clip-contract'],
+    ['a hold given the old single-pair way', (m: any) => { const c = m.clips.find((x: any) => x.name === 'attack_03'); c.poseHold = c.poseHolds[0]; delete c.poseHolds; }, 'clip-contract'],
     ['run is not marked looping', (m: any) => { m.clips.find((c: any) => c.name === 'run').loop = false; }, 'clip-contract'],
     ['declared length is not the DES length', (m: any) => { m.clips.find((c: any) => c.name === 'dodge_f').ticks = 10; }, 'clip-contract'],
     ['root motion declared non-zero', (m: any) => { m.rootMotion = 1; }, 'manifest'],
@@ -109,9 +111,24 @@ describe('measured rules are reported, not hidden', () => {
     ['texture sizes off budget', { textureSize: { base: 2048, orm: 512 } }, 'textures'],
     ['an extra optional extension', { usedExtension: 'KHR_materials_emissive_strength' }, 'extensions'],
     ['a vertex without weights', { zeroWeightVertex: true }, 'weights'],
+    // team A (DES-009 §10.5 Q17): FLOAT weights in [0,1], sum within 0.0001; normalised bytes sum to exactly 255; joints in the skin
+    ['a weight above 1 (1.01)', { vertex0Weights: [1.01, 0, 0, 0] }, 'weights'],
+    ['a negative weight', { vertex0Weights: [1.1, -0.1, 0, 0] }, 'weights'],
+    ['a weight that is not a number', { vertex0Weights: [NaN, 0, 0, 0] }, 'weights'],
+    ['FLOAT weights summing to 1.0002', { vertex0Weights: [0.6, 0.4002, 0, 0] }, 'weights'],
+    ['normalised byte weights summing to 256', { ubyteWeights: [128, 128, 0, 0] }, 'weights'],
+    ['a joint index outside the skin', { vertex0Joints: [999, 0, 0, 0] }, 'weights'],
   ] as const)('%s: still viewable, listed as a failed check', async (_n, o, id) => {
     const r = await run(o);
     expect(r.accepted).toBe(true);
     expect(failed(r, 'check')).toContain(id);
+  });
+  it.each([
+    ['FLOAT weights summing to 1.00005', { vertex0Weights: [0.6, 0.40005, 0, 0] }, 'FLOAT'],
+    ['normalised byte weights summing to exactly 255', { ubyteWeights: [128, 127, 0, 0] }, 'UNSIGNED_BYTE normalised'],
+  ] as const)('%s: weights pass, and the report says which storage it judged', async (_n, o, kind) => {
+    const r = await run(o);
+    expect(failed(r)).toEqual([]);
+    expect(r.items.find((i) => i.id === 'weights')!.detail).toContain(kind);
   });
 });

@@ -8,8 +8,8 @@ export interface FixtureClip { name: string; ticks: number; loop: boolean; extra
 export const PREVIEW_CLIPS: FixtureClip[] = [
   { name: 'idle', ticks: 48, loop: true },
   { name: 'run', ticks: 10, loop: true, extra: { markers: { step: [0, 5] } } },
-  { name: 'attack_01', ticks: 11, loop: false, extra: { markers: { hit: [5] } } },
-  { name: 'attack_03', ticks: 18, loop: false, extra: { markers: { hit: [9] }, poseHold: [9, 10], yLift: { fromTick: 3, peakTick: 6, toTick: 9, peakM: 0.12 } } },
+  { name: 'attack_01', ticks: 11, loop: false, extra: { markers: { hit: [5] }, poseHolds: [[5, 6]] } },
+  { name: 'attack_03', ticks: 18, loop: false, extra: { markers: { hit: [9] }, poseHolds: [[9, 10]], yLift: { fromTick: 3, peakTick: 6, toTick: 9, peakM: 0.12 } } },
   { name: 'skill_shadow_thread', ticks: 18, loop: false, extra: { markers: { dashStart: [3], dashEnd: [8] } } },
   { name: 'dodge_f', ticks: 9, loop: false },
 ];
@@ -17,11 +17,11 @@ export const FULL_CLIPS: FixtureClip[] = [
   ...PREVIEW_CLIPS,
   { name: 'ready', ticks: 36, loop: true },
   { name: 'walk', ticks: 24, loop: true, extra: { markers: { step: [0, 12] } } },
-  { name: 'attack_02', ticks: 12, loop: false, extra: { markers: { hit: [5] } } },
+  { name: 'attack_02', ticks: 12, loop: false, extra: { markers: { hit: [5] }, poseHolds: [[5, 6]] } },
   { name: 'dodge_b', ticks: 9, loop: false }, { name: 'dodge_l', ticks: 9, loop: false }, { name: 'dodge_r', ticks: 9, loop: false },
   { name: 'skill_echo_needle', ticks: 18, loop: false, extra: { markers: { emit: [5] } } },
-  { name: 'skill_resonant_knot', ticks: 24, loop: false, extra: { markers: { hit: [14] } } },
-  { name: 'ult_lumen_loom', ticks: 33, loop: false, extra: { markers: { hit: [9, 15, 21] } } },
+  { name: 'skill_resonant_knot', ticks: 24, loop: false, extra: { markers: { hit: [14] }, poseHolds: [[14, 15]] } },
+  { name: 'ult_lumen_loom', ticks: 33, loop: false, extra: { markers: { hit: [9, 15, 21] }, poseHolds: [[9, 10], [15, 16], [21, 22]] } },
   { name: 'potion', ticks: 19, loop: false, extra: { markers: { heal: [18] } } },
   { name: 'hit_add', ticks: 6, loop: false, extra: { additive: true } },
   { name: 'down', ticks: 18, loop: false, extra: { holdLast: true } },
@@ -45,6 +45,11 @@ export interface FixtureOptions {
   doubleSided?: boolean;
   alphaMode?: 'BLEND' | 'MASK';
   zeroWeightVertex?: boolean;
+  /** the four FLOAT weights / joint indices of vertex 0 */
+  vertex0Weights?: readonly number[];
+  vertex0Joints?: readonly number[];
+  /** store the weights as normalised UNSIGNED_BYTE: these raw values for vertex 0, [255, 0, 0, 0] for the rest */
+  ubyteWeights?: readonly number[];
   /** the embedded base colour image is not a decodable PNG */
   brokenImage?: boolean;
 }
@@ -144,6 +149,11 @@ class Bin {
     this.accessors.push({ bufferView: this.view(b, target), componentType: 5123, count: values.length / width, type });
     return this.accessors.length - 1;
   }
+  ubytesNormalised(values: number[], type: string, width: number, target?: number): number {
+    const b = Buffer.alloc(values.length); values.forEach((v, i) => b.writeUInt8(v, i));
+    this.accessors.push({ bufferView: this.view(b, target), componentType: 5121, normalized: true, count: values.length / width, type });
+    return this.accessors.length - 1;
+  }
   uints(values: number[]): number {
     const b = Buffer.alloc(values.length * 4); values.forEach((v, i) => b.writeUInt32LE(v, i * 4));
     this.accessors.push({ bufferView: this.view(b, 34963), componentType: 5125, count: values.length, type: 'SCALAR' });
@@ -178,8 +188,10 @@ export function buildFixtureGlb(o: FixtureOptions = {}): Uint8Array {
   const pick = (n: string) => Math.max(0, joints.indexOf(n));
   for (let v = 0; v < body.pos.length / 3; v++) {
     const y = body.pos[v * 3 + 1];
-    ji.push(pick(y < 0.6 ? 'pelvis' : y < 1.2 ? 'chest' : 'head'), 0, 0, 0);
-    jw.push(o.zeroWeightVertex && v === 0 ? 0 : 1, 0, 0, 0);
+    if (v === 0 && o.vertex0Joints) ji.push(...o.vertex0Joints); else ji.push(pick(y < 0.6 ? 'pelvis' : y < 1.2 ? 'chest' : 'head'), 0, 0, 0);
+    if (o.ubyteWeights) jw.push(...(v === 0 ? o.ubyteWeights : [255, 0, 0, 0]));
+    else if (v === 0 && o.vertex0Weights) jw.push(...o.vertex0Weights);
+    else jw.push(o.zeroWeightVertex && v === 0 ? 0 : 1, 0, 0, 0);
   }
   const blade = boxGeometry(0.03, 0.02, -0.01, 0.01, 1, 1);
   for (let i = 2; i < blade.pos.length; i += 3) blade.pos[i] = blade.pos[i] > 0 ? 0.8 : 0.0;
@@ -190,7 +202,8 @@ export function buildFixtureGlb(o: FixtureOptions = {}): Uint8Array {
     },
     indices: bin.uints(g.idx), material: 0, mode: 4,
   });
-  const bodyPrim = prim(body, { JOINTS_0: bin.ushorts(ji, 'VEC4', 4, 34962), WEIGHTS_0: bin.floats(jw, 'VEC4', 4, false, 34962) });
+  const weights = o.ubyteWeights ? bin.ubytesNormalised(jw, 'VEC4', 4, 34962) : bin.floats(jw, 'VEC4', 4, false, 34962);
+  const bodyPrim = prim(body, { JOINTS_0: bin.ushorts(ji, 'VEC4', 4, 34962), WEIGHTS_0: weights });
   const bladePrim = prim(blade, {});
   const meshes = [{ name: 'seyrin_fixture_body', primitives: [bodyPrim] }, { name: 'seyrin_fixture_blade', primitives: [bladePrim] }];
   const bodyNode = nodes.push({ name: 'fixture_body', mesh: 0, skin: 0 }) - 1;
