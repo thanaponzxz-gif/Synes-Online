@@ -71,6 +71,7 @@ let state: 'menu' | 'playing' | 'paused' | 'done' = 'menu';
 let acc = 0, last = performance.now();
 let bot: Bot | null = null;
 let portraitOk = false;
+let qaFloatLive = false; // QA: with the sim frozen, the damage-number clock runs on the real frame time (paint evidence)
 let qaPend = 0; // QA: ticks stepped since the last drawn frame (effect/camera smoothing gets exactly that much time, so stepping is deterministic)
 let qaFrozen = Q.has('qafreeze'); // ?qafreeze: start with the sim frozen (QA only; deterministic stepping via __synesQA.stepTicks)
 const qaLog: { t: number; e: string }[] = [];
@@ -90,6 +91,10 @@ const qaLog: { t: number; e: string }[] = [];
   floatAttempts() { return hud.floaters.drain(); },
   floatPerfReset(deep = false) { hud.floaters.perfReset(deep); },
   floatClear() { hud.floaters.clear(); },
+  /** QA, with the sim frozen: let the game's own frame loop run the damage-number clock in real time (the scene and HUD timers hold) */
+  floatLive(on: boolean) { qaFloatLive = !!on; },
+  floatPaintState() { return hud.floaters.paintState(); },
+  floatBlockers(list: Parameters<typeof hud.floaters.qaBlockers>[0]) { hud.floaters.qaBlockers(list); },
 };
 
 // ------------------------------------------------------------------ boot
@@ -181,7 +186,9 @@ function frame(now: number) {
   renderFrame(state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : 1, state === 'paused' || qaFrozen ? 0 : dt);
   if (!input.autoPending) autoSet.enabled = world.auto.s.enabled; // the sim may have switched it off (boss area, defeat)
   autoBar.update(autoSet.enabled, autoAllowedHere(world));
-  hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out), {
+  const numbersLive = qaFloatLive && qaFrozen && state === 'playing';
+  if (numbersLive) hud.floaters.qaAdvance(dt * 1000);
+  hud.update(world, numbersLive ? 0 : dt, (id, h, out) => view.actorScreenPos(id, h, out), {
     alpha: state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : null, dt: state === 'paused' || qaFrozen ? 0 : dt,
   });
   if (state === 'playing') btnFade.update(world);

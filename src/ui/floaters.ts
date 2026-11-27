@@ -37,6 +37,8 @@ const HUD: { sel: string; on?: string }[] = [
   { sel: '#hint', on: 'show' }, { sel: '#banner', on: 'show' }, { sel: '#auto-bar' }, { sel: '.overlay', on: 'show' },
 ];
 
+/** QA fixture: an extra protected area, optionally moving one edge outwards by `px` over `ms` of the picture clock from `from` */
+export interface QaBlocker extends Rect { move?: { edge: 't' | 'b'; px: number; ms: number; from: number } }
 interface NumEl { root: HTMLElement; o: HTMLElement; i: HTMLElement; f: HTMLElement; badge: HTMLElement; uid: number; text: string }
 interface StEl { root: HTMLElement; s: HTMLElement; uid: number; text: string }
 interface SparkEl { a: HTMLElement; b: HTMLElement; uid: number }
@@ -89,6 +91,7 @@ export class Floaters {
     hudRead: { dirty: 0, timer: 0, busy: {} as Record<string, number>, fresh: 0 }, attempts: [] as Attempt[],
     ends: [] as { uid: number; cause: string; why: string; age: number; readable: boolean; painted: boolean }[] };
   private recording = false;
+  private blockers: QaBlocker[] = [];
   private cur = noParts(); private curFlags = 0; private curMeasures = 0; private curHudReads: string[] = []; private curEvents = 0;
 
   private layer: HTMLElement;
@@ -157,6 +160,21 @@ export class Floaters {
     this.recording = on;
     this.book.onAttempt = on ? (a) => { list.push(a); if (list.length > 6000) list.shift(); } : null;
     if (!on) { list.length = 0; this.qa.ends.length = 0; }
+  }
+  /** QA: protected areas for a fixture, added to the real ones every frame until replaced */
+  qaBlockers(list: QaBlocker[]) { this.blockers = list.map((b) => ({ ...b })); }
+  /** QA: what this frame set for painting — each label's element opacity (0 when it has none), its R and the area R shares with any
+   *  protected rect of this frame */
+  paintState() {
+    const round = (v: number) => Math.round(v * 100) / 100;
+    return {
+      clock: this.book.clock, domOutsideR: this.qa.domOutsideR,
+      labels: this.book.labels.map((l) => {
+        const el = this.byUid.get(l.uid), shown = !!el && el.root.style.display !== 'none';
+        return { uid: l.uid, kind: l.kind, text: l.text, op: shown ? Number(el.root.style.opacity) : 0, R: { l: round(l.screen.l), t: round(l.screen.t), r: round(l.screen.r), b: round(l.screen.b) },
+          shared: this.prot.reduce((n, p) => n + overlapArea(l.screen, p), 0) };
+      }),
+    };
   }
   /** QA: take what record() collected since the last call */
   drain() { return { attempts: this.qa.attempts.splice(0), ends: this.qa.ends.splice(0) }; }
@@ -340,6 +358,10 @@ export class Floaters {
         h.r = r.width > 0 && r.height > 0 ? { l: r.left, t: r.top, r: r.right, b: r.bottom } : { l: 0, t: 0, r: 0, b: 0 };
       }
       if (h.r.r > h.r.l) prot.push(tag(grow({ ...h.r }, 8 * S), h.tag));
+    }
+    for (const b of this.blockers) {
+      const k = b.move ? Math.min(1, Math.max(0, (this.book.clock - b.move.from) / b.move.ms)) * b.move.px : 0;
+      prot.push(tag({ l: b.l, r: b.r, t: b.move?.edge === 't' ? b.t - k : b.t, b: b.move?.edge === 'b' ? b.b + k : b.b }, 'qa'));
     }
     const p = this.cur; p.warn += q1 - q0; p.body += f0 - q1; p.hud += performance.now() - q2;
   }
