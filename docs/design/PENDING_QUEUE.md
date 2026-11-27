@@ -8,4 +8,4 @@
 | P4 | spire/ศาล S1–S10 | `docs/qa/spire-shrine-v01/README.md` | ดีไซน์ที่ DES-004 ไม่ได้ระบุ |
 | P3 | กล้อง C1–C4, สีวงเตือน 4 จุด, แถบ HP บอส, HUD B1–B11 | `docs/design/DES-006-teamB.md` | คำถามดีไซน์ค้าง |
 | P2 | ลานบอส 1–6, VFX 1–7, ฉากเปิด AQ1–AQ4, โลก S1–S16 | `DES-004` §8, `docs/qa/*-v01/README.md` | คำถามดีไซน์ค้าง |
-| P1 | Golden Reference ของ Hero 001 + ไฟล์ Tripo | `assets/source/hero_001/` (**ยังไม่มีใน repo**) | ต้นฉบับมาจาก GPT + Tripo |
+| P1 | Golden Reference ของ Hero 001 + ไฟล์ Tripo | `assets/source/hero_001/` (**ยังไม่มีใน repo**) | ต้นฉบับมาจาก GPT + Tripo · 2026-11-27 ต่อเป็น REQ-007 (นินจา: ท่า/rig/texture โดย Codex, ADR-013) |

@@ -37,6 +37,7 @@
 | 010 | Free Asset First | environment ทั่วไปใช้ asset ฟรี CC0 ได้ (ตรวจ license + ลงทะเบียน) · ตัวละคร/ศัตรู/บอส/UI/เสียงยังต้องเป็นต้นฉบับ · QA ภาพแยกจากผู้ผลิต + Before/After + perf |
 | 011 | Claude-First Allocation | Claude = Engineering หลัก ~65% (Opus PM/ตรวจรับ · Fable วิเคราะห์ยาก · Sonnet ลงมือ/QA) · Codex = Technical Production ~35% (Sol asset/Blender MCP/texture · Astra แผน tech art/รีวิวเสี่ยงสูง) · ทีม A คุมดีไซน์ทั้งหมด · ห้ามทำงานซ้ำกับ Codex · ห้ามผลิต asset ก่อนแบบอนุมัติ (`docs/team/2026-11-25-claude-first-allocation.md`) |
 | 012 | เดินอิสระ `roam-1` | ด่านผูกกับ ruleset · `roam-1` = ทุ่งเดินอิสระ + สิ่งกีดขวางวงกลม + ประตูลานบอส · ค่าด่านชั่วคราวรอทีม A (REQ-006) · `lane/free-roam` เปิดเป็นค่าเริ่ม (`?roam=0` = เดิม) |
+| 013 | **Codex ทำท่า/rig/texture** (กฎเหล็ก) | แอนิเมชัน, rig และรายละเอียด texture ของตัวละครและ asset เป็นงานของ Codex รุ่น 6.1 ขึ้นไป · Claude นำเข้าเกม (ตัวเล่นท่า three.js) ทดสอบ วัด perf · ใบงานแรก REQ-007 (นินจา) |
 
 ## 4. สถานะปัจจุบัน (อัปเดตทุกครั้งที่จบรอบ)
 - **รอบ 3-A (2026-11-27): เดินอิสระขั้น 1 เสร็จบน `lane/free-roam`** (ยังไม่ merge) · test 165/165, lifecycle 20/20 · tris +24% FPS ไม่ต่างใน SwiftShader · Android/iPhone ยังไม่ได้ทดสอบ · `docs/qa/roam-v01/` · ค่าด่านรอทีม A (REQ-006) · หญ้าพริ้วไหว r4 (`d7ff5c5`) ยังไม่อยู่บน remote · ลิงก์ลองเล่น https://claude.ai/artifact/T4LK7cJv8fKgAqtDNr45nE
