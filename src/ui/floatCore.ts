@@ -137,8 +137,9 @@ export type Place = 'above' | 'right' | 'left' | 'below';
 const ODD: readonly Place[] = ['above', 'right', 'left', 'below'], EVEN: readonly Place[] = ['above', 'left', 'right', 'below'];
 /** try order for the actor's n-th label (1-based) */
 export const placeOrder = (n: number) => (n % 2 === 1 ? ODD : EVEN);
-/** px at S = 1: gap g to the body, safe-view inset, spawn rounding margin ε, farthest R centre from the nearest point of the body */
-export const LAYOUT = { gap: 10, edge: 8, eps: 0.5, near: 128 } as const;
+/** px at S = 1: gap g to the body, safe-view inset, spawn rounding margin ε, farthest R centre from the nearest point of the body, and
+ *  the y room a side spot keeps from both ends of its free interval when there is room (§6.2 step 5, v3) */
+export const LAYOUT = { gap: 10, edge: 8, eps: 0.5, near: 128, inset: 7.5 } as const;
 /** float tolerance: boxes that only touch do not overlap */
 const TOL = 1e-6;
 
@@ -171,9 +172,10 @@ function sideLane(place: 'right' | 'left', a: Rect, w: number, h: number, safe: 
   return lo > hi + TOL ? 'noheight' : { x, lo, hi: Math.max(lo, hi) };
 }
 
-/** Steps 4–5: every area sharing width with the lane's column forbids the open centre range (area.t − hh, area.b + hh). The free y
- *  nearest `want` in what is left of [lo, hi] wins, a tie takes the smaller y; a range that only touches stays free. */
-function nearestFree(colL: number, colR: number, hh: number, lo: number, hi: number, want: number, lists: readonly (readonly Rect[])[], cutBy: Set<string>): number | null {
+/** Steps 4–5: every area sharing width with the lane's column forbids the open centre range (area.t − hh, area.b + hh); a range that only
+ *  touches stays free. Every free interval [L, U] left in [lo, hi] (single points too) offers `want` clamped into [L + d, U − d] with
+ *  d = min(inset, (U − L)/2) — the middle when it is narrow. The offer nearest `want` wins, a tie takes the smaller y. */
+function nearestFree(colL: number, colR: number, hh: number, lo: number, hi: number, want: number, inset: number, lists: readonly (readonly Rect[])[], cutBy: Set<string>): number | null {
   const ranges: [number, number][] = [];
   for (const list of lists) for (const p of list) {
     if (!(p.l < colR - TOL && p.r > colL + TOL)) continue;
@@ -183,9 +185,10 @@ function nearestFree(colL: number, colR: number, hh: number, lo: number, hi: num
   }
   ranges.sort((a, b) => a[0] - b[0]);
   let best: number | null = null, start = lo;
-  const take = (s: number, end: number) => {
-    if (s > end + TOL) return;
-    const y = Math.min(Math.max(want, s), Math.max(s, end));
+  const take = (L: number, end: number) => {
+    if (L > end + TOL) return;
+    const U = Math.max(L, end), d = Math.min(inset, (U - L) / 2);
+    const y = Math.min(Math.max(want, L + d), U - d);
     if (best === null || Math.abs(y - want) < Math.abs(best - want) - TOL) best = y; // pieces come in rising y: a tie keeps the smaller
   };
   for (const [from, to] of ranges) { take(start, Math.min(from, hi)); if (to > start) start = to; }
@@ -198,7 +201,7 @@ function seekSide(place: 'right' | 'left', a: Rect, w: number, h: number, geo: G
   const lane = sideLane(place, a, w, h, geo.safe, geo.S);
   if (typeof lane === 'string') return lane;
   const e = LAYOUT.eps * geo.S, cut = new Set<string>();
-  const y = nearestFree(lane.x - w / 2 - e, lane.x + w / 2 + e, h / 2 + e, lane.lo, lane.hi, bodyMidY(a, geo.safe), [geo.prot, others], cut);
+  const y = nearestFree(lane.x - w / 2 - e, lane.x + w / 2 + e, h / 2 + e, lane.lo, lane.hi, bodyMidY(a, geo.safe), LAYOUT.inset * geo.S, [geo.prot, others], cut);
   return y ?? `full(${[...cut].sort().join('+')})`;
 }
 

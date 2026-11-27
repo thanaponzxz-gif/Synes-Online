@@ -1,5 +1,6 @@
 // DES-008 damage numbers: the DOM-free core (timing, merge / caps / priority, placement against protected areas).
-// Placement follows DES-008 v2 §6.2: four patterns (above, right, left, below), side lanes searched for free y intervals at spawn.
+// Placement follows DES-008 v3 §6.2: four patterns (above, right, left, below), side lanes searched for free y intervals at spawn;
+// inside a free interval [L, U] the spot keeps d = min(7.5·S, (U − L)/2) from both ends (step 5).
 // Expected positions are worked out by hand from the §6.2 rules (numbers in the comments), never by asking the production code.
 import { describe, it, expect } from 'vitest';
 import {
@@ -161,7 +162,7 @@ describe('DES-008 v2 §6.2 four patterns and the side free-interval search', () 
       expect(b.labels[0].place).toBe(place);
     }
   });
-  it('team A boss fixture: above fails, right lane centre y lands in 119..122 (nearest the body middle 138.5 is 122), nothing covered', () => {
+  it('team A boss fixture: above fails, the free lane is 119..122 and v3 takes its middle 120.5 (not the 122 end), nothing covered', () => {
     const { geo, prot } = bossFixture();
     const b = new FloatBook(); b.ingest([hit(7, 28)], geo);
     expect(b.labels.length).toBe(1);
@@ -169,10 +170,10 @@ describe('DES-008 v2 §6.2 four patterns and the side free-interval search', () 
     expect(l.place).toBe('right');
     expect(l.screen.r - l.screen.l).toBeCloseTo(100, 6); expect(l.screen.b - l.screen.t).toBeCloseTo(103, 6);
     expect(centre(l).y).toBeGreaterThanOrEqual(119 - 1e-6); expect(centre(l).y).toBeLessThanOrEqual(122 + 1e-6);
-    expectCentre(l, 560, 122);
+    expectCentre(l, 560, 120.5);
     for (const p of prot) expect(overlap(l.screen, p)).toBeLessThan(1e-4);
     play(b, geo, 400);
-    expect(b.labels.length).toBe(1); expectCentre(b.labels[0], 560, 122);
+    expect(b.labels.length).toBe(1); expectCentre(b.labels[0], 560, 120.5);
     expect(b.stats.readable).toBe(1);
   });
   it('the gap narrows to one point (HUD down to y 70) → still placed at 122; HUD to y 71 closes both lanes → dropped', () => {
@@ -183,27 +184,27 @@ describe('DES-008 v2 §6.2 four patterns and the side free-interval search', () 
     c.ingest([hit(7, 28)], shut.geo);
     expect(c.labels.length).toBe(0); expect(c.stats.dropPlace).toBe(1);
   });
-  it('a lane cut into several free intervals: the free y nearest the body middle wins', () => {
+  it('a lane cut into several free intervals: the inset candidate nearest the body middle wins', () => {
     const { geo, actors, prot } = exact(100, 62); actors.set(1, { l: 400, r: 430, t: 100, b: 300 }); // body middle 200
     // forbidden centre y for a strip [t, b] is (t − 31.5, b + 31.5): strips give (28.5, 101.5), (148.5, 221.5), (218.5, 291.5)
     prot.push({ l: 440, r: 540, t: 60, b: 70 }, { l: 440, r: 540, t: 180, b: 190 }, { l: 440, r: 540, t: 250, b: 260 });
     const b = new FloatBook(); b.ingest([word(1)], geo);
     expect(b.labels[0].place).toBe('right');
-    expectCentre(b.labels[0], 490, 148.5);
+    expectCentre(b.labels[0], 490, 141); // 148.5 − 7.5
   });
   it('a narrow free interval close to the body middle beats a wide one farther away (no sampling at fixed fractions)', () => {
     const { geo, actors, prot } = exact(100, 62); actors.set(1, { l: 400, r: 430, t: 100, b: 300 });
     // above blocked by the first strip; forbidden (28.5, 101.5), (148.5, 219), (222, 300) → free 219..222 and 101.5..148.5
     prot.push({ l: 440, r: 540, t: 60, b: 70 }, { l: 440, r: 540, t: 180, b: 187.5 }, { l: 440, r: 540, t: 253.5, b: 268.5 });
     const b = new FloatBook(); b.ingest([word(1)], geo);
-    expectCentre(b.labels[0], 490, 219);
+    expectCentre(b.labels[0], 490, 220.5); // narrower than 15: the middle
   });
   it('two free y at the same distance from the body middle: the smaller y wins', () => {
     const { geo, actors, prot } = exact(100, 62); actors.set(1, { l: 400, r: 430, t: 100, b: 300 });
-    // forbidden (28.5, 101.5) and (148.5, 251.5): 148.5 and 251.5 are both 51.5 from 200
+    // forbidden (28.5, 101.5) and (148.5, 251.5): the inset candidates 141 and 259 are both 59 from 200
     prot.push({ l: 440, r: 540, t: 60, b: 70 }, { l: 440, r: 540, t: 180, b: 220 });
     const b = new FloatBook(); b.ingest([word(1)], geo);
-    expectCentre(b.labels[0], 490, 148.5);
+    expectCentre(b.labels[0], 490, 141);
   });
   it('right lane full, left lane free → left, at x = body left − 10 − w/2', () => {
     const { geo, actors, prot } = exact(100, 62); actors.set(1, { l: 400, r: 430, t: 200, b: 300 });
@@ -271,16 +272,16 @@ describe('DES-008 v2 §6.2 after spawn: no re-search, no jumps, retired when uns
   it('a side label keeps its side and its offset from the body middle: it does not move back when the lane opens', () => {
     const { geo, prot } = lane();
     const b = new FloatBook(); b.ingest([word(1)], geo); b.frame(geo);
-    expectCentre(b.labels[0], 490, 148.5);
+    expectCentre(b.labels[0], 490, 141);
     prot.length = 0; b.advance(16); b.frame(geo);
-    expectCentre(b.labels[0], 490, 148.5);
+    expectCentre(b.labels[0], 490, 141);
   });
   it('it follows the body: x stays beside the body edge, y = new body middle + the spawn offset', () => {
     const { geo, actors, prot } = lane();
     const b = new FloatBook(); b.ingest([word(1)], geo);
     prot.length = 0; actors.set(1, { l: 420, r: 450, t: 110, b: 310 });
     b.advance(16); b.frame(geo);
-    expectCentre(b.labels[0], 510, 158.5);
+    expectCentre(b.labels[0], 510, 151); // offset −59 kept from the new middle 210
   });
   it('a warning that appears under a live side label retires it in that same frame, and it never comes back', () => {
     const { geo, prot } = lane();
@@ -313,6 +314,87 @@ describe('DES-008 v2 §6.2 after spawn: no re-search, no jumps, retired when uns
     expect(b.labels.length).toBe(2);
     actors.set(2, { l: 110, r: 140, t: 200, b: 300 }); b.advance(16); b.frame(geo);
     expect(b.labels.map((l) => l.actor)).toEqual([1]);
+  });
+});
+
+describe('DES-008 v3 §6.2 step 5: the spot inside a free interval keeps d = min(7.5·S, (U − L)/2) from both ends', () => {
+  /** body x 400..430 with its middle at `mid`; R 100×62 (word): the right lane is x 490, a strip [t, b] forbids (t − 31.5, b + 31.5).
+   *  `free` = the only free centre intervals left in the right lane: strips fill everything else from 0 to 390. */
+  const lanes = (mid: number, free: [number, number][]) => {
+    const s = exact(100, 62); s.actors.set(1, { l: 400, r: 430, t: mid - 40, b: mid + 40 });
+    s.prot.push({ l: 250, r: 389, t: 0, b: 390 }); // left lane shut
+    let from = -40;
+    for (const [L, U] of free) { s.prot.push({ l: 441, r: 540, t: from + 31.5, b: L - 31.5 }); from = U; }
+    s.prot.push({ l: 441, r: 540, t: from + 31.5, b: 460 });
+    return s;
+  };
+  const place = (s: ReturnType<typeof lanes>) => { const b = new FloatBook(); b.ingest([word(1)], s.geo); expect(b.labels.length).toBe(1); expect(b.labels[0].place).toBe('right'); return b.labels[0]; };
+  it('team A example: free 100..140, preferred y 90 → 107.5 (not the end 100)', () => { expectCentre(place(lanes(90, [[100, 140]])), 490, 107.5); });
+  it('preferred y inside the interval but closer than 7.5 to an end is moved in to 7.5 from it', () => {
+    expectCentre(place(lanes(138, [[100, 140]])), 490, 132.5);
+    expectCentre(place(lanes(120, [[100, 140]])), 490, 120); // already ≥ 7.5 from both ends: unchanged
+  });
+  it('an interval narrower than 15: its middle', () => { expectCentre(place(lanes(100, [[120, 128]])), 490, 124); });
+  it('intervals are compared by their inset candidates, not by their nearest raw point', () => {
+    // middle 200: 180..199 ends 1 away but gives 191.5 (8.5 away); 202..204 gives 203 (3 away)
+    expectCentre(place(lanes(200, [[180, 199], [202, 204]])), 490, 203);
+  });
+  it('the inset also applies where the interval ends at the safe view', () => {
+    // body mostly above the screen: visible middle (0 + 80)/2 = 40; the lane starts at 8 + 31 + 0.5 = 39.5 → 47
+    const s = exact(100, 62); s.actors.set(1, { l: 400, r: 430, t: -100, b: 80 });
+    const b = new FloatBook(); b.ingest([word(1)], s.geo);
+    expect(b.labels[0].place).toBe('right');
+    expectCentre(b.labels[0], 490, 47);
+  });
+  it('the inset scales with S (S = 1.25 → 9.375)', () => {
+    const s = exact(100, 62); s.geo.S = 1.25; s.actors.set(1, { l: 400, r: 430, t: 200, b: 300 });
+    s.geo.box = () => ({ w: 80, h: 34.5, badgeW: 0, badgeH: 0, size: 22 }); // R = (80 + 20) × (34.5 + 20 + 7.5) = 100 × 62 at S 1.25
+    // gap 12.5 → x 492.5; margin 0.625 → half height 31.625; above shut; a strip from y 251 forbids from 219.375 down
+    s.prot.push({ l: 360, r: 439, t: 0, b: 199 }, { l: 441, r: 600, t: 251, b: 390 });
+    const b = new FloatBook(); b.ingest([word(1)], s.geo);
+    expect(b.labels[0].place).toBe('right');
+    expectCentre(b.labels[0], 492.5, 210);
+  });
+});
+
+describe('DES-008 v3 R3-1: with a wide free band, an area closing in by 3·S within 180 ms does not take the number away', () => {
+  for (const q of ['medium', 'low'] as FQuality[]) {
+    it(`${q}: 10 of 10 readable while the blocker moves 3 px toward the label, never any shared area`, () => {
+      let readable = 0;
+      for (let i = 0; i < 10; i++) {
+        // right lane free from the safe edge down to a strip that starts at y 236 (even i), or from the strip's end y 264 down (odd i);
+        // either way the body middle 250 is within the band's inset, so the spot sits on the side of the strip that then moves
+        const s = exact(100, 62); s.actors.set(1, { l: 400, r: 430, t: 200, b: 300 });
+        const above = { l: 360, r: 439, t: 0, b: 199 }, left = { l: 250, r: 389, t: 0, b: 390 };
+        const strip: Rect = i % 2 === 0 ? { l: 441, r: 540, t: 240, b: 390 } : { l: 441, r: 540, t: 0, b: 260 };
+        s.prot.push(above, left, strip);
+        const b = new FloatBook(); b.q = q;
+        b.ingest([word(1)], s.geo);
+        expect(b.labels.length).toBe(1);
+        const edge = { t: strip.t, b: strip.b };
+        for (let t = 16; t <= 640; t += 16) {
+          const move = 3 * Math.min(1, t / 180);
+          if (i % 2 === 0) strip.t = edge.t - move; else strip.b = edge.b + move;
+          b.advance(16); b.frame(s.geo);
+          expect(b.labels.length).toBe(1);
+          for (const p of s.prot) expect(overlap(b.labels[0].screen, p)).toBe(0);
+          b.notePaint(b.labels[0], opacityAt('early', b.clock - b.labels[0].born, b.labels[0].life, false));
+        }
+        expect(b.stats.retiredSafety).toBe(0);
+        readable += b.stats.readable;
+      }
+      expect(readable).toBe(10);
+    });
+  }
+  it('a warning that jumps onto the label still retires it in that frame, readable or not', () => {
+    const s = exact(100, 62); s.actors.set(1, { l: 400, r: 430, t: 200, b: 300 });
+    s.prot.push({ l: 360, r: 439, t: 0, b: 199 }, { l: 441, r: 540, t: 240, b: 390 });
+    const b = new FloatBook(); b.ingest([word(1)], s.geo);
+    b.advance(16); b.frame(s.geo); b.notePaint(b.labels[0], 1);
+    const r = b.labels[0].screen;
+    s.prot.push({ l: r.l, r: r.r, t: r.b - 1, b: r.b + 40, k: 'warn' });
+    b.advance(16); b.frame(s.geo);
+    expect(b.labels.length).toBe(0); expect(b.stats).toMatchObject({ retiredSafety: 1, safetyUnread: 1 });
   });
 });
 
@@ -401,7 +483,7 @@ describe('DES-008 §5 merge, caps and priority', () => {
     b.ingest([hit(1, 5)], geo); b.advance(200); b.ingest([hit(1, 6)], geo);
     expect(b.labels.map((l) => l.place)).toEqual(['above', 'left']);
     const [first, second] = b.labels;
-    expect(second.screen.t).toBeCloseTo(first.screen.b + 6 + 0.5, 6); // 6·S gap + 0.5·S rounding margin
+    expect(second.screen.t).toBeCloseTo(first.screen.b + 6 + 0.5 + 7.5, 6); // 6·S gap + 0.5·S margin + 7.5·S inset (room allows it)
     expect(overlap({ l: first.screen.l - 6, t: first.screen.t - 6, r: first.screen.r + 6, b: first.screen.b + 6 }, second.screen)).toBeLessThan(1e-4);
   });
 });
