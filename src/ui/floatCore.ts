@@ -227,6 +227,8 @@ export interface Label {
   fw: number; fh: number; ox: number; oy: number; dy: number;
   /** §10.3 counters: painted at all / painted at ≥ 0.8 for 180 ms; `since` = clock of the first frame of the current such run (−1 none) */
   painted: boolean; readable: boolean; since: number; paintedAt: number;
+  /** clock of the first frame that painted it with opacity > 0 (−1 none): the 180 ms before it may be replaced count from here (§5.2) */
+  shownAt: number;
 }
 /** what the DOM layer supplies for one placement / frame */
 export interface Geo {
@@ -246,19 +248,23 @@ export interface Geo {
 export interface KindStats {
   created: number; painted: number; readable: number; merged: number; deduped: number; dropCap: number; dropPlace: number;
   replaced: number; retiredSafety: number; retiredLife: number; cleared: number;
+  /** events whose life had already run out when the frame that could first show them came: never made into labels (§14.3) */
+  expired: number;
   /** of the above: left without a single painted frame / retired for safety before it was readable */
   retiredUnpainted: number; safetyUnread: number;
 }
-const zeroKind = (): KindStats => ({ created: 0, painted: 0, readable: 0, merged: 0, deduped: 0, dropCap: 0, dropPlace: 0, replaced: 0, retiredSafety: 0, retiredLife: 0, cleared: 0, retiredUnpainted: 0, safetyUnread: 0 });
+const zeroKind = (): KindStats => ({ created: 0, painted: 0, readable: 0, merged: 0, deduped: 0, dropCap: 0, dropPlace: 0, replaced: 0, retiredSafety: 0, retiredLife: 0, cleared: 0, expired: 0, retiredUnpainted: 0, safetyUnread: 0 });
 export interface FStats extends KindStats {
   invalid: number;
   /** drops: how often each pattern was refused for each reason */
   why: Record<string, number>;
   /** safety retirements of live labels by reason */
   retireWhy: Record<string, number>;
+  /** cleared labels by reason: run (new world), retry, result-screen, quality, motion */
+  clearWhy: Record<string, number>;
   byKind: Partial<Record<FKind, KindStats>>;
 }
-export const zeroStats = (): FStats => ({ ...zeroKind(), invalid: 0, why: {}, retireWhy: {}, byKind: {} });
+export const zeroStats = (): FStats => ({ ...zeroKind(), invalid: 0, why: {}, retireWhy: {}, clearWhy: {}, byKind: {} });
 
 /** QA: the geometry of one placement attempt, so a checker that shares no code with this file can decide whether a legal spot existed */
 export interface Attempt {
@@ -267,7 +273,7 @@ export interface Attempt {
   w: number; h: number;
   /** protected areas (grown by their margins) + live labels (grown by 6·S) */
   blocks: Rect[];
-  result: Place | 'cap' | 'offscreen' | 'gone' | 'tooWide' | 'none';
+  result: Place | 'cap' | 'offscreen' | 'gone' | 'tooWide' | 'none' | 'expired';
   /** the R that was accepted, and the id of the label made from it */
   R: Rect | null;
   uid?: number;
@@ -279,7 +285,7 @@ export type Cause = 'life' | 'safety' | 'replaced' | 'clear';
 export class FloatBook {
   q: FQuality = 'medium';
   reduced = false;
-  /** UI clock in ms (advances only while the game runs) */
+  /** the picture clock in ms: set by the host from the run's tick + alpha (§14.3, §14.7); never runs backwards within a run */
   clock = 0;
   private prevClock = 0;
   labels: Label[] = [];
@@ -296,8 +302,17 @@ export class FloatBook {
   private tmpA: Rect = { l: 0, t: 0, r: 0, b: 0 };
   private pt = { x: 0, y: 0 };
 
-  advance(ms: number) { if (ms > 0) { this.prevClock = this.clock; this.clock += ms; } }
-  clear() { for (const l of this.labels) this.retire(l, 'clear'); this.labels = []; this.seq.clear(); this.lastSpark.clear(); }
+  /** move the clock forward to `ms` (an earlier or equal time leaves it where it is) */
+  setClock(ms: number) { if (ms > this.clock) { this.prevClock = this.clock; this.clock = ms; } }
+  advance(ms: number) { if (ms > 0) this.setClock(this.clock + ms); }
+  /** a new run starts its own clock (call after clear) */
+  resync(ms: number) { this.clock = this.prevClock = ms; }
+  /** visual age of a label: 0 until the clock reaches its event time (§14.7) */
+  age(l: Label) { return Math.max(0, this.clock - l.born); }
+  clear(why = 'clear') {
+    for (const l of this.labels) { if (l.alive) this.stats.clearWhy[why] = (this.stats.clearWhy[why] ?? 0) + 1; this.retire(l, 'clear', why); }
+    this.labels = []; this.seq.clear(); this.lastSpark.clear();
+  }
   sparksLive(at = this.clock) { let n = 0; for (const l of this.labels) if (l.alive && l.spark && at - l.born < SPARK.life) n++; return n; }
 
   private count(key: keyof KindStats, kind: FKind) { this.stats[key]++; (this.stats.byKind[kind] ??= zeroKind())[key]++; }
@@ -324,6 +339,7 @@ export class FloatBook {
   /** The DOM layer calls this right after painting a label, with the opacity it set (§10.3 painted / readable ≥ 180 ms). */
   notePaint(l: Label, opacity: number) {
     if (!l.alive || !(opacity > 0)) { l.since = -1; return; }
+    if (l.shownAt < 0) l.shownAt = this.clock;
     if (!l.painted) { l.painted = true; this.count('painted', l.kind); }
     // a gap = the clock stepped past a frame in which this label was not painted
     const gap = l.paintedAt !== this.clock && l.paintedAt !== this.prevClock;
@@ -333,8 +349,9 @@ export class FloatBook {
     if (!l.readable && this.clock - l.since >= MIN_READ - TOL) { l.readable = true; this.count('readable', l.kind); }
   }
 
-  /** One sim tick's worth of events, handled as a batch in importance order (§5.2). `at`: the UI time the events happened, when they
-   *  are placed later (with the geometry of the frame about to be painted); it is their birth time and drives merge / dedup / caps. */
+  /** One sim tick's worth of events, handled as a batch in importance order (§5.2). `at`: the picture-clock time the events happened
+   *  (their tick), when they are placed later with the geometry of the frame about to be painted; it is their birth time and drives
+   *  merge / dedup / sparks. An event whose life already ran out is counted as expired, not made into a label (§14.3). */
   ingest(batch: readonly FIn[], geo: Geo, at = this.clock) {
     this.expire();
     const list = batch.slice().sort((a, b) => RANK[a.kind] - RANK[b.kind] || a.dist - b.dist || a.actor - b.actor || a.order - b.order);
@@ -350,6 +367,11 @@ export class FloatBook {
           g.box = nb; this.relocal(g, geo.S); continue;
         }
       } else if (this.labels.some((l) => l.alive && l.actor === e.actor && l.kind === e.kind && at - l.born < STATUS_DEDUP)) { this.count('deduped', e.kind); continue; }
+      if (this.clock - at >= lifeMs(e.kind, this.q, this.reduced) - TOL) { // too late to be seen: not made, not queued for later
+        this.count('expired', e.kind);
+        this.onAttempt?.({ t: at, kind: e.kind, actor: e.actor, n: 0, S: geo.S, safe: { ...geo.safe }, a: null, w: 0, h: 0, blocks: [], result: 'expired', R: null, why: [] });
+        continue;
+      }
       this.spawn(e, geo, at);
     }
   }
@@ -358,7 +380,7 @@ export class FloatBook {
     l.local = localR(l.box, peakScale(l.kind, this.q, this.reduced), pathPoints(l.kind, l.s, S, this.q, this.reduced), l.spark && this.clock - l.born < SPARK.life, S);
   }
 
-  private victimFor(e: FIn, at: number): { need: boolean; victim: Label | null } {
+  private victimFor(e: FIn): { need: boolean; victim: Label | null } {
     const c = CAPS[this.q], num = NUMERIC[e.kind];
     const same = (l: Label) => NUMERIC[l.kind] === num;
     const live = this.labels.filter((l) => l.alive);
@@ -367,12 +389,13 @@ export class FloatBook {
     const totalFull = live.length >= c.total;
     const pool = actorFull ? live.filter((l) => l.actor === e.actor && same(l)) : subFull ? live.filter(same) : totalFull ? live : null;
     if (!pool) return { need: false, victim: null };
-    const ok = pool.filter((l) => RANK[l.kind] > RANK[e.kind] && at - l.born >= MIN_READ).sort((a, b) => a.born - b.born || a.uid - b.uid);
+    // only a label that has had 180 ms on screen since its first real paint: an old event time from the queue does not count
+    const ok = pool.filter((l) => RANK[l.kind] > RANK[e.kind] && l.shownAt >= 0 && this.clock - l.shownAt >= MIN_READ - TOL).sort((a, b) => a.born - b.born || a.uid - b.uid);
     return { need: true, victim: ok[0] ?? null };
   }
 
   private spawn(e: FIn, geo: Geo, at: number) {
-    const S = geo.S, { need, victim } = this.victimFor(e, at);
+    const S = geo.S, { need, victim } = this.victimFor(e);
     const n = (this.seq.get(e.actor) ?? 0) + 1;
     const report = (result: Attempt['result'], extra: Partial<Attempt> = {}) => this.onAttempt?.({ t: at, kind: e.kind, actor: e.actor, n, S, safe: { ...geo.safe }, a: null, w: 0, h: 0, blocks: [], result, R: null, why: [], ...extra });
     if (need && !victim) { this.count('dropCap', e.kind); report('cap'); return; }
@@ -412,7 +435,7 @@ export class FloatBook {
         if (spark) this.lastSpark.set(e.actor, at);
         this.labels.push({ uid: ++this.uid, kind: e.kind, actor: e.actor, total: e.amount, count: 1, text, born: at, life: lifeMs(e.kind, this.q, this.reduced),
           seq: n, s, place, spark, box, local, screen, ax, ay, lastActor: { ...a }, alive: true, fw, fh, ox, oy, dy,
-          painted: false, readable: false, since: -1, paintedAt: -1 });
+          painted: false, readable: false, since: -1, paintedAt: -1, shownAt: -1 });
         this.count('created', e.kind);
         if (this.onAttempt) report(place, { ...snapshot(), R: { ...screen }, uid: this.uid });
         return;

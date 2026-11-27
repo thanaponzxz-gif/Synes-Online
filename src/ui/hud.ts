@@ -84,8 +84,8 @@ export class Hud {
   /** DES-008 §5.2: the low tier uses the Low caps / lives; medium and high use Medium */
   setFloatTier(tier: Tier) { this.floaters.setQuality(tier === 'low' ? 'low' : 'medium'); }
 
-  /** uiDt: the damage-number clock step, 0 while paused or frozen (defaults to dt) */
-  update(w: World, dt: number, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp, uiDt = dt) {
+  /** numbers: the damage-number frame step (DES-008 §14.3): alpha between ticks while playing (null = hold) and this frame's UI seconds */
+  update(w: World, dt: number, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp, numbers: { alpha: number | null; dt: number }) {
     const p = w.player, ps = w.ps;
     this.w = w;
     if (!this.taughtFade && this.actBtns.some((b) => b.classList.contains('seethru'))) { this.taughtFade = true; this.queueHint('fadedButtons'); }
@@ -122,10 +122,10 @@ export class Hud {
       (bar.firstChild as HTMLElement).style.width = `${(e.hp / e.maxHp) * 100}%`;
     }
     this.tickHints(w, dt);
-    this.floaters.frame(w, uiDt, this.barRects);
+    this.floaters.frame(w, numbers.alpha, numbers.dt, this.barRects);
   }
-  /** QA stepping: advance and repaint the damage numbers by exactly the stepped sim time */
-  floatStep(w: World, secs: number) { this.floaters.frame(w, secs, this.barRects); }
+  /** QA stepping: repaint the damage numbers for the stepped state (alpha 1 = its end, as the scene is drawn); null = hold */
+  floatStep(w: World, alpha: number | null) { this.floaters.frame(w, alpha, 0, this.barRects); }
 
   onEvents(evts: SimEvent[], w: World, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp) {
     void project;
@@ -209,6 +209,7 @@ export class Hud {
     ].map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('');
     el.querySelector('.rankinfo')!.innerHTML = rankInfo(rank, s);
     el.querySelector('.reward')!.innerHTML = '<span class="pending">กำลังบันทึกผล…</span>';
+    this.floaters.resultScreen(w); // DES-008 §14.7: no number of the run is painted over (or beside) its result screen
     el.classList.add('show');
     (el.querySelector('.replay') as HTMLButtonElement).onclick = () => { el.classList.remove('show'); onReplay(); };
   }

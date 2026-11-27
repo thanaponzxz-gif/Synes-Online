@@ -79,11 +79,11 @@ const qaLog: { t: number; e: string }[] = [];
   unfreeze() { qaFrozen = false; last = performance.now(); acc = 0; },
   log: qaLog,
   /** QA only: run exactly n sim ticks (same step as the live loop, bot/input included), then draw one frame at the end state. */
-  stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); hud.floatStep(world, qaPend * TICK); qaPend = 0; } return i; },
+  stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); hud.floatStep(world, 1); qaPend = 0; } return i; },
   /** QA: show style samples (DES-008 §10.2) without touching the sim: labels on actor `actor` (default the player). Placed by the next frame. */
   floatSample(list: { kind: FKind; amount?: number; actor?: number }[]) { if (!world) return; const w = world; hud.floaters.ingest(w, list.map((e, order) => ({ kind: e.kind, amount: e.amount ?? 0, actor: e.actor ?? w.player.id, dist: 0, order }))); },
   /** QA, with the sim frozen: advance only the damage-number clock and paint one frame (the scene and its protected areas stay put) */
-  floatAdvance(ms: number) { if (world) hud.floatStep(world, ms / 1000); },
+  floatAdvance(ms: number) { if (!world) return; hud.floaters.qaAdvance(ms); hud.floatStep(world, null); },
   /** QA: damage-number stats (DES-008 §10): counters (created / painted / readable ≥ 180 ms, drops and why), CPU, painted overlap */
   floaters() { return hud.floaters.report(); },
   floatRecord(on: boolean) { hud.floaters.record(on); },
@@ -165,7 +165,7 @@ function renderFrame(alpha: number, dt: number) {
 }
 function frame(now: number) {
   requestAnimationFrame(frame);
-  const dt = Math.min(0.25, (now - last) / 1000); last = now;
+  const dt = Math.max(0, Math.min(0.25, (now - last) / 1000)); last = now;
   if (!world) return;
   if (state === 'playing' && !qaFrozen) {
     acc += dt;
@@ -181,7 +181,9 @@ function frame(now: number) {
   renderFrame(state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : 1, state === 'paused' || qaFrozen ? 0 : dt);
   if (!input.autoPending) autoSet.enabled = world.auto.s.enabled; // the sim may have switched it off (boss area, defeat)
   autoBar.update(autoSet.enabled, autoAllowedHere(world));
-  hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out), state === 'paused' || qaFrozen ? 0 : dt);
+  hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out), {
+    alpha: state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : null, dt: state === 'paused' || qaFrozen ? 0 : dt,
+  });
   if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
   if (pref === 'auto' && state === 'playing' && !qaFrozen) { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
@@ -272,7 +274,8 @@ sel.addEventListener('change', () => {
 });
 $<HTMLInputElement>('#chk-sound').addEventListener('change', (e) => sfx.setMuted(!(e.target as HTMLInputElement).checked));
 
-document.addEventListener('visibilitychange', () => { if (document.hidden) pause('hidden'); });
+// back from the background: the next frame's dt starts now (time spent hidden adds no age to anything on screen)
+document.addEventListener('visibilitychange', () => { if (document.hidden) pause('hidden'); else last = performance.now(); });
 addEventListener('pagehide', () => pause('hidden'));
 addEventListener('blur', () => { if (matchMedia('(pointer: coarse)').matches) return; });
 addEventListener('offline', () => { hud.netChip.textContent = ticket ? 'ออนไลน์ (สัญญาณหลุด รอส่งผล)' : 'ออฟไลน์'; });

@@ -455,13 +455,17 @@ describe('DES-008 §5 merge, caps and priority', () => {
     expect(b.labels.filter((l) => l.actor === 1).length).toBe(2); // 2 numbers per target (Medium); same importance never replaces
     expect(b.stats.dropCap).toBe(1);
   });
-  it('a more important label replaces the oldest less important one only after it was readable for 180 ms', () => {
+  it('a more important label replaces the oldest less important one only 180 ms after its first real paint (§5.2 v3)', () => {
     const { geo, actors } = screen(); actors.set(1, body(5));
     const b = new FloatBook(); b.q = 'low'; // 1 number per target
     b.ingest([hit(1, 5)], geo);
+    b.advance(200); b.ingest([hit(1, 30, 0, 'bonus')], geo);
+    expect(b.labels.map((l) => l.kind)).toEqual(['damage']); expect(b.stats.dropCap).toBe(1); // never painted: its age does not count
+    b.notePaint(b.labels[0], 0); // an invisible frame is not a paint
+    b.notePaint(b.labels[0], 1); // first paint at 200 ms
     b.advance(100); b.ingest([hit(1, 30, 0, 'bonus')], geo);
-    expect(b.labels.map((l) => l.kind)).toEqual(['damage']); expect(b.stats.dropCap).toBe(1); // too young to replace
-    b.advance(100); b.ingest([hit(1, 30, 0, 'bonus')], geo);
+    expect(b.stats.dropCap).toBe(2); // shown for 100 ms only
+    b.advance(80); b.ingest([hit(1, 30, 0, 'bonus')], geo);
     expect(b.labels.map((l) => l.kind)).toEqual(['bonus']); expect(b.stats.replaced).toBe(1);
   });
   it('one tick is handled in importance order: hurt before bonus before damage', () => {

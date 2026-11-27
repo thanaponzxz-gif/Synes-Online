@@ -37,7 +37,7 @@ export async function runStudy(view: View, hud: Hud, kind: string, tone: Tone) {
   }
   w.player.hp = w.player.maxHp = 120; // display normal HP in the HUD
   hud.queueHint(kind === 'combat' ? 'pillar' : kind === 'clearing' ? 'dodge' : kind === 'trail' ? 'move' : '__none');
-  for (let i = 0; i < 45; i++) { view.render(w, 1, 1 / 60); hud.update(w, 1 / 60, (id, h, out) => view.actorScreenPos(id, h, out)); }
+  for (let i = 0; i < 45; i++) { view.render(w, 1, 1 / 60); hud.update(w, 1 / 60, (id, h, out) => view.actorScreenPos(id, h, out), { alpha: 1, dt: 1 / 60 }); }
   (window as any).__studyReady = { kind, tone: tone.id, steps, telegraphs: w.tele.length, calls: view.renderer.info.render.calls, tris: view.renderer.info.render.triangles };
 }
 

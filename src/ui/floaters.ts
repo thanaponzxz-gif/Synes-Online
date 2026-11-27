@@ -2,7 +2,10 @@
 // (no layout reads per label), the protected screen areas gathered every frame (warnings, bodies, enemy bars, visible HUD), and
 // painting with transform/opacity only. The rules live in floatCore.ts.
 // A tick's events wait in a queue until the frame that paints them, so they are placed against that frame's camera, bodies, HP bars,
-// HUD and warnings, with one gather per rendered frame.
+// HUD and warnings, with one gather per rendered frame. Each batch keeps its own time (§14.3): eventMs = eventTick × 1000/30, where
+// eventTick = world.tick read right after the step that made the events, and a run (one World) starts at tick 0. The picture clock is
+// (tick − 1 + alpha) × 1000/30 while playing — the time the scene is drawn at (§14.7) —, holds while paused or frozen, and runs with
+// the UI frame time once the world is finished (the winning hit's number still fades out).
 import type { World, SimEvent, Telegraph } from '../../shared/sim/world.ts';
 import {
   FloatBook, STYLE, NUMERIC, CAPS, SPARK, scaleAt, opacityAt, pathPoints, bezier, sparkSpots, grow, overlapArea,
@@ -20,6 +23,12 @@ const FONT = 'system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", "Thonburi"
 const EDGE = 0.3;
 /** an ended warning still flashes / bursts for this long (view.ts: ring 0.25 s, particles 0.4 s) */
 const AFTER_MS = 400;
+/** one sim tick on the picture clock */
+const TICK_MS = 1000 / 30;
+/** the longest UI frame step the finished-world clock takes (s), as the game loop clamps its own dt */
+const DT_MAX = 0.25;
+/** events waiting for the frame that paints them: which run, which tick, and when that tick happened on the picture clock */
+interface Batch { run: number; tick: number; eventMs: number; list: FIn[] }
 /** HUD parts that numbers must never cover (§6.1 item 3); `on` = only while that class is set */
 /** transitions that never move a HUD element's box */
 const STILL = new Set(['opacity', 'filter', 'box-shadow', 'background', 'background-color', 'color', 'visibility']);
@@ -66,7 +75,13 @@ export class Floaters {
   private noStroke = !CSS.supports('-webkit-text-stroke', '1px black');
   private debug: HTMLCanvasElement | null = null;
   /** batches waiting for the frame that paints them */
-  private queue: FIn[][] = [];
+  private queue: Batch[] = [];
+  /** the run the labels belong to: a new world or a retry starts a new one, and batches of an older one are never placed */
+  private run = 0;
+  /** QA: how far QA has moved this run's clock beyond its ticks (added to sim event times too, so both stay on one clock) */
+  private qaOffset = 0;
+  /** the world has been seen finished: from then on the clock runs with the UI frame time */
+  private finished = false;
   /** QA: overlay CPU per rendered frame = event intake since the last frame + screen + gather + placement + paint (ring + flags). The
    *  overlap / DOM checks and the debug drawing are tool costs: timed apart (toolMs), not in the sample. */
   qa = { ms: new Float32Array(RING), flags: new Uint8Array(RING), n: 0, over8: 0, spikes: [] as Spike[], worst: null as Spike | null, firstHit: null as Spike | null,
@@ -98,14 +113,14 @@ export class Floaters {
       for (const k of ['transitionend', 'transitioncancel', 'animationend', 'animationcancel']) h.el.addEventListener(k, end);
     }
     this.book.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => { this.book.reduced = e.matches; this.book.clear(); }); } catch { /* old Safari */ }
+    try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => { this.book.reduced = e.matches; this.book.clear('motion'); }); } catch { /* old Safari */ }
     if (opts.debug) {
       this.debug = document.createElement('canvas'); this.debug.className = 'fl-debug';
       layer.appendChild(this.debug);
     }
     this.book.onRetire = (l, cause, why) => {
       this.free(l);
-      if (this.recording) this.qa.ends.push({ uid: l.uid, cause, why, age: Math.round(this.book.clock - l.born), readable: l.readable, painted: l.painted });
+      if (this.recording) this.qa.ends.push({ uid: l.uid, cause, why, age: Math.round(this.book.age(l)), readable: l.readable, painted: l.painted });
     };
     const dirty = () => { this.screenDirty = true; this.hudDirty = true; };
     addEventListener('resize', dirty); addEventListener('orientationchange', dirty);
@@ -113,8 +128,29 @@ export class Floaters {
   }
 
   setHost(h: FloatHost) { this.host = h; }
-  setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear(); this.book.q = q; this.buildPool(q); }
-  clear() { this.book.clear(); this.teleSeen.clear(); this.queue.length = 0; this.curEvents = 0; }
+  setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear('quality'); this.book.q = q; this.buildPool(q); }
+  /** retry (or a QA wipe): no label and no waiting batch from before survives into what comes next */
+  clear(why = 'retry') { this.book.clear(why); this.teleSeen.clear(); this.queue.length = 0; this.curEvents = 0; this.run++; }
+  /** the result screen of `w` appears: its labels and waiting batches are cleared before it paints (§14.7 G1) */
+  resultScreen(w: World) { if (w === this.world) this.clear('result-screen'); }
+  /** the labels follow one run at a time: a new world drops the old one's labels and batches and starts its clock at 0 */
+  private attach(w: World) {
+    if (w === this.world) return;
+    this.clear('run');
+    this.world = w; this.qaOffset = 0; this.finished = false;
+    this.book.resync(0);
+  }
+  /** §14.3 / §14.7: the picture clock of a frame. alpha: 0..1 between ticks while playing, null = hold (paused / frozen);
+   *  dtSec: UI seconds of this frame (0 while paused / frozen), used only once the world is finished */
+  private tickClock(w: World, alpha: number | null, dtSec: number) {
+    const book = this.book;
+    if (w.finished) {
+      if (!this.finished) { this.finished = true; book.setClock(Math.max(book.clock, w.tick * TICK_MS + this.qaOffset)); } // once: joins at alpha 1, no dt
+      else book.setClock(book.clock + Math.min(DT_MAX, Math.max(0, dtSec)) * 1000);
+    } else if (alpha !== null) book.setClock(Math.max(0, (w.tick - 1 + Math.min(1, Math.max(0, alpha))) * TICK_MS + this.qaOffset));
+  }
+  /** QA, with the sim frozen: move this run's picture clock on by `ms`; later sim events keep their distance from it */
+  qaAdvance(ms: number) { this.qaOffset += ms; this.book.setClock(this.book.clock + ms); }
   /** QA: keep the geometry of every placement attempt, for a checker script that shares no code with floatCore */
   record(on: boolean) {
     const list = this.qa.attempts;
@@ -217,17 +253,32 @@ export class Floaters {
   }
 
   // ------------------------------------------------------------------ events → batch (§2)
-  /** one sim tick's events (its cost is added to the next frame's CPU sample) */
+  /** one sim tick's events, read right after its step (its cost is added to the next frame's CPU sample) */
   take(w: World, evts: readonly SimEvent[], earlyOk: (e: SimEvent) => boolean) {
     const t0 = performance.now();
-    this.ingest(w, Floaters.fromEvents(w, evts, earlyOk));
+    const list = Floaters.fromEvents(w, evts, earlyOk);
+    this.attach(w);
+    this.enqueue(w.tick, w.tick * TICK_MS + this.qaOffset, list);
     this.cur.intake += performance.now() - t0;
   }
-  /** one batch; the next frame() places it */
-  ingest(w: World, evts: readonly FIn[]) {
-    if (w !== this.world) { this.clear(); this.world = w; }
+  /** QA: a batch with an explicit time on the picture clock (default: now, so injected groups follow the QA clock) */
+  ingest(w: World, evts: readonly FIn[], atMs?: number) {
+    this.attach(w);
+    this.enqueue(w.tick, atMs ?? this.book.clock, evts);
+  }
+  /** keep a batch for the frame that paints it, with its run, tick and time (the event index within the tick is FIn.order) */
+  private enqueue(tick: number, eventMs: number, evts: readonly FIn[]) {
     if (!this.host || !evts.length) return;
-    this.queue.push(evts.slice()); this.curEvents += evts.length;
+    this.queue.push({ run: this.run, tick, eventMs, list: evts.slice() }); this.curEvents += evts.length;
+  }
+  /** this run's waiting batches in source order; batches of one time (the same tick) form one, so priority order holds within it */
+  private waiting() {
+    const out: Batch[] = [];
+    for (const b of this.queue.filter((x) => x.run === this.run).sort((a, b) => a.eventMs - b.eventMs)) {
+      const last = out[out.length - 1];
+      if (last && last.eventMs === b.eventMs) last.list.push(...b.list); else out.push({ ...b, list: b.list.slice() });
+    }
+    return out;
   }
   static fromEvents(w: World, evts: readonly SimEvent[], earlyOk: (e: SimEvent) => boolean): FIn[] {
     const out: FIn[] = [], p = w.player;
@@ -319,14 +370,15 @@ export class Floaters {
   private geo(): Geo { return { S: this.S, safe: this.safe, prot: this.prot, actor: (id, out) => this.host!.actorRect(id, out), box: this.box }; }
 
   // ------------------------------------------------------------------ per frame
-  /** dtSec: UI clock step (0 while paused / frozen). bars: enemy HP bar rects drawn in this layer. */
-  frame(w: World, dtSec: number, bars: readonly Rect[]) {
+  /** one rendered frame. alpha: 0..1 between ticks while playing, null while paused / frozen; dtSec: UI seconds of this frame (0 while
+   *  paused / frozen; only a finished world's clock uses it). bars: enemy HP bar rects drawn in this layer. */
+  frame(w: World, alpha: number | null, dtSec: number, bars: readonly Rect[]) {
     const qa = this.qa, heap0 = qa.deep ? heapKB() : null; // QA only, read outside the timed span
     const t0 = performance.now();
-    if (w !== this.world) { this.clear(); this.world = w; }
+    this.attach(w);
     if (!this.host) return;
-    const book = this.book, happened = book.clock; // queued events happened before this clock step
-    book.advance(dtSec * 1000);
+    const book = this.book;
+    this.tickClock(w, alpha, dtSec);
     this.refreshScreen();
     const t1 = performance.now();
     this.gather(w, bars);
@@ -334,7 +386,7 @@ export class Floaters {
     book.frame(geo); // live labels move to this frame's geometry first, so new ones are placed against where they really are
     const events = this.curEvents;
     if (this.queue.length) {
-      for (const batch of this.queue) book.ingest(batch, geo, happened);
+      for (const batch of this.waiting()) book.ingest(batch.list, geo, batch.eventMs);
       this.queue.length = 0; this.curEvents = 0; this.curFlags |= FF.events;
       book.frame(geo); // a merge made some R wider: checked again before it is painted
     }
@@ -342,7 +394,7 @@ export class Floaters {
     const q = book.q, R = book.reduced, S = this.S;
     for (const l of book.labels) {
       const el = this.bind(l); if (!el) continue;
-      const age = book.clock - l.born, u = Math.min(1, Math.max(0, age / l.life));
+      const age = book.age(l), u = Math.min(1, age / l.life);
       pathPoints(l.kind, l.s, S, q, R, this.path); bezier(this.path, u, this.bz);
       const sc = scaleAt(l.kind, age, q, R), op = opacityAt(l.kind, age, l.life, R);
       const x = l.ax + this.bz.x, y = l.ay + this.bz.y;
@@ -399,9 +451,9 @@ export class Floaters {
     const actor: Rect = { l: 0, t: 0, r: 0, b: 0 };
     return {
       ...structuredClone(book.stats),
-      labels: book.labels.map((l) => ({ kind: l.kind, text: l.text, count: l.count, actor: l.actor, age: Math.round(book.clock - l.born), life: l.life, place: l.place,
+      labels: book.labels.map((l) => ({ uid: l.uid, kind: l.kind, text: l.text, count: l.count, actor: l.actor, age: Math.round(book.age(l)), life: l.life, place: l.place,
         painted: l.painted, readable: l.readable, R: { ...l.screen }, body: this.host?.actorRect(l.actor, actor) === 0 ? { ...actor } : null })),
-      live: book.labels.length, quality: book.q, reduced: book.reduced, S: this.S, pool: this.domPool(), maxDomLive: q.maxDom, frames: q.frames,
+      clock: book.clock, run: this.run, live: book.labels.length, quality: book.q, reduced: book.reduced, S: this.S, pool: this.domPool(), maxDomLive: q.maxDom, frames: q.frames,
       paintedOverlap: q.paintedOverlap, domOutsideR: q.domOutsideR,
       cpuMs: { ...stat(() => true), over8: q.over8,
         eventFrames: stat((f) => (f & FF.events) !== 0), quietFrames: stat((f) => f === 0),
