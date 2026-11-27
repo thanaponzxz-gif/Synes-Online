@@ -126,6 +126,10 @@ const qaLog: { t: number; e: string }[] = [];
     await runStudy(view, hud, Q.get('study')!, toneById(Q.get('tone')));
     return;
   }
+  if (import.meta.env.DEV && Q.get('seyrin') === 'preview') { // DES-009 P1: pose viewer, dev server on this machine only
+    const { startSeyrinPreview } = await import('./seyrin/previewMode.ts');
+    if (await startSeyrinPreview(view, location.hostname, Q)) return;
+  }
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();
 
