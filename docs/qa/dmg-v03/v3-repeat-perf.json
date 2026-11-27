@@ -1,0 +1,816 @@
+{
+  "tag": "v3-repeat",
+  "root": "dist",
+  "warm": 10,
+  "secs": 60,
+  "oracle": false,
+  "deep": false,
+  "viewport": "844x390 dpr 1",
+  "machine": {
+    "cpu": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+    "cores": 16,
+    "os": "win32 10.0.19045",
+    "browser": "158.0.4370.33"
+  },
+  "configs": [
+    {
+      "name": "roam-medium",
+      "scen": "roam",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.1,
+      "frame": {
+        "n": 1115,
+        "p50": 49.9,
+        "p95": 116.6,
+        "max": 827.6,
+        "fps": 18.6
+      },
+      "longTasks": {
+        "count": 68,
+        "totalMs": 10548,
+        "max": 622
+      },
+      "dom": {
+        "totalMax": 301,
+        "layerMax": 62,
+        "ebarMax": 5,
+        "totalFirst": 285,
+        "totalLast": 301,
+        "layerFirst": 62,
+        "layerLast": 62,
+        "nodesAtEnd": 816
+      },
+      "reducedSeen": false,
+      "qualitySeen": "medium",
+      "counters": {
+        "created": 46,
+        "painted": 41,
+        "readable": 27,
+        "merged": 0,
+        "deduped": 0,
+        "invalid": 0,
+        "dropCap": 0,
+        "dropPlace": 10,
+        "replaced": 0,
+        "retiredSafety": 37,
+        "retiredLife": 12,
+        "cleared": 0,
+        "retiredUnpainted": 5,
+        "safetyUnread": 20,
+        "why": {
+          "above:prot:body": 0,
+          "left:full(bar+body+hud#hint+hud#top-left+label)": 0,
+          "right:full(bar+body+label+player+warn)": 0,
+          "below:prot:warn": 5,
+          "above:prot:warn": 0,
+          "left:full(hud#auto-bar+hud#hint+label)": 0,
+          "below:edge": 4,
+          "above:edge": 10,
+          "left:full(hud#boss+hud#hint+hud#top-left+warn)": 2,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+label+warn)": 1,
+          "right:full(hud#boss+hud#btn-skill2+hud#btn-skill3+warn)": 1,
+          "left:full(hud#boss+hud#top-left+warn)": 4,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)": 4,
+          "left:full(hud#boss+warn-near)": 1,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+warn-near)": 1,
+          "below:prot:warn-near": 1,
+          "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-ult+hud#top-right)": 2,
+          "left:full(hud#boss+hud#hint+hud#top-left+label+player)": 1,
+          "left:full(hud#boss+label+player)": 1,
+          "right:full(hud#btn-attack+hud#btn-dodge+hud#btn-potion+hud#btn-skill3+hud#btn-ult+hud#top-right)": 1,
+          "left:full(hud#boss+hud#top-left+player+warn)": 1
+        },
+        "retireWhy": {
+          "prot:player": 6,
+          "prot:bar": 0,
+          "prot:warn": 22,
+          "prot:hud#top-left": 0,
+          "prot:body": 1,
+          "label": 2,
+          "prot:hud#banner": 1,
+          "edge": 1,
+          "prot:hud#btn-attack": 1,
+          "prot:hud#btn-dodge": 1,
+          "prot:hud#btn-potion": 1,
+          "prot:hud#btn-skill": 1
+        },
+        "byKind": {
+          "damage": {
+            "created": 39,
+            "painted": 36,
+            "readable": 24,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 10,
+            "replaced": 0,
+            "retiredSafety": 31,
+            "retiredLife": 10,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 3,
+            "safetyUnread": 16
+          },
+          "interrupt": {
+            "created": 0,
+            "painted": 0,
+            "readable": 0,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 0,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          },
+          "stagger": {
+            "created": 3,
+            "painted": 3,
+            "readable": 2,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 2,
+            "retiredLife": 1,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 1
+          },
+          "bonus": {
+            "created": 3,
+            "painted": 1,
+            "readable": 0,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 3,
+            "retiredLife": 0,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 2,
+            "safetyUnread": 3
+          },
+          "perfect": {
+            "created": 1,
+            "painted": 1,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 0,
+            "retiredLife": 1,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          }
+        }
+      },
+      "cpuMs": {
+        "n": 1116,
+        "p50": 0.2,
+        "p95": 1.1,
+        "max": 10.4,
+        "over8": 2,
+        "eventFrames": {
+          "n": 56,
+          "p50": 0.5,
+          "p95": 1.8,
+          "max": 4.4
+        },
+        "quietFrames": {
+          "n": 953,
+          "p50": 0.1,
+          "p95": 0.3,
+          "max": 0.7
+        },
+        "hudMoving": {
+          "n": 63,
+          "p50": 1.1,
+          "p95": 4.4,
+          "max": 10.4
+        },
+        "hudFullRead": {
+          "n": 51,
+          "p50": 0.9,
+          "p95": 1.8,
+          "max": 3.9
+        },
+        "newMeasure": {
+          "n": 4,
+          "p50": 1.6,
+          "p95": 3.9,
+          "max": 3.9
+        }
+      },
+      "partMsPerFrame": {
+        "intake": 0.001,
+        "screen": 0.003,
+        "warn": 0.01,
+        "body": 0.088,
+        "flush": 0,
+        "hud": 0.125,
+        "book": 0.044,
+        "paint": 0.011
+      },
+      "toolMsPerFrame": {
+        "check": 0.003,
+        "debug": 0
+      },
+      "pool": 52,
+      "maxDomLive": 12,
+      "paintedOverlap": 0,
+      "domOutsideR": 0,
+      "firstHit": {
+        "frame": 60,
+        "clock": 2922,
+        "tick": 88,
+        "ms": 2.8,
+        "parts": {
+          "intake": 0.1,
+          "screen": 0,
+          "warn": 0,
+          "body": 0.1,
+          "flush": 0,
+          "hud": 0,
+          "book": 2.2,
+          "paint": 0.4
+        },
+        "events": 1,
+        "labels": 1,
+        "flags": 17,
+        "measures": 1,
+        "hudReads": [],
+        "heapDeltaKB": null
+      },
+      "worst": {
+        "frame": 138,
+        "clock": 16856,
+        "tick": 506,
+        "ms": 10.4,
+        "parts": {
+          "intake": 0,
+          "screen": 0,
+          "warn": 0,
+          "body": 0.2,
+          "flush": 0,
+          "hud": 10.2,
+          "book": 0,
+          "paint": 0
+        },
+        "events": 0,
+        "labels": 0,
+        "flags": 8,
+        "measures": 0,
+        "hudReads": [
+          "hud#hint"
+        ],
+        "heapDeltaKB": null
+      },
+      "spikes": [
+        {
+          "frame": 138,
+          "clock": 16856,
+          "tick": 506,
+          "ms": 10.4,
+          "parts": {
+            "intake": 0,
+            "screen": 0,
+            "warn": 0,
+            "body": 0.2,
+            "flush": 0,
+            "hud": 10.2,
+            "book": 0,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 8,
+          "measures": 0,
+          "hudReads": [
+            "hud#hint"
+          ],
+          "heapDeltaKB": null
+        },
+        {
+          "frame": 1047,
+          "clock": 66244,
+          "tick": 1945,
+          "ms": 8.7,
+          "parts": {
+            "intake": 0,
+            "screen": 0,
+            "warn": 0,
+            "body": 0,
+            "flush": 0,
+            "hud": 8.6,
+            "book": 0.1,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 8,
+          "measures": 0,
+          "hudReads": [
+            "hud#victory"
+          ],
+          "heapDeltaKB": null
+        }
+      ],
+      "hudRead": {
+        "dirty": 34,
+        "timer": 17,
+        "busy": {
+          "hud#hint": 40,
+          "hud#banner": 15,
+          "hud#boss": 6
+        },
+        "fresh": 13
+      },
+      "warmupFrames": {
+        "n": 216,
+        "max": 17.4,
+        "over8": 1,
+        "worst": {
+          "frame": 1,
+          "clock": 0,
+          "tick": 0,
+          "ms": 17.4,
+          "parts": {
+            "intake": 0.1,
+            "screen": 16.5,
+            "warn": 0,
+            "body": 0.3,
+            "flush": 0,
+            "hud": 0.1,
+            "book": 0.2,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 4,
+          "measures": 0,
+          "hudReads": [
+            "hud#btn-attack",
+            "hud#btn-dodge",
+            "hud#btn-skill",
+            "hud#btn-skill2",
+            "hud#btn-skill3",
+            "hud#btn-ult",
+            "hud#btn-potion",
+            "hud#top-left",
+            "hud#top-right",
+            "hud#hint",
+            "hud#auto-bar"
+          ],
+          "heapDeltaKB": null
+        },
+        "spikes": [
+          {
+            "frame": 1,
+            "clock": 0,
+            "tick": 0,
+            "ms": 17.4,
+            "parts": {
+              "intake": 0.1,
+              "screen": 16.5,
+              "warn": 0,
+              "body": 0.3,
+              "flush": 0,
+              "hud": 0.1,
+              "book": 0.2,
+              "paint": 0
+            },
+            "events": 0,
+            "labels": 0,
+            "flags": 4,
+            "measures": 0,
+            "hudReads": [
+              "hud#btn-attack",
+              "hud#btn-dodge",
+              "hud#btn-skill",
+              "hud#btn-skill2",
+              "hud#btn-skill3",
+              "hud#btn-ult",
+              "hud#btn-potion",
+              "hud#top-left",
+              "hud#top-right",
+              "hud#hint",
+              "hud#auto-bar"
+            ],
+            "heapDeltaKB": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "roam-low",
+      "scen": "roam",
+      "quality": "low",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.3,
+      "frame": {
+        "n": 1039,
+        "p50": 55.5,
+        "p95": 144.4,
+        "max": 583.3,
+        "fps": 17.2
+      },
+      "longTasks": {
+        "count": 70,
+        "totalMs": 11378,
+        "max": 409
+      },
+      "dom": {
+        "totalMax": 283,
+        "layerMax": 44,
+        "ebarMax": 5,
+        "totalFirst": 267,
+        "totalLast": 283,
+        "layerFirst": 44,
+        "layerLast": 44,
+        "nodesAtEnd": 835
+      },
+      "reducedSeen": false,
+      "qualitySeen": "low",
+      "counters": {
+        "created": 38,
+        "painted": 35,
+        "readable": 26,
+        "merged": 0,
+        "deduped": 0,
+        "invalid": 0,
+        "dropCap": 13,
+        "dropPlace": 6,
+        "replaced": 0,
+        "retiredSafety": 27,
+        "retiredLife": 14,
+        "cleared": 0,
+        "retiredUnpainted": 3,
+        "safetyUnread": 15,
+        "why": {
+          "above:prot:body": 0,
+          "left:full(bar+body+hud#hint+hud#top-left+label)": 0,
+          "right:full(bar+body+label+player+warn)": 0,
+          "below:prot:warn": 5,
+          "above:prot:warn": 0,
+          "left:full(hud#auto-bar+hud#hint+label)": 0,
+          "below:edge": 0,
+          "above:edge": 6,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+hud#btn-skill3+warn)": 5,
+          "left:full(hud#boss+hud#top-left+warn)": 4,
+          "left:full(hud#boss+hud#hint+hud#top-left+warn)": 1,
+          "left:full(hud#boss+warn-near)": 1,
+          "right:full(hud#boss+hud#btn-skill+hud#btn-skill2+warn-near)": 1,
+          "below:prot:warn-near": 1
+        },
+        "retireWhy": {
+          "prot:player": 9,
+          "prot:body": 2,
+          "prot:warn": 12,
+          "prot:hud#top-left": 0,
+          "label": 1,
+          "prot:hud#banner": 1,
+          "prot:hud#btn-attack": 1,
+          "prot:hud#btn-dodge": 1
+        },
+        "byKind": {
+          "damage": {
+            "created": 32,
+            "painted": 30,
+            "readable": 20,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 12,
+            "dropPlace": 6,
+            "replaced": 0,
+            "retiredSafety": 23,
+            "retiredLife": 11,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 2,
+            "safetyUnread": 14
+          },
+          "interrupt": {
+            "created": 0,
+            "painted": 0,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 0,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          },
+          "stagger": {
+            "created": 3,
+            "painted": 3,
+            "readable": 3,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 1,
+            "retiredLife": 2,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          },
+          "bonus": {
+            "created": 2,
+            "painted": 1,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 1,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 2,
+            "retiredLife": 0,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 1,
+            "safetyUnread": 1
+          },
+          "perfect": {
+            "created": 1,
+            "painted": 1,
+            "readable": 1,
+            "merged": 0,
+            "deduped": 0,
+            "dropCap": 0,
+            "dropPlace": 0,
+            "replaced": 0,
+            "retiredSafety": 0,
+            "retiredLife": 1,
+            "cleared": 0,
+            "expired": 0,
+            "retiredUnpainted": 0,
+            "safetyUnread": 0
+          }
+        }
+      },
+      "cpuMs": {
+        "n": 1040,
+        "p50": 0.2,
+        "p95": 1.1,
+        "max": 12.7,
+        "over8": 2,
+        "eventFrames": {
+          "n": 57,
+          "p50": 0.4,
+          "p95": 1.9,
+          "max": 5.2
+        },
+        "quietFrames": {
+          "n": 878,
+          "p50": 0.2,
+          "p95": 0.3,
+          "max": 0.5
+        },
+        "hudMoving": {
+          "n": 60,
+          "p50": 1.1,
+          "p95": 6,
+          "max": 12.7
+        },
+        "hudFullRead": {
+          "n": 51,
+          "p50": 1.1,
+          "p95": 1.8,
+          "max": 2.4
+        },
+        "newMeasure": {
+          "n": 4,
+          "p50": 1.4,
+          "p95": 2.4,
+          "max": 2.4
+        }
+      },
+      "partMsPerFrame": {
+        "intake": 0.001,
+        "screen": 0.004,
+        "warn": 0.01,
+        "body": 0.098,
+        "flush": 0,
+        "hud": 0.14,
+        "book": 0.04,
+        "paint": 0.01
+      },
+      "toolMsPerFrame": {
+        "check": 0.003,
+        "debug": 0
+      },
+      "pool": 34,
+      "maxDomLive": 12,
+      "paintedOverlap": 0,
+      "domOutsideR": 0,
+      "firstHit": {
+        "frame": 48,
+        "clock": 2928,
+        "tick": 88,
+        "ms": 2.7,
+        "parts": {
+          "intake": 0.1,
+          "screen": 0,
+          "warn": 0,
+          "body": 0.2,
+          "flush": 0,
+          "hud": 0,
+          "book": 2,
+          "paint": 0.4
+        },
+        "events": 1,
+        "labels": 1,
+        "flags": 17,
+        "measures": 1,
+        "hudReads": [],
+        "heapDeltaKB": null
+      },
+      "worst": {
+        "frame": 949,
+        "clock": 66267,
+        "tick": 1945,
+        "ms": 12.7,
+        "parts": {
+          "intake": 0,
+          "screen": 0.1,
+          "warn": 0,
+          "body": 0,
+          "flush": 0,
+          "hud": 12.5,
+          "book": 0.1,
+          "paint": 0
+        },
+        "events": 0,
+        "labels": 0,
+        "flags": 8,
+        "measures": 0,
+        "hudReads": [
+          "hud#victory"
+        ],
+        "heapDeltaKB": null
+      },
+      "spikes": [
+        {
+          "frame": 104,
+          "clock": 16500,
+          "tick": 495,
+          "ms": 9.1,
+          "parts": {
+            "intake": 0,
+            "screen": 0.1,
+            "warn": 0,
+            "body": 0,
+            "flush": 0,
+            "hud": 9,
+            "book": 0,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 8,
+          "measures": 0,
+          "hudReads": [
+            "hud#banner"
+          ],
+          "heapDeltaKB": null
+        },
+        {
+          "frame": 949,
+          "clock": 66267,
+          "tick": 1945,
+          "ms": 12.7,
+          "parts": {
+            "intake": 0,
+            "screen": 0.1,
+            "warn": 0,
+            "body": 0,
+            "flush": 0,
+            "hud": 12.5,
+            "book": 0.1,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 8,
+          "measures": 0,
+          "hudReads": [
+            "hud#victory"
+          ],
+          "heapDeltaKB": null
+        }
+      ],
+      "hudRead": {
+        "dirty": 34,
+        "timer": 17,
+        "busy": {
+          "hud#hint": 41,
+          "hud#banner": 11,
+          "hud#boss": 6
+        },
+        "fresh": 12
+      },
+      "warmupFrames": {
+        "n": 188,
+        "max": 26.2,
+        "over8": 1,
+        "worst": {
+          "frame": 1,
+          "clock": 0,
+          "tick": 0,
+          "ms": 26.2,
+          "parts": {
+            "intake": 0.1,
+            "screen": 4.4,
+            "warn": 0,
+            "body": 0.5,
+            "flush": 0,
+            "hud": 20.7,
+            "book": 0.2,
+            "paint": 0
+          },
+          "events": 0,
+          "labels": 0,
+          "flags": 4,
+          "measures": 0,
+          "hudReads": [
+            "hud#btn-attack",
+            "hud#btn-dodge",
+            "hud#btn-skill",
+            "hud#btn-skill2",
+            "hud#btn-skill3",
+            "hud#btn-ult",
+            "hud#btn-potion",
+            "hud#top-left",
+            "hud#top-right",
+            "hud#hint",
+            "hud#auto-bar"
+          ],
+          "heapDeltaKB": null
+        },
+        "spikes": [
+          {
+            "frame": 1,
+            "clock": 0,
+            "tick": 0,
+            "ms": 26.2,
+            "parts": {
+              "intake": 0.1,
+              "screen": 4.4,
+              "warn": 0,
+              "body": 0.5,
+              "flush": 0,
+              "hud": 20.7,
+              "book": 0.2,
+              "paint": 0
+            },
+            "events": 0,
+            "labels": 0,
+            "flags": 4,
+            "measures": 0,
+            "hudReads": [
+              "hud#btn-attack",
+              "hud#btn-dodge",
+              "hud#btn-skill",
+              "hud#btn-skill2",
+              "hud#btn-skill3",
+              "hud#btn-ult",
+              "hud#btn-potion",
+              "hud#top-left",
+              "hud#top-right",
+              "hud#hint",
+              "hud#auto-bar"
+            ],
+            "heapDeltaKB": null
+          }
+        ]
+      }
+    }
+  ]
+}

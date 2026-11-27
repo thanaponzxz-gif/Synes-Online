@@ -1,0 +1,209 @@
+{
+  "tag": "before",
+  "root": "dist",
+  "warm": 10,
+  "secs": 60,
+  "oracle": false,
+  "deep": false,
+  "viewport": "844x390 dpr 1",
+  "machine": {
+    "cpu": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+    "cores": 16,
+    "os": "win32 10.0.19045",
+    "browser": "158.0.4370.33"
+  },
+  "configs": [
+    {
+      "name": "roam-medium",
+      "scen": "roam",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.2,
+      "frame": {
+        "n": 1280,
+        "p50": 44.4,
+        "p95": 105.6,
+        "max": 422.2,
+        "fps": 21.3
+      },
+      "longTasks": {
+        "count": 72,
+        "totalMs": 10408,
+        "max": 423
+      },
+      "dom": {
+        "totalMax": 248,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 228,
+        "totalLast": 248,
+        "layerFirst": 6,
+        "layerLast": 10,
+        "nodesAtEnd": 713
+      }
+    },
+    {
+      "name": "boss-medium",
+      "scen": "boss",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.3,
+      "frame": {
+        "n": 1275,
+        "p50": 39,
+        "p95": 127.7,
+        "max": 561,
+        "fps": 21.1
+      },
+      "longTasks": {
+        "count": 97,
+        "totalMs": 13996,
+        "max": 459
+      },
+      "dom": {
+        "totalMax": 241,
+        "layerMax": 3,
+        "ebarMax": 0,
+        "totalFirst": 222,
+        "totalLast": 240,
+        "layerFirst": 0,
+        "layerLast": 2,
+        "nodesAtEnd": 548
+      }
+    },
+    {
+      "name": "roam-low",
+      "scen": "roam",
+      "quality": "low",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.5,
+      "frame": {
+        "n": 1438,
+        "p50": 38.9,
+        "p95": 55.6,
+        "max": 400,
+        "fps": 23.8
+      },
+      "longTasks": {
+        "count": 69,
+        "totalMs": 8649,
+        "max": 338
+      },
+      "dom": {
+        "totalMax": 249,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 238,
+        "totalLast": 248,
+        "layerFirst": 16,
+        "layerLast": 10,
+        "nodesAtEnd": 768
+      }
+    },
+    {
+      "name": "boss-low",
+      "scen": "boss",
+      "quality": "low",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.2,
+      "frame": {
+        "n": 1352,
+        "p50": 38.9,
+        "p95": 116.7,
+        "max": 394.4,
+        "fps": 22.5
+      },
+      "longTasks": {
+        "count": 96,
+        "totalMs": 13107,
+        "max": 304
+      },
+      "dom": {
+        "totalMax": 241,
+        "layerMax": 3,
+        "ebarMax": 0,
+        "totalFirst": 223,
+        "totalLast": 238,
+        "layerFirst": 1,
+        "layerLast": 0,
+        "nodesAtEnd": 619
+      }
+    },
+    {
+      "name": "roam-medium-reduced",
+      "scen": "roam",
+      "quality": "medium",
+      "reduced": true,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.4,
+      "frame": {
+        "n": 1346,
+        "p50": 44.4,
+        "p95": 83.3,
+        "max": 394.4,
+        "fps": 22.3
+      },
+      "longTasks": {
+        "count": 71,
+        "totalMs": 9143,
+        "max": 392
+      },
+      "dom": {
+        "totalMax": 249,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 227,
+        "totalLast": 249,
+        "layerFirst": 5,
+        "layerLast": 11,
+        "nodesAtEnd": 769
+      }
+    },
+    {
+      "name": "boss-medium-reduced",
+      "scen": "boss",
+      "quality": "medium",
+      "reduced": true,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60.4,
+      "frame": {
+        "n": 1214,
+        "p50": 44.4,
+        "p95": 133.4,
+        "max": 500,
+        "fps": 20.1
+      },
+      "longTasks": {
+        "count": 94,
+        "totalMs": 14135,
+        "max": 447
+      },
+      "dom": {
+        "totalMax": 240,
+        "layerMax": 3,
+        "ebarMax": 0,
+        "totalFirst": 222,
+        "totalLast": 238,
+        "layerFirst": 0,
+        "layerLast": 0,
+        "nodesAtEnd": 775
+      }
+    }
+  ]
+}

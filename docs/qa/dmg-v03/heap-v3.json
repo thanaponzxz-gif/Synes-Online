@@ -1,0 +1,263 @@
+{
+ "build": "free-roam/dist",
+ "restartsBetween": 20,
+ "before": {
+  "selfMB": 18.2,
+  "usedMB": 8.26,
+  "detachedNodes": 17
+ },
+ "after": {
+  "selfMB": 26.35,
+  "usedMB": 10.35,
+  "detachedNodes": 17
+ },
+ "topGrowth": [
+  {
+   "key": "native:system / JSArrayBufferData",
+   "countBefore": 1352,
+   "countAfter": 3312,
+   "count": 1960,
+   "kb": 5769.4
+  },
+  {
+   "key": "code",
+   "countBefore": 36741,
+   "countAfter": 39025,
+   "count": 2284,
+   "kb": 1237
+  },
+  {
+   "key": "native:ArrayBuffer",
+   "countBefore": 416,
+   "countAfter": 2376,
+   "count": 1960,
+   "kb": 206.7
+  },
+  {
+   "key": "array",
+   "countBefore": 4093,
+   "countAfter": 6007,
+   "count": 1914,
+   "kb": 204.2
+  },
+  {
+   "key": "native:Float32Array",
+   "countBefore": 383,
+   "countAfter": 2163,
+   "count": 1780,
+   "kb": 201.6
+  },
+  {
+   "key": "object:Object",
+   "countBefore": 7331,
+   "countAfter": 13048,
+   "count": 5717,
+   "kb": 171.1
+  },
+  {
+   "key": "native:WebGLBuffer",
+   "countBefore": 416,
+   "countAfter": 2376,
+   "count": 1960,
+   "kb": 153.1
+  },
+  {
+   "key": "native:system / WeakArrayList",
+   "countBefore": 716,
+   "countAfter": 1425,
+   "count": 709,
+   "kb": 62.6
+  },
+  {
+   "key": "object:Array",
+   "countBefore": 6222,
+   "countAfter": 9345,
+   "count": 3123,
+   "kb": 48.8
+  },
+  {
+   "key": "native:WebGLVertexArrayObject",
+   "countBefore": 85,
+   "countAfter": 465,
+   "count": 380,
+   "kb": 47.5
+  },
+  {
+   "key": "object:kt",
+   "countBefore": 1088,
+   "countAfter": 1888,
+   "count": 800,
+   "kb": 46.9
+  },
+  {
+   "key": "object:lr",
+   "countBefore": 104,
+   "countAfter": 704,
+   "count": 600,
+   "kb": 39.8
+  },
+  {
+   "key": "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink:",
+   "countBefore": 113,
+   "countAfter": 117,
+   "count": 4,
+   "kb": 28.3
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::WebGLBuffer, cppgc:",
+   "countBefore": 87,
+   "countAfter": 467,
+   "count": 380,
+   "kb": 26.7
+  },
+  {
+   "key": "object:ke",
+   "countBefore": 114,
+   "countAfter": 494,
+   "count": 380,
+   "kb": 22.3
+  },
+  {
+   "key": "native:Uint16Array",
+   "countBefore": 33,
+   "countAfter": 213,
+   "count": 180,
+   "kb": 20.4
+  },
+  {
+   "key": "native:PerformanceLongAnimationFrameTiming",
+   "countBefore": 19,
+   "countAfter": 117,
+   "count": 98,
+   "kb": 16.8
+  },
+  {
+   "key": "native:system / PropertyArray",
+   "countBefore": 1203,
+   "countAfter": 1784,
+   "count": 581,
+   "kb": 11.4
+  },
+  {
+   "key": "object:lp",
+   "countBefore": 40,
+   "countAfter": 220,
+   "count": 180,
+   "kb": 10.5
+  },
+  {
+   "key": "native:TaskAttributionTiming",
+   "countBefore": 12,
+   "countAfter": 60,
+   "count": 48,
+   "kb": 5.6
+  },
+  {
+   "key": "native:PerformanceLongTaskTiming",
+   "countBefore": 12,
+   "countAfter": 60,
+   "count": 48,
+   "kb": 4.9
+  },
+  {
+   "key": "object shape",
+   "countBefore": 10054,
+   "countAfter": 10139,
+   "count": 85,
+   "kb": 4.1
+  },
+  {
+   "key": "native:blink::ScriptTimingInfo",
+   "countBefore": 11,
+   "countAfter": 39,
+   "count": 28,
+   "kb": 3.7
+  },
+  {
+   "key": "native:PerformanceScriptTiming",
+   "countBefore": 10,
+   "countAfter": 38,
+   "count": 28,
+   "kb": 3.3
+  },
+  {
+   "key": "native:system / ProtectedFixedArray",
+   "countBefore": 261,
+   "countAfter": 416,
+   "count": 155,
+   "kb": 2.5
+  },
+  {
+   "key": "native:system / SharedFunctionInfoWrapper",
+   "countBefore": 260,
+   "countAfter": 415,
+   "count": 155,
+   "kb": 1.2
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::TaskAttributionTimi",
+   "countBefore": 12,
+   "countAfter": 60,
+   "count": 48,
+   "kb": 1.1
+  },
+  {
+   "key": "string",
+   "countBefore": 42861,
+   "countAfter": 45144,
+   "count": 2283,
+   "kb": 0.8
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::PerformanceScriptTi",
+   "countBefore": 9,
+   "countAfter": 37,
+   "count": 28,
+   "kb": 0.7
+  },
+  {
+   "key": "native:blink::ElementAnimations",
+   "countBefore": 0,
+   "countAfter": 1,
+   "count": 1,
+   "kb": 0.7
+  }
+ ],
+ "topShrink": [
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::SampledEffect, cppg",
+   "countBefore": 0,
+   "countAfter": 1,
+   "count": 1,
+   "kb": 0
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<blink::GeometryMapperClipCache::ClipCacheEntry>",
+   "countBefore": 4,
+   "countAfter": 3,
+   "count": -1,
+   "kb": -0.1
+  },
+  {
+   "key": "native:blink::HeapHashTableBacking<blink::HashTable<blink::ShapeCacheKey, blink::KeyVal",
+   "countBefore": 11,
+   "countAfter": 11,
+   "count": 0,
+   "kb": -0.6
+  },
+  {
+   "key": "native:blink::ShareableElementData",
+   "countBefore": 144,
+   "countAfter": 108,
+   "count": -36,
+   "kb": -3.4
+  },
+  {
+   "key": "native:blink::HeapHashTableBacking<blink::HashTable<unsigned int, blink::KeyValuePair<u",
+   "countBefore": 4,
+   "countAfter": 3,
+   "count": -1,
+   "kb": -12
+  }
+ ]
+}

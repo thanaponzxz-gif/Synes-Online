@@ -1,0 +1,263 @@
+{
+ "build": "dmg-base-src/dist",
+ "restartsBetween": 20,
+ "before": {
+  "selfMB": 18.07,
+  "usedMB": 8.03,
+  "detachedNodes": 17
+ },
+ "after": {
+  "selfMB": 26.28,
+  "usedMB": 9.94,
+  "detachedNodes": 17
+ },
+ "topGrowth": [
+  {
+   "key": "native:system / JSArrayBufferData",
+   "countBefore": 1354,
+   "countAfter": 3318,
+   "count": 1964,
+   "kb": 5900.2
+  },
+  {
+   "key": "code",
+   "countBefore": 35226,
+   "countAfter": 37498,
+   "count": 2272,
+   "kb": 1205.4
+  },
+  {
+   "key": "native:ArrayBuffer",
+   "countBefore": 425,
+   "countAfter": 2384,
+   "count": 1959,
+   "kb": 206.6
+  },
+  {
+   "key": "native:Float32Array",
+   "countBefore": 392,
+   "countAfter": 2171,
+   "count": 1779,
+   "kb": 201.5
+  },
+  {
+   "key": "array",
+   "countBefore": 4124,
+   "countAfter": 5982,
+   "count": 1858,
+   "kb": 188.9
+  },
+  {
+   "key": "object:Object",
+   "countBefore": 7375,
+   "countAfter": 12946,
+   "count": 5571,
+   "kb": 167.1
+  },
+  {
+   "key": "native:WebGLBuffer",
+   "countBefore": 425,
+   "countAfter": 2384,
+   "count": 1959,
+   "kb": 153
+  },
+  {
+   "key": "native:system / WeakArrayList",
+   "countBefore": 695,
+   "countAfter": 1379,
+   "count": 684,
+   "kb": 61.5
+  },
+  {
+   "key": "object:Array",
+   "countBefore": 6226,
+   "countAfter": 9297,
+   "count": 3071,
+   "kb": 48
+  },
+  {
+   "key": "native:WebGLVertexArrayObject",
+   "countBefore": 87,
+   "countAfter": 467,
+   "count": 380,
+   "kb": 47.5
+  },
+  {
+   "key": "object:Dt",
+   "countBefore": 1092,
+   "countAfter": 1896,
+   "count": 804,
+   "kb": 47.1
+  },
+  {
+   "key": "object:Zs",
+   "countBefore": 104,
+   "countAfter": 704,
+   "count": 600,
+   "kb": 39.8
+  },
+  {
+   "key": "native:blink::HeapHashTableBacking<blink::HashTable<cppgc::internal::BasicMember<blink:",
+   "countBefore": 89,
+   "countAfter": 90,
+   "count": 1,
+   "kb": 28
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::WebGLBuffer, cppgc:",
+   "countBefore": 89,
+   "countAfter": 469,
+   "count": 380,
+   "kb": 26.7
+  },
+  {
+   "key": "object:Ue",
+   "countBefore": 114,
+   "countAfter": 494,
+   "count": 380,
+   "kb": 22.3
+  },
+  {
+   "key": "native:PerformanceLongAnimationFrameTiming",
+   "countBefore": 75,
+   "countAfter": 200,
+   "count": 125,
+   "kb": 21.5
+  },
+  {
+   "key": "native:Uint16Array",
+   "countBefore": 33,
+   "countAfter": 213,
+   "count": 180,
+   "kb": 20.4
+  },
+  {
+   "key": "native:system / PropertyArray",
+   "countBefore": 1184,
+   "countAfter": 1757,
+   "count": 573,
+   "kb": 11
+  },
+  {
+   "key": "object:Pf",
+   "countBefore": 40,
+   "countAfter": 220,
+   "count": 180,
+   "kb": 10.5
+  },
+  {
+   "key": "native:TaskAttributionTiming",
+   "countBefore": 14,
+   "countAfter": 55,
+   "count": 41,
+   "kb": 4.8
+  },
+  {
+   "key": "native:PerformanceLongTaskTiming",
+   "countBefore": 14,
+   "countAfter": 55,
+   "count": 41,
+   "kb": 4.2
+  },
+  {
+   "key": "object shape",
+   "countBefore": 9691,
+   "countAfter": 9755,
+   "count": 64,
+   "kb": 2.8
+  },
+  {
+   "key": "native:system / ProtectedFixedArray",
+   "countBefore": 250,
+   "countAfter": 407,
+   "count": 157,
+   "kb": 2.6
+  },
+  {
+   "key": "native:blink::ScriptTimingInfo",
+   "countBefore": 13,
+   "countAfter": 25,
+   "count": 12,
+   "kb": 1.6
+  },
+  {
+   "key": "native:PerformanceScriptTiming",
+   "countBefore": 13,
+   "countAfter": 24,
+   "count": 11,
+   "kb": 1.3
+  },
+  {
+   "key": "native:system / SharedFunctionInfoWrapper",
+   "countBefore": 249,
+   "countAfter": 406,
+   "count": 157,
+   "kb": 1.2
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::TaskAttributionTimi",
+   "countBefore": 14,
+   "countAfter": 55,
+   "count": 41,
+   "kb": 1
+  },
+  {
+   "key": "native:blink::HeapVectorBacking<cppgc::internal::BasicMember<blink::PerformanceEntry, c",
+   "countBefore": 7,
+   "countAfter": 7,
+   "count": 0,
+   "kb": 0.7
+  },
+  {
+   "key": "object:ArrayBuffer",
+   "countBefore": 944,
+   "countAfter": 949,
+   "count": 5,
+   "kb": 0.3
+  },
+  {
+   "key": "object:Float32Array",
+   "countBefore": 897,
+   "countAfter": 902,
+   "count": 5,
+   "kb": 0.3
+  }
+ ],
+ "topShrink": [
+  {
+   "key": "native:blink::TransitionKeyframe",
+   "countBefore": 4,
+   "countAfter": 0,
+   "count": -4,
+   "kb": -0.6
+  },
+  {
+   "key": "native:KeyframeEffect",
+   "countBefore": 2,
+   "countAfter": 0,
+   "count": -2,
+   "kb": -0.8
+  },
+  {
+   "key": "native:WebGLUniformLocation",
+   "countBefore": 363,
+   "countAfter": 346,
+   "count": -17,
+   "kb": -0.9
+  },
+  {
+   "key": "native:CSSTransition",
+   "countBefore": 2,
+   "countAfter": 0,
+   "count": -2,
+   "kb": -1
+  },
+  {
+   "key": "string",
+   "countBefore": 41756,
+   "countAfter": 43954,
+   "count": 2198,
+   "kb": -6.8
+  }
+ ]
+}

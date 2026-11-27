@@ -1,0 +1,49 @@
+{
+  "tag": "rm-before-a",
+  "root": "dist",
+  "warm": 10,
+  "secs": 60,
+  "oracle": false,
+  "deep": false,
+  "viewport": "844x390 dpr 1",
+  "machine": {
+    "cpu": "11th Gen Intel(R) Core(TM) i7-11700K @ 3.60GHz",
+    "cores": 16,
+    "os": "win32 10.0.19045",
+    "browser": "158.0.4370.33"
+  },
+  "configs": [
+    {
+      "name": "roam-medium",
+      "scen": "roam",
+      "quality": "medium",
+      "reduced": false,
+      "errors": [],
+      "errorCount": 0,
+      "restarts": 1,
+      "wallSecs": 60,
+      "frame": {
+        "n": 1337,
+        "p50": 39,
+        "p95": 100,
+        "max": 477.7,
+        "fps": 22.3
+      },
+      "longTasks": {
+        "count": 74,
+        "totalMs": 9480,
+        "max": 412
+      },
+      "dom": {
+        "totalMax": 248,
+        "layerMax": 16,
+        "ebarMax": 5,
+        "totalFirst": 228,
+        "totalLast": 248,
+        "layerFirst": 6,
+        "layerLast": 10,
+        "nodesAtEnd": 717
+      }
+    }
+  ]
+}
