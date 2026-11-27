@@ -84,14 +84,26 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #banner.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 #banner.big { font-size: clamp(22px, 5vmin, 38px); color: #ffe7a0; }
 #floaters { position: absolute; inset: 0; overflow: hidden; }
-.floater { position: absolute; transform: translate(-50%, -50%); font-weight: 900; font-size: 20px; -webkit-text-stroke: 4px rgba(18, 12, 40, 0.92); paint-order: stroke fill;
-  text-shadow: 0 2px 0 rgba(18, 12, 40, 0.9), 0 0 8px rgba(0, 0, 0, 0.5); animation: float 0.9s ease-out forwards; white-space: nowrap; }
-.floater.crit { color: var(--gold); font-size: 26px; }
-.floater.hurt { color: #ffd0d6; font-size: 24px; -webkit-text-stroke: 4px #7a0f2a; text-shadow: 0 2px 0 #4a0618, 0 0 10px rgba(122, 15, 42, 0.8); }
-.floater.heal { color: #8dffb0; }
-.floater.early { color: #FF9EC7; font-size: 22px; line-height: 1.25; padding: 0 10px 2px; border-radius: 99px; background: rgba(18, 12, 40, 0.74); box-shadow: 0 0 0 1px rgba(255, 158, 199, 0.5), 0 2px 8px rgba(0, 0, 0, 0.45);
-  -webkit-text-stroke: 3px rgba(18, 12, 40, 0.95); animation: float-hold 1.3s ease-out forwards; } /* blossom: palette colour, never the reserved warning red/orange. DES-006 Q31: dark edge + thin backdrop, fully readable for ~0.9 s */
-.floater.perfect { color: var(--lumen); font-size: 24px; letter-spacing: 0.05em; }
+/* DES-008 damage numbers (src/ui/floaters.ts): pooled, moved with transform/opacity only. Numbers = 3 stacked copies of the glyphs
+   (outer ink stroke + hard shadow, inner light stroke, gradient fill clipped to the text); status words = one copy, own stroke.
+   Never the reserved warning red/orange. Sizes / colours / strokes are set from floatCore.ts (CSS px, already x S). */
+.fl { position: absolute; left: 0; top: 0; display: none; pointer-events: none; user-select: none; -webkit-user-select: none; white-space: nowrap; will-change: transform, opacity; }
+.fl > span { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", "Thonburi", sans-serif;
+  letter-spacing: 0; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.fl-num > span { font-weight: 900; line-height: 1; }
+.fl-o { color: var(--oc); -webkit-text-stroke: var(--ow) var(--oc); text-shadow: 0 var(--sh) 0 #120D24; }
+.fl-i { color: var(--ic); -webkit-text-stroke: var(--iw) var(--ic); }
+.fl-f { color: var(--g0); background: linear-gradient(180deg, var(--g0) 0%, var(--g1) 50%, var(--g2) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.fl-num.noclip .fl-f { background: none; -webkit-text-fill-color: var(--g0); }
+.fl-num.nostroke .fl-o, .fl-num.nostroke .fl-i { -webkit-text-stroke: 0; }
+.fl > .fl-badge { transform: none; font-weight: 700; line-height: 1.3; color: #F7F5FF; -webkit-text-stroke: 2px #231D42; paint-order: stroke fill; display: none; }
+.fl-st > .fl-s { font-weight: 800; color: var(--c); -webkit-text-stroke: var(--ow) var(--oc); paint-order: stroke fill; text-shadow: 0 2px 0 rgba(18, 13, 36, 0.65); }
+.fl-st.nostroke > .fl-s { -webkit-text-stroke: 0; }
+.fl-st.early > .fl-s { background: rgba(24, 21, 45, 0.84); padding: 3px 8px; border-radius: 8px; border: 1px solid #796183; }
+/* the two sound-beat sparks (bonus / PERFECT only, Medium): CSS bars, no image asset */
+.fl-spark { position: absolute; left: 0; top: 0; display: none; pointer-events: none; border-radius: 1.5px; margin: -4.5px 0 0 -1.5px; width: 3px; height: 9px; background: #C6FAF6; }
+.fl-spark.b { margin: -3px 0 0 -1.5px; height: 6px; background: #A78BFA; }
+.fl-debug { position: absolute; inset: 0; pointer-events: none; }
 .ebar { position: absolute; left: 0; top: 0; width: 44px; height: 6px; border-radius: 3px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.7); overflow: hidden; }
 .ebar i { display: block; height: 100%; background: #ff6b7a; }
 #vignette { position: absolute; inset: 0; box-shadow: inset 0 0 90px 30px rgba(255, 40, 70, 0.0); }
@@ -180,9 +192,6 @@ label:has(> #chk-sound) { min-height: 44px; }
 .rankinfo { font-size: 12px; opacity: 0.85; margin-top: 4px; }
 .rankinfo .nextrank { color: var(--gold); font-weight: 700; margin-top: 2px; }
 
-@keyframes float { 0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); } 15% { opacity: 1; transform: translate(-50%, -70%) scale(1.1); } 100% { opacity: 0; transform: translate(-50%, -190%) scale(1); } }
-@keyframes float-hold { 0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); } 12% { opacity: 1; transform: translate(-50%, -70%) scale(1.1); } 20% { transform: translate(-50%, -80%) scale(1); }
-  75% { opacity: 1; transform: translate(-50%, -125%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -160%) scale(1); } }
 @keyframes deny { 0%, 100% { translate: 0 0; } 20% { translate: -3px 0; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95), 0 0 12px 3px rgba(167, 139, 250, 0.85); }
   45% { translate: 3px 0; } 70% { translate: -2px 0; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.5), 0 0 8px 2px rgba(167, 139, 250, 0.4); } }
 @keyframes cdpop { 0% { scale: 1; } 25% { scale: 1.3; } 100% { scale: 1; } }
@@ -218,7 +227,6 @@ label:has(> #chk-sound) { min-height: 44px; }
   #btn-skill3 { --r: 16; --b: 115; }
   #btn-ult { --r: 12; --b: 177; }
 }
-@media (prefers-reduced-motion: reduce) { .floater { animation-duration: 0.5s; } }
 /* controls fade while a telegraph / boss / pillar is drawn underneath (see ui/buttonFade.ts); still fully tappable */
 .act, #stick-base { transition: opacity 0.15s; }
 .seethru { opacity: 0.35 !important; }

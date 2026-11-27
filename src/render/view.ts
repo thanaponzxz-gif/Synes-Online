@@ -48,7 +48,10 @@ function starGeo() {
   for (let i = 0; i < 10; i++) { const a = (i / 10) * Math.PI * 2 + Math.PI / 2, r = i % 2 ? 0.07 : 0.17; i ? s.lineTo(Math.cos(a) * r, Math.sin(a) * r) : s.moveTo(Math.cos(a) * r, Math.sin(a) * r); }
   return (STAR_GEO = new ShapeGeometry(s));
 }
-interface ActorView { a: Actor; root: Group; model: Group; parts: Record<string, Object3D>; px: number; pz: number; cx: number; cz: number; shadow: Mesh; stars: Group; flash: number; deathT: number; hopH: number; }
+interface ActorView { a: Actor; root: Group; model: Group; parts: Record<string, Object3D>; px: number; pz: number; cx: number; cz: number; shadow: Mesh; stars: Group; flash: number; deathT: number; hopH: number;
+  /** DES-008: every drawn mesh of the body (model + ✦ stars, not the ground shadow): its screen rect is the union of their
+   *  posed boxes, so it follows swings, hops, the hit pop and the stars exactly */
+  bodyMeshes: Mesh[]; }
 
 export class View {
   renderer: WebGLRenderer; scene = new Scene(); camera: PerspectiveCamera;
@@ -478,8 +481,10 @@ export class View {
     const stars = new Group();
     for (let i = 0; i < 3; i++) { const s = new Mesh(starGeo(), new MeshBasicMaterial({ color: PAL.gold, transparent: true, depthWrite: false, depthTest: false })); s.renderOrder = 11; stars.add(s); }
     stars.visible = false; root.add(stars);
+    const bodyMeshes: Mesh[] = [];
+    for (const g of [model, stars]) g.traverse((o) => { const m = o as Mesh; if (m.isMesh && m.geometry) { if (!m.geometry.boundingBox) m.geometry.computeBoundingBox(); bodyMeshes.push(m); } });
     this.scene.add(root);
-    this.actors.set(a.id, { a, root, model, parts, px: a.x, pz: a.z, cx: a.x, cz: a.z, shadow, stars, flash: 0, deathT: 0, hopH: a.kind === 'prismback' ? 4.2 : a.kind === 'puffcap' ? 1.2 : 1.2 });
+    this.actors.set(a.id, { a, root, model, parts, px: a.x, pz: a.z, cx: a.x, cz: a.z, shadow, stars, flash: 0, deathT: 0, hopH: a.kind === 'prismback' ? 4.2 : a.kind === 'puffcap' ? 1.2 : 1.2, bodyMeshes });
   }
 
   /** Call right before each sim step to keep previous positions for interpolation. */
@@ -847,12 +852,38 @@ export class View {
     out.x = (v.x * 0.5 + 0.5) * window.innerWidth; out.y = (-v.y * 0.5 + 0.5) * window.innerHeight; out.vis = v.z >= -1 && v.z < 1;
     return out;
   }
+  /** DES-008 §6.1: screen rect (CSS px) of an actor's drawn body: the union of every visible body mesh's posed bounding box
+   *  (8 corners through its current world matrix), so swords, scarves, hops, the hit pop and the ✦ stars are all inside.
+   *  0 = drawn and on screen, 1 = no longer drawn (dead / faded / hidden), 2 = off screen or partly behind the camera. */
+  actorRect(id: number, out: { l: number; t: number; r: number; b: number }): 0 | 1 | 2 {
+    const v = this.actors.get(id); if (!v || !v.root.visible) return 1;
+    out.l = Infinity; out.t = Infinity; out.r = -Infinity; out.b = -Infinity;
+    const o = ENV_PT, P = ENV_V;
+    let any = false;
+    for (const m of v.bodyMeshes) {
+      if (!m.visible) continue;
+      let p: Object3D | null = m.parent, shown = true; // a hidden group (the ✦ stars, a swapped occluder twin) hides its meshes too
+      while (p && p !== v.root) { if (!p.visible) { shown = false; break; } p = p.parent; }
+      if (!shown) continue;
+      const bb = m.geometry.boundingBox!; any = true;
+      for (let i = 0; i < 8; i++) {
+        P.set(i & 1 ? bb.max.x : bb.min.x, i & 2 ? bb.max.y : bb.min.y, i & 4 ? bb.max.z : bb.min.z).applyMatrix4(m.matrixWorld);
+        this.project(P.x, P.y, P.z, o);
+        if (!o.vis) return 2;
+        if (o.x < out.l) out.l = o.x; if (o.x > out.r) out.r = o.x; if (o.y < out.t) out.t = o.y; if (o.y > out.b) out.b = o.y;
+      }
+    }
+    if (!any) return 1;
+    return out.r < 0 || out.l > window.innerWidth || out.b < 0 || out.t > window.innerHeight ? 2 : 0;
+  }
   actorScreenPos(id: number, h: number, out: { x: number; y: number; vis: boolean }) {
     const v = this.actors.get(id); if (!v) { out.vis = false; return out; }
     return this.project(v.root.position.x, h + v.model.position.y, v.root.position.z, out);
   }
 }
 const TMP = new Vector3();
+const ENV_PT = { x: 0, y: 0, vis: false };
+const ENV_V = new Vector3();
 const TMP_C = new Color();
 const TMP_M = new Matrix4();
 const TMP_C2 = new Vector3();

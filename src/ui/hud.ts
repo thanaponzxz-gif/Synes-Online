@@ -3,6 +3,9 @@ import type { World, SimEvent, DefeatCause } from '../../shared/sim/world.ts';
 import { PLAYER, ENEMIES, SKILLS, ULT, TICK } from '../../shared/data/tuning.ts';
 import { rankFor, RANK_RULES } from '../../shared/rules/reward.ts';
 import { dodgeCdSeconds } from '../../shared/sim/variant.ts';
+import { Floaters, type FloatHost } from './floaters.ts';
+import type { Rect } from './floatCore.ts';
+import type { Tier } from '../render/quality.ts';
 
 /** Hint copy. `when` = only show while the thing it talks about is on screen (round-1 playtest: hints arrived before/after the event). */
 /** `low`: secondary tip; it never takes the slot from another ready hint, and any ready hint may replace it once it has been read for 1.5 s. */
@@ -44,6 +47,10 @@ export class Hud {
   private dodgeBtn = $('#btn-dodge'); private potionBtn = $('#btn-potion');
   private layer = $('#floaters'); private vignette = $('#vignette'); private banner = $('#banner');
   private bars = new Map<number, HTMLElement>();
+  /** DES-008: enemy HP bar rects this frame (numbers keep 4·S px away from them) */
+  private barRects: Rect[] = [];
+  /** DES-008 damage numbers (pooled, placed around warnings / bodies / HUD) */
+  readonly floaters = new Floaters(this.layer, { debug: new URLSearchParams(location.search).has('floatdebug') });
   private tmp = { x: 0, y: 0, vis: false };
   netChip = $('#net-chip');
 
@@ -73,7 +80,12 @@ export class Hud {
     clearTimeout((el as any)._deny); (el as any)._deny = setTimeout(() => el.classList.remove('denied'), 400);
   }
 
-  update(w: World, dt: number, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp) {
+  setFloatHost(host: FloatHost, tier: Tier) { this.floaters.setHost(host); this.setFloatTier(tier); }
+  /** DES-008 §5.2: the low tier uses the Low caps / lives; medium and high use Medium */
+  setFloatTier(tier: Tier) { this.floaters.setQuality(tier === 'low' ? 'low' : 'medium'); }
+
+  /** uiDt: the damage-number clock step, 0 while paused or frozen (defaults to dt) */
+  update(w: World, dt: number, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp, uiDt = dt) {
     const p = w.player, ps = w.ps;
     this.w = w;
     if (!this.taughtFade && this.actBtns.some((b) => b.classList.contains('seethru'))) { this.taughtFade = true; this.queueHint('fadedButtons'); }
@@ -96,6 +108,7 @@ export class Hud {
       this.boss.classList.toggle('p2', w.phase === 2);
     }
     // enemy HP bars (only once engaged)
+    this.barRects.length = 0;
     for (const e of w.actors) {
       if (e.kind === 'player' || e.kind === 'prismback') continue;
       let bar = this.bars.get(e.id);
@@ -105,30 +118,31 @@ export class Hud {
       project(e.id, e.kind === 'puffcap' ? 1.35 : 1.25, this.tmp);
       bar.style.display = this.tmp.vis ? 'block' : 'none';
       bar.style.transform = `translate(${this.tmp.x - 22}px, ${this.tmp.y}px)`;
+      if (this.tmp.vis) this.barRects.push({ l: this.tmp.x - 22, t: this.tmp.y, r: this.tmp.x + 24, b: this.tmp.y + 8 }); // 44x6 + 1 px border
       (bar.firstChild as HTMLElement).style.width = `${(e.hp / e.maxHp) * 100}%`;
     }
     this.tickHints(w, dt);
+    this.floaters.frame(w, uiDt, this.barRects);
   }
+  /** QA stepping: advance and repaint the damage numbers by exactly the stepped sim time */
+  floatStep(w: World, secs: number) { this.floaters.frame(w, secs, this.barRects); }
 
   onEvents(evts: SimEvent[], w: World, project: (id: number, h: number, out: { x: number; y: number; vis: boolean }) => typeof this.tmp) {
+    void project;
+    if (evts.some((e) => e.t === 'respawn')) this.floaters.clear(); // retry: no number survives into the new attempt
+    // DES-008: damage numbers / status words for this tick, as one batch (§5.2); "หลบเร็วไป" keeps its HUD throttle (DES-006 Q29)
+    this.floaters.ingest(w, Floaters.fromEvents(w, evts, () => {
+      if (this.earlyAt.w === w && w.tick - this.earlyAt.tick < EARLY_GAP_TICKS) return false;
+      this.earlyAt.w = w; this.earlyAt.tick = w.tick; return true;
+    }));
     for (const e of evts) {
       // teach perfect dodge right after the first hit from a dodgeable area attack (the moment the lesson is relevant)
       if (e.t === 'hit' && !e.byPlayer && !this.taughtPerfect && w.stats.perfect === 0 && w.ps.cause && !['rush', 'charge'].includes(w.ps.cause.attackId)) { this.taughtPerfect = true; this.queueHint('perfectTeach'); }
       if (e.t === 'hint') this.queueHint(e.id);
       else if (e.t === 'hit') {
-        project(e.target, e.byPlayer ? 1.6 : 2.0, this.tmp);
-        if (this.tmp.vis) this.floater(this.tmp.x, this.tmp.y, String(e.amount), e.byPlayer ? (e.crit ? 'crit' : 'dmg') : 'hurt');
         if (!e.byPlayer) { this.vignette.classList.remove('flash'); void this.vignette.offsetWidth; this.vignette.classList.add('flash'); try { navigator.vibrate?.(35); } catch { /* not allowed */ } }
-      } else if (e.t === 'perfect') { project(w.player.id, 2.3, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'PERFECT!', 'perfect'); }
-      else if (e.t === 'dodge-early') {
-        if (this.earlyAt.w === w && w.tick - this.earlyAt.tick < EARLY_GAP_TICKS) continue;
-        this.earlyAt.w = w; this.earlyAt.tick = w.tick;
-        project(w.player.id, 2.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'หลบเร็วไป', 'early', 1300);
       }
-      else if (e.t === 'heal') { project(w.player.id, 2.0, this.tmp); this.floater(this.tmp.x, this.tmp.y, `+${e.amount}`, 'heal'); }
-      else if (e.t === 'interrupt') { project(e.id, 1.6, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'ขัดจังหวะ!', 'crit'); }
-      else if (e.t === 'stun' && e.long) this.showBanner('💥 บอสชนเสา! มึนงง — โจมตีเลย!', 2.2);
-      else if (e.t === 'stun') { project(e.id, 3.5, this.tmp); this.floater(this.tmp.x, this.tmp.y, 'เสียหลัก', 'perfect'); }
+      else if (e.t === 'stun' && e.long) this.showBanner('💥 บอสชนเสา! มึนงง — โจมตีเลย!', 2.2); // the "เสียหลัก" word comes from the floaters (DES-008 §2)
       else if (e.t === 'gate' && e.open && e.id === 'clearingExit') this.showBanner('ประตูคริสตัลเปิดแล้ว เดินต่อตามทางข้างหน้า', 2.5);
       else if (e.t === 'auto-off') this.showBanner(e.reason === 'boss' ? 'เข้าลานบอส · ปิดตีอัตโนมัติแล้ว' : 'ปิดตีอัตโนมัติแล้ว', 2.2);
       else if (e.t === 'checkpoint') this.showBanner('💧 บันทึกจุดเกิดใหม่แล้ว', 1.8);
@@ -137,11 +151,6 @@ export class Hud {
     }
   }
 
-  private floater(x: number, y: number, text: string, cls: string, ms = 900) {
-    const el = document.createElement('div'); el.className = `floater ${cls}`; el.textContent = text;
-    el.style.left = `${x + (Math.random() - 0.5) * 36}px`; el.style.top = `${y + (Math.random() - 0.5) * 14}px`;
-    this.layer.appendChild(el); setTimeout(() => el.remove(), ms);
-  }
   /** Cooldown ring + whole seconds for skill slot 1..3. Uses World.skillCooldown (sim lane) when present, else slot 1 falls back to ps.skillCd. */
   private skillCd(w: World, slot: 1 | 2 | 3) {
     const api = (w as unknown as SkillApi).skillCooldown;

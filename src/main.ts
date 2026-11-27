@@ -11,6 +11,7 @@ import { TIERS, guessTier, loadPref, savePref, AdaptiveResolution, type QualityP
 import { toneById } from './render/tones.ts';
 import { Input } from './input.ts';
 import { Hud } from './ui/hud.ts';
+import type { FKind } from './ui/floatCore.ts';
 import { ButtonFade } from './ui/buttonFade.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
@@ -61,6 +62,7 @@ let tierName = pref === 'auto' ? guessTier() : pref;
 let adaptive = new AdaptiveResolution(TIERS[tierName].maxPixelRatio);
 view.setQuality(TIERS[tierName]);
 view.applyTone(toneById(Q.get('tone')));
+hud.setFloatHost({ actorRect: (id, out) => view.actorRect(id, out), project: (x, y, z, out) => view.project(x, y, z, out) }, tierName); // DES-008
 
 let world: World | null = null;
 let log = new InputLog();
@@ -77,7 +79,12 @@ const qaLog: { t: number; e: string }[] = [];
   unfreeze() { qaFrozen = false; last = performance.now(); acc = 0; },
   log: qaLog,
   /** QA only: run exactly n sim ticks (same step as the live loop, bot/input included), then draw one frame at the end state. */
-  stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); qaPend = 0; } return i; },
+  stepTicks(n = 1, draw = true) { if (!world || state !== 'playing') return 0; let i = 0; for (; i < n; i++) { simStep(); if (world.finished) { i++; break; } } qaPend += i; if (draw) { renderFrame(1, Math.max(TICK, qaPend * TICK)); hud.floatStep(world, qaPend * TICK); qaPend = 0; } return i; },
+  /** QA: damage-number stats (DES-008 §10): counters, pool size, frame CPU samples, painted overlap with protected areas */
+  /** QA: show style samples (DES-008 §10.2) without touching the sim: labels on actor `actor` (default the player). */
+  floatSample(list: { kind: FKind; amount?: number; actor?: number }[]) { if (!world) return; const w = world; hud.floaters.ingest(w, list.map((e, order) => ({ kind: e.kind, amount: e.amount ?? 0, actor: e.actor ?? w.player.id, dist: 0, order }))); },
+  floaters() { const f = hud.floaters, q = f.qa, ms = Array.from(q.ms.slice(0, Math.min(q.n, q.ms.length))).sort((a, b) => a - b), pc = (p: number) => ms.length ? ms[Math.min(ms.length - 1, Math.floor(p * ms.length))] : 0;
+    return { ...f.book.stats, labels: f.book.labels.map((l) => ({ kind: l.kind, text: l.text, count: l.count, age: Math.round(f.book.clock - l.born), life: l.life, slot: l.slot, R: l.screen })), live: f.book.labels.length, quality: f.book.q, reduced: f.book.reduced, pool: f.domPool(), maxDomLive: q.maxDom, frames: q.frames, paintedOverlap: q.paintedOverlap, domOutsideR: q.domOutsideR, cpuMs: { p50: pc(0.5), p95: pc(0.95), max: ms.length ? ms[ms.length - 1] : 0 }, hudRead: q.hudRead, dropLog: f.book.dropLog, partMsPerFrame: Object.fromEntries(Object.entries(q.part).map(([k, v]) => [k, +(v / Math.max(1, q.frames)).toFixed(3)])) }; },
 };
 
 // ------------------------------------------------------------------ boot
@@ -169,7 +176,7 @@ function frame(now: number) {
   renderFrame(state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : 1, state === 'paused' || qaFrozen ? 0 : dt);
   if (!input.autoPending) autoSet.enabled = world.auto.s.enabled; // the sim may have switched it off (boss area, defeat)
   autoBar.update(autoSet.enabled, autoAllowedHere(world));
-  hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out));
+  hud.update(world, dt, (id, h, out) => view.actorScreenPos(id, h, out), state === 'paused' || qaFrozen ? 0 : dt);
   if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
   if (pref === 'auto' && state === 'playing' && !qaFrozen) { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
@@ -255,6 +262,7 @@ sel.addEventListener('change', () => {
   tierName = pref === 'auto' ? guessTier() : pref;
   adaptive = new AdaptiveResolution(TIERS[tierName].maxPixelRatio);
   view.setQuality(TIERS[tierName]);
+  hud.setFloatTier(tierName);
   if (world) view.buildLevel(world, 7);
 });
 $<HTMLInputElement>('#chk-sound').addEventListener('change', (e) => sfx.setMuted(!(e.target as HTMLInputElement).checked));

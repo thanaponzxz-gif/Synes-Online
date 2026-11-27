@@ -1,0 +1,365 @@
+// DES-008 damage numbers: the DOM layer. Pooled label elements (no element created per hit), glyph measuring with a 2D canvas
+// (no layout reads per label), the protected screen areas gathered every frame (warnings, bodies, enemy bars, visible HUD), and
+// painting with transform/opacity only. The rules live in floatCore.ts.
+import type { World, SimEvent, Telegraph } from '../../shared/sim/world.ts';
+import {
+  FloatBook, STYLE, NUMERIC, CAPS, SPARK, scaleAt, opacityAt, pathPoints, bezier, sparkSpots, grow, overlapArea,
+  type FKind, type FIn, type FQuality, type GlyphBox, type Geo, type Label, type Rect,
+} from './floatCore.ts';
+
+export interface FloatHost {
+  /** body rect of an actor in CSS px; 0 = ok, 1 = no longer drawn, 2 = off screen */
+  actorRect(id: number, out: Rect): 0 | 1 | 2;
+  project(x: number, y: number, z: number, out: { x: number; y: number; vis: boolean }): unknown;
+}
+
+const FONT = 'system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", "Thonburi", sans-serif';
+/** metres around a warning shape (its bright edge sits on the boundary), as in buttonFade */
+const EDGE = 0.3;
+/** an ended warning still flashes / bursts for this long (view.ts: ring 0.25 s, particles 0.4 s) */
+const AFTER_MS = 400;
+/** HUD parts that numbers must never cover (§6.1 item 3); `on` = only while that class is set */
+/** transitions that never move a HUD element's box */
+const STILL = new Set(['opacity', 'filter', 'box-shadow', 'background', 'background-color', 'color', 'visibility']);
+const HUD: { sel: string; on?: string }[] = [
+  { sel: '.act' }, { sel: '#stick-base', on: 'on' }, { sel: '#top-left' }, { sel: '#top-right' }, { sel: '#boss', on: 'show' },
+  { sel: '#hint', on: 'show' }, { sel: '#banner', on: 'show' }, { sel: '#auto-bar' }, { sel: '.overlay', on: 'show' },
+];
+
+interface NumEl { root: HTMLElement; o: HTMLElement; i: HTMLElement; f: HTMLElement; badge: HTMLElement; uid: number; text: string }
+interface StEl { root: HTMLElement; s: HTMLElement; uid: number; text: string }
+interface SparkEl { a: HTMLElement; b: HTMLElement; uid: number }
+
+export class Floaters {
+  readonly book = new FloatBook();
+  private host: FloatHost | null = null;
+  private nums: NumEl[] = []; private sts: StEl[] = []; private sparks: SparkEl[] = [];
+  private byUid = new Map<number, NumEl | StEl>();
+  private ctx = document.createElement('canvas').getContext('2d')!;
+  private measures = new Map<string, GlyphBox | null>();
+  /** HUD rects are cached: reading them every frame forces a layout (≈1 ms/frame on the test PC). Re-read on resize, show/hide,
+   *  an element's own size change, a CSS transition that can move it / an animation on it (until it ends), joystick moves, and every 2 s. */
+  private hudEls: { el: HTMLElement; on?: string; tag: string; r: Rect | null; shown: boolean; busy: number }[] = [];
+  private hudDirty = true; private hudAt = -1e9;
+  private probe: HTMLElement;
+  private safe: Rect = { l: 0, t: 0, r: 0, b: 0 };
+  private screenDirty = true;
+  private S = 1;
+  private prot: Rect[] = [];
+  private teleSeen = new Map<number, { t: Telegraph; until: number }>();
+  private world: World | null = null;
+  private pt = { x: 0, y: 0, vis: false };
+  private bz = { x: 0, y: 0 };
+  private path = new Array<number>(8);
+  private noClip = !CSS.supports('(-webkit-background-clip: text) or (background-clip: text)');
+  private noStroke = !CSS.supports('-webkit-text-stroke', '1px black');
+  private debug: HTMLCanvasElement | null = null;
+  /** QA: CPU ms of frame() (ring), DOM high-water mark, painted-overlap checks */
+  qa = { ms: new Float32Array(3600), n: 0, maxDom: 0, paintedOverlap: 0, domOutsideR: 0, frames: 0, part: { warn: 0, body: 0, hud: 0, book: 0, paint: 0 }, hudRead: { dirty: 0, timer: 0, busy: {} as Record<string, number>, fresh: 0 } };
+
+  private layer: HTMLElement;
+
+  constructor(layer: HTMLElement, opts: { debug?: boolean } = {}) {
+    this.layer = layer;
+    this.probe = document.createElement('div');
+    this.probe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)';
+    document.body.appendChild(this.probe);
+    this.hudEls = HUD.flatMap((h) => [...document.querySelectorAll<HTMLElement>(h.sel)].map((el) => ({ el, on: h.on, tag: 'hud' + (el.id ? '#' + el.id : h.sel), r: null, shown: false, busy: 0 })));
+    const hudDirty = () => { this.hudDirty = true; };
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(hudDirty) : null;
+    const mo = typeof MutationObserver === 'function' ? new MutationObserver(hudDirty) : null;
+    for (const h of this.hudEls) {
+      ro?.observe(h.el);
+      if (h.on === 'on') mo?.observe(h.el, { attributes: true, attributeFilter: ['style'] }); // the floating stick moves by style.left/top
+      // only changes that can move the element's own box count (opacity/filter fades and pseudo-element layers do not)
+      const moves = (e: Event) => e.target === h.el && !(e as TransitionEvent).pseudoElement && (!(e instanceof TransitionEvent) || !STILL.has(e.propertyName));
+      const start = (e: Event) => { if (moves(e)) h.busy++; };
+      const end = (e: Event) => { if (moves(e)) { h.busy = Math.max(0, h.busy - 1); this.hudDirty = true; } };
+      h.el.addEventListener('transitionrun', start); h.el.addEventListener('animationstart', start);
+      for (const k of ['transitionend', 'transitioncancel', 'animationend', 'animationcancel']) h.el.addEventListener(k, end);
+    }
+    this.book.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try { matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => { this.book.reduced = e.matches; this.book.clear(); }); } catch { /* old Safari */ }
+    if (opts.debug) {
+      this.debug = document.createElement('canvas'); this.debug.className = 'fl-debug';
+      layer.appendChild(this.debug);
+    }
+    this.book.onRetire = (l) => this.free(l);
+    const dirty = () => { this.screenDirty = true; this.hudDirty = true; };
+    addEventListener('resize', dirty); addEventListener('orientationchange', dirty);
+    this.buildPool('medium');
+  }
+
+  setHost(h: FloatHost) { this.host = h; }
+  setQuality(q: FQuality) { if (q === this.book.q && this.nums.length) return; this.book.clear(); this.book.q = q; this.buildPool(q); }
+  clear() { this.book.clear(); this.teleSeen.clear(); }
+
+  // ------------------------------------------------------------------ pool (§5.2 DOM budget: Medium 52, Low 34 elements)
+  private buildPool(q: FQuality) {
+    for (const n of this.nums) n.root.remove(); for (const s of this.sts) s.root.remove(); for (const k of this.sparks) { k.a.remove(); k.b.remove(); }
+    this.nums = []; this.sts = []; this.sparks = []; this.byUid.clear();
+    const c = CAPS[q];
+    const mk = (cls: string, parent: HTMLElement, tag = 'span') => { const e = document.createElement(tag); e.className = cls; parent.appendChild(e); return e; };
+    // sparks first so they sit behind the words
+    for (let i = 0; i < (c.sparks ? SPARK.max : 0); i++) {
+      const a = mk('fl-spark a', this.layer, 'i'), b = mk('fl-spark b', this.layer, 'i');
+      a.setAttribute('aria-hidden', 'true'); b.setAttribute('aria-hidden', 'true'); this.sparks.push({ a, b, uid: 0 });
+    }
+    for (let i = 0; i < c.num; i++) {
+      const root = mk('fl fl-num', this.layer, 'div'); root.setAttribute('aria-hidden', 'true');
+      if (this.noStroke) root.classList.add('nostroke');
+      if (this.noClip) root.classList.add('noclip');
+      this.nums.push({ root, o: mk('fl-o', root), i: mk('fl-i', root), f: mk('fl-f', root), badge: mk('fl-badge', root), uid: 0, text: '' });
+    }
+    for (let i = 0; i < c.status; i++) {
+      const root = mk('fl fl-st', this.layer, 'div'); root.setAttribute('aria-hidden', 'true');
+      if (this.noStroke) root.classList.add('nostroke');
+      this.sts.push({ root, s: mk('fl-s', root), uid: 0, text: '' });
+    }
+    if (this.debug) this.layer.appendChild(this.debug);
+  }
+  private free(l: Label) {
+    const el = this.byUid.get(l.uid); if (el) { el.root.style.display = 'none'; el.uid = 0; this.byUid.delete(l.uid); }
+    for (const k of this.sparks) if (k.uid === l.uid) { k.a.style.display = 'none'; k.b.style.display = 'none'; k.uid = 0; }
+  }
+  private bind(l: Label) {
+    let el = this.byUid.get(l.uid);
+    if (el) return el;
+    if (NUMERIC[l.kind]) {
+      const n = this.nums.find((x) => !x.uid); if (!n) return null;
+      n.uid = l.uid; el = n;
+      const st = STYLE[l.kind], [g0, g1, g2] = st.fill as readonly string[];
+      const r = n.root.style;
+      r.setProperty('--oc', st.outer[1]); r.setProperty('--ow', `${st.outer[0] * this.S}px`);
+      r.setProperty('--ic', st.inner![1]); r.setProperty('--iw', `${st.inner![0] * this.S}px`);
+      r.setProperty('--g0', g0); r.setProperty('--g1', g1); r.setProperty('--g2', g2); r.setProperty('--sh', `${3 * this.S}px`);
+      if (this.noStroke) {
+        n.o.style.textShadow = ring(4 * this.S, st.outer[1]) + `, 0 ${3 * this.S}px 0 #120D24`;
+        n.i.style.textShadow = ring(1 * this.S, st.inner![1]);
+      }
+    } else {
+      const s = this.sts.find((x) => !x.uid); if (!s) return null;
+      s.uid = l.uid; el = s;
+      const st = STYLE[l.kind], r = s.root.style;
+      s.root.classList.toggle('early', l.kind === 'early');
+      r.setProperty('--c', st.fill as string); r.setProperty('--oc', st.outer[1]); r.setProperty('--ow', `${st.outer[0] * this.S}px`);
+      if (this.noStroke) s.s.style.textShadow = ring((l.kind === 'early' ? 1 : 1.5) * this.S, st.outer[1]) + `, 0 ${2 * this.S}px 0 rgba(18,13,36,0.65)`;
+    }
+    this.byUid.set(l.uid, el);
+    el.root.style.display = 'block';
+    el.text = '';
+    return el;
+  }
+
+  // ------------------------------------------------------------------ measuring (§3.2: cached by font/size/text)
+  private box = (kind: FKind, text: string, count: number): GlyphBox | null => {
+    const key = `${kind}|${this.S.toFixed(3)}|${text}|${count > 1 ? count : 0}`;
+    if (this.measures.has(key)) return this.measures.get(key)!;
+    const st = STYLE[kind], num = NUMERIC[kind], S = this.S;
+    const maxW = (num ? 180 : 170) * S, minSize = num ? 24 : 18;
+    let size = Math.max(minSize, st.size * S), out: GlyphBox | null = null;
+    const badge = num && count > 1 ? this.text(`รวม ${count}`, 700, 14 * S) : null;
+    const badgeW = badge ? badge.w + 2 * S : 0, badgeH = badge ? 14 * S * 1.3 + 2 * S : 0;
+    for (; size >= minSize - 1e-6; size -= 1) {
+      const m = this.text(text, st.weight, size);
+      const stroke = st.outer[0] * S, shadow = (num ? 3 : 2) * S;
+      let w = m.w + stroke, h = Math.max(size * st.lineH, m.h + stroke) + shadow;
+      if (kind === 'early') { w += 2 * 8 * S + 2; h += 2 * 3 * S + 2; }
+      if (w + (badge ? 5 * S + badgeW : 0) <= maxW) { out = { w, h, badgeW, badgeH, size }; break; }
+    }
+    this.measures.set(key, out);
+    if (this.measures.size > 600) this.measures.clear();
+    return out;
+  };
+  private text(t: string, weight: number, size: number) {
+    this.ctx.font = `${weight} ${size}px ${FONT}`;
+    const m = this.ctx.measureText(t);
+    const w = Math.max(m.width, (m.actualBoundingBoxLeft || 0) + (m.actualBoundingBoxRight || 0));
+    const h = (m.actualBoundingBoxAscent || size * 0.8) + (m.actualBoundingBoxDescent || size * 0.2);
+    return { w, h };
+  }
+
+  // ------------------------------------------------------------------ events → batch (§2)
+  ingest(w: World, evts: readonly FIn[]) {
+    if (w !== this.world) { this.clear(); this.world = w; }
+    if (!this.host || !evts.length) return;
+    this.refreshScreen();
+    this.gather(w);
+    this.book.ingest(evts, this.geo());
+  }
+  static fromEvents(w: World, evts: readonly SimEvent[], earlyOk: (e: SimEvent) => boolean): FIn[] {
+    const out: FIn[] = [], p = w.player;
+    const d = (id: number) => { const a = w.actors.find((x) => x.id === id); return a ? Math.hypot(a.x - p.x, a.z - p.z) : 1e9; };
+    evts.forEach((e, order) => {
+      if (e.t === 'hit') out.push({ kind: e.byPlayer ? (e.crit ? 'bonus' : 'damage') : 'hurt', actor: e.target, amount: e.amount, dist: d(e.target), order });
+      else if (e.t === 'heal') out.push({ kind: 'heal', actor: p.id, amount: e.amount, dist: 0, order });
+      else if (e.t === 'perfect') out.push({ kind: 'perfect', actor: p.id, amount: 0, dist: 0, order });
+      else if (e.t === 'dodge-early' && earlyOk(e)) out.push({ kind: 'early', actor: p.id, amount: 0, dist: 0, order });
+      else if (e.t === 'interrupt') out.push({ kind: 'interrupt', actor: e.id, amount: 0, dist: d(e.id), order });
+      else if (e.t === 'stun') out.push({ kind: 'stagger', actor: e.id, amount: 0, dist: d(e.id), order });
+    });
+    return out;
+  }
+
+  // ------------------------------------------------------------------ protected areas (§6.1)
+  private refreshScreen() {
+    if (!this.screenDirty) return;
+    this.screenDirty = false;
+    const cs = getComputedStyle(this.probe), px = (v: string) => parseFloat(v) || 0;
+    const W = innerWidth, H = innerHeight;
+    this.safe = { l: px(cs.paddingLeft), t: px(cs.paddingTop), r: W - px(cs.paddingRight), b: H - px(cs.paddingBottom) };
+    const S = Math.min(1.25, Math.max(0.85, Math.min((this.safe.r - this.safe.l) / 844, (this.safe.b - this.safe.t) / 390)));
+    if (Math.abs(S - this.S) > 1e-3) { this.S = S; this.measures.clear(); }
+  }
+  private gather(w: World, bars: readonly Rect[] = []) {
+    const S = this.S, prot = this.prot; prot.length = 0;
+    const q0 = performance.now();
+    // 1. every warning being drawn, plus the flash right after it ends
+    const now = this.book.clock, live = new Set<number>();
+    for (const t of w.tele) { live.add(t.id); this.teleSeen.set(t.id, { t, until: Infinity }); }
+    for (const [id, v] of this.teleSeen) {
+      if (!live.has(id) && v.until === Infinity) v.until = now + AFTER_MS;
+      if (v.until <= now) { this.teleSeen.delete(id); continue; }
+      const r = this.teleRect(v.t, v.until !== Infinity);
+      if (!r) { prot.push(tag({ l: -1e6, t: -1e6, r: 1e6, b: 1e6 }, 'warn-near')); break; } // too close to project: the whole view is protected this frame
+      prot.push(tag(grow(r, 8 * S), 'warn'));
+    }
+    // 2. bodies of everything still drawn (+6), and the enemy HP bars (+4)
+    const q1 = performance.now();
+    const a: Rect = { l: 0, t: 0, r: 0, b: 0 };
+    for (const x of w.actors) if (this.host!.actorRect(x.id, a) === 0) prot.push(tag(grow(a, 6 * S), x.id === w.player.id ? 'player' : 'body'));
+    for (const b of bars) prot.push(tag(grow(b, 4 * S), 'bar'));
+    // 3. visible HUD (+8); touch zones without a picture are not reserved
+    const q2 = performance.now();
+    const all = this.hudDirty || q2 - this.hudAt > 2000;
+    if (all) { if (this.hudDirty) this.qa.hudRead.dirty++; else this.qa.hudRead.timer++; this.hudDirty = false; this.hudAt = q2; }
+    for (const h of this.hudEls) {
+      const shown = !h.on || h.el.classList.contains(h.on);
+      if (shown !== h.shown) { h.shown = shown; h.r = null; h.busy = 0; } // a show re-reads at once; its slide-in fires transitionrun
+      if (!shown) continue;
+      if (!all && h.busy > 0) this.qa.hudRead.busy[h.tag] = (this.qa.hudRead.busy[h.tag] || 0) + 1;
+      if (!all && !h.r) this.qa.hudRead.fresh++;
+      if (all || h.busy > 0 || !h.r) {
+        const r = h.el.getBoundingClientRect();
+        h.r = r.width > 0 && r.height > 0 ? { l: r.left, t: r.top, r: r.right, b: r.bottom } : { l: 0, t: 0, r: 0, b: 0 };
+      }
+      if (h.r.r > h.r.l) prot.push(tag(grow({ ...h.r }, 8 * S), h.tag));
+    }
+    const p = this.qa.part; p.warn += q1 - q0; p.body += q2 - q1; p.hud += performance.now() - q2;
+  }
+  /** Conservative screen AABB of a warning: the shape's world outline (grown by EDGE) projected; null = a point could not be projected. */
+  private teleRect(t: Telegraph, after: boolean): Rect | null {
+    const out = { l: Infinity, t: Infinity, r: -Infinity, b: -Infinity };
+    const add = (x: number, z: number) => {
+      this.host!.project(x, 0.08, z, this.pt);
+      if (!this.pt.vis) return false;
+      out.l = Math.min(out.l, this.pt.x); out.r = Math.max(out.r, this.pt.x); out.t = Math.min(out.t, this.pt.y); out.b = Math.max(out.b, this.pt.y);
+      return true;
+    };
+    const k8 = 1 / Math.cos(Math.PI / 8); // octagon that contains the circle
+    if (t.shape === 'circle') {
+      const R = (t.r * (after ? 1.05 : 1) + EDGE) * k8;
+      for (let i = 0; i < 8; i++) { const a = (i * Math.PI) / 4 + Math.PI / 8; if (!add(t.x + Math.cos(a) * R, t.z + Math.sin(a) * R)) return null; }
+    } else if (t.shape === 'line') {
+      const px = -t.dz, pz = t.dx, hw = t.w / 2 + EDGE;
+      for (const a of [-EDGE, t.r + EDGE]) for (const s of [-1, 1]) if (!add(t.x + t.dx * a + px * hw * s, t.z + t.dz * a + pz * hw * s)) return null;
+    } else {
+      const half = Math.acos(Math.max(-1, Math.min(1, t.cos))) + 0.12, base = Math.atan2(t.dz, t.dx), R = t.r + EDGE;
+      const steps = Math.max(2, Math.ceil((2 * half) / (Math.PI / 8))), step = (2 * half) / steps, Rk = R / Math.cos(step / 2);
+      if (!add(t.x - t.dx * EDGE, t.z - t.dz * EDGE)) return null;
+      for (let i = 0; i <= steps; i++) { const a = base - half + i * step; if (!add(t.x + Math.cos(a) * Rk, t.z + Math.sin(a) * Rk)) return null; }
+    }
+    return out;
+  }
+  private geo(): Geo { return { S: this.S, safe: this.safe, prot: this.prot, actor: (id, out) => this.host!.actorRect(id, out), box: this.box }; }
+
+  // ------------------------------------------------------------------ per frame
+  /** dtSec: UI clock step (0 while paused / frozen). bars: enemy HP bar rects drawn in this layer. */
+  frame(w: World, dtSec: number, bars: readonly Rect[]) {
+    if (w !== this.world) { this.clear(); this.world = w; }
+    if (!this.host) return;
+    const t0 = performance.now();
+    this.book.advance(dtSec * 1000);
+    this.refreshScreen();
+    this.gather(w, bars);
+    const t1 = performance.now();
+    const book = this.book;
+    book.frame(this.geo());
+    const t2 = performance.now();
+    const q = book.q, R = book.reduced, S = this.S;
+    for (const l of book.labels) {
+      const el = this.bind(l); if (!el) continue;
+      const age = book.clock - l.born, u = Math.min(1, Math.max(0, age / l.life));
+      pathPoints(l.kind, l.s, S, q, R, this.path); bezier(this.path, u, this.bz);
+      const sc = scaleAt(l.kind, age, q, R), op = opacityAt(l.kind, age, l.life, R);
+      const x = l.ax + this.bz.x, y = l.ay + this.bz.y;
+      if (el.text !== l.text) { el.text = l.text; this.fill(el, l); }
+      el.root.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${sc.toFixed(3)})`;
+      el.root.style.opacity = op.toFixed(3);
+      if (l.spark && age < SPARK.life) {
+        let k = this.sparks.find((s) => s.uid === l.uid) ?? this.sparks.find((s) => !s.uid);
+        if (k) {
+          k.uid = l.uid;
+          const p = sparkSpots(l.box, S), so = age < 30 ? (age / 30) * 0.85 : 0.85 * Math.max(0, 1 - (age - 30) / (SPARK.life - 30)), rise = -4 * S * (age / SPARK.life);
+          k.a.style.display = k.b.style.display = 'block';
+          k.a.style.transform = `translate3d(${(l.ax + p.ax).toFixed(1)}px,${(l.ay + p.ay + rise).toFixed(1)}px,0) rotate(-18deg) scale(${S.toFixed(3)})`;
+          k.b.style.transform = `translate3d(${(l.ax + p.bx).toFixed(1)}px,${(l.ay + p.by + rise).toFixed(1)}px,0) rotate(20deg) scale(${S.toFixed(3)})`;
+          k.a.style.opacity = k.b.style.opacity = so.toFixed(3);
+        }
+      } else for (const k of this.sparks) if (k.uid === l.uid) { k.a.style.display = k.b.style.display = 'none'; k.uid = 0; }
+    }
+    // QA bookkeeping (cheap): painted R against protected rects must be zero by construction
+    const qa = this.qa; qa.frames++;
+    qa.part.book += t2 - t1; qa.part.paint += performance.now() - t2;
+    for (const l of book.labels) for (const p of this.prot) qa.paintedOverlap += overlapArea(l.screen, p);
+    const dom = this.domLive(); if (dom > qa.maxDom) qa.maxDom = dom;
+    if (this.debug) this.drawDebug();
+    qa.ms[qa.n++ % qa.ms.length] = performance.now() - t0;
+  }
+  private domLive() {
+    let n = 0;
+    for (const e of this.nums) if (e.uid) n += 4 + 1; // root + 3 layers + badge (badge hidden when count = 1 but still pooled)
+    for (const e of this.sts) if (e.uid) n += 2;
+    for (const k of this.sparks) if (k.uid) n += 2;
+    return n;
+  }
+  /** elements in the pool (painted or not): the §5.2 budget counts these */
+  domPool() { return this.nums.length * 5 + this.sts.length * 2 + this.sparks.length * 2; }
+
+  private fill(el: NumEl | StEl, l: Label) {
+    const S = this.S, st = STYLE[l.kind];
+    if ('f' in el) {
+      for (const s of [el.o, el.i, el.f]) { s.textContent = l.text; s.style.fontSize = `${l.box.size}px`; }
+      if (l.count > 1) {
+        el.badge.textContent = `รวม ${l.count}`; el.badge.style.display = 'block';
+        el.badge.style.fontSize = `${14 * S}px`;
+        el.badge.style.left = `${(l.box.w / 2 + 5 * S).toFixed(1)}px`; el.badge.style.top = `${(l.box.h / 2 - l.box.badgeH).toFixed(1)}px`;
+      } else el.badge.style.display = 'none';
+    } else { el.s.textContent = l.text; el.s.style.fontSize = `${l.box.size}px`; el.s.style.lineHeight = String(st.lineH); }
+  }
+
+  private drawDebug() {
+    const c = this.debug!, W = innerWidth, H = innerHeight;
+    if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
+    const g = c.getContext('2d')!; g.clearRect(0, 0, W, H); g.lineWidth = 1;
+    g.strokeStyle = 'rgba(255,80,80,0.9)'; for (const p of this.prot) g.strokeRect(p.l, p.t, p.r - p.l, p.b - p.t);
+    g.strokeStyle = 'rgba(120,255,120,0.95)'; for (const l of this.book.labels) g.strokeRect(l.screen.l, l.screen.t, l.screen.r - l.screen.l, l.screen.b - l.screen.t);
+    // DOM check: every painted layer must sit inside its R (catches a measuring error)
+    for (const l of this.book.labels) {
+      const el = this.byUid.get(l.uid); if (!el) continue;
+      for (const s of el.root.children) {
+        const b = (s as HTMLElement).getBoundingClientRect(); if (!b.width) continue;
+        if (b.left < l.screen.l - 0.5 || b.right > l.screen.r + 0.5 || b.top < l.screen.t - 0.5 || b.bottom > l.screen.b + 0.5) this.qa.domOutsideR++;
+      }
+    }
+  }
+}
+
+/** QA: name the kind of protected area (counted when it refuses a slot) */
+function tag(r: Rect, k: string) { (r as Rect & { k?: string }).k = k; return r; }
+
+/** 8-direction text-shadow outline (fallback when -webkit-text-stroke is missing) */
+function ring(r: number, c: string) {
+  const d = r * Math.SQRT1_2;
+  return [[r, 0], [-r, 0], [0, r], [0, -r], [d, d], [-d, d], [d, -d], [-d, -d]].map(([x, y]) => `${x.toFixed(2)}px ${y.toFixed(2)}px 0 ${c}`).join(', ');
+}
