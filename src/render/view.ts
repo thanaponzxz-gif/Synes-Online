@@ -490,6 +490,9 @@ export class View {
   /** DES-009 P1 pose viewer: the player's model group (it can show its own mesh there). null before buildLevel. */
   playerModel(world: World): Object3D | null { return this.actors.get(world.player.id)?.model ?? null; }
 
+  /** DES-007 §3.4 (ninja-roam-1 player VFX that sit on an actor): the model group of an actor that is drawn now, else null. Read-only. */
+  actorModel(id: number): Object3D | null { const v = this.actors.get(id); return v && v.root.visible && v.a.alive ? v.model : null; }
+
   /** Call right before each sim step to keep previous positions for interpolation. */
   beforeTick() { for (const v of this.actors.values()) { v.px = v.a.x; v.pz = v.a.z; } }
 

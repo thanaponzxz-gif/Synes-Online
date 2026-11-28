@@ -33,6 +33,7 @@ const NINJA_OK = import.meta.env.DEV || __SEYRIN_PUBLIC__; // false in the norma
 const Q = new URLSearchParams(location.search);
 // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A); ?ruleset=ninja-roam-1 = dev server on this machine only
 let seyrin: SeyrinHero | null = null; // dev playtest only (never set in a published build)
+let ninjaFx = false;
 const ruleset = __SEYRIN_PUBLIC__ || (import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q, __SEYRIN_LAN__)) ? NINJA_RULESET : rulesetFromQuery(Q);
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
@@ -141,6 +142,7 @@ const qaLog: { t: number; e: string }[] = [];
   if (NINJA_OK && isNinja(ruleset)) { // dev playtest / the public Seyrin test page: Seyrin's P1 file from the private inbox, else the placeholder
     const say = (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult'));
     if (!Q.has('placeholder')) seyrin = await (await import('./seyrin/ninjaHero.ts')).loadSeyrinHero(view, say);
+    if (Q.get('nfx') !== '0') ninjaFx = !!(seyrin = (await import('./seyrin/ninjaFx.ts')).withNinjaFx(view, sfx, seyrin)); // DES-007 §3.4 player VFX + sounds
   }
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();
@@ -239,7 +241,7 @@ function handleEvents(evts: SimEvent[]) {
       case 'swing': sfx.swing(e.step); hud.dismissHintIf('attack'); break;
       case 'hit': if (e.byPlayer) sfx.hit(e.crit); else sfx.hurt(); break;
       case 'dodge': sfx.dodge(); hud.dismissHintIf('dodge'); break;
-      case 'perfect': sfx.perfect(); break;
+      case 'perfect': if (!ninjaFx) sfx.perfect(); break; // ninja-roam-1 has its own tone (DES-007 §3.4, ninjaSfx.ts)
       case 'skill': sfx.skill(); break;
       // slots 2-3 reuse existing sounds (no new audio assets): Crescent = the heavy swing, Crystal = the skill chime (DES gives no sound spec)
       case 'skill-hit': if (e.slot === 2) sfx.swing(2); else if (e.slot === 3) sfx.skill(); break;

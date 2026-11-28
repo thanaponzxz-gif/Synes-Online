@@ -4,7 +4,7 @@
 // bundle, not in dist/, and a published build never loads this module (main.ts imports it under import.meta.env.DEV only).
 // Presentation only: the plan is read from sim state (animPlan.ts); nothing goes back to the sim.
 // The cloth solver is off for now (the cloth bones keep their rest pose), as Codex advised for this file.
-import { Group } from 'three';
+import { Group, type Object3D } from 'three';
 import type { World, SimEvent } from '../../shared/sim/world.ts';
 import type { NinjaWorld } from '../../shared/sim/ninjaWorld.ts';
 import type { View } from '../render/view.ts';
@@ -23,6 +23,8 @@ export interface SeyrinHero {
   onRun(world: World): void;
   afterStep(world: World, events: readonly SimEvent[]): void;
   beforeRender(world: World, alpha: number, dt: number): void;
+  /** the blade's two sockets (base, tip) of the instance on screen, for the combo trail (DES-007 §3.4); null = none */
+  blade?(): readonly [Object3D, Object3D] | null;
 }
 
 export async function loadSeyrinHero(view: View, say: (text: string) => void): Promise<SeyrinHero | null> {
@@ -40,14 +42,18 @@ export async function loadSeyrinHero(view: View, say: (text: string) => void): P
   say(label);
   const animator = new HeroAnimator();
   let hero: HeroInstance | null = null, holder: Group | null = null, have = new Set<string>(), fall = 0;
+  let blade: readonly [Object3D, Object3D] | null = null;
   const used = new Set<string>();
   addEventListener('pagehide', () => { hero?.dispose(); hero = null; asset.dispose(); });
 
   const api: SeyrinHero = {
+    blade: () => (holder?.parent ? blade : null),
     onRun(world) {
       hero?.dispose(); holder?.removeFromParent();
       hero = asset.createInstance(); have = new Set(hero.clips);
       holder = new Group(); holder.name = 'seyrin-hero'; holder.add(hero.root);
+      const base = hero.root.getObjectByName('socket_blade_base'), tip = hero.root.getObjectByName('socket_blade_tip');
+      blade = base && tip ? [base, tip] : null;
       animator.reset(); fall = 0;
       animator.observe(heroTick(world as unknown as NinjaWorld, []));
     },
