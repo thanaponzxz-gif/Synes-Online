@@ -1,0 +1,100 @@
+{
+ "rows": [
+  {
+   "tag": "visible after win, number injected",
+   "t": 10953,
+   "state": "done",
+   "hidden": false,
+   "clock": 41464.7,
+   "labels": [
+    {
+     "kind": "damage",
+     "text": "28",
+     "age": 89
+    }
+   ],
+   "clearWhy": {},
+   "retiredLife": 30,
+   "victory": false
+  },
+  {
+   "tag": "hidden 500 ms",
+   "t": 11468,
+   "state": "done",
+   "hidden": true,
+   "clock": 41464.7,
+   "labels": [
+    {
+     "kind": "damage",
+     "text": "28",
+     "age": 89
+    }
+   ],
+   "clearWhy": {},
+   "retiredLife": 30,
+   "victory": false,
+   "rafFramesWhileHidden": 7
+  },
+  {
+   "tag": "visible again",
+   "t": 11528,
+   "state": "done",
+   "hidden": false,
+   "clock": 41474.4,
+   "labels": [
+    {
+     "kind": "damage",
+     "text": "28",
+     "age": 99
+    }
+   ],
+   "clearWhy": {},
+   "retiredLife": 30,
+   "victory": false
+  },
+  {
+   "tag": "visible +150 ms",
+   "t": 11689,
+   "state": "done",
+   "hidden": false,
+   "clock": 41663.3,
+   "labels": [
+    {
+     "kind": "damage",
+     "text": "28",
+     "age": 288
+    }
+   ],
+   "clearWhy": {},
+   "retiredLife": 30,
+   "victory": false
+  },
+  {
+   "tag": "result screen opened while hidden",
+   "t": 12176,
+   "state": "done",
+   "hidden": true,
+   "clock": 41663.3,
+   "labels": [],
+   "clearWhy": {
+    "result-screen": 1
+   },
+   "retiredLife": 30,
+   "victory": true
+  },
+  {
+   "tag": "after restart",
+   "t": 13345,
+   "state": "playing",
+   "hidden": false,
+   "clock": 655.7,
+   "labels": [],
+   "clearWhy": {
+    "result-screen": 1
+   },
+   "retiredLife": 30,
+   "victory": false
+  }
+ ],
+ "errors": 0
+}

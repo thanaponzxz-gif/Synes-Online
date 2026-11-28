@@ -21,6 +21,7 @@ import { Bot } from '../tests/bot.ts';
 import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
 import { AUTO_KINDS, autoAllowedHere, defaultAuto, packAuto, type AutoSettings } from '../shared/sim/auto.ts';
 import { dist } from '../shared/sim/math.ts';
+import { numberClockInput } from './ui/numberClock.ts';
 
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
@@ -194,9 +195,8 @@ function frame(now: number) {
   autoBar.update(autoSet.enabled, autoAllowedHere(world));
   const numbersLive = qaFloatLive && qaFrozen && state === 'playing';
   if (numbersLive) hud.floaters.qaAdvance(dt * 1000);
-  hud.update(world, numbersLive ? 0 : dt, (id, h, out) => view.actorScreenPos(id, h, out), {
-    alpha: state === 'playing' && !qaFrozen ? Math.min(1, acc / TICK) : null, dt: state === 'paused' || qaFrozen ? 0 : dt,
-  });
+  hud.update(world, numbersLive ? 0 : dt, (id, h, out) => view.actorScreenPos(id, h, out),
+    numberClockInput({ state, qaFrozen, hidden: document.hidden, acc, tick: TICK }, dt));
   if (state === 'playing') btnFade.update(world);
   if (!perf.firstPlayFrameMs && state === 'playing') perf.firstPlayFrameMs = performance.now();
   if (pref === 'auto' && state === 'playing' && !qaFrozen) { const r = adaptive.sample(dt); if (r) view.setPixelRatio(r); }
