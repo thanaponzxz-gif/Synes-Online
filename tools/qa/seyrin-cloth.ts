@@ -43,29 +43,42 @@ const local = (root: THREE.Object3D, w: THREE.Vector3) => root.worldToLocal(w.cl
   row('หยุดแล้ว 1.0 s: มุมงอสูงสุด', `${at1.toFixed(2)}°`);
 }
 
-// 4. turns
-for (const [name, frames, angle] of [['เลี้ยว 90° ใน 0.1 s', 6, 90], ['เลี้ยว 90° ในเฟรมเดียว', 1, 90], ['เลี้ยว 180° ในเฟรมเดียว', 1, 180]] as const) {
-  const { root, s } = fresh();
+// 4. turns: a steady turn, at once, and as the view turns a model today (src/render/view.ts: min(1, dt*16) of what is left a frame)
+const conflictsText = (c: Record<string, number>) => Object.entries(c).filter(([, n]) => n).map(([k, n]) => `${k} ${n}`).join(', ') || 'ไม่มี';
+const sum = (a: Record<string, number>, b: Record<string, number>) => { for (const k in b) a[k] = (a[k] ?? 0) + b[k]; };
+const turns: [string, Motion][] = [
+  ['เลี้ยว 90° ใน 0.1 s (900°/s คงที่)', (u) => ({ yaw: Math.min(1, Math.max(0, (u - 0.2) / 0.1)) * (Math.PI / 2) })],
+  ['เลี้ยว 90° ในเฟรมเดียว', (u) => ({ yaw: u > 0.2 + 1e-9 ? Math.PI / 2 : 0 })],
+  ['เลี้ยว 180° ในเฟรมเดียว', (u) => ({ yaw: u > 0.2 + 1e-9 ? Math.PI : 0 })],
+  ['เลี้ยว 180° แบบที่ view หมุนโมเดล', (u) => ({ yaw: Math.PI * (1 - Math.pow(1 - 16 / 60, Math.max(0, Math.round((u - 0.2) * 60)))) })],
+];
+for (const q of ['medium', 'low'] as const) for (const [name, turn] of turns) {
+  const { root, s } = fresh(q);
   let snap = 0, flip = false, bend = 0;
+  const c: Record<string, number> = {};
   runCloth(s, root, () => ({}), 0.2);
-  const turn: Motion = (u) => ({ yaw: Math.min(1, Math.max(0, (u - 0.2) / (frames / 60))) * ((angle * Math.PI) / 180) });
   runCloth(s, root, turn, 1.5, 60, 0.2, () => {
-    snap = Math.max(snap, s.stats().maxSnapDeg); bend = Math.max(bend, maxBend(s));
+    snap = Math.max(snap, s.stats().maxSnapDeg); bend = Math.max(bend, maxBend(s)); sum(c, s.stats().conflicts);
     for (const tp of s.tips().slice(0, 4)) if (local(root, tp).z >= 0) flip = true;
   });
-  row(`${name}: snap ต่อเฟรมสูงสุด / มุมงอสูงสุด / ปลายพลิกมาหน้าตัว`, `${snap.toFixed(1)}° / ${(bend * DEG).toFixed(1)}° / ${flip ? 'พลิก' : 'ไม่พลิก'}`);
+  row(`${name} (${q}): snap ต่อเฟรมสูงสุด / มุมงอสูงสุด / ปลายพลิกมาหน้าตัว / conflict`, `${snap.toFixed(1)}° / ${(bend * DEG).toFixed(1)}° / ${flip ? 'พลิก' : 'ไม่พลิก'} / ${conflictsText(c)}`);
 }
 
 // 5. dodges back to back (0.4 m per sim tick for ticks 0..8, every 24 ticks, alternating sides; render at 60 FPS)
 for (const q of ['medium', 'low'] as const) {
-  const { root, s } = fresh(q);
-  let snap = 0;
+  const { root, get, s } = fresh(q);
+  let snap = 0, side = 0;
+  const c: Record<string, number> = {};
   const dodgeX = (u: number) => { // even dodges go 0 → 3.6 m, odd ones come back
     const tick = u * 30, n = Math.floor(tick / 24), inDodge = Math.min(tick - n * 24, 9) * 0.4;
     return n % 2 ? 3.6 - inDodge : inDodge;
   };
-  runCloth(s, root, (u) => ({ x: dodgeX(u) }), 4, 60, 0, () => { snap = Math.max(snap, s.stats().maxSnapDeg); });
-  row(`หลบซ้ายขวาต่อเนื่อง (${q}): snap ต่อเฟรมสูงสุด`, `${snap.toFixed(1)}°`);
+  runCloth(s, root, (u) => ({ x: dodgeX(u) }), 4, 60, 0, () => {
+    snap = Math.max(snap, s.stats().maxSnapDeg); sum(c, s.stats().conflicts);
+    const px = get('pelvis').getWorldPosition(new THREE.Vector3()).x;
+    for (const tp of s.tips().slice(0, 2)) side = Math.max(side, Math.abs(tp.x - px));
+  });
+  row(`หลบซ้ายขวาต่อเนื่อง (${q}): snap ต่อเฟรมสูงสุด / ปลายผ้าพันคอออกข้างสูงสุด / conflict`, `${snap.toFixed(1)}° / ${side.toFixed(3)} ม. / ${conflictsText(c)}`);
 }
 
 // 6. down: the ground plane against the cones. The test rig is only lowered (still upright, no down clip), so the hip chains
@@ -74,7 +87,18 @@ for (const q of ['medium', 'low'] as const) {
   const { root, s } = fresh();
   runCloth(s, root, () => ({ y: -0.78 }), 0.5, 60, 0, undefined, { down: true, groundY: 0 });
   const low = (from: number, to: number) => Math.min(...s.points().filter((p) => p.chain >= from && p.chain <= to).map((p) => p.y));
-  row('ล้ม (ตัวต่ำลง 0.78 m, พื้นกัน 0.02 m): จุดต่ำสุด ผ้าพันคอ / ผ้าเอว / พู่', `${low(0, 1).toFixed(3)} / ${low(2, 3).toFixed(3)} / ${low(4, 5).toFixed(3)} m`);
+  row('ล้ม (ตัวต่ำลง 0.78 m, พื้นกัน 0.02 m): จุดต่ำสุด ผ้าพันคอ / ผ้าเอว / พู่ · conflict', `${low(0, 1).toFixed(3)} / ${low(2, 3).toFixed(3)} / ${low(4, 5).toFixed(3)} m · ${conflictsText(s.stats().conflicts)}`);
+}
+// 6b. standing / running bounds of §5.3: the scarf tip from its anchor, every tip above the ground
+{
+  const { root, get, s } = fresh();
+  let reach = 0, lowTip = Infinity;
+  runCloth(s, root, (u) => ({ z: u < 1 ? 2.6 * u * u : 2.6 + 5.2 * (u - 1) }), 3, 60, 0, () => {
+    const tips = s.tips();
+    for (const [i, a] of [[0, 'anchor_scarf_l'], [1, 'anchor_scarf_r']] as const) reach = Math.max(reach, tips[i].distanceTo(get(a).getWorldPosition(new THREE.Vector3())));
+    for (const tp of tips) lowTip = Math.min(lowTip, tp.y);
+  });
+  row('ยืน → วิ่ง 5.2 m/s: ปลายผ้าพันคอห่าง anchor สูงสุด (เกณฑ์ ≤ 0.65) / ปลายผ้าต่ำสุดจากพื้น (เกณฑ์ ≥ 0.12)', `${reach.toFixed(3)} / ${lowTip.toFixed(3)} ม. (rig ทดสอบ: ความสูงมาจาก rest ของ rig ทดสอบ)`);
 }
 
 // 7. CPU

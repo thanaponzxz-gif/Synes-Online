@@ -1,11 +1,13 @@
 // DES-007 §5: Seyrin's scarf / sash / tassels as short spring-bone chains on the client (18 bones, 6 chains): 2-axis bending
 // θ'' = -kθ - cθ' + τ/I about the rest pose, a_eff = gravityMul*g - inertiaMul*a_anchor, cone and twist limits, body proxies,
 // fixed steps (Medium 1/60 x4, Low 1/30 x2 + interpolation), resets. Picture only: no hitbox, no sim, no input log.
-// These tests check the solver against the design. The "looks natural" checks of §5.3 (calm within 1.0 s, no snap over 10°) are
-// for the real rig and rest shape; on the test rig they are measured by tools/qa/seyrin-cloth.ts and reported, not passed here.
+// These tests check the solver against the design and team A's limits (DES-009 §10.9: no bone turns more than 10° in a frame at
+// 60 FPS outside a reset blend, the scarf within 0.35 m of the midline sideways, the pose on screen outside the proxies and
+// inside the cones, calm = within 2° from 1.0 s after a stop). They run on the code-built TEST rig: the real rig and rest shape
+// are Codex's and still have to pass §5.3 themselves (tools/qa/seyrin-cloth.ts prints the numbers).
 import { describe, it, expect } from 'vitest';
 import * as THREE from 'three';
-import { ClothSolver, CLOTH_CHAINS, CLOTH_BODY, CLOTH_STEP } from '../src/seyrin/cloth.ts';
+import { ClothSolver, CLOTH_CHAINS, CLOTH_BODY, CLOTH_STEP, CLOTH_LIMITS } from '../src/seyrin/cloth.ts';
 import { CLOTH_BONES } from '../src/seyrin/spec.ts';
 import { buildFixtureGlb, buildFixtureManifest } from './seyrinFixture.ts';
 import { loadHero } from '../src/seyrin/loader.ts';
@@ -122,13 +124,14 @@ describe('time steps and resets (§5.3)', () => {
     da.forEach((x, i) => expect(Math.abs(x - dc[i]), `144 FPS bone ${i}`).toBeLessThan(2 * DEG)); // frames between the steps: only the sampled input differs (1.2° measured)
     a.update(1 / 30); expect(a.stats().substeps).toBe(2);
   });
-  it('Low: 1/30 s steps (at most 2), the pose shown is interpolated between the last two states', () => {
+  it('Low: 1/30 s steps (at most 2), the pose shown is interpolated between the world directions of the last two states', () => {
     const { root } = rig(), s = new ClothSolver(root, 'low');
     run(s, root, (u) => ({ z: 0.5 * 10 * u * u }), 0.5, 30);
     root.position.z += 0.05; s.update(1 / 60); // half a step: no new state, the view is halfway
     expect(s.stats().substeps).toBe(0);
-    const prev = s.angles('prev'), cur = s.angles('state'), shown = s.angles('shown');
-    shown.forEach((x, i) => expect(x).toBeCloseTo((prev[i] + cur[i]) / 2, 9));
+    const prev = s.directions('prev'), cur = s.directions('state'), shown = s.directions('shown');
+    expect(Math.max(...prev.map((d, i) => d.angleTo(cur[i])))).toBeGreaterThan(1 * DEG); // the two states differ
+    shown.forEach((d, i) => expect(d.angleTo(prev[i].clone().add(cur[i]).normalize())).toBeLessThan(1e-9));
   });
   it('a long frame (> 0.15 s), a teleport (> 0.75 m) or a frame that would need more steps than allowed resets to rest and blends in over 0.15 s', () => {
     const { root, get } = rig(), s = new ClothSolver(root);
@@ -175,5 +178,98 @@ describe('time steps and resets (§5.3)', () => {
     }
     ms.sort((x, y) => x - y);
     expect(ms[Math.floor(ms.length * 0.95)]).toBeLessThan(0.5);
+  });
+});
+
+describe('team A limits (DES-009 §10.9)', () => {
+  const dodges: Motion = (u) => { const tick = u * 30, n = Math.floor(tick / 24), d = Math.min(tick - n * 24, 9) * 0.4; return { x: n % 2 ? 3.6 - d : d }; };
+  const turn = (frames: number, deg: number): Motion => (u) => ({ yaw: Math.min(1, Math.max(0, (u - 0.2) / (frames / 60))) * deg * DEG });
+  const shake: Motion = (u) => ({ z: 0.5 * Math.sin(2 * Math.PI * 10 * u), x: 0.3 * Math.sin(2 * Math.PI * 7 * u), yaw: 0.8 * Math.sin(2 * Math.PI * 3 * u) });
+  /** sideways distance of every scarf point from the body's midline (the vertical plane through the pelvis along the facing) */
+  const sideways = (s: ClothSolver, root: THREE.Object3D, get: (n: string) => THREE.Object3D) => {
+    const c = get('pelvis').getWorldPosition(new THREE.Vector3()), n = new THREE.Vector3(1, 0, 0).applyQuaternion(root.getWorldQuaternion(new THREE.Quaternion()));
+    return s.points().filter((p) => p.chain < 2).map((p) => Math.abs(p.p.clone().sub(c).dot(n)));
+  };
+  const conflicts = (s: ClothSolver) => Object.values(s.stats().conflicts).reduce((a, b) => a + b, 0);
+
+  it('the limits are the design numbers (DES-007 §5.3)', () => {
+    expect(CLOTH_LIMITS).toMatchObject({ snapDegAt60: 10, sidewaysM: 0.35, scarfFromAnchorM: 0.65 });
+  });
+  it('every bone needs a usable length: a zero-length bone is a problem and the cloth stays at rest, never NaN', () => {
+    for (const bad of [[0, 0, 0], [Number.NaN, -0.1, 0]] as [number, number, number][]) {
+      const { root, get } = rig();
+      get('scarf_l_02').position.set(...bad);
+      const s = new ClothSolver(root);
+      expect(s.ok).toBe(false); expect(s.problems.join(' ')).toContain('scarf_l_01');
+      const q = get('scarf_l_01').quaternion.clone();
+      run(s, root, (u) => ({ z: 0.5 * 10 * u * u }), 0.3);
+      expect(get('scarf_l_01').quaternion.equals(q)).toBe(true);
+      expect(s.angles('shown').every(Number.isFinite)).toBe(true);
+    }
+  });
+  /** the turn the view gives a model today (src/render/view.ts: each frame turns min(1, dt*16) of what is left) */
+  const eased = (deg: number): Motion => (u) => ({ yaw: deg * DEG * (1 - Math.pow(1 - 16 / 60, Math.max(0, Math.round((u - 0.2) * 60)))) });
+  const snaps = (q: 'medium' | 'low', m: Motion, pre: number) => {
+    const { root } = rig(), s = new ClothSolver(root, q);
+    let worst = 0, blendBefore = 0, counted = 0;
+    const t = pre ? run(s, root, () => ({}), pre) : 0;
+    run(s, root, m, 3, 60, t, () => { const st = s.stats(); if (st.blend === 1 && blendBefore === 1) worst = Math.max(worst, st.maxSnapDeg); blendBefore = st.blend; counted += st.conflicts.snap; });
+    return { worst, counted };
+  };
+  it('back-to-back side dodges and turns at 60 FPS: no bone turns more than 10° in a frame, Medium and Low (outside a reset blend)', () => {
+    const cases = [['dodges', dodges, 0], ['90° at once', turn(1, 90), 0.2], ['180° at once', turn(1, 180), 0.2], ['90° as the view turns', eased(90), 0.2], ['180° as the view turns', eased(180), 0.2]] as const;
+    for (const q of ['medium', 'low'] as const) for (const [name, m, pre] of cases) {
+      const r = snaps(q, m, pre);
+      expect(r.worst, `${q} ${name}`).toBeLessThanOrEqual(CLOTH_LIMITS.snapDegAt60 + 1e-9); expect(r.counted).toBe(0);
+    }
+    expect(snaps('medium', turn(6, 90), 0.2).worst).toBeLessThanOrEqual(CLOTH_LIMITS.snapDegAt60 + 1e-9);
+  });
+  it('Low, a steady 900°/s turn (90° in 0.1 s): the late view under the cones passes 10° and that is counted as a conflict (team A, DES-009 §10.9)', () => {
+    // Low shows the cloth one 1/30 s step late; the cones hold against the body as it is now, so they drag the bones past 10°
+    const r = snaps('low', turn(6, 90), 0.2);
+    expect(r.worst).toBeGreaterThan(CLOTH_LIMITS.snapDegAt60); expect(r.worst).toBeLessThan(12);
+    expect(r.counted).toBeGreaterThan(0);
+  });
+  it('the scarf stays within 0.35 m of the midline sideways (side dodges, shaking), Medium and Low', () => {
+    for (const q of ['medium', 'low'] as const) for (const m of [dodges, shake]) {
+      const { root, get } = rig(), s = new ClothSolver(root, q);
+      let worst = 0;
+      run(s, root, m, 3, 60, 0, () => { worst = Math.max(worst, ...sideways(s, root, get)); });
+      expect(worst, q).toBeLessThanOrEqual(CLOTH_LIMITS.sidewaysM + 1e-3);
+      expect(worst, q).toBeGreaterThan(0.2); // it was actually pushed out that far
+    }
+  });
+  it('the pose on screen keeps the proxies (padding to 1 mm) and the cones: Low between its steps, and while a reset blends in', () => {
+    for (const q of ['medium', 'low'] as const) {
+      const { root } = rig(), s = new ClothSolver(root, q);
+      let worst = Infinity;
+      const check = () => {
+        worst = Math.min(worst, ...s.proxyDistances());
+        const a = s.angles('shown'); let i = 0;
+        for (const c of CLOTH_CHAINS) for (const cone of c.coneDeg) expect(a[i++]).toBeLessThanOrEqual(cone * DEG + 1e-9);
+      };
+      let t = run(s, root, (u) => ({ z: -0.5 * 30 * u * u }), 0.6, 60, 0, check);
+      t = run(s, root, shake, 2, 60, t, check);
+      root.position.x += 1; s.update(1 / 60); check(); // a teleport: reset, then the blend from rest
+      run(s, root, (u) => { const p = shake(u); return { ...p, x: (p.x ?? 0) + 1 }; }, 0.3, 60, t, check);
+      expect(worst, q).toBeGreaterThanOrEqual(-1e-3);
+    }
+  });
+  it('a limit the cloth cannot keep is counted in stats().conflicts, never hidden (the lowered upright test rig puts the sash at the ground)', () => {
+    const { root } = rig(), s = new ClothSolver(root);
+    run(s, root, () => ({ y: -0.78 }), 0.5, 60, 0, undefined, { down: true, groundY: 0 });
+    expect(s.stats().conflicts.ground).toBeGreaterThan(0);
+    const r = rig(), s2 = new ClothSolver(r.root);
+    let total = 0;
+    run(s2, r.root, dodges, 3, 60, 0, () => { total += conflicts(s2); });
+    expect(total).toBe(0);
+  });
+  it('calm: after a stop from a run every bone is within 2° of its final pose from 1.0 s on and stays there (Q8, on the test rig)', () => {
+    const { root } = rig(), s = new ClothSolver(root);
+    const tStop = run(s, root, (u) => ({ z: 5.2 * u }), 1.0), z1 = root.position.z;
+    let worst = 0;
+    run(s, root, (u) => { const d = Math.min(u - tStop, 0.1); return { z: z1 + 5.2 * d - 0.5 * 52 * d * d }; }, 3.0, 60, tStop, (u) => { if (u >= tStop + 1.0 - 1e-9 && u <= tStop + 1.2 + 1e-9) worst = Math.max(worst, maxAngle(s)); });
+    expect(maxAngle(s)).toBeLessThan(0.1 * DEG); // the final pose is the rest pose (no wind)
+    expect(worst).toBeLessThanOrEqual(2 * DEG);
   });
 });

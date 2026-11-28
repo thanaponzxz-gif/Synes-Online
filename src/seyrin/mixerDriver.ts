@@ -46,8 +46,12 @@ export class MixerDriver {
     return [...this.missing];
   }
 
-  /** all weights to zero (another viewer, e.g. the P1 single-clip pose, takes over) */
-  idle(): void { for (const a of this.actions.values()) a.setEffectiveWeight(0); }
+  /** all weights to zero and the lift this driver added taken off (another viewer, e.g. the P1 single-clip pose, takes over) */
+  idle(): void {
+    for (const a of this.actions.values()) a.setEffectiveWeight(0);
+    if (this.pelvis) this.pelvis.position.y -= this.lift;
+    this.lift = 0;
+  }
 
   dispose(): void {
     for (const a of this.actions.values()) a.stop();

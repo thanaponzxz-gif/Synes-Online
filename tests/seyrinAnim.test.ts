@@ -183,6 +183,42 @@ describe('down, respawn, victory, hit_add', () => {
   });
 });
 
+describe('team A review of §10.8 (DES-009 §10.9)', () => {
+  it('winning while running: after the victory clip the stance is ready and the cadence stops (Q1)', () => {
+    const an = new HeroAnimator(); const x = feed(an, 0, 9, () => ({}), 5.2, () => true);
+    an.observe(T(10, { x: x + 5.2 / 30, won: true }));
+    for (const t of [60, 61.5]) for (const g of ['upper', 'lower'] as const) {
+      expect(W(an.sample(t), g, 'ready'), `${g} at ${t}`).toBe(1);
+      expect(W(an.sample(t), g, 'run') + W(an.sample(t), g, 'walk')).toBe(0);
+    }
+  });
+  it('hit_add is masked to 0 on H..H+1 of the running hit / release marker, with a 1-tick linear fade on each side (Q4)', () => {
+    const hit = (start: number, kind: Act['kind'], end: number, hurt: number, o: Partial<Act> = {}) => {
+      const an = new HeroAnimator(); feed(an, 0, start - 1);
+      feed(an, start, start + end - 1, (k) => ({ action: act(kind, start, end, o), hurt: k === hurt }));
+      return (t: number) => an.sample(t).additive.filter((c) => c.clip === 'hit_add').reduce((s, c) => s + c.weight, 0);
+    };
+    const a1 = hit(5, 'attack', 11, 9); // attack_01, hit marker 5 = tick 10
+    expect(a1(9)).toBe(1); expect(a1(9.5)).toBeCloseTo(0.5, 12); expect(a1(10)).toBe(0); expect(a1(11)).toBe(0);
+    expect(a1(11.5)).toBeCloseTo(0.5, 12); expect(a1(12)).toBe(1);
+    const sh = hit(20, 'shadow_thread', 18, 25); // dash ticks 3..8: masked 3..9
+    expect(sh(25)).toBe(0); expect(sh(29)).toBe(0); expect(sh(29.5)).toBeCloseTo(0.5, 12); expect(sh(30)).toBe(1);
+    const s2 = hit(20, 'shadow_thread', 18, 21);
+    expect(s2(22)).toBe(1); expect(s2(22.5)).toBeCloseTo(0.5, 12); expect(s2(23)).toBe(0);
+    expect(hit(20, 'lumen_loom', 33, 33)(35)).toBe(0); // the ult's second hit (15)
+    expect(hit(20, 'echo_needle', 18, 23)(25)).toBe(0); // the needle's release (5)
+    expect(hit(20, 'potion', 19, 36)(38)).toBe(1); // the heal is not a strike
+    // the clip clock is not paused or moved by the mask
+    const an = new HeroAnimator(); feed(an, 0, 4); feed(an, 5, 15, (k) => ({ action: act('attack', 5, 11), hurt: k === 9 }));
+    expect(an.sample(12).additive).toEqual([{ clip: 'hit_add', time: 3 / 30, weight: 1 }]);
+  });
+  it('a respawn is cut at once by a new action as well as by walking (Q3)', () => {
+    const an = new HeroAnimator(); feed(an, 0, 9); feed(an, 10, 99, () => ({ down: true }));
+    feed(an, 100, 101, () => ({ x: 40 })); feed(an, 102, 112, () => ({ x: 40, action: act('attack', 102, 11) }));
+    expect(W(an.sample(103.5), 'upper', 'attack_01')).toBe(1); expect(W(an.sample(103.5), 'upper', 'respawn')).toBe(0);
+  });
+});
+
 describe('a real ninja run (sim -> plan)', () => {
   it('every frame: each body group sums to 1, every clip exists and every time is inside its clip; pulses land on markers', () => {
     const w = createWorld(1, { dodgeCdTicks: 17, start: 'normal' }, NINJA_RULESET) as NinjaWorld, bot = new Bot(1), an = new HeroAnimator();

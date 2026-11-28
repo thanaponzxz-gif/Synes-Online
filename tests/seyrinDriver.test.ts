@@ -83,6 +83,15 @@ describe('the driver on a loaded instance', () => {
     expect(pelvisY(h.root)).toBeCloseTo(y0, 6);
     h.dispose();
   });
+  it('handing over to the single-clip pose takes the driver lift off (animate -> pose -> animate)', async () => {
+    const h = await instance();
+    const p = plan([['idle', 0]], [['idle', 0]], { pelvisLift: 0.05 });
+    h.animate(p); expect(pelvisY(h.root)).toBeCloseTo(0.85, 6);
+    h.pose('idle', 0); expect(pelvisY(h.root)).toBeCloseTo(0.8, 6);
+    h.animate({ ...p, pelvisLift: 0 }); expect(pelvisY(h.root)).toBeCloseTo(0.8, 6);
+    h.animate(p); expect(pelvisY(h.root)).toBeCloseTo(0.85, 6);
+    h.dispose();
+  });
   it('a clip the file does not have is reported and not replaced by another one', async () => {
     const h = await instance('preview'); // P1: six clips only
     const missing = h.animate(plan([['walk', 3]], [['idle', 3]]));

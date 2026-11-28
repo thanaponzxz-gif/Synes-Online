@@ -64,6 +64,19 @@ function liftOverride(k: number): number {
   return k <= a - 1 || k >= b + 1 ? 0 : k < a ? k - (a - 1) : k > b ? b + 1 - k : 1;
 }
 
+/** team A (DES-009 §10.9 Q4): hit_add is masked to 0 on H..H+1 of a hit / release marker (shadow_thread: its whole dash, 3..9)
+ *  with a 1-tick linear fade on each side; the heal of the potion is not a strike */
+const HIT_MASK: Record<string, [number, number][]> = Object.fromEntries(FULL_CLIPS.map((c) => {
+  const m = c.markers ?? {}, w: [number, number][] = [...(m.hit ?? []), ...(m.emit ?? [])].map((h) => [h, h + 1]);
+  if (m.dashStart && m.dashEnd) w.push([m.dashStart[0], m.dashEnd[m.dashEnd.length - 1] + 1]);
+  return [c.name, w];
+}));
+function hitMask(clip: string, k: number): number {
+  let m = 1;
+  for (const [a, b] of HIT_MASK[clip] ?? []) m = Math.min(m, Math.min(1, Math.max(0, a - k, k - b)));
+  return m;
+}
+
 const SKILL_CLIP: Record<string, string> = {
   echo_needle: 'skill_echo_needle', shadow_thread: 'skill_shadow_thread', resonant_knot: 'skill_resonant_knot', lumen_loom: 'ult_lumen_loom', potion: 'potion',
 };
@@ -90,6 +103,8 @@ function toward(w: Weights, target: Weights, step: number): Weights {
   return w.map((x, i) => x + (target[i] - x) * f) as Weights;
 }
 const frac = (x: number) => x - Math.floor(x);
+/** clip tick of an action / down / victory segment at t (held at its freeze and its last frame) */
+const clipTick = (g: Seg, t: number) => Math.min(TICKS[g.clip], Math.max(0, Math.min(t, g.freeze) - g.start));
 
 export class HeroAnimator {
   private recs: LocoRec[] = [];
@@ -112,7 +127,8 @@ export class HeroAnimator {
   observe(s: HeroTick): void {
     const T = s.tick, prev = this.last;
     // ---- the legs: speed from the distance the sim really walked this tick
-    const walks = !s.down && !this.isDown && (!s.action || s.action.kind === 'attack' || s.action.kind === 'potion');
+    // (no walking from the victory tick on: the stance after the victory clip is ready and the cadence stops, team A Q1)
+    const walks = !s.won && !this.won && !s.down && !this.isDown && (!s.action || s.action.kind === 'attack' || s.action.kind === 'potion');
     let v = 0;
     if (prev && walks) { const d = Math.hypot(s.x - prev.x, s.z - prev.z); if (d <= LOCO.teleportM) v = d * FPS; }
     const moving = v > LOCO.stillM * FPS;
@@ -172,16 +188,16 @@ export class HeroAnimator {
     if (!live.length) live.push(this.segs[0]);
     const top = live[live.length - 1];
     if (top.ends <= t) live.push(this.seg('loco', '', top.ends, FADE.back)); // respawn / victory played out
-    let remaining = 1;
+    let remaining = 1, mask = 1;
     for (let i = live.length - 1; i >= 0 && remaining > 0; i--) {
       const g = live[i];
       const ramp = i === 0 || g.fade <= 0 ? 1 : Math.min(1, (t - g.start) / g.fade);
       const W = remaining * ramp;
       remaining -= W;
-      if (W > 0) this.expand(g, W, t, rec, out);
+      if (W > 0) { this.expand(g, W, t, rec, out); if (g.kind === 'action') mask = Math.min(mask, hitMask(g.clip, clipTick(g, t))); }
     }
-    if (live[live.length - 1].kind !== 'down' && t >= this.hurtAt && t <= this.hurtAt + TICKS.hit_add) {
-      out.additive.push({ clip: 'hit_add', time: (t - this.hurtAt) / FPS, weight: 1 });
+    if (live[live.length - 1].kind !== 'down' && t >= this.hurtAt && t <= this.hurtAt + TICKS.hit_add && mask > 0) {
+      out.additive.push({ clip: 'hit_add', time: (t - this.hurtAt) / FPS, weight: mask }); // the clip clock runs on under the mask
     }
     // §8.4.2: an attack_03 cut mid-lift settles within 2 ticks as yCancel * (1-u)^2 (the fading clip already shows part of it)
     const lc = this.liftCut;
@@ -235,8 +251,7 @@ export class HeroAnimator {
       for (let i = 0; i < 4; i++) if (rec.w[i] > 0) { const tm = locoTime(i); add(out.upper, STAND[i], tm, W * rec.w[i]); add(out.lower, STAND[i], tm, W * rec.w[i]); }
       return;
     }
-    const k = Math.min(TICKS[g.clip], Math.max(0, Math.min(t, g.freeze) - g.start));
-    const time = k / FPS;
+    const k = clipTick(g, t), time = k / FPS;
     add(out.upper, g.clip, time, W);
     if (!g.masked) { add(out.lower, g.clip, time, W); return; }
     const keep = 1 - (g.clip === 'attack_03' ? liftOverride(k) : 0); // share of the legs that may walk
