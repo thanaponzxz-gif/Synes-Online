@@ -36,13 +36,15 @@ await page.waitForTimeout(800);
 
 // in the page: on every frame keep the player alive, and when a staged moment comes, grab the canvas + the draw calls of that frame
 await page.evaluate(() => {
-  const Q = (window.__fxq = { want: [], got: {}, maxTris: 0 });
+  const Q = (window.__fxq = { want: [], got: {}, maxTris: 0, maxImp: 0, maxSparks: 0, hurt: 0 });
   const loop = () => {
     requestAnimationFrame(loop);
     const w = window.__synes.world, a = w.ns.action, k = a ? w.tick - 2 - a.start : -1;
+    if (w.player.hp < w.player.maxHp) Q.hurt++; // (a hit on the player is a 1.5 px impulse of its own)
     w.player.hp = w.player.maxHp;
     const snap = window.__ninjaFx.snapshot();
     Q.maxTris = Math.max(Q.maxTris, snap.tris);
+    Q.maxImp = Math.max(Q.maxImp, Math.abs(snap.impulsePx)); Q.maxSparks = Math.max(Q.maxSparks, snap.last.sparks);
     for (let i = Q.want.length - 1; i >= 0; i--) {
       const m = Q.want[i];
       if (!new Function('w', 'a', 'k', 'snap', 'return ' + m.when)(w, a, k, snap)) continue;
@@ -56,7 +58,7 @@ await page.evaluate(() => {
       const zoom = document.createElement('canvas'); zoom.width = 780; zoom.height = 480;
       const g2 = zoom.getContext('2d'); g2.imageSmoothingEnabled = false;
       g2.drawImage(cv, (at.x - 130) * pr, (at.y - 80) * pr, 260 * pr, 160 * pr, 0, 0, 780, 480);
-      Q.got[m.name] = { png: cv.toDataURL('image/png'), zoom: zoom.toDataURL('image/png'), tris: snap.tris, calls, tick: w.tick, k };
+      Q.got[m.name] = { png: cv.toDataURL('image/png'), zoom: zoom.toDataURL('image/png'), tris: snap.tris, calls, tick: w.tick, k, last: snap.last, imp: snap.impulsePx };
     }
   };
   requestAnimationFrame(loop);
@@ -157,6 +159,38 @@ u.forEach((g, i) => report(`ult pulse ${i + 1}`, g));
 if (u[0] && u[1] && u[2]) check('ult: each pulse adds to the picture', u[0].tris < u[1].tris && u[1].tris < u[2].tris, u.map((g) => g.tris).join(' / '));
 const gone = await got('ult-gone');
 check('ult: gone 8 ticks after the last pulse', !!gone && gone.tris === 0, gone ? `${gone.tris} tris` : 'not seen');
+
+// ---- 6. team A's answers F1-F8 + DES-007 §8.4.4 / §8.4.5: damage spark, camera impulse, dodge groove, perfect diamond
+await idle();
+await page.evaluate(() => { window.__fxq.maxImp = 0; window.__fxq.maxSparks = 0; window.__fxq.hurt = 0; });
+const foe2 = await near(1.6);
+await stage([{ name: 'spark', focus: foe2, when: `snap.last.sparks > 0` }]);
+for (const step of [0, 1, 2]) {
+  await near(1.6, foe2);
+  await act(key('KeyJ'), 'attack');
+  await page.waitForFunction((s) => { const a = window.__synes.world.ns.action; return !a || a.step !== s; }, step, { timeout: 30000 }).catch(() => {});
+  if (step === 1) {
+    const q = await page.evaluate(() => ({ imp: window.__fxq.maxImp, hurt: window.__fxq.hurt }));
+    if (q.hurt) console.log(`NOTE  combo 1-2: the player was hit during the swings (${q.hurt}x), so the camera check of these two steps is skipped this run`);
+    else check('combo 1-2: the camera does not move', q.imp === 0, `${q.imp}`);
+  }
+}
+const spark = await got('spark', 20000);
+report('damage spark', spark);
+if (spark) check(`damage spark: at most ${tier === 'low' ? 3 : 6} points, ${tier === 'low' ? 'no pieces on Low' : 'pieces on Medium'}`, spark.last.sparks <= (tier === 'low' ? 3 : 6) && (tier === 'low' ? spark.last.bits === 0 : spark.last.bits > 0), JSON.stringify(spark.last));
+await idle();
+const imp = await page.evaluate(() => ({ max: window.__fxq.maxImp, hurt: window.__fxq.hurt, reduced: window.__ninjaFx.snapshot().reduced }));
+if (tier === 'low' || imp.reduced) check('camera impulse: none on Low / reduced motion', imp.max === 0, `${imp.max}`);
+else check('camera impulse: combo 3 moved the camera, never more than 1.5 px x S', imp.max > 0 && imp.max <= (imp.hurt ? 1.5 : 1.0) * 1.25 + 1e-6, `max ${imp.max.toFixed(2)} CSS px${imp.hurt ? ' (the player was also hit: 1.5)' : ' (combo 3 = 1.0 x S)'}`);
+check('the old random shake is off in this profile', (await page.evaluate(() => window.__synes.view.fxOwner)) === 'ninja');
+// dodge groove (Medium only): along the way the sim really moved the player
+await page.evaluate(() => { const p = window.__synes.world.player; p.fx = 1; p.fz = 0; });
+await stage([{ name: 'groove', when: `a && a.kind === 'dodge' && k >= 3` }]);
+await act(key('KeyK'), 'dodge');
+const groove = await got('groove', 20000);
+check('dodge groove: caught during the dodge', !!groove, groove ? JSON.stringify(groove.last) : 'not seen');
+if (groove) check(tier === 'low' ? 'dodge groove: not drawn on Low' : 'dodge groove: drawn on Medium, in the same batch', tier === 'low' ? groove.last.groove === 0 : groove.last.groove > 0 && groove.calls.withFx - groove.calls.without <= 1, `groove ${groove.last.groove} · +${groove.calls.withFx - groove.calls.without} draw`);
+await idle();
 
 const maxTris = await page.evaluate(() => window.__fxq.maxTris);
 check('the batch never fills up (640 triangles)', maxTris < 640, `max ${maxTris}`);

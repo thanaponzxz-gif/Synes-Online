@@ -499,6 +499,14 @@ export class View {
   occluderFade(id: number): number { for (const o of this.occluders) if (o.actor?.id === id) return o.f; return 1; }
   /** DES-010 §4.2: where the ✦ stars of a stunned actor circle (height and radius in the actor root's units); null = the default */
   starsAt = new Map<number, readonly [number, number]>();
+  /** `ninja-roam-1` (DES-007 §8.4.4 / answers F8): one owner draws the hit / perfect / dodge feedback and moves the camera, so the
+   *  old sparks, rings, puffs and the random shake are off while it is set. null = every other ruleset, unchanged */
+  fxOwner: 'ninja' | null = null;
+  /** the owner's camera impulse this frame, CSS px, horizontal; applied to the projection so numbers and warnings use the same camera */
+  impulsePx = 0;
+  private impulseShown = 0;
+  /** the height (m) of the top of an actor that another module draws, as shown */
+  actorTopM = new Map<number, number>();
   /** the world-space box of an actor that another module draws (its shown pose); used for its screen rect instead of the hidden model */
   actorBox = new Map<number, (out: Box3) => boolean>();
   /** seconds an actor has been shown dead (the view's own 0.45 s clock); 0 while alive */
@@ -515,7 +523,8 @@ export class View {
         case 'hit': {
           const v = [...this.actors.values()].find((x) => x.a.id === e.target);
           if (v) v.flash = 0.18;
-          if (this.stageVfx && e.byPlayer) { // DES-004 step 5: readable cool hit spark; faceted shards when the sword hits crystal
+          if (this.fxOwner && e.byPlayer) { /* the owner's damage spark (DES-007 §8.4.5) */ }
+          else if (this.stageVfx && e.byPlayer) { // DES-004 step 5: readable cool hit spark; faceted shards when the sword hits crystal
             const H = this.stageVfx.style.hit, crystal = v?.a.kind === 'prismback';
             const y = this.stageVfx.onHit(world.tick, e.x, e.z, world.player, crystal ? 2 : e.crit ? 1 : 0, v?.a.r ?? 1, this.camera.position);
             if (!crystal) this.particles.burst(e.x, y - 0.15, e.z, e.crit ? FXC.violet : FXC.lumenHi, e.crit ? H.parts + 4 : H.parts, 3.4, H.partUp, 0.5, H.partSize * (e.crit ? 1.25 : 1));
@@ -532,12 +541,13 @@ export class View {
         case 'skill': break; // legacy Chime event: its visuals are now the skill-hit ring (DES-001 §2)
         case 'skill-hit': this.skillFx?.onSkillHit(e.slot, world.tick, e.x, e.z, e.dx, e.dz); break;
         case 'perfect': {
+          if (this.fxOwner) break; // the owner's diamond (answers F8)
           this.rings.ring(e.x, e.z, 0.4, 2.6, 0xffffff, 0.35, 1);
           const P = this.stageVfx?.style.perfect;
           if (P?.echo) { this.rings.ring(e.x, e.z, 0.3, 1.9, FXC.violet, 0.5, 0.9, 0.08, true); this.particles.burst(e.x, 1.1, e.z, FXC.violet, P.parts - 16, 4.5, 3.4, 0.7, 1.2); }
           this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
         }
-        case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
+        case 'dodge': { if (this.fxOwner) break; const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
         case 'death': { const v = this.actors.get(e.id); if (v && !this.starsAt.has(e.id)) { /* the crab profile has its own death picture (DES-010 §10.4 G8) */ this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
         case 'pillar-break': { const pl = this.L.pillars[e.i]; this.pillars[e.i].visible = false; if (!this.starsAt.has(world.boss.id)) this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
         case 'stun': this.shake = Math.max(this.shake, e.long ? 0.5 : 0.25); break;
@@ -779,7 +789,11 @@ export class View {
     if (this.camPull < 0.002) this.camPull = 0;
     this.camPos.copy(this.camBase).sub(this.camTarget).multiplyScalar(1 + this.camPull).add(this.camTarget);
     this.shake = Math.max(0, this.shake - dt * 2.2);
-    const s = this.shake * this.shake * 0.6;
+    const s = this.fxOwner ? 0 : this.shake * this.shake * 0.6; // (the owner's impulse replaces the random shake)
+    if (this.impulsePx !== this.impulseShown) {
+      this.impulseShown = this.impulsePx;
+      if (this.impulsePx) this.camera.setViewOffset(window.innerWidth, window.innerHeight, -this.impulsePx, 0, window.innerWidth, window.innerHeight); else this.camera.clearViewOffset();
+    }
     this.camera.position.set(this.camPos.x + (Math.random() - 0.5) * s, this.camPos.y + (Math.random() - 0.5) * s, this.camPos.z);
     this.camera.lookAt(this.camTarget);
     this.nearFadeU.value = Math.hypot(this.camPos.y, this.camPos.z - this.camTarget.z) * 0.72;

@@ -12,16 +12,23 @@ export type C4 = [number, number, number, number];
 export interface FxSink { tri(a: V3, b: V3, c: V3, ca: C4, cb: C4, cc: C4): void; }
 /** the camera's right / up / forward unit vectors (world) */
 export interface FxCam { r: V3; u: V3; f: V3; }
-export interface FxPal { lumen: V3; violet: V3; gold: V3; }
+export interface FxPal { lumen: V3; violet: V3; gold: V3; /** #C6FAF6, the bright line of a damage spark (§8.4.5) */ white: V3; }
 /** where an actor is drawn now (interpolated) and the height of its top; null = not on screen */
 export type ActorAt = (id: number) => { x: number; z: number; top: number } | null;
+/** the player as drawn now, and what the sim says about the counter (read-only) */
+export interface FxPlayer { id: number; fx: number; fz: number; counterReady: boolean; down: boolean; }
+/** CSS px that one metre covers on screen at a world point (0 = not on screen), and the screen factor S of DES-008 */
+export interface FxScreen { pxPerM(x: number, y: number, z: number): number; S: number; }
 
 export const FX = {
-  /** design: gone within 3 ticks. team B, temporary: peak alpha */
-  trail: { fadeTicks: 3, alpha: 0.7, maxSamples: 48 },
-  /** halfWidth = the sim's needle radius. team B, temporary: length, height above the ground, tail length (two moves), alpha */
-  needle: { halfWidth: NINJA.needle.radius, halfLen: 0.3, y: 1.0, tailM: NINJA.needle.stepM * 2, alpha: 0.95 },
-  /** design: three violet strokes, lumen dots for 4 ticks. team B, temporary: stroke size / gap / height over the target, dot size and spread */
+  /** team A (DES-007 answers F1): collected only over clip ticks 3..5 / 3..5 / 6..9 of the three steps (a clip tick is a sim tick
+   *  after the start), gone within 3 ticks, peak alpha 0.70 Medium / 0.55 Low */
+  trail: { fadeTicks: 3, alpha: 0.7, alphaLow: 0.55, maxSamples: 48, window: [[3, 5], [3, 5], [6, 9]] as readonly (readonly [number, number])[] },
+  /** F2: half width 0.12 (the sim's radius) / half length 0.30 m, centre 1.00 m up, alpha 0.95, tail over the two moves really flown
+   *  but never past 1.00 m. A needle that really did damage leaves a diamond 0.08 x 0.08 m for 3 ticks, 0.80 -> 0 */
+  needle: { halfWidth: NINJA.needle.radius, halfLen: 0.3, y: 1.0, tailM: Math.min(1.0, NINJA.needle.stepM * 2), alpha: 0.95, dot: 0.08, dotTicks: 3, dotAlpha: 0.8 },
+  /** F3: three still strokes 0.07 x 0.30 m, 0.15 m apart, their lower edge 0.30 m above the top of the target as shown; when eaten,
+   *  three lumen dots 0.08 m across for 4 ticks, moving apart sideways up to 0.30 m on Medium, staying put on Low */
   mark: { breakTicks: 4, strokeW: 0.07, strokeH: 0.3, gap: 0.15, lift: 0.3, alpha: 0.95, dot: 0.08, spread: 0.3 },
   /** design: two parallel violet lines (Low one), lumen edge at the pulse, fades in 6 ticks. The lines sit on the sim's corridor
    *  edges (halfWidth). team B, temporary: line widths, heights, alpha; each piece fades from its own pulse tick */
@@ -31,6 +38,19 @@ export const FX = {
   knot: { fadeTicks: 8, threads: 4, spreadM: 0.9, threadW: 0.035, edgeW: 0.16, rimW: 0.05, rimGap: 0.14, y0: 0.45, y1: 1.35, threadAlpha: 0.55, alpha: 0.95, segs: 10 },
   /** design: thin violet ribbon + lumen edge per pulse (9/15/21), fades 8 ticks after the last. The edge is the sim's arc.
    *  team B, temporary: widths (the third is twice as wide, as its damage is), the diagonal of each pulse, alphas; no debris yet (0 <= 8) */
+  /** F8 dodge groove: Medium only, lumen line 0.04 m wide, 0.06 m up, along the way really dodged, 0.65 -> 0 in 4 ticks per piece */
+  groove: { w: 0.04, y: 0.06, alpha: 0.65, ticks: 4 },
+  /** F8 perfect: lumen diamond 0.28 x 0.28 m, 1.60 m above the player's root, 0.90 -> 0 in 6 ticks; it does not move or grow */
+  perfect: { size: 0.28, y: 1.6, alpha: 0.9, ticks: 6 },
+  /** F8 counter ready: lumen stroke 0.24 x 0.035 m, alpha 0.80, 1.10 m above the root and 0.12 m in front, while the sim has it */
+  counter: { w: 0.24, h: 0.035, y: 1.1, front: 0.12, alpha: 0.8 },
+  /** DES-007 §8.4.5 damage spark: two short parallel lines (long / short) 0.025 m wide, alpha up to 0.75 fading evenly; steps 1-2:
+   *  0.16 / 0.10 m for 3 ticks, at most 18 CSS px on screen at S = 1; step 3, skills, ult: 0.24 / 0.14 m for 4 ticks, at most 24 px.
+   *  Height 0.55 x the target's height within 0.35..1.0 m, on the side facing the player. Medium: up to 3 thin pieces per point,
+   *  6 points at once; Low: no pieces, 3 points, the long line only. team B, temporary: how far apart the two lines sit, the
+   *  size and travel of the thin pieces, the body radius used for "the side facing the player" */
+  spark: { w: 0.025, alpha: 0.75, small: { len: [0.16, 0.10], ticks: 3, px: 18 }, big: { len: [0.24, 0.14], ticks: 4, px: 24 }, hK: 0.55, hMin: 0.35, hMax: 1.0,
+    points: 6, pointsLow: 3, bits: 3, gap: 0.05, shift: 0.03, bit: 0.05, bitTravel: 0.14, bodyR: 0.45 },
   loom: { fadeTicks: 8, edgeW: 0.1, ribbonW: 0.2, ribbonGap: 0.2, ribbonAlpha: 0.5, alpha: 0.95, y: [[0.5, 1.3], [1.3, 0.5], [0.9, 0.9]] as [number, number][], segs: 12 },
 } as const;
 
@@ -53,13 +73,32 @@ export class NinjaFxCore {
   private segs: { x0: number; z0: number; x1: number; z1: number; at: number }[] = [];
   private knot: (Arc & { id: number; start: number; hit: number; gold: boolean; cancel: number }) | null = null;
   private loom: (Arc & { id: number; pulses: number[]; end: number }) | null = null;
+  private steps = new Map<number, number>();
+  private dots: { target: number; x: number; z: number; at: number }[] = [];
+  private sparks: { key: string; target: number; x: number; z: number; dx: number; dz: number; at: number; big: boolean; gold: boolean; pri: number }[] = [];
+  private perfects: number[] = [];
+  private groove: { x0: number; z0: number; x1: number; z1: number; at: number }[] = [];
+  private pl: { x: number; z: number } | null = null;
+  /** what the last draw made (QA) */
+  last = { sparks: 0, bits: 0, dots: 0, groove: 0, perfect: 0, counter: 0 };
 
   private pal: FxPal;
   /** Low tier: one shadow line, the mark's dots do not spread */
   low: boolean;
   constructor(pal: FxPal, low: boolean) { this.pal = pal; this.low = low; }
 
-  reset() { this.combo = null; this.samples.length = 0; this.needles.clear(); this.marks.length = 0; this.segs.length = 0; this.knot = null; this.loom = null; }
+  reset() {
+    this.combo = null; this.samples.length = 0; this.needles.clear(); this.marks.length = 0; this.segs.length = 0; this.knot = null; this.loom = null;
+    this.steps.clear(); this.dots.length = 0; this.sparks.length = 0; this.perfects.length = 0; this.groove.length = 0; this.pl = null;
+  }
+  /** once per sim step, before `observe`: where the player is after the step and whether the step was part of a dodge. A piece
+   *  of groove is only the way really covered (nothing where the dash was blocked) */
+  player(tick: number, x: number, z: number, dodging: boolean) {
+    const p = this.pl;
+    if (p && dodging && Math.hypot(x - p.x, z - p.z) > 1e-6) this.groove.push({ x0: p.x, z0: p.z, x1: x, z1: z, at: tick });
+    while (this.groove.length && tick - this.groove[0].at > FX.groove.ticks + 2) this.groove.shift();
+    this.pl = { x, z };
+  }
   /** call with the tick just stepped before `observe` (needle moves and removals carry no tick of their own) */
   tick(t: number) { this.now = t; }
 
@@ -68,7 +107,8 @@ export class NinjaFxCore {
       switch (e.t) {
         case 'action-start':
           this.now = Math.max(this.now, e.startTick);
-          this.combo = e.kind === 'attack' ? { start: e.startTick, last: e.startTick + HIT[e.step] } : null;
+          this.combo = e.kind === 'attack' ? { start: e.startTick + (FX.trail.window[e.step] ?? [0, HIT[e.step]])[0], last: e.startTick + (FX.trail.window[e.step] ?? [0, HIT[e.step]])[1] } : null;
+          if (e.kind === 'attack') { this.steps.set(e.id, e.step); if (this.steps.size > 8) this.steps.delete(this.steps.keys().next().value!); }
           if (e.kind === 'resonant_knot') this.knot = { id: e.id, x: e.x, z: e.z, fx: e.fx, fz: e.fz, start: e.startTick, hit: Infinity, gold: false, cancel: Infinity };
           if (e.kind === 'lumen_loom') this.loom = { id: e.id, x: e.x, z: e.z, fx: e.fx, fz: e.fz, pulses: [], end: Infinity };
           break;
@@ -86,9 +126,22 @@ export class NinjaFxCore {
             if (e.pulseIndex === NINJA.loom.hits.length - 1) this.loom.end = e.tick;
           }
           break;
-        case 'hit':
-          if (e.byPlayer && e.sourceActionKind === 'resonant_knot' && e.targetStunnedAtHit && this.knot && this.knot.id === e.sourceActionId) this.knot.gold = true;
+        case 'hit': {
+          if (!e.byPlayer || e.sourceActionKind === undefined) break;
+          const kind = e.sourceActionKind, goldHit = kind === 'resonant_knot' && !!e.targetStunnedAtHit;
+          if (goldHit && this.knot && this.knot.id === e.sourceActionId) this.knot.gold = true;
+          if (kind === 'echo_needle') { this.dots.push({ target: e.target, x: e.x, z: e.z, at: this.now }); break; } // F2: the needle's own dot, no generic spark
+          if (kind !== 'attack' && kind !== 'shadow_thread' && kind !== 'resonant_knot' && kind !== 'lumen_loom') break;
+          const key = `${e.sourceActionId}:${e.pulseIndex}:${e.target}`;
+          if (this.sparks.some((k) => k.key === key)) break; // one point per real hit, whatever else the pulse sent
+          const px = this.pl?.x ?? e.x, pz = this.pl?.z ?? e.z, l = Math.hypot(px - e.x, pz - e.z);
+          const big = kind !== 'attack' || this.steps.get(e.sourceActionId!) === 2;
+          // which points stay when there are too many (§8.4.5): a ✦ target hit by the knot, a counter hit, then the nearest, then the id
+          this.sparks.push({ key, target: e.target, x: e.x, z: e.z, dx: l > 1e-6 ? (px - e.x) / l : 0, dz: l > 1e-6 ? (pz - e.z) / l : 1, at: this.now, big, gold: goldHit,
+            pri: (goldHit ? 0 : e.counterApplied ? 1e3 : 2e3) + Math.min(999, l * 10) + e.target * 1e-6 });
           break;
+        }
+        case 'perfect': this.perfects.push(this.now); break;
         case 'needle-spawn':
           this.needles.set(e.id, { x0: e.x, z0: e.z, x1: e.x, z1: e.z, dx: e.dx, dz: e.dz, at: e.tick, born: e.tick, until: Infinity });
           break;
@@ -119,7 +172,7 @@ export class NinjaFxCore {
     this.samples.push({ t, b: [...base], p: [...tip] });
   }
 
-  draw(sink: FxSink, t: number, cam: FxCam, at: ActorAt) {
+  draw(sink: FxSink, t: number, cam: FxCam, at: ActorAt, pl?: FxPlayer, screen?: FxScreen) {
     const { lumen, violet, gold } = this.pal;
     const col = (c: V3, a: number): C4 => [c[0], c[1], c[2], a < 0 ? 0 : a > 1 ? 1 : a];
     const quad = (a: V3, b: V3, c: V3, d: V3, ca: C4, cb: C4, cc: C4, cd: C4) => { sink.tri(a, b, c, ca, cb, cc); sink.tri(a, c, d, ca, cc, cd); };
@@ -149,7 +202,7 @@ export class NinjaFxCore {
     for (let i = 0; i + 1 < S.length; i++) {
       const a = S[i], b = S[i + 1];
       if (b.t > t) break;
-      const fa = fade(t - a.t, FX.trail.fadeTicks) * FX.trail.alpha, fb = fade(t - b.t, FX.trail.fadeTicks) * FX.trail.alpha;
+      const peak = this.low ? FX.trail.alphaLow : FX.trail.alpha, fa = fade(t - a.t, FX.trail.fadeTicks) * peak, fb = fade(t - b.t, FX.trail.fadeTicks) * peak;
       if (fa <= 0 && fb <= 0) continue;
       // bright at the edge (tip), clear at the base
       quad(a.b, a.p, b.p, b.b, col(lumen, 0), col(lumen, fa), col(lumen, fb), col(lumen, 0));
@@ -190,10 +243,72 @@ export class NinjaFxCore {
       if (!o) continue;
       const q = age / M.breakTicks, a = (1 - q) * M.alpha, out = this.low ? 0 : q * M.spread;
       for (let j = -1; j <= 1; j++) {
-        const c = add(add(add(o, cam.r, j * (M.gap + out)), cam.u, M.strokeH / 2 + out * (j === 0 ? 1 : 0.4)), cam.u, 0);
+        const c = add(add(o, cam.r, j * (M.gap + out)), cam.u, M.strokeH / 2), h = M.dot / 2;
         const C = col(lumen, a);
-        quad(add(c, cam.u, M.dot), add(c, cam.r, M.dot), add(c, cam.u, -M.dot), add(c, cam.r, -M.dot), C, C, C, C);
+        quad(add(c, cam.u, h), add(c, cam.r, h), add(c, cam.u, -h), add(c, cam.r, -h), C, C, C, C);
       }
+    }
+
+    const diamond = (c: V3, half: number, cl: V3, a: number) => { const C = col(cl, a); quad(add(c, cam.u, half), add(c, cam.r, half), add(c, cam.u, -half), add(c, cam.r, -half), C, C, C, C); };
+    this.last = { sparks: 0, bits: 0, dots: 0, groove: 0, perfect: 0, counter: 0 };
+
+    // ---- F2: the dot of a needle that really did damage
+    const N2 = FX.needle;
+    for (let i = this.dots.length - 1; i >= 0; i--) {
+      const d = this.dots[i], age = t - d.at;
+      if (age >= N2.dotTicks) { this.dots.splice(i, 1); continue; }
+      if (age < 0) continue;
+      const p = at(d.target);
+      diamond([d.x, p ? Math.min(N2.y, p.top) : N2.y, d.z], N2.dot / 2, lumen, N2.dotAlpha * (1 - age / N2.dotTicks)); this.last.dots++;
+    }
+
+    // ---- §8.4.5 damage sparks: only for a real hit of a melee step, a skill or the ult
+    const SP = FX.spark;
+    for (let i = this.sparks.length - 1; i >= 0; i--) if (t - this.sparks[i].at >= (this.sparks[i].big ? SP.big.ticks : SP.small.ticks)) this.sparks.splice(i, 1);
+    const shown = this.sparks.filter((k) => t >= k.at).sort((a, b) => a.pri - b.pri).slice(0, this.low ? SP.pointsLow : SP.points);
+    const diag = unit(add(cam.r, cam.u))!, across = unit(add(cam.r, cam.u, -1))!;
+    for (const k of shown) {
+      const G = k.big ? SP.big : SP.small, age = t - k.at, a = SP.alpha * (1 - age / G.ticks), p = at(k.target);
+      const y = Math.min(SP.hMax, Math.max(SP.hMin, SP.hK * (p?.top ?? 1)));
+      const c: V3 = [k.x + k.dx * SP.bodyR, y, k.z + k.dz * SP.bodyR];
+      // never larger on screen than the cap: near the camera the world size shrinks
+      const ppm = screen ? screen.pxPerM(c[0], c[1], c[2]) : 0, sc = ppm > 0 ? Math.min(1, (G.px * (screen?.S ?? 1)) / (G.len[0] * ppm)) : 1;
+      const line = (len: number, off: number, shift: number, cl: V3) => {
+        const m = add(add(c, across, off * sc), diag, shift * sc);
+        ribbon(add(m, diag, (-len / 2) * sc), add(m, diag, (len / 2) * sc), across, SP.w * sc, cl, a, a);
+      };
+      line(G.len[0], 0, 0, this.pal.white);
+      if (!this.low) {
+        line(G.len[1], SP.gap, SP.shift, k.gold ? gold : violet);
+        for (let j = 0; j < SP.bits; j++) { // thin pieces flying off along the lines
+          const dir = j === 0 ? diag : j === 1 ? across : unit(add(diag, across, -1))!, q = age / G.ticks, b = add(c, dir, (0.04 + SP.bitTravel * q) * sc), h = SP.bit * sc * (1 - q);
+          sink.tri(add(b, dir, h), add(b, across, h * 0.3), add(b, across, -h * 0.3), col(lumen, a), col(lumen, a), col(lumen, a)); this.last.bits++;
+        }
+      }
+      this.last.sparks++;
+    }
+
+    // ---- F8: the dodge groove (Medium), the perfect diamond, the counter-ready stroke
+    const GR = FX.groove;
+    if (!this.low) for (const g of this.groove) {
+      const a = fade(t - g.at, GR.ticks) * GR.alpha;
+      if (a <= 0 || t < g.at - 1) continue;
+      const d = unit([g.x1 - g.x0, 0, g.z1 - g.z0]);
+      if (!d) continue;
+      ribbon([g.x0, GR.y, g.z0], [g.x1, GR.y, g.z1], [d[2], 0, -d[0]], GR.w, lumen, a, a); this.last.groove++;
+    }
+    const me = pl ? at(pl.id) : null;
+    const PF = FX.perfect;
+    for (let i = this.perfects.length - 1; i >= 0; i--) {
+      const age = t - this.perfects[i];
+      if (age >= PF.ticks) { this.perfects.splice(i, 1); continue; }
+      if (age < 0 || !me) continue;
+      diamond([me.x, PF.y, me.z], PF.size / 2, lumen, PF.alpha * (1 - age / PF.ticks)); this.last.perfect++;
+    }
+    const CT = FX.counter;
+    if (pl && me && pl.counterReady && !pl.down) {
+      const c: V3 = [me.x + pl.fx * CT.front, CT.y, me.z + pl.fz * CT.front];
+      ribbon(add(c, cam.r, -CT.w / 2), add(c, cam.r, CT.w / 2), cam.u, CT.h, lumen, CT.alpha, CT.alpha); this.last.counter++;
     }
 
     // ---- shadow-thread step: the walked pieces

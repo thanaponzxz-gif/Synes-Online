@@ -78,7 +78,7 @@ export async function withCrabBoss(view: View, inner: SeyrinHero | null): Promis
     return prj.vis && prj2.vis ? Math.hypot(prj2.x - prj.x, prj2.y - prj.y) : 0;
   };
   const cpu: number[] = []; // ms per frame spent in the boss controller + mixer (DES-010 §5.3 item 7)
-  const free = () => { boss?.dispose(); boss = null; holder?.removeFromParent(); holder = null; bones = []; if (bossId >= 0) { view.starsAt.delete(bossId); view.actorBox.delete(bossId); } };
+  const free = () => { boss?.dispose(); boss = null; holder?.removeFromParent(); holder = null; bones = []; if (bossId >= 0) { view.starsAt.delete(bossId); view.actorBox.delete(bossId); view.actorTopM.delete(bossId); } };
   addEventListener('pagehide', () => { free(); asset.dispose(); lines.dispose(); shards.removeFromParent(); shardGeo.dispose(); shardMat.dispose(); });
 
   const before = view.scene.onBeforeRender;
@@ -108,6 +108,7 @@ export async function withCrabBoss(view: View, inner: SeyrinHero | null): Promis
       holder = new Group(); holder.name = 'crab-boss'; holder.add(boss.root); holder.scale.setScalar(1 / ROOT_SCALE);
       view.starsAt.set(bossId, [(S.maxYM + STARS.aboveM) / ROOT_SCALE, STARS.radiusM / ROOT_SCALE]);
       view.setOccluder(bossId, PROXY.radiusM, PROXY.heightM);
+      view.actorTopM.set(bossId, S.maxYM);
       // G11: the screen rect of the boss covers the pose that is shown (every bone and socket, a claw's width around them),
       // from the ground up to 3.60 m; the damage numbers place themselves by it (DES-008)
       bones = []; boss.root.traverse((o) => { if ((o as { isBone?: boolean }).isBone || o.name.startsWith('socket_')) bones.push(o); });

@@ -7,7 +7,7 @@ import { NINJA } from '../shared/data/tuning.ts';
 import type { SimEvent } from '../shared/sim/world.ts';
 
 // tagged colours: the tests tell the palette entries apart by their red channel
-const PAL: FxPal = { lumen: [0.1, 0, 0], violet: [0.2, 0, 0], gold: [0.3, 0, 0] };
+const PAL: FxPal = { lumen: [0.1, 0, 0], violet: [0.2, 0, 0], gold: [0.3, 0, 0], white: [0.4, 0, 0] };
 const CAM: FxCam = { r: [1, 0, 0], u: [0, 1, 0], f: [0, 0, -1] };
 class Sink {
   tris: { p: V3[]; c: C4[] }[] = [];
@@ -40,10 +40,11 @@ describe('combo trail between the blade sockets', () => {
     fx.blade(50, [0, 1, 0], [0, 1, 1]); fx.blade(50.5, [1, 1, 0], [1, 1, 1]);
     expect(draw(fx, 50.5).n).toBe(0);
     fx.observe([start('attack', 100, 0)]);
-    fx.blade(101, [0, 1, 0], [0, 1, 1]); fx.blade(102, [1, 1, 0], [1, 1, 1]);
-    fx.observe([{ t: 'action-cancel', id: 1, kind: 'attack', tick: 102 }]);
-    fx.blade(102.5, [2, 1, 0], [2, 1, 1]); fx.blade(103, [3, 1, 0], [3, 1, 1]);
-    const s = draw(fx, 103);
+    // (team A's answer F1: the trail is collected from clip tick 3)
+    fx.blade(103, [0, 1, 0], [0, 1, 1]); fx.blade(104, [1, 1, 0], [1, 1, 1]);
+    fx.observe([{ t: 'action-cancel', id: 1, kind: 'attack', tick: 104 }]);
+    fx.blade(104.5, [2, 1, 0], [2, 1, 1]); fx.blade(105, [3, 1, 0], [3, 1, 1]);
+    const s = draw(fx, 105);
     expect(s.n).toBeGreaterThan(0);
     expect(Math.max(...s.tris.flatMap((t) => t.p.map((p) => p[0])))).toBe(1);
   });
@@ -230,7 +231,7 @@ describe('whole set', () => {
     expect(draw(fx, 110, at).n).toBe(0);
   });
   it('no colour of the set is a warning colour, and alpha stays in 0..1', () => {
-    const fx = new NinjaFxCore({ lumen: [0x5c / 255, 0xf2 / 255, 0xe6 / 255], violet: [0xa7 / 255, 0x8b / 255, 0xfa / 255], gold: [1, 0xc8 / 255, 0x57 / 255] }, false);
+    const fx = new NinjaFxCore({ lumen: [0x5c / 255, 0xf2 / 255, 0xe6 / 255], violet: [0xa7 / 255, 0x8b / 255, 0xfa / 255], gold: [1, 0xc8 / 255, 0x57 / 255], white: [0xc6 / 255, 0xfa / 255, 0xf6 / 255] }, false);
     fx.observe([start('lumen_loom', 100), { t: 'mark-set', target: 4, tick: 100, refresh: false }]);
     NINJA.loom.hits.forEach((h, i) => fx.observe([pulse('lumen_loom', 100 + h, i)]));
     const s = draw(fx, 121.5, actors({ 4: { x: 0, z: 0, top: 1 } }));
