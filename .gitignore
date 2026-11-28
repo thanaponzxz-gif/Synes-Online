@@ -16,3 +16,6 @@ assets/_inbox/**/*[Hh]ero*001*
 
 # boss crab source art (owner file 2026-11-28): raw model and its renders stay out of the public repo
 assets/_inbox/**/*boss*crab*
+
+# hero 002 test character (owner file 2026-11-28, VRoid sample avatar): source and renders stay out of git
+assets/_inbox/**/*[Hh]ero*002*
