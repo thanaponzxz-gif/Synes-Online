@@ -8,6 +8,7 @@ import path from 'node:path';
 import type { Plugin } from 'vite';
 
 const STEM = 'char_hero001_ninja_preview_v01';
+const BOSS_STEM = 'mon_boss_crab_v01';
 import { inboxAllowed } from '../../src/seyrin/gate.ts';
 
 /** SYNES_SEYRIN_LAN=1: also serve a private (home network) address, for the owner's phone on the same Wi-Fi; never a public one */
@@ -36,9 +37,13 @@ export function seyrinInbox(): Plugin {
     configureServer(server) {
       const dir = path.resolve(process.env.SYNES_SEYRIN_DIR || 'assets/_inbox');
       const stem = path.basename(process.env.SYNES_SEYRIN_STEM || STEM);
+      const boss = path.basename(process.env.SYNES_BOSS_STEM || BOSS_STEM);
       const files: Record<string, [string, string]> = {
         '/__seyrin/hero.glb': [`${stem}.glb`, 'model/gltf-binary'],
         '/__seyrin/hero.manifest.json': [`${stem}.manifest.json`, 'application/json'],
+        // the crab boss C1 pair (DES-010, REVIEW): same folder, same gate, dev server only (never emitted by a build)
+        '/__seyrin/boss.glb': [`${boss}.glb`, 'model/gltf-binary'],
+        '/__seyrin/boss.manifest.json': [`${boss}.manifest.json`, 'application/json'],
       };
       server.middlewares.use((req, res, next) => {
         const hit = files[(req.url ?? '').split('?')[0]];
@@ -46,7 +51,7 @@ export function seyrinInbox(): Plugin {
         res.setHeader('cache-control', 'no-store');
         if (!inboxAllowed(req.socket.remoteAddress, seyrinLan())) { res.statusCode = 403; return res.end('this machine only'); }
         const file = path.join(dir, hit[0]);
-        if (!fs.existsSync(file)) { res.statusCode = 404; return res.end('no Seyrin file in the inbox'); }
+        if (!fs.existsSync(file)) { res.statusCode = 404; return res.end('no such file in the inbox'); }
         res.setHeader('content-type', hit[1]);
         fs.createReadStream(file).pipe(res);
       });

@@ -40,7 +40,7 @@ const COMP: Record<number, [number, (d: DataView, o: number) => number, number]>
   5122: [2, (d, o) => d.getInt16(o, true), 32767], 5123: [2, (d, o) => d.getUint16(o, true), 65535],
   5125: [4, (d, o) => d.getUint32(o, true), 4294967295], 5126: [4, (d, o) => d.getFloat32(o, true), 1],
 };
-function readAccessor(g: Glb, i: number): { data: number[]; width: number } {
+export function readAccessor(g: Glb, i: number): { data: number[]; width: number } {
   const a = g.json.accessors?.[i];
   if (!a) throw new Error(`accessor ${i} missing`);
   if (a.sparse || a.bufferView === undefined) throw new Error('sparse / empty accessors are not supported by the checker');
@@ -58,12 +58,12 @@ function readAccessor(g: Glb, i: number): { data: number[]; width: number } {
   return { data, width };
 }
 
-function pngSize(b: Uint8Array): { width: number; height: number } | null {
+export function pngSize(b: Uint8Array): { width: number; height: number } | null {
   if (b.byteLength < 24 || b[0] !== 137 || b[1] !== 80 || b[2] !== 78 || b[3] !== 71) return null;
   const dv = new DataView(b.buffer, b.byteOffset, b.byteLength);
   return { width: dv.getUint32(16), height: dv.getUint32(20) };
 }
-function imageBytes(g: Glb, i: number): Uint8Array | null {
+export function imageBytes(g: Glb, i: number): Uint8Array | null {
   const img = g.json.images?.[i];
   if (!img) return null;
   if (img.bufferView !== undefined) { const v = g.json.bufferViews[img.bufferView]; return g.bin.subarray(v.byteOffset || 0, (v.byteOffset || 0) + v.byteLength); }
@@ -326,6 +326,6 @@ export async function inspectHeroFiles(bytes: Uint8Array, manifestText: string):
 }
 
 /** Determinant of the upper-left 3x3 of a column-major 4x4 matrix. */
-function det3(m: number[]): number {
+export function det3(m: number[]): number {
   return m[0] * (m[5] * m[10] - m[9] * m[6]) - m[4] * (m[1] * m[10] - m[9] * m[2]) + m[8] * (m[1] * m[6] - m[5] * m[2]);
 }

@@ -491,7 +491,14 @@ export class View {
   playerModel(world: World): Object3D | null { return this.actors.get(world.player.id)?.model ?? null; }
 
   /** DES-007 §3.4 (ninja-roam-1 player VFX that sit on an actor): the model group of an actor that is drawn now, else null. Read-only. */
+  /** an actor's model node whatever its state (its parent is the actor's root); null = no such actor in this level */
+  actorNode(id: number): Object3D | null { return this.actors.get(id)?.model ?? null; }
   actorModel(id: number): Object3D | null { const v = this.actors.get(id); return v && v.root.visible && v.a.alive ? v.model : null; }
+
+  /** DES-010 §4.1 (crab boss picture): how far the view has faded an actor that hides the player, 1 = solid .. 0.28. Read-only. */
+  occluderFade(id: number): number { for (const o of this.occluders) if (o.actor?.id === id) return o.f; return 1; }
+  /** DES-010 §4.2: where the ✦ stars of a stunned actor circle (height and radius in the actor root's units); null = the default */
+  starsAt = new Map<number, readonly [number, number]>();
 
   /** Call right before each sim step to keep previous positions for interpolation. */
   beforeTick() { for (const v of this.actors.values()) { v.px = v.a.x; v.pz = v.a.z; } }
@@ -703,6 +710,9 @@ export class View {
         else { b.rotation.x += dt * 4; v.model.position.y = Math.abs(Math.sin(T * 9)) * 0.06; }
       }
     } else {
+      // drawn by its own module (DES-010 crab profile): none of the old bob / lean / horn / dust / shell glow, only the stun stars
+      const own = this.starsAt.get(a.id);
+      if (own) { if (a.state === 'stunned') { v.stars.visible = true; this.spinStars(v, own[0], own[1]); } return; }
       const body = P.prismback_body, shell = P.prismback_shell, horn = P.prismback_horn, legs = P.prismback_legs;
       const tele = world.tele.find((t) => t.owner === a.id);
       const prog = tele ? 1 - Math.max(0, tele.t) / tele.total : 0;

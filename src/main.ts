@@ -19,6 +19,7 @@ import { rewardHtml } from './rewardText.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
 import { rulesetFromQuery, isNinja, NINJA_RULESET } from '../shared/sim/ruleset.ts';
 import { ninjaQaAllowed } from './seyrin/gate.ts';
+import { bossPictureFor } from './boss/profile.ts';
 import type { SeyrinHero } from './seyrin/ninjaHero.ts';
 import { Bot } from '../tests/bot.ts';
 import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
@@ -143,6 +144,7 @@ const qaLog: { t: number; e: string }[] = [];
     const say = (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult'));
     if (!Q.has('placeholder')) seyrin = await (await import('./seyrin/ninjaHero.ts')).loadSeyrinHero(view, say);
     if (Q.get('nfx') !== '0') ninjaFx = !!(seyrin = (await import('./seyrin/ninjaFx.ts')).withNinjaFx(view, sfx, seyrin)); // DES-007 §3.4 player VFX + sounds
+    if (import.meta.env.DEV && bossPictureFor(ruleset, import.meta.env.DEV, Q) === 'crab') seyrin = await (await import('./boss/crabBoss.ts')).withCrabBoss(view, seyrin); // DES-010 crab C1 (REVIEW), dev only; ?boss=old = Prismback
   }
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();

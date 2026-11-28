@@ -102,7 +102,7 @@ export const BONE_NAMES = SKELETON.map((n) => n[0]).filter((n) => !n.startsWith(
 
 // ---- geometry -----------------------------------------------------------------------------------------------------------
 /** A box between y0 and y1 split into `div` bands per face (each face a (1 x div) grid, subdivided again by `sub`). */
-function boxGeometry(w: number, d: number, y0: number, y1: number, div: number, sub: number) {
+export function boxGeometry(w: number, d: number, y0: number, y1: number, div: number, sub: number) {
   const pos: number[] = [], nrm: number[] = [], uv: number[] = [], idx: number[] = [];
   const face = (o: number[], u: number[], v: number[], n: number[], nu: number, nv: number) => {
     const base = pos.length / 3;
@@ -127,7 +127,7 @@ function boxGeometry(w: number, d: number, y0: number, y1: number, div: number, 
 }
 
 // ---- GLB writer -------------------------------------------------------------------------------------------------------
-class Bin {
+export class Bin {
   parts: Buffer[] = []; length = 0; views: Record<string, unknown>[] = []; accessors: Record<string, unknown>[] = [];
   view(data: Buffer, target?: number): number {
     const pad = (4 - (this.length % 4)) % 4; if (pad) { this.parts.push(Buffer.alloc(pad)); this.length += pad; }

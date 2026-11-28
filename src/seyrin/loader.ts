@@ -38,7 +38,7 @@ export interface HeroAsset {
 
 const TEXTURE_SLOTS = ['map', 'roughnessMap', 'metalnessMap', 'aoMap', 'normalMap', 'emissiveMap', 'alphaMap'] as const;
 
-function resources(root: THREE.Object3D) {
+export function resources(root: THREE.Object3D) {
   const geometries = new Set<THREE.BufferGeometry>(), materials = new Set<THREE.Material>(), textures = new Set<THREE.Texture>(), skeletons = new Set<THREE.Skeleton>();
   root.traverse((o) => {
     const m = o as THREE.SkinnedMesh;
@@ -53,7 +53,7 @@ function resources(root: THREE.Object3D) {
   return { geometries, materials, textures, skeletons };
 }
 
-function free(root: THREE.Object3D) {
+export function free(root: THREE.Object3D) {
   const r = resources(root);
   for (const g of r.geometries) g.dispose();
   for (const m of r.materials) m.dispose();
@@ -62,7 +62,7 @@ function free(root: THREE.Object3D) {
 }
 
 /** GLTFLoader turns a texture it cannot decode into `null` and carries on; that would show a flat colour character. */
-function missingTextures(gltf: GLTF): string[] {
+export function missingTextures(gltf: GLTF): string[] {
   const defs = (gltf.parser.json.materials ?? []) as Record<string, any>[];
   const out = new Set<string>();
   gltf.scene.traverse((o) => {
