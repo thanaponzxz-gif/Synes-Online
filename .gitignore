@@ -13,3 +13,6 @@ assets/source/third_party/**/extracted/
 # owner rule 2026-11-23: Hero 001 source art never goes to the public repo
 assets/source/**/*[Hh]ero*001*
 assets/_inbox/**/*[Hh]ero*001*
+
+# boss crab source art (owner file 2026-11-28): raw model and its renders stay out of the public repo
+assets/_inbox/**/*boss*crab*
