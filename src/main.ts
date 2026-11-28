@@ -28,10 +28,12 @@ import { dist } from '../shared/sim/math.ts';
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
 declare const __SEYRIN_LAN__: boolean; // dev server started with SYNES_SEYRIN_LAN=1 (home Wi-Fi playtest)
+declare const __SEYRIN_PUBLIC__: boolean; // built with SYNES_SEYRIN_PUBLIC=1: the owner's public Seyrin test page (2026-11-28)
+const NINJA_OK = import.meta.env.DEV || __SEYRIN_PUBLIC__; // false in the normal published build: its bundle carries no ninja code
 const Q = new URLSearchParams(location.search);
 // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A); ?ruleset=ninja-roam-1 = dev server on this machine only
 let seyrin: SeyrinHero | null = null; // dev playtest only (never set in a published build)
-const ruleset = import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q, __SEYRIN_LAN__) ? NINJA_RULESET : rulesetFromQuery(Q);
+const ruleset = __SEYRIN_PUBLIC__ || (import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q, __SEYRIN_LAN__)) ? NINJA_RULESET : rulesetFromQuery(Q);
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
@@ -136,7 +138,7 @@ const qaLog: { t: number; e: string }[] = [];
     const { startSeyrinPreview } = await import('./seyrin/previewMode.ts');
     if (await startSeyrinPreview(view, location.hostname, Q)) return;
   }
-  if (import.meta.env.DEV && isNinja(ruleset)) { // dev playtest: Seyrin's P1 file from the private inbox, else the placeholder
+  if (NINJA_OK && isNinja(ruleset)) { // dev playtest / the public Seyrin test page: Seyrin's P1 file from the private inbox, else the placeholder
     const say = (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult'));
     if (!Q.has('placeholder')) seyrin = await (await import('./seyrin/ninjaHero.ts')).loadSeyrinHero(view, say);
   }
@@ -162,7 +164,7 @@ async function newRun() {
   ticket = await net.start(variant, ruleset);
   const seed = ticket?.seed ?? (Q.has('seed') ? +Q.get('seed')! : (Math.random() * 2 ** 32) >>> 0);
   // ninja-roam-1 (dev playtest only) loads its own sim lazily, so a published bundle never carries it
-  world = import.meta.env.DEV && isNinja(ruleset) ? (await import('../shared/sim/createWorld.ts')).createWorld(seed, variant, ruleset) : new World(seed, variant, ruleset);
+  world = NINJA_OK && isNinja(ruleset) ? (await import('../shared/sim/createWorld.ts')).createWorld(seed, variant, ruleset) : new World(seed, variant, ruleset);
   log = new InputLog();
   input.autoPending = null; autoSet.enabled = false;
   view.buildLevel(world, 7);

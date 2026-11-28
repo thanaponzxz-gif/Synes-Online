@@ -12,6 +12,9 @@ import { HeroAnimator, heroTick } from './animPlan.ts';
 import { loadHero, HeroRejected, type HeroAsset, type HeroInstance } from './loader.ts';
 import { standIn } from './standIns.ts';
 
+declare const __SEYRIN_PUBLIC__: boolean;
+/** dev: the private inbox route of the dev server; the public test build (owner 2026-11-28) ships the pair next to the page */
+const FILES = __SEYRIN_PUBLIC__ ? './seyrin-hero/' : '/__seyrin/';
 /** the actor root is drawn at 1.22 (view.ts); Seyrin is judged at world scale 1.00 = 1.5 m (team A, DES-009 §10.5 Q15) */
 const ACTOR_SCALE = 1.22;
 
@@ -25,7 +28,7 @@ export interface SeyrinHero {
 export async function loadSeyrinHero(view: View, say: (text: string) => void): Promise<SeyrinHero | null> {
   let asset: HeroAsset;
   try {
-    const [glb, manifest] = await Promise.all([fetch('/__seyrin/hero.glb', { cache: 'no-store' }), fetch('/__seyrin/hero.manifest.json', { cache: 'no-store' })]);
+    const [glb, manifest] = await Promise.all([fetch(FILES + 'hero.glb', { cache: 'no-store' }), fetch(FILES + 'hero.manifest.json', { cache: 'no-store' })]);
     if (!glb.ok || !manifest.ok) { say('ninja-roam-1 · ตัวสำรอง Wayfarer · ไม่พบไฟล์เซย์รินใน inbox'); return null; }
     asset = await loadHero(await glb.arrayBuffer(), await manifest.text());
   } catch (err) {

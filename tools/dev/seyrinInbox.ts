@@ -13,6 +13,22 @@ import { inboxAllowed } from '../../src/seyrin/gate.ts';
 /** SYNES_SEYRIN_LAN=1: also serve a private (home network) address, for the owner's phone on the same Wi-Fi; never a public one */
 export const seyrinLan = () => process.env.SYNES_SEYRIN_LAN === '1';
 
+/** SYNES_SEYRIN_PUBLIC=1 on `vite build`: the owner's public Seyrin test page (owner order 2026-11-28, DES-009 §10.14). The pair is
+ *  written next to the page as seyrin-hero/hero.glb + hero.manifest.json. Without the flag a build carries neither. */
+export const seyrinPublic = () => process.env.SYNES_SEYRIN_PUBLIC === '1';
+export function seyrinPublicFiles(): Plugin {
+  return {
+    name: 'synes-seyrin-public',
+    apply: 'build',
+    generateBundle() {
+      if (!seyrinPublic()) return;
+      const dir = path.resolve(process.env.SYNES_SEYRIN_DIR || 'assets/_inbox'), stem = path.basename(process.env.SYNES_SEYRIN_STEM || STEM);
+      this.emitFile({ type: 'asset', fileName: 'seyrin-hero/hero.glb', source: fs.readFileSync(path.join(dir, `${stem}.glb`)) });
+      this.emitFile({ type: 'asset', fileName: 'seyrin-hero/hero.manifest.json', source: fs.readFileSync(path.join(dir, `${stem}.manifest.json`)) });
+    },
+  };
+}
+
 export function seyrinInbox(): Plugin {
   return {
     name: 'synes-seyrin-inbox',
