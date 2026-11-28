@@ -307,6 +307,16 @@ addEventListener('pagehide', () => pause('hidden'));
 addEventListener('blur', () => { if (matchMedia('(pointer: coarse)').matches) return; });
 addEventListener('offline', () => { hud.netChip.textContent = ticket ? 'ออนไลน์ (สัญญาณหลุด รอส่งผล)' : 'ออฟไลน์'; });
 addEventListener('online', () => { hud.netChip.textContent = ticket ? 'ออนไลน์' : 'ออฟไลน์'; });
+// iOS Safari ignores user-scalable=no: fast taps on the play screen (attack button) zoomed the page. A second touch-end within
+// 350 ms on the game canvas or the HUD has no default action (the buttons act on pointerdown), and pinch gestures never zoom.
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = performance.now(), quick = now - lastTouchEnd < 350; lastTouchEnd = now;
+  if (quick && e.cancelable && (e.target as Element | null)?.closest?.('#hud, #game')) e.preventDefault();
+}, { passive: false });
+document.addEventListener('touchmove', (e) => { if (e.touches.length > 1 && e.cancelable) e.preventDefault(); }, { passive: false });
+for (const g of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(g, (e) => e.preventDefault());
+document.addEventListener('dblclick', (e) => { if ((e.target as Element | null)?.closest?.('#hud, #game')) e.preventDefault(); });
 canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); pause('hidden'); $('#resume-tap').classList.remove('show'); $('#ctx-lost').classList.add('show'); });
 canvas.addEventListener('webglcontextrestored', () => { $('#ctx-lost').classList.remove('show'); if (world) view.buildLevel(world, 7); $('#resume-tap').classList.add('show'); });
 
