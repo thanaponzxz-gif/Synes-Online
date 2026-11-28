@@ -1,0 +1,556 @@
+{
+  "schema": "synes.boss-manifest/1",
+  "assetId": "boss_crab",
+  "version": "v02",
+  "profileId": "prismback_crab_v01",
+  "simKind": "prismback",
+  "rulesets": [
+    "ninja-roam-1"
+  ],
+  "stage": "combat",
+  "units": "meter",
+  "axes": {
+    "up": "+Y",
+    "forward": "+Z"
+  },
+  "rootMotion": 0,
+  "status": "REVIEW",
+  "output": {
+    "file": "mon_boss_crab_v02.glb",
+    "bytes": 1971004,
+    "sha256": "2e34363d5d11e4759c47fe24b1d2d26779d3c0f8ce172503e4f39c1d5774c385"
+  },
+  "clips": [
+    {
+      "name": "idle",
+      "ticks": 48,
+      "loop": true,
+      "markers": {},
+      "phases": {
+        "loop": [
+          0,
+          48
+        ]
+      }
+    },
+    {
+      "name": "walk",
+      "ticks": 24,
+      "loop": true,
+      "markers": {
+        "step": [
+          0,
+          12
+        ]
+      },
+      "phases": {
+        "loop": [
+          0,
+          24
+        ]
+      }
+    },
+    {
+      "name": "sweep",
+      "ticks": 51,
+      "loop": false,
+      "markers": {
+        "impact": [
+          30
+        ]
+      },
+      "poseHolds": [
+        [
+          30,
+          31
+        ]
+      ],
+      "phases": {
+        "windup": [
+          0,
+          30
+        ],
+        "recover": [
+          30,
+          51
+        ]
+      }
+    },
+    {
+      "name": "slam",
+      "ticks": 60,
+      "loop": false,
+      "markers": {
+        "impact": [
+          30
+        ]
+      },
+      "poseHolds": [
+        [
+          30,
+          31
+        ]
+      ],
+      "phases": {
+        "windup": [
+          0,
+          30
+        ],
+        "recover": [
+          30,
+          60
+        ]
+      }
+    },
+    {
+      "name": "charge_windup",
+      "ticks": 30,
+      "loop": false,
+      "markers": {
+        "release": [
+          30
+        ]
+      },
+      "phases": {
+        "windup": [
+          0,
+          30
+        ]
+      }
+    },
+    {
+      "name": "charge",
+      "ticks": 12,
+      "loop": true,
+      "markers": {},
+      "phases": {
+        "loop": [
+          0,
+          12
+        ]
+      }
+    },
+    {
+      "name": "shard_cast",
+      "ticks": 45,
+      "loop": false,
+      "markers": {
+        "castAccent": [
+          9
+        ]
+      },
+      "phases": {
+        "cast": [
+          0,
+          27
+        ],
+        "recover": [
+          27,
+          45
+        ]
+      }
+    },
+    {
+      "name": "stunned",
+      "ticks": 30,
+      "loop": true,
+      "markers": {},
+      "phases": {
+        "loop": [
+          0,
+          30
+        ]
+      }
+    },
+    {
+      "name": "roar",
+      "ticks": 33,
+      "loop": false,
+      "markers": {},
+      "phases": {
+        "once": [
+          0,
+          33
+        ]
+      }
+    },
+    {
+      "name": "down",
+      "ticks": 12,
+      "loop": false,
+      "markers": {},
+      "holdLast": true,
+      "phases": {
+        "once": [
+          0,
+          12
+        ]
+      }
+    }
+  ],
+  "bones": [
+    {
+      "name": "root",
+      "parent": null
+    },
+    {
+      "name": "body",
+      "parent": "root"
+    },
+    {
+      "name": "shell",
+      "parent": "body"
+    },
+    {
+      "name": "head",
+      "parent": "body"
+    },
+    {
+      "name": "arm_l",
+      "parent": "body"
+    },
+    {
+      "name": "claw_l",
+      "parent": "arm_l"
+    },
+    {
+      "name": "pincer_l",
+      "parent": "claw_l"
+    },
+    {
+      "name": "arm_r",
+      "parent": "body"
+    },
+    {
+      "name": "claw_r",
+      "parent": "arm_r"
+    },
+    {
+      "name": "pincer_r",
+      "parent": "claw_r"
+    },
+    {
+      "name": "leg_fl_upper",
+      "parent": "body"
+    },
+    {
+      "name": "leg_fl_lower",
+      "parent": "leg_fl_upper"
+    },
+    {
+      "name": "leg_fl_foot",
+      "parent": "leg_fl_lower"
+    },
+    {
+      "name": "leg_fr_upper",
+      "parent": "body"
+    },
+    {
+      "name": "leg_fr_lower",
+      "parent": "leg_fr_upper"
+    },
+    {
+      "name": "leg_fr_foot",
+      "parent": "leg_fr_lower"
+    },
+    {
+      "name": "leg_bl_upper",
+      "parent": "body"
+    },
+    {
+      "name": "leg_bl_lower",
+      "parent": "leg_bl_upper"
+    },
+    {
+      "name": "leg_bl_foot",
+      "parent": "leg_bl_lower"
+    },
+    {
+      "name": "leg_br_upper",
+      "parent": "body"
+    },
+    {
+      "name": "leg_br_lower",
+      "parent": "leg_br_upper"
+    },
+    {
+      "name": "leg_br_foot",
+      "parent": "leg_br_lower"
+    }
+  ],
+  "sockets": [
+    {
+      "name": "socket_fx_ground",
+      "parent": "root",
+      "expectedParent": "root",
+      "positionM": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        3.774895063202166e-8,
+        0,
+        0,
+        1
+      ],
+      "coordinateSpace": "parent-local",
+      "axes": {
+        "up": [
+          0,
+          0.9999999999999971,
+          7.549790126404332e-8
+        ],
+        "forward": [
+          0,
+          -7.549790126404332e-8,
+          0.9999999999999971
+        ]
+      }
+    },
+    {
+      "name": "socket_fx_shell",
+      "parent": "shell",
+      "expectedParent": "shell",
+      "positionM": [
+        0,
+        0.4015295207500458,
+        -0.035691555589437485
+      ],
+      "rotation": [
+        0.017848655581474304,
+        0,
+        0,
+        0.9998407363891602
+      ],
+      "coordinateSpace": "parent-local",
+      "axes": {
+        "up": [
+          0,
+          0.9993628509878678,
+          0.035691625880275524
+        ],
+        "forward": [
+          0,
+          -0.035691625880275524,
+          0.9993628509878678
+        ]
+      }
+    },
+    {
+      "name": "socket_fx_claw_l",
+      "parent": "claw_l",
+      "expectedParent": "claw_l",
+      "positionM": [
+        -0.4113781154155731,
+        1.136497974395752,
+        -0.07707331329584122
+      ],
+      "rotation": [
+        -0.9094454050064087,
+        -0.14757026731967926,
+        -0.14757029712200165,
+        0.35965970158576965
+      ],
+      "coordinateSpace": "parent-local",
+      "axes": {
+        "up": [
+          0.37456438111054435,
+          -0.6977358745598932,
+          -0.6106277495568322
+        ],
+        "forward": [
+          0.16226410065181351,
+          0.6977357023357853,
+          -0.6977358569681447
+        ]
+      }
+    },
+    {
+      "name": "socket_fx_claw_r",
+      "parent": "claw_r",
+      "expectedParent": "claw_r",
+      "positionM": [
+        0.4113781154155731,
+        1.136497974395752,
+        -0.07707331329584122
+      ],
+      "rotation": [
+        -0.9094454050064087,
+        0.14757026731967926,
+        0.14757029712200165,
+        0.35965970158576965
+      ],
+      "coordinateSpace": "parent-local",
+      "axes": {
+        "up": [
+          -0.37456438111054435,
+          -0.6977358745598932,
+          -0.6106277495568322
+        ],
+        "forward": [
+          -0.16226410065181351,
+          0.6977357023357853,
+          -0.6977358569681447
+        ]
+      }
+    },
+    {
+      "name": "socket_fx_head",
+      "parent": "head",
+      "expectedParent": "head",
+      "positionM": [
+        0,
+        0.4143669605255127,
+        2.086162567138672e-7
+      ],
+      "rotation": [
+        -0.6539116501808167,
+        0,
+        0,
+        0.7565709352493286
+      ],
+      "coordinateSpace": "parent-local",
+      "axes": {
+        "up": [
+          0,
+          0.14479910751560254,
+          -0.9894610974954645
+        ],
+        "forward": [
+          0,
+          0.9894610974954645,
+          0.14479910751560254
+        ]
+      }
+    }
+  ],
+  "measurements": {
+    "bytes": 1971004,
+    "tris": 8988,
+    "vertices": 12044,
+    "primitives": 1,
+    "materials": 1,
+    "joints": 22,
+    "bindBoundsM": [
+      [
+        -1.2390304803848267,
+        1.2389904260635376
+      ],
+      [
+        0,
+        2.804711103439331
+      ],
+      [
+        -1.7491644620895386,
+        1.4099653959274292
+      ]
+    ],
+    "horizontalRadiusM": 1.7799999437535374,
+    "textureSizes": [
+      {
+        "usage": "baseColor",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 908206
+      },
+      {
+        "usage": "orm",
+        "width": 512,
+        "height": 512,
+        "bytes": 296681
+      }
+    ],
+    "clips": [
+      {
+        "name": "charge",
+        "seconds": 0.4000000059604645,
+        "ticks": 12.000000178813934,
+        "loopDifference": 4.2146848510894035e-8,
+        "holdDifference": 0
+      },
+      {
+        "name": "charge_windup",
+        "seconds": 1,
+        "ticks": 30,
+        "loopDifference": 0,
+        "holdDifference": 0
+      },
+      {
+        "name": "down",
+        "seconds": 0.4000000059604645,
+        "ticks": 12.000000178813934,
+        "loopDifference": 0,
+        "holdDifference": 0
+      },
+      {
+        "name": "idle",
+        "seconds": 1.600000023841858,
+        "ticks": 48.00000071525574,
+        "loopDifference": 4.2146848510894035e-8,
+        "holdDifference": 0
+      },
+      {
+        "name": "roar",
+        "seconds": 1.100000023841858,
+        "ticks": 33.00000071525574,
+        "loopDifference": 0,
+        "holdDifference": 0
+      },
+      {
+        "name": "shard_cast",
+        "seconds": 1.5,
+        "ticks": 45,
+        "loopDifference": 0,
+        "holdDifference": 0
+      },
+      {
+        "name": "slam",
+        "seconds": 2,
+        "ticks": 60,
+        "loopDifference": 0,
+        "holdDifference": 4.2146848510894035e-8
+      },
+      {
+        "name": "stunned",
+        "seconds": 1,
+        "ticks": 30,
+        "loopDifference": 5.960464477539063e-8,
+        "holdDifference": 0
+      },
+      {
+        "name": "sweep",
+        "seconds": 1.7000000476837158,
+        "ticks": 51.000001430511475,
+        "loopDifference": 0,
+        "holdDifference": 1.1151007970493858e-7
+      },
+      {
+        "name": "walk",
+        "seconds": 0.800000011920929,
+        "ticks": 24.00000035762787,
+        "loopDifference": 7.300048299977715e-8,
+        "holdDifference": 0
+      }
+    ]
+  },
+  "source": {
+    "file": "mon_boss_crab_raw_v01.glb",
+    "sha256": "05b6130b99ec0fc9a5e807696551671c3635af53b1767f1c09c8f220de72ce2d",
+    "originStatus": "Owner supplied raw; source service/license unknown; no external service used in production"
+  },
+  "tools": {
+    "blender": "5.3.0",
+    "production": "Codex, local headless Blender; no external service",
+    "date": "2026-11-28"
+  },
+  "motionProfile": {
+    "fps": 30,
+    "referenceSpeeds": {
+      "walk": 2,
+      "charge": 15
+    },
+    "clock": "telegraph-and-state",
+    "rootMotion": 0
+  }
+}
