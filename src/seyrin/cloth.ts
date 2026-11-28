@@ -57,6 +57,8 @@ interface Chain {
   def: ClothChain; anchor: THREE.Object3D; joints: Joint[]; sideways: boolean;
   /** the first joint's parent pose and the anchor position, last frame and this frame (steps interpolate between them) */
   prevPos: THREE.Vector3; prevRot: THREE.Quaternion; curPos: THREE.Vector3; curRot: THREE.Quaternion; prevAnchor: THREE.Vector3; curAnchor: THREE.Vector3;
+  /** the first joint's parent pose the last step and the step before it ran under (the view carries each state from there) */
+  stepRot: THREE.Quaternion; prevStepRot: THREE.Quaternion;
   /** the anchor at the last step, its filtered velocity, and the clamped acceleration this step uses */
   lastP: THREE.Vector3 | null; vf: THREE.Vector3 | null; acc: THREE.Vector3;
 }
@@ -75,6 +77,9 @@ function swingTo(out: THREE.Vector3, axis: THREE.Vector3, d: THREE.Vector3): THR
   const s = out.length(), c = axis.dot(d);
   return s < 1e-15 ? out.set(0, 0, 0) : out.multiplyScalar(Math.atan2(s, c) / s);
 }
+const finiteV = (v: THREE.Vector3) => Number.isFinite(v.x) && Number.isFinite(v.y) && Number.isFinite(v.z);
+const finiteQ = (q: THREE.Quaternion) => Number.isFinite(q.x) && Number.isFinite(q.y) && Number.isFinite(q.z) && Number.isFinite(q.w);
+const finiteNode = (o: THREE.Object3D) => finiteV(o.position) && finiteQ(o.quaternion) && finiteV(o.scale);
 function closestOnSeg(out: THREE.Vector3, p: THREE.Vector3, a: THREE.Vector3, b: THREE.Vector3): THREE.Vector3 {
   _ab.subVectors(b, a);
   const l2 = _ab.lengthSq(), t = l2 > 0 ? Math.min(1, Math.max(0, _ap.subVectors(p, a).dot(_ab) / l2)) : 0;
@@ -85,7 +90,10 @@ export class ClothSolver {
   readonly problems: string[] = [];
   private chains: Chain[] = [];
   private joints: Joint[] = [];
+  /** the body proxies the steps and the view use (a step between two frames sees them between the two frames' poses) */
   private body: Capsule[] = [];
+  private bodyCur: Capsule[] = [];
+  private bodyPrev: Capsule[] = [];
   private bodyBones: [THREE.Object3D, THREE.Object3D][] = [];
   private acc = 0;
   private sinceReset = 0;
@@ -94,20 +102,22 @@ export class ClothSolver {
   private blendBefore = 0;
   /** the body's midline plane this frame: through the pelvis, normal = the actor's sideways axis */
   private mid = { c: V(), n: V() };
+  private midCur = { c: V(), n: V() };
+  private midPrev = { c: V(), n: V() };
   private step: (typeof CLOTH_STEP)[ClothQuality];
   private root: THREE.Object3D;
   // scratch, one per use (helpers never share one)
   private t = { aEff: V(), pr: Q(), jp: V(), frame: Q(), inv: Q(), d: V(), w: V(), tau: V(), qs: Q(), rot: Q(), ap: V(), v: V(), dv: V(),
     cq: Q(), cqs: Q(), cdir: V(), cpt: V(), cc: V(), cwant: V(), cb: V(), cn: V(), sp: V(), ss: V(), sq: Q(), st: V(), sd: V(), sqs: Q(),
-    hn: V(), hp: V(), hf: V(), sjp: V(), sfr: Q(), sinv: Q(), srot: Q(), rp: V(), kp: V(), kd: V(), down: new THREE.Vector3(0, -1, 0) };
-  private static emptyFrame(blend: number) { return { substeps: 0, resets: 0, maxSnapDeg: 0, blend, conflicts: { proxy: 0, sideways: 0, ground: 0, snap: 0 } }; }
+    hn: V(), hp: V(), hf: V(), sjp: V(), sfr: Q(), sinv: Q(), srot: Q(), rp: V(), kp: V(), kd: V(), cw: V(), cp0: Q(), cp1: Q(), cpi: Q(), down: new THREE.Vector3(0, -1, 0) };
+  private static emptyFrame(blend: number) { return { substeps: 0, resets: 0, maxSnapDeg: 0, blend, badPose: false, conflicts: { proxy: 0, sideways: 0, ground: 0, snap: 0 } }; }
 
   constructor(root: THREE.Object3D, quality: ClothQuality = 'medium') {
     this.root = root; this.step = CLOTH_STEP[quality];
     const find = (n: string) => { const o = root.getObjectByName(n); if (!o) this.problems.push(`missing node ${n}`); return o ?? null; };
     for (const [a, b, r] of [['pelvis', 'chest', CLOTH_BODY.torsoR], ['head', 'head', CLOTH_BODY.headR], ['thigh_l', 'shin_l', CLOTH_BODY.thighR], ['thigh_r', 'shin_r', CLOTH_BODY.thighR]] as const) {
       const A = find(a), B = find(b);
-      if (A && B) { this.bodyBones.push([A, B]); this.body.push({ a: V(), b: V(), r }); }
+      if (A && B) { this.bodyBones.push([A, B]); for (const l of [this.body, this.bodyCur, this.bodyPrev]) l.push({ a: V(), b: V(), r }); }
     }
     CLOTH_CHAINS.forEach((def, ci) => {
       const anchor = find(def.anchor), found = def.bones.map(find);
@@ -128,9 +138,15 @@ export class ClothSolver {
       const last = js[js.length - 1];
       last.axis.copy(js.length > 1 ? js[js.length - 2].axis : new THREE.Vector3(0, -1, 0));
       if (!(last.L > 0.005)) { this.problems.push(`${def.name}: the rig is already ${used.toFixed(3)} m long before its last bone (design ${def.lengthM} m)`); return; }
-      this.chains.push({ def, anchor, joints: js, sideways: (CLOTH_LIMITS.sidewaysChains as readonly string[]).includes(def.name), prevPos: V(), prevRot: Q(), curPos: V(), curRot: Q(), prevAnchor: V(), curAnchor: V(), lastP: null, vf: null, acc: V() });
+      this.chains.push({ def, anchor, joints: js, sideways: (CLOTH_LIMITS.sidewaysChains as readonly string[]).includes(def.name), prevPos: V(), prevRot: Q(), curPos: V(), curRot: Q(), prevAnchor: V(), curAnchor: V(), stepRot: Q(), prevStepRot: Q(), lastP: null, vf: null, acc: V() });
       this.joints.push(...js);
     });
+    // team A (DES-009 §10.10): a pose that is not finite above the cloth (an anchor, an ancestor, a body bone) is a problem, named
+    const top = (o: THREE.Object3D) => { let bad: THREE.Object3D | null = null; for (let x: THREE.Object3D | null = o; x; x = x.parent) if (!finiteNode(x)) bad = x; return bad; };
+    const seen = new Set<string>();
+    const check = (who: string, o: THREE.Object3D) => { const b = top(o); if (b && !seen.has(`${who}|${b.name}`)) { seen.add(`${who}|${b.name}`); this.problems.push(`${who}: ${b.name || '(unnamed)'} has a pose that is not finite`); } };
+    for (const ch of this.chains) { check(ch.def.name, ch.anchor); check(ch.def.name, ch.joints[0].bone.parent!); }
+    for (const [A, B] of this.bodyBones) { check('body', A); check('body', B); }
   }
 
   /** all 18 bones found and usable; otherwise the cloth stays at rest (a fallback: DES-007 Q4 is not passed) */
@@ -140,7 +156,8 @@ export class ClothSolver {
   reset(): void { this.needReset = true; if (this.ok) this.restore(); }
   /** this frame: fixed steps run, whether it reset, the largest bone direction change (degrees), the blend-in from rest, and the
    *  limits the pose on screen could not keep (points past a proxy / the sideways limit / the ground by more than 1 mm, bones
-   *  that turned more than 10° in a 60 FPS frame outside a reset blend) */
+   *  that turned faster than 600°/s = 10° a 60 FPS frame outside a reset blend); badPose = the body pose above the cloth was not
+   *  finite this frame (the cloth was put at rest and starts again from rest) */
   stats() { return { ...this.frame, conflicts: { ...this.frame.conflicts } }; }
 
   /** once per rendered frame, after the mixer pose and the actor's placement; dt = real frame time (s) */
@@ -149,6 +166,11 @@ export class ClothSolver {
     if (!this.ok) return;
     this.root.updateMatrixWorld(true);
     this.readFrame();
+    if (!this.frameFinite()) { // the body pose above the cloth is not finite this frame: rest pose, no NaN on the cloth, start again
+      for (const j of this.joints) { j.theta.set(0, 0, 0); j.omega.set(0, 0, 0); j.bone.quaternion.copy(j.rest); }
+      this.needReset = true; this.frame.badPose = true;
+      return;
+    }
     const ground = o.down ? (o.groundY ?? this.root.getWorldPosition(this.t.sp).y) + CLOTH_BODY.groundDownM : -Infinity;
     let reset = this.needReset || !(dt > 0) || dt > CLOTH_RESET.maxDtS;
     for (const ch of this.chains) if (ch.curAnchor.distanceTo(ch.prevAnchor) > CLOTH_RESET.teleportM) reset = true;
@@ -170,7 +192,21 @@ export class ClothSolver {
     this.frame.blend = blend;
     this.show(interpolate ? this.acc / h : 1, blend, reset, ground, dt);
     this.blendBefore = reset ? 0 : blend;
+    this.keepFrame();
+  }
+  /** this frame's body pose becomes the previous one (steps of the next frame interpolate from it) */
+  private keepFrame() {
     for (const ch of this.chains) { ch.prevPos.copy(ch.curPos); ch.prevRot.copy(ch.curRot); ch.prevAnchor.copy(ch.curAnchor); }
+    this.bodyCur.forEach((b, i) => { this.bodyPrev[i].a.copy(b.a); this.bodyPrev[i].b.copy(b.b); });
+    this.midPrev.c.copy(this.midCur.c); this.midPrev.n.copy(this.midCur.n);
+  }
+  private frameFinite(): boolean {
+    return this.chains.every((ch) => finiteV(ch.curPos) && finiteQ(ch.curRot) && finiteV(ch.curAnchor)) && this.bodyCur.every((b) => finiteV(b.a) && finiteV(b.b)) && finiteV(this.midCur.c) && finiteV(this.midCur.n);
+  }
+  /** the body proxies and the midline at fraction f of this frame (a step), or now (the view) */
+  private bodyAt(f: number) {
+    this.body.forEach((b, i) => { b.a.lerpVectors(this.bodyPrev[i].a, this.bodyCur[i].a, f); b.b.lerpVectors(this.bodyPrev[i].b, this.bodyCur[i].b, f); });
+    this.mid.c.lerpVectors(this.midPrev.c, this.midCur.c, f); this.mid.n.lerpVectors(this.midPrev.n, this.midCur.n, f).normalize();
   }
 
   // ---------------------------------------------------------------- QA readouts (shown values come from the bones themselves)
@@ -211,8 +247,9 @@ export class ClothSolver {
     this.readBody();
   }
   private readBody() {
-    this.bodyBones.forEach(([A, B], i) => { A.getWorldPosition(this.body[i].a); B.getWorldPosition(this.body[i].b); });
-    if (this.body.length) { this.mid.c.copy(this.body[0].a); this.mid.n.set(1, 0, 0).applyQuaternion(this.root.getWorldQuaternion(this.t.cq)).normalize(); }
+    this.bodyBones.forEach(([A, B], i) => { A.getWorldPosition(this.bodyCur[i].a); B.getWorldPosition(this.bodyCur[i].b); });
+    if (this.bodyCur.length) { this.midCur.c.copy(this.bodyCur[0].a); this.midCur.n.set(1, 0, 0).applyQuaternion(this.root.getWorldQuaternion(this.t.cq)).normalize(); }
+    this.bodyAt(1);
   }
   private boneAt(j: Joint, f: number): THREE.Vector3 {
     const p = V(), q = Q(); j.bone.matrixWorld.decompose(p, q, V());
@@ -223,7 +260,8 @@ export class ClothSolver {
     for (const j of this.joints) { j.theta.set(0, 0, 0); j.omega.set(0, 0, 0); j.bone.quaternion.copy(j.rest); }
     this.root.updateMatrixWorld(true);
     this.readFrame();
-    for (const ch of this.chains) { ch.prevPos.copy(ch.curPos); ch.prevRot.copy(ch.curRot); ch.prevAnchor.copy(ch.curAnchor); ch.lastP = null; ch.vf = null; ch.acc.set(0, 0, 0); }
+    this.keepFrame();
+    for (const ch of this.chains) { ch.stepRot.copy(ch.curRot); ch.prevStepRot.copy(ch.curRot); ch.lastP = null; ch.vf = null; ch.acc.set(0, 0, 0); }
     for (const j of this.joints) { const q = Q(); j.bone.matrixWorld.decompose(V(), q, V()); j.dir.copy(j.axis).applyQuaternion(q); j.prevDir.copy(j.dir); j.shownDir.copy(j.dir); }
     this.acc = 0; this.sinceReset = 0; this.needReset = false;
   }
@@ -245,11 +283,13 @@ export class ClothSolver {
   /** one fixed step ending at fraction `f` of this frame (the first joint's parent pose and the anchor are interpolated) */
   private substep(h: number, f: number, ground: number) {
     const T = this.t;
+    this.bodyAt(f); // the proxies and the midline where they were at this step's time, like the joints (else 144 FPS steps see the body up to 8 cm ahead)
     for (const ch of this.chains) {
       const d = ch.def;
       this.anchorAccel(ch, h, f);
       const aEff = T.aEff.set(0, -CLOTH_ANCHOR.g * d.gravityMul, 0).addScaledVector(ch.acc, -d.inertiaMul);
       const parentRot = T.pr.slerpQuaternions(ch.prevRot, ch.curRot, f);
+      ch.prevStepRot.copy(ch.stepRot); ch.stepRot.copy(parentRot);
       const jointPos = T.jp.lerpVectors(ch.prevPos, ch.curPos, f);
       for (let ji = 0; ji < ch.joints.length; ji++) { const j = ch.joints[ji];
         const frame = T.frame.copy(parentRot).multiply(j.rest), inv = T.inv.copy(frame).invert();
@@ -358,23 +398,34 @@ export class ClothSolver {
     if (pl > 0) { push.divideScalar(pl); const into = om.dot(push); if (into < 0) om.addScaledVector(push, -into); }
   }
 
-  /** bones from the state: Low shows between the last two states' world directions, Medium the latest; after a reset it blends
-   *  in from rest. The
-   *  pose shown gets the same pushes and cones as the state (a blend or an interpolation of two good poses can cut into the body),
-   *  then whatever it still breaks is counted */
+  /** bones from the state: Low shows between the last two states, Medium the latest; after a reset it blends in from rest. On
+   *  screen a bone turns at most 600°/s from where it was shown (team A: 10° a frame at 60 FPS, DES-009 §10.10), then the pose
+   *  gets the same pushes and cones as the state (a blend or an interpolation of two good poses can cut into the body), and
+   *  whatever it still breaks is counted */
   private show(f: number, blend: number, reset: boolean, ground: number, dt: number) {
     const T = this.t, C = this.frame.conflicts, tol = CLOTH_LIMITS.conflictM;
-    const judgeSnap = !reset && blend === 1 && this.blendBefore === 1 && dt <= 1 / 60 + 1e-9;
+    const cap = MAX_RATE * dt, judgeSnap = !reset && blend === 1 && this.blendBefore === 1;
+    this.bodyAt(1);
     let worst = 0;
     for (const ch of this.chains) {
       const parentRot = T.srot.copy(ch.curRot), jointPos = T.sjp.copy(ch.curPos);
+      // each state is carried from the chain root's pose its step ran under to the chain root's pose now (team A, DES-009 §10.10)
+      const carryPrev = T.cp0.copy(ch.curRot).multiply(T.cpi.copy(ch.prevStepRot).invert()), carry = T.cp1.copy(ch.curRot).multiply(T.cpi.copy(ch.stepRot).invert());
       for (let ji = 0; ji < ch.joints.length; ji++) { const j = ch.joints[ji];
         const frame = T.sfr.copy(parentRot).multiply(j.rest), inv = T.sinv.copy(frame).invert();
-        // Low: between the world directions before and after the last step (a turning parent does not jump the view), then the
-        // swing that points there under the parent as shown
-        const want = T.d.lerpVectors(j.prevDir, j.dir, f);
+        // Low: between the last two states, each carried with the body from the chain root pose of its step to the one now (so the
+        // body turning in between turns the cloth with it instead of the cones dragging a late view), then the swing that points
+        // there under the parent as shown
+        const want = T.d.copy(j.prevDir).applyQuaternion(carryPrev).lerp(T.cw.copy(j.dir).applyQuaternion(carry), f);
         if (want.lengthSq() < 1e-18) want.copy(j.dir);
         const th = swingTo(T.st, j.axis, want.normalize().applyQuaternion(inv)).multiplyScalar(blend);
+        if (!reset) { // at most 600°/s on screen: turn from the direction shown last frame toward this one by no more than the cap
+          const d0 = this.dirOf(j, frame, th), a = d0.angleTo(j.shownDir);
+          if (a > cap) {
+            T.cq.setFromUnitVectors(j.shownDir, d0); T.cpi.identity().slerp(T.cq, cap / a);
+            swingTo(th, j.axis, T.cw.copy(j.shownDir).applyQuaternion(T.cpi).applyQuaternion(inv));
+          }
+        }
         this.cone(j, th, null);
         for (let pass = 0; pass < CLOTH_BODY.passes; pass++) this.collide(ch, ji, th, null, frame, inv, jointPos, ground);
         this.cone(j, th, null);
@@ -390,7 +441,7 @@ export class ClothSolver {
         }
         const snap = (Math.acos(Math.min(1, Math.max(-1, d.dot(j.shownDir)))) * 180) / Math.PI;
         if (!reset) worst = Math.max(worst, snap);
-        if (judgeSnap && snap > CLOTH_LIMITS.snapDegAt60 + 1e-9) C.snap++;
+        if (judgeSnap && snap > (cap * 180) / Math.PI + 1e-9) C.snap++;
         j.shownDir.copy(d);
         jointPos.addScaledVector(d, j.L);
       }

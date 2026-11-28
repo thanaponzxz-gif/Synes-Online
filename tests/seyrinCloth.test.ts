@@ -222,13 +222,41 @@ describe('team A limits (DES-009 §10.9)', () => {
       const r = snaps(q, m, pre);
       expect(r.worst, `${q} ${name}`).toBeLessThanOrEqual(CLOTH_LIMITS.snapDegAt60 + 1e-9); expect(r.counted).toBe(0);
     }
-    expect(snaps('medium', turn(6, 90), 0.2).worst).toBeLessThanOrEqual(CLOTH_LIMITS.snapDegAt60 + 1e-9);
   });
-  it('Low, a steady 900°/s turn (90° in 0.1 s): the late view under the cones passes 10° and that is counted as a conflict (team A, DES-009 §10.9)', () => {
-    // Low shows the cloth one 1/30 s step late; the cones hold against the body as it is now, so they drag the bones past 10°
-    const r = snaps('low', turn(6, 90), 0.2);
-    expect(r.worst).toBeGreaterThan(CLOTH_LIMITS.snapDegAt60); expect(r.worst).toBeLessThan(12);
-    expect(r.counted).toBeGreaterThan(0);
+  it('a steady 900°/s turn (90° in 0.1 s), Medium and Low: still at most 10° a frame on screen, with no conflict (team A, DES-009 §10.10 ก)', () => {
+    for (const q of ['medium', 'low'] as const) {
+      const r = snaps(q, turn(6, 90), 0.2);
+      expect(r.worst, q).toBeLessThanOrEqual(CLOTH_LIMITS.snapDegAt60 + 1e-9); expect(r.counted, q).toBe(0);
+    }
+  });
+  it('on screen a bone turns at most 600°/s at any frame rate (144 FPS: 4.2° a frame)', () => {
+    const { root } = rig(), s = new ClothSolver(root);
+    let worst = 0, blendBefore = 0;
+    run(s, root, () => ({}), 0.2, 144);
+    run(s, root, dodges, 2, 144, 0.2, () => { const st = s.stats(); if (st.blend === 1 && blendBefore === 1) worst = Math.max(worst, st.maxSnapDeg); blendBefore = st.blend; });
+    expect(worst).toBeLessThanOrEqual((CLOTH_LIMITS.snapDegAt60 * 60) / 144 + 1e-9);
+  });
+  it('a pose that is not finite above the cloth (an anchor, an ancestor) is a problem when built and a rest-pose frame when it happens later; no NaN reaches the cloth', () => {
+    for (const bad of ['anchor_scarf_l', 'chest', 'pelvis']) {
+      const { root, get } = rig();
+      get(bad).position.x = Number.NaN;
+      const s = new ClothSolver(root);
+      expect(s.ok, bad).toBe(false); expect(s.problems.join(' '), bad).toContain(bad);
+    }
+    const { root, get } = rig(), s = new ClothSolver(root);
+    run(s, root, (u) => ({ z: 0.5 * 10 * u * u }), 0.3);
+    expect(s.ok).toBe(true);
+    const chest = get('chest'), y = chest.position.y;
+    chest.position.y = Number.NaN; s.update(1 / 60);
+    expect(s.stats().badPose).toBe(true);
+    for (const c of CLOTH_CHAINS) for (const b of c.bones) {
+      const q = get(b).quaternion;
+      expect([q.x, q.y, q.z, q.w].every(Number.isFinite), b).toBe(true);
+    }
+    expect(s.angles('shown').every(Number.isFinite)).toBe(true);
+    chest.position.y = y; s.update(1 / 60);
+    expect(s.stats().badPose).toBe(false); expect(s.stats().resets).toBe(1); // back: from rest, blending in
+    expect(s.directions('shown').every((d) => [d.x, d.y, d.z].every(Number.isFinite))).toBe(true);
   });
   it('the scarf stays within 0.35 m of the midline sideways (side dodges, shaking), Medium and Low', () => {
     for (const q of ['medium', 'low'] as const) for (const m of [dodges, shake]) {
