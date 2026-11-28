@@ -5,6 +5,8 @@ import * as THREE from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { inspectHeroFiles, type InspectReport } from './inspect.ts';
+import { MixerDriver } from './mixerDriver.ts';
+import type { AnimPlan } from './animPlan.ts';
 
 export class HeroRejected extends Error {
   readonly report: InspectReport;
@@ -21,6 +23,8 @@ export interface HeroInstance {
   readonly clips: readonly string[];
   /** put the skeleton at `seconds` into a clip: looping clips wrap, one-shot clips hold their last key */
   pose(clip: string, seconds: number): void;
+  /** P2: pose the skeleton from an animation plan (upper/lower body, additive hit_add, pelvis lift); returns clips the file lacks */
+  animate(plan: AnimPlan): string[];
   activeClips(): string[];
   dispose(): void;
 }
@@ -108,7 +112,7 @@ export async function loadHero(glb: ArrayBuffer, manifestText: string): Promise<
     if (released) throw new Error('hero asset already disposed');
     const root = cloneSkinned(source);
     const mixer = new THREE.AnimationMixer(root);
-    let current: THREE.AnimationAction | null = null, gone = false;
+    let current: THREE.AnimationAction | null = null, gone = false, driver: MixerDriver | null = null;
     live++;
     return {
       root,
@@ -118,15 +122,21 @@ export async function loadHero(glb: ArrayBuffer, manifestText: string): Promise<
         if (!clip) throw new Error(`clip not in this file: ${name}`);
         if (gone) return;
         const action = mixer.clipAction(clip);
-        if (current !== action) { current?.stop(); action.reset().play(); current = action; }
+        if (current !== action) { current?.stop(); driver?.idle(); action.reset().play(); current = action; }
         const d = clip.duration;
         action.time = looping.has(name) ? ((seconds % d) + d) % d : Math.min(Math.max(seconds, 0), d);
         mixer.update(0);
       },
+      animate(plan) {
+        if (gone) return [];
+        if (current) { current.stop(); current = null; }
+        driver ??= new MixerDriver(mixer, root, [...byName.values()]);
+        return driver.apply(plan);
+      },
       activeClips: () => [...byName.values()].filter((c) => mixer.existingAction(c)?.isRunning()).map((c) => c.name),
       dispose() {
         if (gone) return;
-        gone = true; current = null;
+        gone = true; current = null; driver?.dispose(); driver = null;
         mixer.stopAllAction(); mixer.uncacheRoot(root);
         root.removeFromParent();
         for (const s of resources(root).skeletons) s.dispose(); // per-instance bone textures only
