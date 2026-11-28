@@ -53,6 +53,7 @@ export async function loadSeyrinHero(view: View, say: (text: string) => void): P
     },
     afterStep(world, events) { animator.observe(heroTick(world as unknown as NinjaWorld, events)); },
     beforeRender(world, alpha, dt) {
+      if (!hero || !holder) api.onRun(world); // the file finished loading after this run began (slow network): join mid-run
       if (!hero || !holder) return;
       const model = view.playerModel(world), root = model?.parent;
       if (!model || !root) return;
