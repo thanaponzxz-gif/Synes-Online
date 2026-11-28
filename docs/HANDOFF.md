@@ -1,5 +1,7 @@
 # Handoff: Synes Online
 
+> **คำสั่งเจ้าของ 2026-11-28 (ชั่วคราวถึงรีเซตวันจันทร์ 2026-11-30):** ให้ทีม B ใช้ Fable 5.2 (`claude-fable-5-2`) effort medium ให้เกิดประโยชน์มากที่สุด · แชตหลักและเซสชันสายงานทั้งสองเปลี่ยนแล้ว · แทนคำแนะนำรุ่นต่อขั้นใน CLAUDE.md 5.2 ชั่วคราว · หลังรีเซตให้ถามเจ้าของว่ากลับไปใช้รุ่นใด
+
 ## เซย์ริน: ระบบโหลด P1 + `ninja-roam-1` (DES-009) · 2026-11-28 · เซสชันสายงาน Claude Code บนเครื่องเจ้าของ
 - **ทำอะไร (branch `claude/seyrin-engine-0af27e`; PM merge `04bd570` เข้า `lane/free-roam` 2026-11-28 ตามคำเจ้าของ "ทำเลย", ไม่ได้อัปเดต Pages):** `f29c772` golden replay ruleset เก่า (ฐาน `fc1ada5`) · `c90401a` ทางโหลด SkinnedMesh + ตรวจ manifest · `5dbe2ab` โหมดดูท่า `?seyrin=preview` (dev + loopback) · `be129e8` กติกา `ninja-roam-1` ครบตาม DES-007 §3/§8.3/§8.4 ใน `shared/sim/ninjaWorld.ts` + server (ต้องตั้ง `SYNES_REVIEW_RULESETS=1`, ไม่ให้รางวัล) + ทางเข้า dev `?ruleset=ninja-roam-1` ด้วยตัวสำรอง Wayfarer · รายละเอียด DES-009 §10
 - **ผลทดสอบ (PC เท่านั้น):** `npm test` 426/426, typecheck, build, lifecycle 20/20, `ninja-placeholder` 9/9, `seyrin-preview` 28/28, golden ruleset เก่า 39/39 ไม่เปลี่ยน · tuningHash `ninja-roam-1` = `2b75fe5c62d333f8` · บิลด์ production ไม่สนใจ flag · **Android: ยังไม่ได้ทดสอบ · iPhone: ยังไม่ได้ทดสอบ**
