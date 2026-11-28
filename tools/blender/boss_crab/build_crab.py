@@ -22,8 +22,14 @@ MASTER=OUT/'mon_boss_crab_work_v01.blend'
 SOURCE_SHA='05b6130b99ec0fc9a5e807696551671c3635af53b1767f1c09c8f220de72ce2d'
 ARGS=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
 STAGE=ARGS[ARGS.index('--stage')+1] if '--stage' in ARGS else 'preview'
+VERSION=ARGS[ARGS.index('--version')+1] if '--version' in ARGS else 'v01'
+assert VERSION in ('v01','v02')
+INPUT_MASTER=MASTER
+if VERSION=='v02':
+ assert STAGE=='combat','v02 revises the full C1 rig'
+ MASTER=OUT/'mon_boss_crab_work_v02.blend'
 assert STAGE in ('preview','combat')
-BASENAME='mon_boss_crab_preview_v01' if STAGE=='preview' else 'mon_boss_crab_v01'
+BASENAME='mon_boss_crab_preview_'+VERSION if STAGE=='preview' else 'mon_boss_crab_'+VERSION
 def log(x): print('CRAB_PRODUCTION '+json.dumps(x),flush=True)
 assert hashlib.sha256(SOURCE.read_bytes()).hexdigest()==SOURCE_SHA
 
@@ -157,8 +163,8 @@ if STAGE=='preview':
   bpy.context.view_layer.update();ob.matrix_world=Matrix.Translation(Vector(pos))
  log({'stage':'rigged','bones':len(data.bones)})
 else:
- assert MASTER.exists(),'produce C0 first'
- bpy.ops.wm.open_mainfile(filepath=str(MASTER),load_ui=False)
+ assert INPUT_MASTER.exists(),'produce C0 first'
+ bpy.ops.wm.open_mainfile(filepath=str(INPUT_MASTER),load_ui=False)
  scene=bpy.context.scene
  arm=next(o for o in scene.objects if o.type=='ARMATURE');body=next(o for o in scene.objects if o.type=='MESH')
  rest=json.loads(arm['crab_rest_spec'])
@@ -166,6 +172,29 @@ else:
 scene.render.fps=30;scene.render.fps_base=1;scene.frame_start=0;scene.frame_end=60
 rest={n:(Vector(v[0]),Vector(v[1]),v[2]) for n,v in rest.items()}
 rest_q={n:arm.data.bones[n].matrix_local.to_quaternion() for n in rest}
+if VERSION=='v02':
+ # Stronger approved poses expose v01's mixed chin/claw tip weights and its
+ # hard shoulder/shell boundary. Clean those weights without changing topology.
+ ns=[g.name for g in body.vertex_groups];ix={n:i for i,n in enumerate(ns)}
+ W=np.zeros((len(body.data.vertices),len(ns)),np.float64)
+ for v in body.data.vertices:
+  for g in v.groups:W[v.index,g.group]=g.weight
+  x,y,z=v.co
+  if y<-.95 and abs(x)>.12 and z<.85:
+   blend=min(1,max(0,(.85-z)/.30))*min(1,max(0,(-y-.95)/.20))
+   target=np.zeros(len(ns));target[ix['pincer_'+('l' if x>0 else 'r')]]=1
+   W[v.index]=W[v.index]*(1-blend)+target*blend
+ co=np.array([tuple(v.co) for v in body.data.vertices]);band=(co[:,2]>1.20)&(co[:,2]<1.95)
+ edges=np.array([tuple(e.vertices) for e in body.data.edges],np.int32);u=np.r_[edges[:,0],edges[:,1]];v=np.r_[edges[:,1],edges[:,0]]
+ ew=1/(np.linalg.norm(co[u]-co[v],axis=1)+.02);degree=np.bincount(u,weights=ew,minlength=len(co))
+ for _ in range(10):
+  avg=np.zeros_like(W);np.add.at(avg,u,W[v]*ew[:,None]);avg/=np.maximum(degree[:,None],1e-12)
+  W[band]=.65*W[band]+.35*avg[band]
+ for group in body.vertex_groups:group.remove(list(range(len(co))))
+ for i,row in enumerate(W):
+  top=np.argsort(row)[-4:];total=row[top].sum()
+  for k in top:
+   if row[k]>1e-8:body.vertex_groups[k].add([i],float(row[k]/total),'REPLACE')
 def delta(name,rx=0,ry=0,rz=0):
  q=Quaternion((0,0,1),math.radians(rz))@Quaternion((0,1,0),math.radians(ry))@Quaternion((1,0,0),math.radians(rx))
  arm.pose.bones[name].rotation_quaternion=rest_q[name].inverted()@q@rest_q[name]
@@ -185,7 +214,7 @@ def leg_pose(key,target):
   arm.pose.bones[name].matrix=Matrix.Translation(h)@q.to_matrix().to_4x4();bpy.context.view_layer.update()
  arm.pose.bones[foot].matrix=Matrix.Translation(ankle)@rest_q[foot].to_matrix().to_4x4();bpy.context.view_layer.update()
 
-BASE={'z':0,'lean':0,'twist':0,'shell':0,'arm':0,'claw':0,'pinch':0,'sweep':0,'roll':0}
+BASE={'z':0,'lean':0,'twist':0,'shell':0,'arm':0,'claw':0,'pinch':0,'sweep':0,'roll':0,'rightLift':0,'open':0}
 def interp(t,keys):
  if t<=keys[0][0]:return {**BASE,**keys[0][1]}
  for (ta,a),(tb,b) in zip(keys,keys[1:]):
@@ -200,9 +229,16 @@ POSES={
  'roar':[(0,{}),(12,{'z':.08,'shell':-4,'arm':-12,'pinch':12}),(20,{'z':.08,'shell':-4,'arm':-12,'pinch':12}),(33,{})],
  'down':[(0,{}),(12,{'z':-.22,'roll':3,'arm':-15,'claw':-15,'pinch':14})],
 }
+if VERSION=='v02':
+ POSES.update({
+  'sweep':[(0,{}),(10,{'twist':-14,'sweep':-78,'rightLift':-28,'pinch':3}),(24,{'twist':-14,'sweep':-78,'rightLift':-28,'pinch':3}),(30,{'lean':3,'twist':12,'sweep':38,'pinch':-3}),(31,{'lean':3,'twist':12,'sweep':38,'pinch':-3}),(51,{})],
+  'slam':[(0,{}),(12,{'z':.32,'arm':-64,'claw':-14,'pinch':6,'open':8}),(24,{'z':.35,'arm':-64,'claw':-14,'pinch':6,'open':8}),(30,{'z':-.10,'lean':3,'claw':12,'pinch':-3}),(31,{'z':-.10,'lean':3,'claw':12,'pinch':-3}),(60,{})],
+  'charge_windup':[(0,{}),(12,{'z':-.08,'arm':-20,'claw':-5,'pinch':-10,'open':-8}),(30,{'z':-.08,'arm':-20,'claw':-5,'pinch':-10,'open':-8})],
+  'roar':[(0,{}),(8,{'z':.15,'shell':-5,'arm':-75,'claw':-20,'pinch':10,'open':18}),(24,{'z':.15,'shell':-5,'arm':-75,'claw':-20,'pinch':10,'open':18}),(33,{})],
+ })
 arm.animation_data_create()
 existing={a.name:a for a in bpy.data.actions}
-todo=CLIPS[:2] if STAGE=='preview' else CLIPS[2:]
+todo=CLIPS if VERSION=='v02' else CLIPS[:2] if STAGE=='preview' else CLIPS[2:]
 for clip in todo:
  name=clip['name'];ticks=clip['ticks']
  if name in existing:bpy.data.actions.remove(existing[name])
@@ -216,20 +252,27 @@ for clip in todo:
   elif name=='charge':p={**BASE,'z':-.08+.008*(1-math.cos(2*phase)),'pinch':-4,'arm':-12,'claw':-8}
   elif name=='stunned':p={**BASE,'z':-.14,'roll':.6*math.sin(phase),'pinch':10}
   else:p=interp(k,POSES[name])
+  if VERSION=='v02':
+   if name=='idle':p={**BASE,'z':.006*math.sin(phase),'pinch':math.sin(phase)}
+   elif name=='walk':p={**BASE,'z':-.02+.014*(1-math.cos(2*phase)),'arm':-12,'claw':-8,'roll':1.5*math.sin(phase)}
+   elif name=='charge':p={**BASE,'z':-.08+.008*(1-math.cos(2*phase)),'arm':-20,'claw':-5,'pinch':-10,'open':-8}
   move('body',(0,0,p['z']));delta('body',rx=p['lean'],ry=p['roll'],rz=p['twist'])
   delta('shell',rx=p['shell']);delta('head',rx=-p['lean']*.35,rz=-p['twist']*.25)
   for side,sign in [('l',1),('r',-1)]:
    # Positive arm opening is symmetric; right arm carries the authored sweep.
-   delta('arm_'+side,rx=p['arm'],rz=(-p['arm']*.25*sign)+(p['sweep'] if side=='r' else 0))
+   rx=p['arm']+(p['rightLift'] if side=='r' else 0)
+   if VERSION=='v02' and name=='walk':rx+=5*math.sin(phase+(0 if side=='l' else math.pi))
+   delta('arm_'+side,rx=rx,rz=(-p['arm']*.25*sign)+p['open']*sign+(p['sweep'] if side=='r' else 0))
    delta('claw_'+side,rx=p['claw'],rz=-p['sweep']*.15 if side=='r' else 0)
    delta('pincer_'+side,rz=sign*p['pinch'])
   for label,offset in [('fl',0),('br',0),('fr',math.pi),('bl',math.pi)]:
    key='leg_'+label;target=rest[key+'_lower'][1].copy()
    if name in ('walk','charge'):
-    ph=(phase+offset)%(2*math.pi);stride=.08 if name=='walk' else .015
+    ph=(phase+offset)%(2*math.pi);stride=(.11 if VERSION=='v02' else .08) if name=='walk' else .015
     if ph<math.pi:target.y+=-stride+2*stride*(ph/math.pi)
     else:
-     f=(ph-math.pi)/math.pi;target.y+=stride-2*stride*f;target.z+=(.065 if name=='walk' else .015)*math.sin(math.pi*f)
+     f=(ph-math.pi)/math.pi;target.y+=stride-2*stride*f;target.z+=((.10 if VERSION=='v02' else .065) if name=='walk' else .015)*math.sin(math.pi*f)
+    if VERSION=='v02' and name=='walk':target.z+=.008
    elif name=='down':target.z+=.08*k/ticks
    leg_pose(key,target)
   # Fit the authored FK to this fused source: lift a claw/head only when its
@@ -250,7 +293,9 @@ for clip in todo:
     side='l' if left>=right else 'r'
     if extra[side]>=28:break
     extra[side]+=1;sign=1 if side=='l' else -1
-    delta('arm_'+side,rx=p['arm']-extra[side],rz=(-p['arm']*.25*sign)+(p['sweep'] if side=='r' else 0))
+    rx=p['arm']+(p['rightLift'] if side=='r' else 0)-extra[side]
+    if VERSION=='v02' and name=='walk':rx+=5*math.sin(phase+(0 if side=='l' else math.pi))
+    delta('arm_'+side,rx=rx,rz=(-p['arm']*.25*sign)+p['open']*sign+(p['sweep'] if side=='r' else 0))
    else:break
   for bn in rest:
    pb=arm.pose.bones[bn];pb.keyframe_insert(data_path='location',frame=k,group=bn);pb.keyframe_insert(data_path='rotation_quaternion',frame=k,group=bn)

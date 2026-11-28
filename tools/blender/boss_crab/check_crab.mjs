@@ -6,7 +6,9 @@ import zlib from 'node:zlib';
 import {fileURLToPath} from 'node:url';
 import {parseGlb} from '../../../src/seyrin/inspect.ts';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..'),dir=path.join(root,'assets/_inbox');
-const stage=process.argv.includes('--combat')?'combat':'preview',base=stage==='preview'?'mon_boss_crab_preview_v01':'mon_boss_crab_v01';
+const version=process.argv.includes('--version')?process.argv[process.argv.indexOf('--version')+1]:'v01';
+if(!['v01','v02'].includes(version))throw Error('unsupported version');
+const stage=process.argv.includes('--combat')?'combat':'preview',base=stage==='preview'?'mon_boss_crab_preview_'+version:'mon_boss_crab_'+version;
 const bytes=fs.readFileSync(path.join(dir,base+'.glb')),sha=crypto.createHash('sha256').update(bytes).digest('hex');
 const {json:j,bin}=parseGlb(bytes),prod=JSON.parse(fs.readFileSync(path.join(dir,base+'.production.json'),'utf8'));
 const items=[];const check=(id,ok,detail)=>items.push({id,ok,detail});
@@ -84,6 +86,7 @@ check('raw-unchanged',sourceHash==='05b6130b99ec0fc9a5e807696551671c3635af53b176
 const measurements={bytes:bytes.length,tris,vertices:j.accessors[p.attributes.POSITION].count,primitives:prims.length,materials:j.materials.length,joints:joints.length,bindBoundsM:bounds,horizontalRadiusM:radius,textureSizes:textureStats,clips:clipStats};
 const manifest={schema:'synes.boss-manifest/1',assetId:'boss_crab',version:'v01',profileId:'prismback_crab_v01',simKind:'prismback',rulesets:['ninja-roam-1'],stage,units:'meter',axes:{up:'+Y',forward:'+Z'},rootMotion:0,status:'REVIEW',output:{file:base+'.glb',bytes:bytes.length,sha256:sha},clips:want,bones:names.map(name=>{const i=byName.get(name);return{name,parent:names.includes(nodes[parent[i]]?.name)?nodes[parent[i]].name:null};}),sockets,measurements,source:{file:'mon_boss_crab_raw_v01.glb',sha256:sourceHash,originStatus:prod.originStatus},tools:{blender:prod.blender,production:'Codex, local headless Blender; no external service'},motionProfile:{fps:30,referenceSpeeds:{walk:2,charge:15},clock:'telegraph-and-state',rootMotion:0}};
 manifest.tools.date='2026-11-28';
+manifest.version=version;
 const report={accepted:items.every(i=>i.ok),outputSha256:sha,stage,measurements,items};
 fs.writeFileSync(path.join(dir,base+'.manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 fs.writeFileSync(path.join(dir,base+'.inspect.json'),JSON.stringify(report,null,2)+'\n');

@@ -36,3 +36,15 @@ manifests, stay in ignored `assets/_inbox/`. Preview has 2 clips; combat has 10.
 Manifest schema is `synes.boss-manifest/1`, not the hero contract. Status remains
 `REVIEW`. Game integration, VFX/telegraph timing, mobile/performance/lifecycle QA
 and owner approval are separate work; these scripts do not claim them complete.
+
+## v02 pose revision
+
+`build_crab.py --stage combat --version v02` reads the v01 private production
+master and writes `mon_boss_crab_work_v02.blend` plus the v02 GLB/production record.
+It preserves v01/raw. Run packing and both validators with `--combat --version v02`.
+Use `verify_crab.py -- --combat --version v02 --metrics-only` for metrics without
+studio renders. `verify_master.py` reopens and checks the private v02 master.
+`compare_game_angle.py` renders v01/v02 at fixed perspective, 844x390, with v01
+idle 110 pixels wide; compare images are left v01/right v02. It writes hashes
+and projected measurements into the private comparison JSON. These Blender
+renders do not reproduce in-game lighting, fade, telegraphs or mobile performance.

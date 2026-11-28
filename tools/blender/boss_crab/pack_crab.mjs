@@ -7,7 +7,9 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const inbox = path.join(root, 'assets/_inbox');
 const stage = process.argv.includes('--combat') ? 'combat' : 'preview';
-const basename = stage === 'preview' ? 'mon_boss_crab_preview_v01' : 'mon_boss_crab_v01';
+const version=process.argv.includes('--version')?process.argv[process.argv.indexOf('--version')+1]:'v01';
+if(!['v01','v02'].includes(version))throw Error('unsupported version');
+const basename = stage === 'preview' ? 'mon_boss_crab_preview_'+version : 'mon_boss_crab_'+version;
 const file = path.join(inbox, basename + '.glb');
 const bytes = fs.readFileSync(file), jl = bytes.readUInt32LE(12), bin = bytes.subarray(28+jl);
 const existingRecord=JSON.parse(fs.readFileSync(path.join(inbox,basename+'.production.json'),'utf8'));
@@ -49,6 +51,7 @@ function encode(im,bits){const row=im.w*3,data=Buffer.alloc(row*im.h),levels=2**
  const ih=Buffer.alloc(13);ih.writeUInt32BE(im.w);ih.writeUInt32BE(im.h,4);ih[8]=8;ih[9]=2;return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ih),chunk('IDAT',zlib.deflateSync(raw,{level:9})),chunk('IEND',Buffer.alloc(0))]);}
 const mat=j.materials[0], baseIndex=j.textures[mat.pbrMetallicRoughness.baseColorTexture.index].source;
 const baseView=j.images[baseIndex].bufferView,bv=j.bufferViews[baseView],image=decode(bin.subarray(bv.byteOffset,bv.byteOffset+bv.byteLength));
+if(version==='v02')for(let i=0;i<image.data.length;i+=image.channels){const top=Math.max(image.data[i],image.data[i+1],image.data[i+2])/255;for(let c=0;c<3;c++)image.data[i+c]=Math.min(255,Math.round(image.data[i+c]*1.08+7*(1-top)));}
 replacement.set(baseView,encode(image,6));
 // Keep only two PNG maps, opaque and the same ORM for R=AO/G=roughness/B=metal.
 for(const m of j.materials){m.occlusionTexture={index:m.pbrMetallicRoughness.metallicRoughnessTexture.index};delete m.extensions;delete m.normalTexture;delete m.emissiveTexture;delete m.emissiveFactor;m.doubleSided=false;m.alphaMode='OPAQUE';}
@@ -57,7 +60,7 @@ function pack(){const parts=[];let offset=0;for(let i=0;i<j.bufferViews.length;i
 let packed=pack(),bits=6;if(packed.length>2*1024*1024){bits=5;replacement.set(baseView,encode(image,bits));packed=pack();}
 if(packed.length>2*1024*1024)throw Error('budget still exceeded '+packed.length);
 fs.writeFileSync(file,packed);
-fs.writeFileSync(path.join(inbox,'tex_boss_crab_basecolor_v01.png'),replacement.get(baseView));
+fs.writeFileSync(path.join(inbox,'tex_boss_crab_basecolor_'+version+'.png'),replacement.get(baseView));
 const recordFile=path.join(inbox,basename+'.production.json');
 const record=JSON.parse(fs.readFileSync(recordFile,'utf8'));
 record.unpackedBytes??=record.bytes;

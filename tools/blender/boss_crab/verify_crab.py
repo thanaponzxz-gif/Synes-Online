@@ -9,7 +9,9 @@ from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[3];OUT=ROOT/'assets'/'_inbox'
 STAGE='combat' if '--combat' in sys.argv else 'preview'
-BASE='mon_boss_crab_preview_v01' if STAGE=='preview' else 'mon_boss_crab_v01'
+VERSION=sys.argv[sys.argv.index('--version')+1] if '--version' in sys.argv else 'v01'
+assert VERSION in ('v01','v02')
+BASE='mon_boss_crab_preview_'+VERSION if STAGE=='preview' else 'mon_boss_crab_'+VERSION
 FILE=OUT/(BASE+'.glb')
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene=bpy.context.scene;scene.render.fps=30;scene.render.fps_base=1
@@ -41,7 +43,7 @@ for c in manifest['clips']:
   pose(n,k);p=skin();assert np.all(np.isfinite(p)),(n,k,'invalid skin')
   if float(p[:,2].min())<stats['minZ']:
    vi=int(np.argmin(p[:,2]));stats['lowestVertex']={'tick':k,'position':p[vi].tolist(),'weights':{body.vertex_groups[g.group].name:g.weight for g in body.data.vertices[vi].groups}}
-  stats['minZ']=min(stats['minZ'],float(p[:,2].min()));stats['maxHorizontalRadiusM']=max(stats['maxHorizontalRadiusM'],float(np.max(np.linalg.norm(p[:,:2],axis=1))))
+  stats['minZ']=min(stats['minZ'],float(p[:,2].min()));stats['maxZ']=max(stats.get('maxZ',0),float(p[:,2].max()));stats['maxHorizontalRadiusM']=max(stats['maxHorizontalRadiusM'],float(np.max(np.linalg.norm(p[:,:2],axis=1))))
   for b in arm.pose.bones:
    err=abs((b.tail-b.head).length/b.bone.length-1)
    stats['maxBoneLengthRelativeError']=max(stats['maxBoneLengthRelativeError'],err)
@@ -70,7 +72,7 @@ def light(name,pos,energy,size):
  ob=bpy.data.objects.new(name,data);scene.collection.objects.link(ob);ob.location=pos;ob.rotation_euler=(Vector((0,0,1.3))-ob.location).to_track_quat('-Z','Y').to_euler()
 light('review_key',(-4,-5,7),700,5);light('review_fill',(4,-2,4),350,4);light('review_rim',(0,4,6),700,4)
 cd=bpy.data.cameras.new('review_camera');cam=bpy.data.objects.new('review_camera',cd);scene.collection.objects.link(cam);scene.camera=cam;cd.type='ORTHO';cd.ortho_scale=4.4
-prefix='concept_boss_crab_c0_v01_' if STAGE=='preview' else 'concept_boss_crab_c1_v01_'
+prefix='concept_boss_crab_c0_'+VERSION+'_' if STAGE=='preview' else 'concept_boss_crab_c1_'+VERSION+'_'
 def render(label,clip,k,d):
  pose(clip,k);focus=Vector((0,0,1.35));cam.location=focus+Vector(d).normalized()*7
  cam.rotation_euler=(focus-cam.location).to_track_quat('-Z','Y').to_euler()
