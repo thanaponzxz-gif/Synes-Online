@@ -537,6 +537,38 @@ PC เท่านั้น: Windows 10, i7-11700K, Edge headless + SwiftShader 
 - การตีความ (ก)–(ง) ข้างบน
 - มือถือจริง, การอ่านของคน ≥9/10, FPS จริง: ยังไม่ได้ทดสอบ
 
+### 12.4 D3-A · 2026-11-28 · Claude Code (Opus 5.5) บนเครื่อง Windows ของเจ้าของ · branch `lane/free-roam` `b530aa3`
+
+#### ข้อเท็จจริง: สิ่งที่แก้ตาม §15.3 (เฉพาะ D3-A)
+- ใหม่ `src/ui/numberClock.ts`: `numberClockInput(loop, dt)` คือการเลือกเวลาที่ลูปเกมส่งให้นาฬิกาเลข · alpha เท่าเดิม (`playing` และไม่ freeze → `min(1, acc/TICK)` นอกนั้น null) · **dt = 0 เมื่อ `document.hidden` หรือ paused หรือ QA-freeze ทุกสถานะเกม** รวม `done` หลังชนะ (ที่ `pause('hidden')` ไม่เปลี่ยนสถานะ)
+- `src/main.ts` เปลี่ยน 3 บรรทัด: import + `hud.update(..., numberClockInput({ state, qaFrozen, hidden: document.hidden, acc, tick: TICK }, dt))` แทน object เดิม · กลับมา visible ใช้ `last = performance.now()` ที่ visibilitychange ทำอยู่แล้ว (ไม่บวกช่วงซ่อนย้อนหลัง)
+- ไม่เปลี่ยน: Cdone ต่อครั้งเดียว / ไม่บวก dt เฟรมเปลี่ยนสถานะ (`floaters.ts` ไม่ถูกแก้) · clear จอผล · restart ไม่รับ batch เก่า · sim ไม่หยุด · นาฬิกา VFX (`renderFrame`) เหมือนเดิม · placement ไม่เปลี่ยน · ไม่แตะ `src/render/` `shared/` `server/`
+
+#### ผลทดสอบ (PC Edge + SwiftShader เท่านั้น)
+- `npm test` **260/260** (เพิ่ม `tests/floatCaller.test.ts` 4 ข้อ) · typecheck ผ่าน · build ผ่าน · lifecycle **20/20** (พอร์ต 8093)
+- `tests/floatCaller.test.ts` ป้อน **host จริง (`Floaters`) ผ่าน `numberClockInput` ฟังก์ชันเดียวกับที่ main เรียก** เฟรมต่อเฟรม (ไม่ได้ส่ง dt 0 ให้ host เอง):
+  1. ชนะ (state `done`) → เฟรมแรกอายุ 0 → 100 ms → ซ่อน + rAF 8 เฟรม (0.25 s ต่อเฟรม) → อายุยัง 100 ms และไม่หมดอายุ → กลับ visible เฟรมแรก +16.7 ms (หนึ่งเฟรม ไม่ชดเชย 2 s ที่ซ่อน) → จางและหมดอายุต่อ
+  2. paused / QA-freeze หลังชนะ: อายุคงที่
+  3. จอผลเปิดระหว่างซ่อน (มี batch รออยู่): clear ทั้งหมดเป็น `result-screen` ไม่นับ safety · restart แล้วไม่มี label/batch เก่า เลขใหม่ของ run ใหม่ขึ้นปกติ
+  4. `src/main.ts` ส่งผลของ `numberClockInput` พร้อม `document.hidden` และไม่มีสูตรเดิมแล้ว
+  - **ก่อนแก้ (ฟังก์ชันเดียวกันที่ไม่ดู hidden):** ข้อ 1 ล้ม (label หมดอายุ `retiredLife` 1 ระหว่างซ่อน), ข้อ 2 ล้ม (hidden ได้ dt 0.1), ข้อ 4 ล้ม (main ยังไม่ต่อ) · ข้อ 3 ผ่านทั้งก่อนและหลัง
+- **ในเบราว์เซอร์จริง** `tools/qa/dmg-hidden.mjs` → `docs/qa/dmg-v04/hidden-after-win.json`: ลานบอส บอตชนะ (state `done`) แล้วฉีดเลข 28 บนผู้เล่น · override `document.hidden` + ส่ง visibilitychange แบบเดียวกับการสลับแท็บ (headless Edge ยังเรียก rAF ระหว่างนั้น):
+
+| ขั้น | clock (ms) | อายุเลข |
+|---|---|---|
+| visible หลังชนะ +100 ms | 41464.7 | 89 |
+| ซ่อน 500 ms (rAF 7 เฟรม) | 41464.7 | **89** |
+| กลับ visible เฟรมแรก ๆ | 41474.4 | 99 (หนึ่งเฟรม) |
+| visible +150 ms | 41663.3 | 288 |
+| จอผลเปิดระหว่างซ่อน | 41663.3 | ไม่มี label · `clearWhy: result-screen 1` |
+| หลัง restart | 655.7 (run ใหม่) | ไม่มี label เก่า |
+
+  - error หน้า 0 · build ก่อนแก้ไม่ได้รันเทียบในเบราว์เซอร์ (หลักฐาน "ก่อนแก้" คือเทสต์ที่ล้มข้างบน)
+- ไม่ได้วัด perf/benchmark ใหม่ (ตามคำสั่ง: placement ไม่เปลี่ยน ใช้ชุด geometry/cohort/perf ของ §12.3 ต่อ) · **Android / iPhone ยังไม่ได้ทดสอบ**
+
+#### สิ่งที่ยังไม่ทราบ
+- เบราว์เซอร์มือถือจริงมักหยุด rAF เมื่อซ่อน (กรณีที่แก้คือเบราว์เซอร์ที่ยังเรียก rAF) ยังไม่ได้ทดสอบบนเครื่องจริง
+
 ## 13. คำตอบรอบ 1 ของทีม A — DES-008 ฉบับ 2
 
 **วันที่:** 27 พฤศจิกายน 2026 · **ตรวจฐาน:** implementation `4585ca4` และรายงาน `0f9566c` · **ผล:** ให้แก้ layout/การรายงาน QA ตามฉบับ2แล้วส่งรอบ2 ยังไม่ปิดตรวจรับทั้งงาน ไม่แก้โค้ดหรือ commit/pushในรอบตรวจนี้
