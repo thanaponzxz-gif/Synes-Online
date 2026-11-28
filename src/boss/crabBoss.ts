@@ -13,7 +13,9 @@ import { CrabFxCore, type V3 } from './crabFxCore.ts';
 import { loadBoss, BossRejected, type BossAsset, type BossInstance, type BossPose } from './loader.ts';
 import { snapBoss } from './snap.ts';
 
-const FILES = '/__seyrin/';
+declare const __SEYRIN_PUBLIC__: boolean;
+/** the dev server's private inbox, or the pair shipped next to the public Seyrin test page (SYNES_SEYRIN_PUBLIC=1) */
+const FILES = __SEYRIN_PUBLIC__ ? './seyrin-boss/' : '/__seyrin/';
 /** the boss's actor root is drawn at 1.05 (view.ts); the crab is authored at world scale (DES-010 §3.1: top 2.84 m) */
 const ROOT_SCALE = 1.05;
 /** DES-010 §4.2: the three ✦ circle 0.18 m above the crystal's top, radius 0.55 m */
