@@ -25,8 +25,10 @@ export interface BossInstance {
   readonly sockets: Readonly<Record<string, THREE.Object3D>>;
   /** pose the skeleton: every clip is seeked to its time (never advanced by a clock of its own) */
   apply(poses: readonly BossPose[]): void;
-  /** 1 = solid; below 1 the whole instance is drawn see-through (the view's fade when it hides the player) */
-  setOpacity(f: number): void;
+  /** 1 = solid; below 1 the whole instance is drawn see-through (the view's fade when it hides the player, the death fade).
+   *  `nearest` (DES-010 §10.4 G12): while see-through, one extra depth-only draw of the same pose comes first, so only the
+   *  surface nearest the camera is coloured and the layers of the one mesh do not add up. Returns the extra draws in use (0 / 1). */
+  setOpacity(f: number, nearest?: boolean): number;
   dispose(): void;
 }
 export interface BossAsset {
@@ -73,6 +75,19 @@ export async function loadBoss(glb: ArrayBuffer, manifestText: string, stage: Bo
     const actions = new Map(clips.map((c) => { const a = mixer.clipAction(c); a.setEffectiveTimeScale(0); a.setEffectiveWeight(0); a.play(); return [c.name, a] as const; }));
     const sockets: Record<string, THREE.Object3D> = {};
     for (const s of Object.keys(BOSS_SOCKETS)) { const n = root.getObjectByName(s); if (n) sockets[s] = n; }
+    // G12: depth-only twins of the skinned meshes (same geometry, same skeleton, same pose), made on first use, shown only while fading
+    const skinned: THREE.SkinnedMesh[] = [];
+    root.traverse((o) => { const m = o as THREE.SkinnedMesh; if (m.isSkinnedMesh) { skinned.push(m); m.renderOrder = 1; } });
+    let depthMat: THREE.MeshBasicMaterial | null = null, pre: THREE.SkinnedMesh[] = [];
+    const preOn = (on: boolean) => {
+      if (on && !depthMat) {
+        // pushed a hair back so the colour pass of the very same surface always passes the depth test
+        depthMat = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: true, transparent: true, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 2 });
+        pre = skinned.map((m) => { const d = new THREE.SkinnedMesh(m.geometry, depthMat!); d.name = 'boss-depth'; d.bind(m.skeleton, m.bindMatrix); d.frustumCulled = false; d.castShadow = false; d.renderOrder = 0; d.visible = false; m.parent!.add(d); return d; });
+      }
+      for (const d of pre) d.visible = on;
+      return on ? pre.length : 0;
+    };
     let gone = false;
     live++;
     return {
@@ -89,12 +104,13 @@ export async function loadBoss(glb: ArrayBuffer, manifestText: string, stage: Bo
         }
         mixer.update(0);
       },
-      setOpacity(f) {
+      setOpacity(f, nearest = false) {
         const see = f < 0.99;
         for (const m of own) {
           if (m.transparent !== see) { m.transparent = see; m.depthWrite = !see; m.needsUpdate = true; }
           m.opacity = see ? f : 1;
         }
+        return preOn(see && nearest && f > 0);
       },
       dispose() {
         if (gone) return;
@@ -102,6 +118,7 @@ export async function loadBoss(glb: ArrayBuffer, manifestText: string, stage: Bo
         mixer.stopAllAction(); for (const c of clips) mixer.uncacheClip(c); mixer.uncacheRoot(root);
         root.removeFromParent();
         for (const m of own) m.dispose(); // the copies only; their textures belong to the asset
+        for (const d of pre) d.removeFromParent(); pre = []; depthMat?.dispose(); depthMat = null;
         for (const s of resources(root).skeletons) s.dispose();
         live--;
         maybeFree();

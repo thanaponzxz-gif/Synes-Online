@@ -68,7 +68,7 @@ await page.evaluate(() => {
       const zoom = document.createElement('canvas'); zoom.width = 780; zoom.height = 600;
       const g2 = zoom.getContext('2d');
       g2.drawImage(cv, (at.x - 195) * pr, (at.y - 170) * pr, 390 * pr, 300 * pr, 0, 0, 780, 600);
-      Q.got[m.name] = { png: cv.toDataURL('image/png'), zoom: zoom.toDataURL('image/png'), calls, tick: c.tick, state: c.state, top, poses: c.poses, opacity: c.opacity, fx: c.fx, lineTris: c.lineTris, instances: c.instances, tracks: c.tracks, visible: c.visible, stars: S.view.actors.get(b.id)?.stars.visible ?? null, total: S.view.renderer.info.render.calls };
+      Q.got[m.name] = { png: cv.toDataURL('image/png'), zoom: zoom.toDataURL('image/png'), calls, tick: c.tick, state: c.state, top, poses: c.poses, opacity: c.opacity, occl: c.occl, extraDraws: c.extraDraws, sweepWidth: c.sweepWidth, fx: c.fx, lineTris: c.lineTris, instances: c.instances, tracks: c.tracks, visible: c.visible, stars: S.view.actors.get(b.id)?.stars.visible ?? null, total: S.view.renderer.info.render.calls };
     }
   };
   requestAnimationFrame(loop);
@@ -124,6 +124,7 @@ for (const m of moves) {
     if (tier === 'low') check(`${atk}: Low draws no arc / ring, only pieces`, g.lineTris === 0 && g.instances > 0, `${g.lineTris} line tris, ${g.instances} pieces`);
     else check(`${atk}: Medium draws the lumen ${atk === 'sweep' ? 'arc' : 'ring'} and pieces`, g.lineTris > 0 && g.instances > 0, `${g.lineTris} line tris, ${g.instances} pieces`);
     check(`${atk}: effect batches cost <= +${ceiling} draw calls`, delta(g) <= ceiling, `+${delta(g)} (${g.calls.without} -> ${g.calls.withFx})`);
+    if (atk === 'sweep' && tier !== 'low') check('sweep (G13): the line is drawn 0.16 m wide, or wider for the picture up to 0.24 m', g.sweepWidth >= 0.16 - 1e-9 && g.sweepWidth <= 0.24 + 1e-9, `${g.sweepWidth.toFixed(3)} m`);
   }
   if (g && m.name === '08-charge') check(`charge: dust follows the real movement, <= +${ceiling} draw calls`, delta(g) <= ceiling && g.instances <= (tier === 'low' ? 6 : 12), `${g.instances} puffs, +${delta(g)}`);
 }
@@ -172,15 +173,23 @@ await hold('[b.x, b.z - 2.2]');
 await stage([{ name: '14-fade', when: 'c.opacity < 0.3' }]);
 g = await got('14-fade', 30000);
 check('hiding the player: the whole crab fades to 28%', !!g && Math.abs(g.opacity - 0.28) < 0.02, g ? `opacity ${g.opacity.toFixed(2)}` : 'never faded');
+check('fade (G12): one depth-only draw of the same pose makes only the nearest surface show (+1 draw while see-through)', !!g && g.extraDraws === 1, g ? `+${g.extraDraws} draw · scene total ${g.total} draw calls in that frame` : '');
+check(`fade: the scene stays within the profile budget while fading (<= ${tier === 'low' ? 56 : 60} draw calls)`, !!g && g.total <= (tier === 'low' ? 56 : 60), g ? `${g.total}` : '');
 await hold('(window.__cq.spot2 ??= [b.x + 4, b.z + 3])');
 const back = await page.evaluate(async () => { const t0 = performance.now(); while (performance.now() - t0 < 1500) { if (window.__crabBoss.snapshot().opacity > 0.99) return true; await new Promise((r) => requestAnimationFrame(r)); } return window.__crabBoss.snapshot().opacity; });
 check('and comes back solid when it no longer hides the player', back === true, String(back));
+check('solid again: the depth-only draw is gone', (await page.evaluate(() => window.__crabBoss.snapshot().extraDraws)) === 0);
 
 // ---- 6. death (HP set to 0 the way the sim's own death does): down clip from the real death, then gone with the view's 0.45 s
 await page.evaluate(() => { const w = window.__synes.world, b = w.boss; b.hp = 0; b.alive = false; b.deadT = 0; b.state = 'dead'; w.tele = w.tele.filter((t) => t.owner !== b.id); });
-await stage([{ name: '15-down', when: "c.state && c.state.state === 'dead' && top && top.clip === 'down' && top.time > 0.2 && c.visible" }]);
+await stage([{ name: '15-down', when: "c.state && c.state.state === 'dead' && top && top.clip === 'down' && top.time > 0.2 && c.visible" },
+  { name: '16-death-fade', when: "c.state && c.state.state === 'dead' && c.visible && c.opacity < 0.85 && c.opacity > 0.02" }]);
 g = await got('15-down', 30000);
 check('down: the down clip starts on the real death', !!g, fmt(g));
+check('down (G8): solid while it falls', !!g && g.opacity / g.occl > 0.99, g ? `opacity ${g.opacity.toFixed(2)}` : '');
+g = await got('16-death-fade', 15000);
+if (g) check('death (G8): fades out over the last 0.10 s, with the depth-only draw when the player is an opaque model', g.opacity < 0.85 && g.extraDraws <= 1, `opacity ${g.opacity.toFixed(2)}, +${g.extraDraws} draw`);
+else note('death fade: no frame fell inside the last 0.10 s on this machine (software rendering frames are longer than that)');
 await page.waitForTimeout(1500);
 const end = await page.evaluate(() => ({ q: { seen: window.__cq.seen, maxInst: window.__cq.maxInst, maxLines: window.__cq.maxLines, weightBad: window.__cq.weightBad, frames: window.__cq.frames }, s: window.__crabBoss.snapshot(), cpu: window.__crabBoss.cpu() }));
 check('down: the crab leaves with the actor (the view hides the boss 0.45 s after death)', end.s.visible === false);

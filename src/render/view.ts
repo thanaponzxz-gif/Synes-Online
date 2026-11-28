@@ -1,7 +1,7 @@
 // Three.js render layer. Reads sim state (never writes it). Interpolates between fixed ticks.
 import {
   WebGLRenderer, Scene, PerspectiveCamera, Color, HemisphereLight, DirectionalLight, Mesh, PlaneGeometry, CanvasTexture,
-  Group, Object3D, Vector3, Fog, InstancedMesh, InstancedBufferAttribute, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
+  Group, Object3D, Vector3, Box3, Fog, InstancedMesh, InstancedBufferAttribute, Matrix4, Quaternion, Euler, SRGBColorSpace, MeshLambertMaterial,
   MeshBasicMaterial, LinearMipmapLinearFilter, type Material, PCFShadowMap, NeutralToneMapping, Shape as TShape, ShapeGeometry, RingGeometry, ShaderMaterial,
 } from 'three';
 import type { World, Actor, Telegraph, SimEvent } from '../../shared/sim/world.ts';
@@ -499,6 +499,12 @@ export class View {
   occluderFade(id: number): number { for (const o of this.occluders) if (o.actor?.id === id) return o.f; return 1; }
   /** DES-010 §4.2: where the ✦ stars of a stunned actor circle (height and radius in the actor root's units); null = the default */
   starsAt = new Map<number, readonly [number, number]>();
+  /** the world-space box of an actor that another module draws (its shown pose); used for its screen rect instead of the hidden model */
+  actorBox = new Map<number, (out: Box3) => boolean>();
+  /** seconds an actor has been shown dead (the view's own 0.45 s clock); 0 while alive */
+  actorDeathT(id: number): number { const v = this.actors.get(id); return v && !v.a.alive ? v.deathT : 0; }
+  /** the proxy that decides when an actor hides the player (picture only): radius and height in metres */
+  setOccluder(id: number, r: number, h: number) { for (const o of this.occluders) if (o.actor?.id === id) { o.r = r; o.h = h; } }
 
   /** Call right before each sim step to keep previous positions for interpolation. */
   beforeTick() { for (const v of this.actors.values()) { v.px = v.a.x; v.pz = v.a.z; } }
@@ -532,12 +538,12 @@ export class View {
           this.particles.burst(e.x, 1, e.z, PAL.lumen, 16, 4, 3, 0.6); break;
         }
         case 'dodge': { const p = world.player; this.particles.burst(p.x, 0.15, p.z, 0xe9dcc4, 6, 1.5, 0.6, 0.4, 1.2, 2); break; }
-        case 'death': { const v = this.actors.get(e.id); if (v) { this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
-        case 'pillar-break': { const pl = this.L.pillars[e.i]; this.pillars[e.i].visible = false; this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
+        case 'death': { const v = this.actors.get(e.id); if (v && !this.starsAt.has(e.id)) { /* the crab profile has its own death picture (DES-010 §10.4 G8) */ this.particles.burst(v.a.x, 0.8, v.a.z, v.a.kind === 'prismback' ? PAL.lumen : PAL.blossom, v.a.kind === 'prismback' ? 60 : 18, 4, 4, 0.9); } break; }
+        case 'pillar-break': { const pl = this.L.pillars[e.i]; this.pillars[e.i].visible = false; if (!this.starsAt.has(world.boss.id)) this.particles.burst(pl.x, 2, pl.z, PAL.violet, 36, 5, 5, 1.0, 1.6); this.shake = 0.6; break; }
         case 'stun': this.shake = Math.max(this.shake, e.long ? 0.5 : 0.25); break;
         case 'gate': { const gv = this.gates.get(e.id); if (gv) { gv.open = e.open; gv.g.visible = true; } break; }
         case 'heal': { const p = world.player; this.particles.burst(p.x, 1, p.z, 0x8dffb0, 12, 1.2, 2, 0.8, 1, -1); break; }
-        case 'boss-phase': case 'boss-roar': { const b = world.boss; this.rings.ring(b.x, b.z, 1, 9, TELE_HEAVY, 0.6, 0.6); this.shake = 0.5; break; }
+        case 'boss-phase': case 'boss-roar': { const b = world.boss; if (!this.starsAt.has(b.id)) this.rings.ring(b.x, b.z, 1, 9, TELE_HEAVY, 0.6, 0.6); this.shake = 0.5; break; }
         case 'respawn': case 'pillars-regrow': for (let i = 0; i < this.pillars.length; i++) this.pillars[i].visible = world.pillars[i].alive; break;
       }
     }
@@ -559,7 +565,7 @@ export class View {
     }
     for (const [id, tv] of this.teles) {
       if (alive.has(id)) continue;
-      if (tv.t.area && !world.ps.down) {
+      if (tv.t.area && !world.ps.down && !this.starsAt.has(tv.t.owner)) { // (crab profile: its own after-warning effects, no warning colour left behind, DES-010 §10.3 F-3)
         const col = HEAVY.has(tv.t.atk.id) ? TELE_HEAVY : TELE_NORMAL;
         if (tv.t.shape === 'circle') this.rings.ring(tv.t.x, tv.t.z, tv.t.r * 0.5, tv.t.r * 1.05, col, 0.25, 0.9);
         this.particles.burst(tv.t.x, 0.3, tv.t.z, col, tv.t.r > 3 ? 18 : 8, tv.t.r * 1.5, 2, 0.4);
@@ -876,6 +882,17 @@ export class View {
     out.l = Infinity; out.t = Infinity; out.r = -Infinity; out.b = -Infinity;
     const o = ENV_PT, P = ENV_V;
     let any = false;
+    const own = this.actorBox.get(id);
+    if (own) {
+      const bb = ENV_BOX;
+      if (!own(bb)) return 1;
+      for (let i = 0; i < 8; i++) {
+        this.project(i & 1 ? bb.max.x : bb.min.x, i & 2 ? bb.max.y : bb.min.y, i & 4 ? bb.max.z : bb.min.z, o);
+        if (!o.vis) return 2;
+        if (o.x < out.l) out.l = o.x; if (o.x > out.r) out.r = o.x; if (o.y < out.t) out.t = o.y; if (o.y > out.b) out.b = o.y;
+      }
+      return out.r < 0 || out.l > window.innerWidth || out.b < 0 || out.t > window.innerHeight ? 2 : 0;
+    }
     for (const m of v.bodyMeshes) {
       if (!m.visible) continue;
       let p: Object3D | null = m.parent, shown = true; // a hidden group (the ✦ stars, a swapped occluder twin) hides its meshes too
@@ -900,6 +917,7 @@ export class View {
 const TMP = new Vector3();
 const ENV_PT = { x: 0, y: 0, vis: false };
 const ENV_V = new Vector3();
+const ENV_BOX = new Box3();
 const TMP_C = new Color();
 const TMP_M = new Matrix4();
 const TMP_C2 = new Vector3();

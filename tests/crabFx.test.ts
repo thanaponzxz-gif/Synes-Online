@@ -6,7 +6,7 @@ import type { NinjaWorld } from '../shared/sim/ninjaWorld.ts';
 import { NO_INPUT } from '../shared/sim/input.ts';
 import { TICK } from '../shared/data/tuning.ts';
 import { BossClock, type BossSnap, type TeleSnap } from '../src/boss/bossClock.ts';
-import { CrabFxCore, CRAB_FX, CRAB_FX_TEMP, type V3, type C4 } from '../src/boss/crabFxCore.ts';
+import { CrabFxCore, CRAB_FX, type V3, type C4 } from '../src/boss/crabFxCore.ts';
 import { snapBoss } from '../src/boss/snap.ts';
 import { bossPictureFor } from '../src/boss/profile.ts';
 
@@ -53,21 +53,49 @@ describe('crab effects: only what really happened', () => {
     expect(o.inst.length).toBe(CRAB_FX.slam.debris);
     for (let a = 0; a < 5; a += 0.5) for (const i of drawAt(fx, clock, impact + a).inst) expect(i.y - i.sy / 2).toBeLessThanOrEqual(CRAB_FX.slam.maxH + 1e-9);
   });
-  it('sweep: a thin arc inside the fan the warning had, y 0.12 m, gone in 4 ticks, at most 4 sparks', () => {
+  it('sweep (G13): a lumen line 0.16 m wide inside the fan the warning had, y 0.12 m, 0.75 -> 0 over 6 ticks; 4 sparks for 4 ticks', () => {
     const cos = Math.cos(1.0);
     const { clock, impact } = oneWarning('sweep', 0.95, { r: 5.2, cos, dx: 1, dz: 0, shape: 'cone' });
     const fx = new CrabFxCore(PAL, false), o = drawAt(fx, clock, impact + 1);
     expect(o.tris.length).toBeGreaterThan(0);
-    expect(o.tris[0].alpha).toBeCloseTo(0.45 * 0.75, 9);
+    expect(o.tris[0].alpha).toBeCloseTo(0.75 * (5 / 6), 9);
     for (const p of o.tris.flatMap((t) => [t.a, t.b, t.c])) {
       expect(p[1]).toBeCloseTo(0.12, 9);
       const d = Math.hypot(p[0] - 3, p[2] + 4);
-      expect(Math.abs(d - 5.2)).toBeLessThanOrEqual(0.03 + 1e-9);
+      expect(Math.abs(d - 5.2)).toBeLessThanOrEqual(0.08 + 1e-9);
       expect((p[0] - 3) / d).toBeGreaterThanOrEqual(cos - 1e-3); // inside the fan, facing +x
     }
     expect(o.inst.length).toBe(4);
-    expect(drawAt(fx, clock, impact + 4).tris.length).toBe(0);
     expect(drawAt(fx, clock, impact + 4).inst.length).toBe(0);
+    expect(drawAt(fx, clock, impact + 5.5).tris.length).toBeGreaterThan(0);
+    expect(drawAt(fx, clock, impact + 6).tris.length).toBe(0);
+    for (const i of o.inst) { expect(i.sy).toBeLessThanOrEqual(0.10 + 1e-9); expect(i.sx).toBeLessThanOrEqual(0.035 + 1e-9); expect(i.y + i.sy / 2).toBeLessThanOrEqual(0.5 + 1e-9); }
+  });
+  it('sweep (G13): a line thinner than 1.5 CSS px on screen is widened for the picture, never past 0.24 m, and never narrower than 0.16 m', () => {
+    const { clock, impact } = oneWarning('sweep', 0.95, { r: 5.2, cos: 0.5, dx: 1, dz: 0, shape: 'cone' });
+    const fx = new CrabFxCore(PAL, false);
+    const widthAt = (pxPerM: number) => {
+      const tris: V3[] = [];
+      fx.draw(impact, clock, { tri: (a: V3, b: V3, c: V3) => { tris.push(a, b, c); } }, () => {}, null, () => pxPerM);
+      const d = tris.map((q) => Math.hypot(q[0] - 3, q[2] + 4));
+      return Math.max(...d) - Math.min(...d);
+    };
+    expect(widthAt(40)).toBeCloseTo(0.16, 6);        // 6.4 px: as designed
+    expect(widthAt(7.5)).toBeCloseTo(0.2, 6);        // 0.16 m would be 1.2 px -> 1.5 px = 0.20 m
+    expect(widthAt(3)).toBeCloseTo(0.24, 6);         // capped
+    expect(widthAt(0)).toBeCloseTo(0.16, 6);         // not on screen: no guess
+  });
+  it('slam stones (G3): edge 0.16 m, evenly round the ring at r x (0.55 + 0.40 q), the same places on every frame', () => {
+    const { clock, impact } = oneWarning('slam', 1.25, { r: 4.6 });
+    const fx = new CrabFxCore(PAL, false), a = drawAt(fx, clock, impact).inst, b = drawAt(fx, clock, impact + 2).inst;
+    expect(a.length).toBe(8);
+    a.forEach((s, i) => {
+      const q = (i + 0.5) / 8, d = Math.hypot(s.x - 3, s.z + 4);
+      expect(d).toBeCloseTo(4.6 * (0.55 + 0.4 * q), 6);
+      expect(Math.atan2(s.x - 3, s.z + 4)).toBeCloseTo(Math.atan2(Math.sin(q * Math.PI * 2), Math.cos(q * Math.PI * 2)), 6);
+      expect(s.sx).toBeCloseTo(0.16, 6);
+      expect([b[i].x, b[i].z]).toEqual([s.x, s.z]);
+    });
   });
   it('a warning that was removed before its timer ran out makes no effect at all', () => {
     for (const atk of ['slam', 'sweep', 'shard']) {
@@ -78,7 +106,7 @@ describe('crab effects: only what really happened', () => {
   });
   it('rain: one violet crystal per warning, at that warning, 5.5 m -> 0.10 m over the last 6 ticks before its own deadline', () => {
     const { clock, impact } = oneWarning('shard', 1.0, { x: -6, z: -70, r: 2.2 });
-    const fx = new CrabFxCore(PAL, false), h = CRAB_FX_TEMP.crystal[1];
+    const fx = new CrabFxCore(PAL, false), h = CRAB_FX.shard.crystal[1];
     expect(drawAt(fx, clock, impact - 6.5).inst.length).toBe(0);
     const top = drawAt(fx, clock, impact - 6).inst, mid = drawAt(fx, clock, impact - 3).inst, low = drawAt(fx, clock, impact - 0.001).inst;
     expect(top.length).toBe(1); expect(top[0].color).toEqual(PAL.violet);
@@ -109,9 +137,9 @@ describe('crab effects: only what really happened', () => {
     expect(drawAt(fx, clock, 51).inst.length).toBe(0);
     fx.pillarBreak(50, 8, -80);
     const o = drawAt(fx, clock, 51).inst;
-    expect(o.length).toBe(CRAB_FX_TEMP.pillar.count);
-    for (const i of o) expect(Math.hypot(i.x - 8, i.z + 80)).toBeLessThanOrEqual(CRAB_FX_TEMP.pillar.spreadM + 1e-9);
-    fx.low = true; expect(drawAt(fx, clock, 51).inst.length).toBe(CRAB_FX_TEMP.pillar.count / 2);
+    expect(o.length).toBe(CRAB_FX.pillar.count);
+    for (const i of o) expect(Math.hypot(i.x - 8, i.z + 80)).toBeLessThanOrEqual(CRAB_FX.pillar.spreadM + 1e-9);
+    fx.low = true; expect(drawAt(fx, clock, 51).inst.length).toBe(CRAB_FX.pillar.lowCount);
     fx.reset(); expect(drawAt(fx, clock, 51).inst.length).toBe(0);
   });
   it('nothing is drawn in the warning colours', () => {
@@ -140,7 +168,7 @@ describe('crab effects on the real fight', () => {
     for (const a of [0, 0.5]) {
       const r = s.tick - 1 + a, o = drawAt(med, clock, r), l = drawAt(low, clock, r);
       maxMed = Math.max(maxMed, o.inst.length); maxLow = Math.max(maxLow, l.inst.length); dropped += med.last.dropped;
-      const crystals = o.inst.filter((x) => x.sy === CRAB_FX_TEMP.crystal[1]);
+      const crystals = o.inst.filter((x) => x.sy === CRAB_FX.shard.crystal[1]);
       crystalsAtOnce = Math.max(crystalsAtOnce, crystals.length);
       // a falling crystal is always over a shard warning that is on the ground right now
       for (const c of crystals) if (!before.concat(w.tele.map((t) => ({ id: t.id, x: t.x, z: t.z, atk: t.atk.id, left: t.t }))).some((t) => t.atk === 'shard' && t.x === c.x && t.z === c.z)) crystalBad.push(`tick ${s.tick}`);

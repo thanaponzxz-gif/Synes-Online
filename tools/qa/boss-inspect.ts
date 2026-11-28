@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { inspectBossFiles } from '../../src/boss/inspectBoss.ts';
 
-const dir = process.argv[2] || process.env.SYNES_SEYRIN_DIR || 'assets/_inbox', stem = process.argv[3] || 'mon_boss_crab_v01';
+const dir = process.argv[2] || process.env.SYNES_SEYRIN_DIR || 'assets/_inbox', stem = process.argv[3] || 'mon_boss_crab_v02';
 const stage = process.argv[4] === 'preview' ? 'preview' : 'combat';
 const r = await inspectBossFiles(new Uint8Array(fs.readFileSync(path.join(dir, `${stem}.glb`))), fs.readFileSync(path.join(dir, `${stem}.manifest.json`), 'utf8'), stage);
 for (const i of r.items) console.log(`${i.ok ? 'PASS' : 'FAIL'}  [${i.level}] ${i.id}  — ${i.detail}`);

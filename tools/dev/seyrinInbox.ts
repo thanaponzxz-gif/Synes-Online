@@ -8,7 +8,7 @@ import path from 'node:path';
 import type { Plugin } from 'vite';
 
 const STEM = 'char_hero001_ninja_preview_v01';
-const BOSS_STEM = 'mon_boss_crab_v01';
+const BOSS_STEM = 'mon_boss_crab_v02';
 import { inboxAllowed } from '../../src/seyrin/gate.ts';
 
 /** SYNES_SEYRIN_LAN=1: also serve a private (home network) address, for the owner's phone on the same Wi-Fi; never a public one */
