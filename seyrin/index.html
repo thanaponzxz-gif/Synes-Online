@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1d2340">
+<meta name="description" content="Synes Online: เกมผจญภัยแฟนตาซี 3D เล่นบนเบราว์เซอร์มือถือได้ทันที (เดโม)">
+<title>Synes Online</title>
+<style>
+  /* critical: paint the start screen before JS arrives */
+  html,body{margin:0;height:100%;background:#1d2340;color:#fff;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Thai",sans-serif}
+  #start{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#4b5fa8 0%,#2a3170 45%,#1d2340 100%);z-index:50}
+</style>
+  <script type="module" crossorigin src="./assets/index-CCDcer-_.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BN41fsji.css">
+</head>
+<body>
+<canvas id="game" aria-label="หน้าจอเกม Synes Online"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="vignette"></div>
+  <div id="stick-zone"></div>
+  <div id="stick-base"><div id="stick-knob"></div></div>
+  <div id="top-left">
+    <div class="who">นักเดินทาง <span id="potions" title="ยาฟื้นพลัง"></span></div>
+    <div class="bar hp"><div class="trough"><div id="hp-fill"></div></div><span id="hp-text">120 / 120</span></div>
+  </div>
+  <div id="boss"><div id="boss-name"></div><div class="bar boss"><div class="trough"><div id="boss-fill"></div><i class="p2mark"></i></div></div></div>
+  <div id="top-right"><span id="net-chip" class="chip">…</span><span id="timer">0:00</span><button id="btn-pause" aria-label="เปิดเมนูหยุดชั่วคราว"></button></div>
+  <div id="hint"></div>
+  <div id="banner"></div>
+  <div id="floaters"></div>
+  <button id="btn-attack" class="act" aria-label="โจมตี"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M27 25 37 7l6-3-1 7-12 20-6 2-6 10-4 1-2-4 7-10-2-4 3-3z" fill="#81eaf9" stroke="#fff0bc" stroke-width="2.4" stroke-linejoin="round"/><path d="m18 25 12 8M24 28 39 8" fill="none" stroke="#ffcc79" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <button id="btn-dodge" class="act" aria-label="หลบ"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M22 10h17l-4 18-8 8H10l2-7 11-5z" fill="#988cc8" stroke="#f4eeff" stroke-width="2" stroke-linejoin="round"/><path d="M21 15h17M8 38h30M4 23h13M36 22h8M31 31h14" fill="none" stroke="#7ef5fa" stroke-width="2.5" stroke-linecap="round"/></svg></button>
+  <button id="btn-skill" class="act skill" data-slot="1" aria-label="สกิล 1 ระฆังสะท้อน"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8c-6 0-9.5 4.6-9.5 10.5V27l-3.5 5h26l-3.5-5V18.5C33.5 12.6 30 8 24 8z" fill="#5CF2E6" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><circle cx="24" cy="36" r="2.6" fill="#FFC857"/><ellipse cx="24" cy="24" rx="20" ry="8" fill="none" stroke="#A78BFA" stroke-width="2.2" opacity=".9"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">1</span></button>
+  <button id="btn-skill2" class="act skill" data-slot="2" aria-label="สกิล 2 ฟันเสี้ยวจันทร์"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38C8 22 20 8 38 8c-9 3-12 10-11 17 1 7 6 10 11 11C28 44 14 46 10 38z" transform="rotate(18 24 24)" fill="#FF9EC7" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 36c3-9 9-16 18-20" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">2</span></button>
+  <button id="btn-skill3" class="act skill" data-slot="3" aria-label="สกิล 3 ผลึกพิฆาต"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40L19 15l5-8 5 8z" fill="#FFC857" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 40L9 21l6-3 5 14z" fill="#A78BFA" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M31 40l8-19-6-3-5 14z" fill="#A78BFA" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M5 41l8-2 6 3 5-3 6 3 6-3 7 2" fill="none" stroke="#2BB3A3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="cdnum"></span><span class="slot" aria-hidden="true">3</span></button>
+  <button id="btn-ult" class="act ult locked" aria-label="อัลติ มหาระฆัง (ล็อก)"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M17 8c-4 0-6.4 3.1-6.4 7.2V21l-2.4 3.4h17.6L23.4 21v-5.8C23.4 11.1 21 8 17 8z" fill="#5d6785" stroke="#c9d0e6" stroke-width="1.2"/><path d="M31 14c-4 0-6.4 3.1-6.4 7.2V27l-2.4 3.4h17.6L37.4 27v-5.8C37.4 17.1 35 14 31 14z" fill="#7a85a6" stroke="#c9d0e6" stroke-width="1.2"/><rect x="18" y="31" width="14" height="11" rx="2.2" fill="#FFC857" stroke="#fff" stroke-width="1.2"/><path d="M21 31v-3.5a4 4 0 0 1 8 0V31" fill="none" stroke="#fff" stroke-width="2"/></svg><span class="lbl">ล็อก</span></button>
+  <button id="btn-potion" class="act" aria-label="ดื่มยา"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="m25 8 10 5-5 10c6 7 4 16-3 19S9 40 9 32c0-6 5-11 12-12z" fill="#26cfbf" stroke="#eaffff" stroke-width="2.5" stroke-linejoin="round"/><path d="m24 7 13 6 2-6-13-5z" fill="#d6984a" stroke="#ffdd9c" stroke-width="1.8"/><path d="M14 30c1 4 4 6 8 6" fill="none" stroke="#c6fffd" stroke-width="2.2" stroke-linecap="round"/></svg><span class="count">2</span></button>
+  <div id="auto-bar">
+    <button id="btn-auto" type="button" aria-pressed="false" aria-label="ตีอัตโนมัติ (ปิดอยู่)"><span class="au-top"><b class="au-lbl">AUTO</b><span class="au-state">ปิด</span></span><i class="au-sw"></i></button>
+    <button id="btn-auto-set" type="button" aria-label="ตั้งค่าตีอัตโนมัติ"></button>
+  </div>
+  <div id="debug"></div>
+</div>
+
+<div id="start">
+  <div class="card">
+    <div class="logo"><span>SYNES</span><small>ONLINE</small></div>
+    <div class="sub">ทุ่งน้ำค้างแสง · เดโมทดลองเล่น</div>
+    <ul class="facts">
+      <li>เล่นได้ทันที ไม่ต้องสมัคร</li>
+      <li>ใช้เวลาราว 2–3 นาที</li>
+      <li>แนะนำให้หมุนจอแนวนอนและเปิดเสียง</li>
+    </ul>
+    <div class="progress"><i id="load-bar"></i></div>
+    <button id="btn-start" disabled>กำลังโหลด…</button>
+    <div class="chips"><span id="chip-q" class="chip">กราฟิก: …</span><span id="chip-net" class="chip">กำลังเชื่อมต่อ…</span></div>
+    <div class="fine">เวอร์ชันทดสอบ <span class="build-id">slice-1</span> · กราฟิกยังเป็นงานต้นแบบ</div>
+  </div>
+</div>
+
+<div id="rotate" class="overlay"><div class="card"><div class="big">⤾</div><p>หมุนจอเป็น<b>แนวนอน</b>เพื่อเล่นได้สบายที่สุด</p><button id="btn-portrait">เล่นแนวตั้งต่อ</button></div></div>
+<div id="paused" class="overlay"><div class="card">
+  <h2>หยุดชั่วคราว</h2>
+  <button id="btn-resume" class="primary">เล่นต่อ</button>
+  <label>กราฟิก <select id="sel-quality"><option value="auto">อัตโนมัติ</option><option value="low">ต่ำ (ประหยัดแบต)</option><option value="medium">กลาง</option><option value="high">สูง</option></select></label>
+  <label><input type="checkbox" id="chk-sound" role="switch" checked> เสียงเกม</label>
+  <button id="btn-howto">วิธีเล่น</button>
+  <button id="btn-credits">เครดิตและสิทธิ์</button>
+  <button id="btn-restart">เริ่มด่านใหม่</button>
+  <p class="fine build-id"></p>
+</div></div>
+<div id="auto-panel" class="overlay"><div class="card">
+  <h2>ตั้งค่าตีอัตโนมัติ</h2>
+  <div class="ap-grid">
+    <div class="ap-col">
+      <div class="ap-block"><span class="ap-k">เป้าหมาย</span><div id="ap-kinds" class="seg"></div></div>
+      <div class="ap-block"><span class="ap-k">พื้นที่</span><div class="seg" id="ap-area"><button type="button" data-hall="0">รอบจุดเดิม</button><button type="button" data-hall="1">ทั้งโถง</button></div></div>
+      <label class="ap-block ap-radius"><span class="ap-k">รัศมี <b id="ap-radius-val">8 ม.</b></span><input type="range" id="ap-radius" min="4" max="20" step="1" value="8" aria-label="รัศมีรอบจุดเดิม (เมตร)"></label>
+    </div>
+    <div class="ap-col">
+      <div class="ap-block"><span class="ap-k">ใช้สกิลอัตโนมัติ</span><div class="seg" id="ap-skills"><button type="button" data-slot="0"></button><button type="button" data-slot="1"></button><button type="button" data-slot="2"></button></div></div>
+      <label class="ap-block ap-line"><span>ทำงานต่อหลังคืนชีพ</span><input type="checkbox" id="ap-keep" class="tg" role="switch"></label>
+      <div class="ap-block ap-line ap-off" aria-disabled="true"><span>ฟาร์มออฟไลน์ · ยังไม่เปิด</span></div>
+    </div>
+  </div>
+  <button id="btn-auto-close" class="primary" type="button">เสร็จ</button>
+</div></div>
+<div id="howto" class="overlay"><div class="card text">
+  <h2>วิธีเล่น</h2>
+  <p>🕹 <b>เดิน</b>: แตะค้างแล้วลากที่ครึ่งจอซ้าย (คีย์บอร์ดใช้ WASD)</p>
+  <p>⚔ <b>ฟัน</b>: แตะเพื่อฟัน แตะต่อเนื่องเพื่อคอมโบ 3 จังหวะ (J)</p>
+  <p>↯ <b>พุ่งหลบ</b>: ระหว่างพุ่งจะไม่โดนโจมตี ถ้าพุ่ง<b>ผ่าน</b>การโจมตีพอดีจะได้ “เพอร์เฟกต์” และตีครั้งถัดไปแรงขึ้น (Space)</p>
+  <p>✧ <b>ระฆังสะท้อน</b>: ทำดาเมจรอบตัวและขัดจังหวะศัตรูที่กำลังชาร์จท่า (L)</p>
+  <p>✚ <b>ยา</b>: ฟื้นพลัง 45 หน่วย มี 2 ขวด และบ่อแสงจะเติมให้ (Q)</p>
+  <p><b>วงเตือน</b>: <span class="sw o"></span> สีส้ม = ท่าปกติ <span class="sw r"></span> สีแดง = ท่าหนัก ท่าจะออกเมื่อสีเติมเต็มวง ส่วนดาว ✦ บนหัวศัตรูหมายถึงช่วงที่ตีสวนได้</p>
+  <button class="close">ปิด</button>
+</div></div>
+<div id="credits" class="overlay"><div class="card text">
+  <h2>เครดิตและสิทธิ์</h2>
+  <p>เกม โค้ด โมเดล และเสียงสร้างโดยทีม Synes Online เป็นงานต้นฉบับทั้งหมด</p>
+  <p>Three.js © three.js authors, MIT License</p>
+  <p>โมเดลสร้างด้วยสคริปต์ Blender (ตัว Blender ใช้ GPL-3.0 ส่วนผลงานที่สร้างเป็นของโปรเจกต์)</p>
+  <p>เสียงทั้งหมดสังเคราะห์สดด้วย Web Audio โดยไม่ใช้ไฟล์เสียงภายนอก</p>
+  <button class="close">ปิด</button>
+</div></div>
+<div id="resume-tap" class="overlay"><div class="card"><p>เกมหยุดไว้ระหว่างที่คุณสลับแอป</p><button class="primary" id="btn-resume2">แตะเพื่อเล่นต่อ</button></div></div>
+<div id="ctx-lost" class="overlay"><div class="card"><p>กำลังกู้คืนกราฟิก…</p></div></div>
+
+<div id="defeat" class="overlay result"><div class="card">
+  <h2>พ่ายแพ้…</h2>
+  <p class="cause"></p>
+  <p class="tip"></p>
+  <p class="where"></p>
+  <button class="primary">ลองใหม่</button>
+</div></div>
+<div id="victory" class="overlay result"><div class="card">
+  <h2>พิชิตทุ่งน้ำค้างแสง!</h2>
+  <div class="rank">S</div>
+  <div class="stats"></div>
+  <div class="rankinfo"></div>
+  <div class="reward"></div>
+  <p class="next">พื้นที่ถัดไป: <b>ซากหุบหมอก</b> (กำลังพัฒนา)</p>
+  <button class="primary replay">เล่นอีกครั้ง</button>
+</div></div>
+
+</body>
+</html>

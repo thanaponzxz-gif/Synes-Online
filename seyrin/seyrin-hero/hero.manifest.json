@@ -1,0 +1,328 @@
+{
+  "schema": "synes.hero-manifest/1",
+  "assetId": "hero001_ninja",
+  "version": "v01",
+  "stage": "preview",
+  "units": "meter",
+  "axes": {
+    "up": "+Y",
+    "forward": "+Z"
+  },
+  "rootMotion": 0,
+  "output": {
+    "file": "char_hero001_ninja_preview_v01.glb",
+    "sha256": "7be14ba3796989024858ff245f875c43106deba47bce8fb0da7c84989514e25d",
+    "bytes": 1827456
+  },
+  "clips": [
+    {
+      "name": "idle",
+      "ticks": 48,
+      "loop": true
+    },
+    {
+      "name": "run",
+      "ticks": 10,
+      "loop": true,
+      "markers": {
+        "step": [
+          0,
+          5
+        ]
+      }
+    },
+    {
+      "name": "attack_01",
+      "ticks": 11,
+      "loop": false,
+      "markers": {
+        "hit": [
+          5
+        ]
+      },
+      "poseHolds": [
+        [
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "name": "attack_03",
+      "ticks": 18,
+      "loop": false,
+      "markers": {
+        "hit": [
+          9
+        ]
+      },
+      "poseHolds": [
+        [
+          9,
+          10
+        ]
+      ],
+      "yLift": {
+        "fromTick": 3,
+        "peakTick": 6,
+        "toTick": 9,
+        "peakM": 0.12
+      }
+    },
+    {
+      "name": "skill_shadow_thread",
+      "ticks": 18,
+      "loop": false,
+      "markers": {
+        "dashStart": [
+          3
+        ],
+        "dashEnd": [
+          8
+        ]
+      }
+    },
+    {
+      "name": "dodge_f",
+      "ticks": 9,
+      "loop": false
+    }
+  ],
+  "source": {
+    "file": "char_hero001_ninja_hy3d_raw_v01.glb",
+    "sha256": "8f124ca0b523f98e52c910455c2736cc5400da242e2d84b190dc05b9b77bed17",
+    "ownerDecision": "REQ-009 section 5, 2026-11-28: use this v01; skip waiting on additional provenance/terms"
+  },
+  "tools": {
+    "blender": "5.3.0",
+    "production": "Codex, owner-authorised local headless Blender; no service used"
+  },
+  "cloth": {
+    "status": "P1 static rest, Q4 not accepted; do not enable full solver with these flared source rest chains",
+    "chains": [
+      {
+        "name": "scarf_l",
+        "anchor": "anchor_scarf_l",
+        "pointsBlender": [
+          [
+            0.16,
+            0.17,
+            0.94
+          ],
+          [
+            0.27,
+            0.25,
+            0.82
+          ],
+          [
+            0.39,
+            0.34,
+            0.66
+          ],
+          [
+            0.48,
+            0.39,
+            0.48
+          ],
+          [
+            0.53,
+            0.34,
+            0.35
+          ]
+        ],
+        "p1Static": true
+      },
+      {
+        "name": "sash_l",
+        "anchor": "anchor_sash_l",
+        "pointsBlender": [
+          [
+            0.075,
+            -0.1,
+            0.72
+          ],
+          [
+            0.09,
+            -0.13,
+            0.63
+          ],
+          [
+            0.1,
+            -0.15,
+            0.54
+          ],
+          [
+            0.105,
+            -0.15,
+            0.46
+          ]
+        ],
+        "p1Static": true
+      },
+      {
+        "name": "tassel_l",
+        "anchor": "anchor_tassel_l",
+        "pointsBlender": [
+          [
+            0.11,
+            -0.15,
+            0.7
+          ],
+          [
+            0.12,
+            -0.17,
+            0.61
+          ],
+          [
+            0.125,
+            -0.17,
+            0.535
+          ]
+        ],
+        "p1Static": true
+      },
+      {
+        "name": "scarf_r",
+        "anchor": "anchor_scarf_r",
+        "pointsBlender": [
+          [
+            -0.16,
+            0.17,
+            0.94
+          ],
+          [
+            -0.27,
+            0.25,
+            0.82
+          ],
+          [
+            -0.39,
+            0.34,
+            0.66
+          ],
+          [
+            -0.48,
+            0.39,
+            0.48
+          ],
+          [
+            -0.53,
+            0.34,
+            0.35
+          ]
+        ],
+        "p1Static": true
+      },
+      {
+        "name": "sash_r",
+        "anchor": "anchor_sash_r",
+        "pointsBlender": [
+          [
+            -0.075,
+            -0.1,
+            0.72
+          ],
+          [
+            -0.09,
+            -0.13,
+            0.63
+          ],
+          [
+            -0.1,
+            -0.15,
+            0.54
+          ],
+          [
+            -0.105,
+            -0.15,
+            0.46
+          ]
+        ],
+        "p1Static": true
+      },
+      {
+        "name": "tassel_r",
+        "anchor": "anchor_tassel_r",
+        "pointsBlender": [
+          [
+            -0.11,
+            -0.15,
+            0.7
+          ],
+          [
+            -0.12,
+            -0.17,
+            0.61
+          ],
+          [
+            -0.125,
+            -0.17,
+            0.535
+          ]
+        ],
+        "p1Static": true
+      }
+    ]
+  },
+  "presentation": {
+    "motionProfile": "DES-007 rev4 / DES-009 P1, owner source override 2026-11-28",
+    "fps": 30,
+    "rootMotion": 0,
+    "backWeapons": "decorative, chest-weighted",
+    "remainingClips": 14
+  },
+  "measurements": {
+    "stage": "preview",
+    "bytes": 1827456,
+    "tris": 9316,
+    "materials": 1,
+    "primitives": 2,
+    "bones": 45,
+    "joints": 45,
+    "textures": [
+      {
+        "use": "baseColor",
+        "width": 1024,
+        "height": 1024
+      },
+      {
+        "use": "orm",
+        "width": 512,
+        "height": 512
+      }
+    ],
+    "clips": [
+      {
+        "name": "attack_01",
+        "seconds": 0.36666666666666664,
+        "ticks": 11
+      },
+      {
+        "name": "attack_03",
+        "seconds": 0.6,
+        "ticks": 18
+      },
+      {
+        "name": "dodge_f",
+        "seconds": 0.3,
+        "ticks": 9
+      },
+      {
+        "name": "idle",
+        "seconds": 1.6,
+        "ticks": 48
+      },
+      {
+        "name": "run",
+        "seconds": 0.3333333333333333,
+        "ticks": 10
+      },
+      {
+        "name": "skill_shadow_thread",
+        "seconds": 0.6,
+        "ticks": 18
+      }
+    ],
+    "sha256": "7be14ba3796989024858ff245f875c43106deba47bce8fb0da7c84989514e25d"
+  }
+}
