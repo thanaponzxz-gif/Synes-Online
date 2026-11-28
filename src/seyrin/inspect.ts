@@ -71,7 +71,37 @@ function imageBytes(g: Glb, i: number): Uint8Array | null {
   return m ? Uint8Array.from(atob(m[1]), (c) => c.charCodeAt(0)) : null;
 }
 
+const K256 = new Uint32Array(64);
+{ // the first 32 bits of the fractional parts of the cube roots of the first 64 primes (FIPS 180-4)
+  let n = 0;
+  for (let p = 2; n < 64; p++) { let prime = true; for (let d = 2; d * d <= p; d++) if (p % d === 0) { prime = false; break; } if (prime) K256[n++] = (Math.cbrt(p) % 1) * 2 ** 32; }
+}
+/** SHA-256 in plain script: `crypto.subtle` exists only in a secure context, and the home Wi-Fi playtest is plain http */
+export function sha256Plain(bytes: Uint8Array): string {
+  const H = new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]);
+  const n = bytes.length, total = ((n + 9 + 63) >> 6) << 6, m = new Uint8Array(total), w = new Uint32Array(64);
+  m.set(bytes); m[n] = 0x80;
+  const view = new DataView(m.buffer);
+  view.setUint32(total - 8, Math.floor(n / 2 ** 29)); view.setUint32(total - 4, (n << 3) >>> 0);
+  const rot = (x: number, k: number) => (x >>> k) | (x << (32 - k));
+  for (let o = 0; o < total; o += 64) {
+    for (let i = 0; i < 16; i++) w[i] = view.getUint32(o + i * 4);
+    for (let i = 16; i < 64; i++) {
+      const a = w[i - 15], b = w[i - 2];
+      w[i] = w[i - 16] + (rot(a, 7) ^ rot(a, 18) ^ (a >>> 3)) + w[i - 7] + (rot(b, 17) ^ rot(b, 19) ^ (b >>> 10));
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const t1 = (h + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) + ((e & f) ^ (~e & g)) + K256[i] + w[i]) >>> 0;
+      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) >>> 0;
+      h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+    }
+    H[0] += a; H[1] += b; H[2] += c; H[3] += d; H[4] += e; H[5] += f; H[6] += g; H[7] += h;
+  }
+  return Array.from(H, (x) => x.toString(16).padStart(8, '0')).join('');
+}
 export async function sha256Of(bytes: Uint8Array): Promise<string> {
+  if (!globalThis.crypto?.subtle) return sha256Plain(bytes);
   const d = await crypto.subtle.digest('SHA-256', bytes as unknown as ArrayBuffer);
   return Array.from(new Uint8Array(d), (x) => x.toString(16).padStart(2, '0')).join('');
 }

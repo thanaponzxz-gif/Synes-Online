@@ -27,10 +27,11 @@ import { dist } from '../shared/sim/math.ts';
 
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
+declare const __SEYRIN_LAN__: boolean; // dev server started with SYNES_SEYRIN_LAN=1 (home Wi-Fi playtest)
 const Q = new URLSearchParams(location.search);
 // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A); ?ruleset=ninja-roam-1 = dev server on this machine only
 let seyrin: SeyrinHero | null = null; // dev playtest only (never set in a published build)
-const ruleset = import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q) ? NINJA_RULESET : rulesetFromQuery(Q);
+const ruleset = import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q, __SEYRIN_LAN__) ? NINJA_RULESET : rulesetFromQuery(Q);
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;

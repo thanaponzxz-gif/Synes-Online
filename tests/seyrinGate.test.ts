@@ -1,7 +1,7 @@
 // DES-009 §2.2: the P1 pose viewer exists only on the owner's machine (loopback) in development. It is not a way into
 // the game, and a production build or a phone on the LAN never gets it.
 import { describe, it, expect } from 'vitest';
-import { previewAllowed, ninjaQaAllowed } from '../src/seyrin/gate.ts';
+import { previewAllowed, ninjaQaAllowed, privateAddress, inboxAllowed } from '../src/seyrin/gate.ts';
 
 const q = (s: string) => new URLSearchParams(s);
 
@@ -26,5 +26,29 @@ describe('ninjaQaAllowed (ninja-roam-1 with the Wayfarer placeholder)', () => {
     expect(ninjaQaAllowed(false, 'localhost', q('ruleset=ninja-roam-1'))).toBe(false);
     for (const host of ['192.168.1.20', 'thanaponzxz-gif.github.io', 'mylocalhost']) expect(ninjaQaAllowed(true, host, q('ruleset=ninja-roam-1')), host).toBe(false);
     for (const s of ['', 'ruleset=ninja', 'ruleset=roam-1', 'combo=ninja-roam-1']) expect(ninjaQaAllowed(true, 'localhost', q(s)), s).toBe(false);
+  });
+});
+
+describe('home Wi-Fi playtest (owner 2026-11-28: SYNES_SEYRIN_LAN=1)', () => {
+  const priv = ['10.0.0.5', '172.16.0.1', '172.31.255.254', '192.168.1.20', '169.254.10.3', '::ffff:192.168.1.20'];
+  const pub = ['8.8.8.8', '172.15.0.1', '172.32.0.1', '192.169.1.1', '11.0.0.1', '100.64.0.1', '2001:db8::1', 'fe80::1', '192.168.1.20.evil.com', 'thanaponzxz-gif.github.io', '192.168.1', '999.168.1.1', ''];
+  it('private IPv4 ranges only; names and public addresses never', () => {
+    for (const a of priv) expect(privateAddress(a), a).toBe(true);
+    for (const a of pub) expect(privateAddress(a), a).toBe(false);
+  });
+  it('the ninja gate: a private address only with the flag, a public one never, production never', () => {
+    const query = q('ruleset=ninja-roam-1');
+    expect(ninjaQaAllowed(true, '192.168.1.20', query)).toBe(false);
+    expect(ninjaQaAllowed(true, '192.168.1.20', query, true)).toBe(true);
+    expect(ninjaQaAllowed(true, 'localhost', query, true)).toBe(true);
+    for (const a of pub) expect(ninjaQaAllowed(true, a, query, true), a).toBe(false);
+    expect(ninjaQaAllowed(false, '192.168.1.20', query, true)).toBe(false);
+    expect(previewAllowed(true, '192.168.1.20', q('seyrin=preview'))).toBe(false); // the pose viewer stays on this machine
+  });
+  it('the model route: this machine by default, a private address only with the flag, a public one never', () => {
+    for (const a of ['::1', '127.0.0.1', '::ffff:127.0.0.1']) expect(inboxAllowed(a, false), a).toBe(true);
+    for (const a of priv) { expect(inboxAllowed(a, false), a).toBe(false); expect(inboxAllowed(a, true), a).toBe(true); }
+    for (const a of pub) expect(inboxAllowed(a, true), a).toBe(false);
+    expect(inboxAllowed(undefined, true)).toBe(false);
   });
 });

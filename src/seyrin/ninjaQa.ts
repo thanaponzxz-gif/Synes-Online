@@ -12,6 +12,8 @@ export function attachNinjaQa(input: Input, ultBtn: HTMLElement): (text: string)
   Object.assign(tag.style, { position: 'fixed', left: '50%', top: '4px', transform: 'translateX(-50%)', padding: '2px 10px', font: '600 12px system-ui, sans-serif',
     color: '#1b1430', background: '#ffc857', borderRadius: '10px', zIndex: '40', pointerEvents: 'none' });
   document.body.appendChild(tag);
+  ultBtn.classList.remove('locked'); ultBtn.setAttribute('aria-label', 'อัลติ');
+  const lbl = ultBtn.querySelector('.lbl'); if (lbl) lbl.textContent = 'อัลติ';
   // the ult is a real command in this ruleset: stop the old "locked" message (capture phase on the same element runs first)
   ultBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopImmediatePropagation(); input.press('ult'); }, { capture: true });
   addEventListener('keydown', (e) => { if (!e.repeat && e.code === 'Digit4') input.press('ult'); });

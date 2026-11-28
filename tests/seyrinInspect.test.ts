@@ -132,3 +132,15 @@ describe('measured rules are reported, not hidden', () => {
     expect(r.items.find((i) => i.id === 'weights')!.detail).toContain(kind);
   });
 });
+
+describe('sha256Plain (no secure context on the home Wi-Fi playtest)', () => {
+  it('matches crypto.subtle on empty, short, block-edge and large inputs', async () => {
+    const { sha256Of, sha256Plain } = await import('../src/seyrin/inspect.ts');
+    expect(sha256Plain(new Uint8Array(0))).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+    expect(sha256Plain(new TextEncoder().encode('abc'))).toBe('ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
+    for (const n of [55, 56, 63, 64, 65, 119, 120, 1000, 300007]) {
+      const b = new Uint8Array(n); for (let i = 0; i < n; i++) b[i] = (i * 131 + (i >> 8) * 17 + 7) & 255;
+      expect(sha256Plain(b), String(n)).toBe(await sha256Of(b));
+    }
+  });
+});

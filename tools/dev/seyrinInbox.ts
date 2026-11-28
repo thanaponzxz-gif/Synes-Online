@@ -1,5 +1,6 @@
 // Dev server only (vite `apply: 'serve'`): hands the private Seyrin P1 pair from an inbox folder on this machine to the page at
-// /__seyrin/hero.glb and /__seyrin/hero.manifest.json, to a browser on this machine only. The files are git-ignored and are
+// /__seyrin/hero.glb and /__seyrin/hero.manifest.json, to a browser on this machine only (with SYNES_SEYRIN_LAN=1 also to a
+// private home-network address; a public address is always refused). The files are git-ignored and are
 // never copied, bundled or written anywhere: `vite build` does not run this plugin, so dist/ cannot contain them.
 // Folder: SYNES_SEYRIN_DIR, else assets/_inbox of this checkout. File stem: SYNES_SEYRIN_STEM (default below).
 import fs from 'node:fs';
@@ -7,7 +8,10 @@ import path from 'node:path';
 import type { Plugin } from 'vite';
 
 const STEM = 'char_hero001_ninja_preview_v01';
-const loopback = (a: string | undefined) => !!a && (a === '::1' || a === '127.0.0.1' || a === '::ffff:127.0.0.1');
+import { inboxAllowed } from '../../src/seyrin/gate.ts';
+
+/** SYNES_SEYRIN_LAN=1: also serve a private (home network) address, for the owner's phone on the same Wi-Fi; never a public one */
+export const seyrinLan = () => process.env.SYNES_SEYRIN_LAN === '1';
 
 export function seyrinInbox(): Plugin {
   return {
@@ -24,7 +28,7 @@ export function seyrinInbox(): Plugin {
         const hit = files[(req.url ?? '').split('?')[0]];
         if (!hit) return next();
         res.setHeader('cache-control', 'no-store');
-        if (!loopback(req.socket.remoteAddress)) { res.statusCode = 403; return res.end('this machine only'); }
+        if (!inboxAllowed(req.socket.remoteAddress, seyrinLan())) { res.statusCode = 403; return res.end('this machine only'); }
         const file = path.join(dir, hit[0]);
         if (!fs.existsSync(file)) { res.statusCode = 404; return res.end('no Seyrin file in the inbox'); }
         res.setHeader('content-type', hit[1]);
