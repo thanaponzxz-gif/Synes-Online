@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"require(require('path').join(process.env.CLAUDE_PROJECT_DIR||'.','tools/hooks/after-compact.cjs'))\"",
+            "timeout": 20,
+            "statusMessage": "Project Synes: rollover reminder"
+          }
+        ]
+      }
+    ]
+  }
+}

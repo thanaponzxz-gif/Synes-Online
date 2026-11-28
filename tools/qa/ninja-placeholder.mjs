@@ -34,7 +34,7 @@ const state = (page) => page.evaluate(() => {
 
 // 1. the bot plays the ninja rules with the placeholder
 {
-  const { ctx, page, errors, requests } = await open(`${dev}/?ruleset=ninja-roam-1&bot=1`);
+  const { ctx, page, errors, requests } = await open(`${dev}/?ruleset=ninja-roam-1&bot=1&placeholder`);
   let s = await state(page);
   check('dev server: ?ruleset=ninja-roam-1 runs the ninja sim', s.ruleset === 'ninja-roam-1' && s.sim === 'NinjaWorld', `${s.ruleset} ${s.sim}`);
   check('the screen says it is the placeholder, not passed as an asset', s.label === 'ninja-roam-1 · ตัวสำรอง Wayfarer · ยังไม่ผ่าน asset', s.label);
@@ -54,7 +54,7 @@ const state = (page) => page.evaluate(() => {
 
 // 2. the ult button is a real command here (no "locked" message)
 {
-  const { ctx, page, errors } = await open(`${dev}/?ruleset=ninja-roam-1&autostart=1`);
+  const { ctx, page, errors } = await open(`${dev}/?ruleset=ninja-roam-1&autostart=1&placeholder`);
   await page.evaluate(() => { window.__synes.world.ns.meter = 4; });
   await page.dispatchEvent('#btn-ult', 'pointerdown');
   await page.waitForTimeout(300);

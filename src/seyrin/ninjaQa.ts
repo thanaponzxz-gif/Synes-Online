@@ -5,7 +5,8 @@ import type { Input } from '../input.ts';
 
 export const NINJA_QA_LABEL = 'ninja-roam-1 · ตัวสำรอง Wayfarer · ยังไม่ผ่าน asset';
 
-export function attachNinjaQa(input: Input, ultBtn: HTMLElement) {
+/** returns a setter for the label on screen (which body is shown, and its review state) */
+export function attachNinjaQa(input: Input, ultBtn: HTMLElement): (text: string) => void {
   const tag = document.createElement('div');
   tag.id = 'ninja-qa'; tag.textContent = NINJA_QA_LABEL;
   Object.assign(tag.style, { position: 'fixed', left: '50%', top: '4px', transform: 'translateX(-50%)', padding: '2px 10px', font: '600 12px system-ui, sans-serif',
@@ -14,4 +15,5 @@ export function attachNinjaQa(input: Input, ultBtn: HTMLElement) {
   // the ult is a real command in this ruleset: stop the old "locked" message (capture phase on the same element runs first)
   ultBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopImmediatePropagation(); input.press('ult'); }, { capture: true });
   addEventListener('keydown', (e) => { if (!e.repeat && e.code === 'Digit4') input.press('ult'); });
+  return (text) => { tag.textContent = text; };
 }

@@ -19,6 +19,7 @@ import { rewardHtml } from './rewardText.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
 import { rulesetFromQuery, isNinja, NINJA_RULESET } from '../shared/sim/ruleset.ts';
 import { ninjaQaAllowed } from './seyrin/gate.ts';
+import type { SeyrinHero } from './seyrin/ninjaHero.ts';
 import { Bot } from '../tests/bot.ts';
 import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
 import { AUTO_KINDS, autoAllowedHere, defaultAuto, packAuto, type AutoSettings } from '../shared/sim/auto.ts';
@@ -28,6 +29,7 @@ import { dist } from '../shared/sim/math.ts';
 declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
 // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A); ?ruleset=ninja-roam-1 = dev server on this machine only
+let seyrin: SeyrinHero | null = null; // dev playtest only (never set in a published build)
 const ruleset = import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q) ? NINJA_RULESET : rulesetFromQuery(Q);
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
@@ -133,7 +135,10 @@ const qaLog: { t: number; e: string }[] = [];
     const { startSeyrinPreview } = await import('./seyrin/previewMode.ts');
     if (await startSeyrinPreview(view, location.hostname, Q)) return;
   }
-  if (import.meta.env.DEV && isNinja(ruleset)) (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult')); // placeholder playtest
+  if (import.meta.env.DEV && isNinja(ruleset)) { // dev playtest: Seyrin's P1 file from the private inbox, else the placeholder
+    const say = (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult'));
+    if (!Q.has('placeholder')) seyrin = await (await import('./seyrin/ninjaHero.ts')).loadSeyrinHero(view, say);
+  }
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();
 
@@ -160,6 +165,7 @@ async function newRun() {
   log = new InputLog();
   input.autoPending = null; autoSet.enabled = false;
   view.buildLevel(world, 7);
+  seyrin?.onRun(world);
   hud.netChip.textContent = ticket ? 'ออนไลน์' : 'ออฟไลน์';
   hud.netChip.title = ticket ? 'ผลและรางวัลจะถูกบันทึก' : 'โหมดออฟไลน์: ผลไม่ถูกบันทึก';
   for (const s of ['#defeat', '#victory']) $(s).classList.remove('show');
@@ -176,11 +182,13 @@ function simStep() {
   view.beforeTick();
   const inp = input.sample();
   log.push(inp);
-  handleEvents(world!.step(inp));
+  const evts = world!.step(inp);
+  seyrin?.afterStep(world!, evts);
+  handleEvents(evts);
 }
 function renderFrame(alpha: number, dt: number) {
   const w = world!;
-  try { view.render(w, alpha, dt); }
+  try { seyrin?.beforeRender(w, alpha, dt); view.render(w, alpha, dt); }
   catch (err) { if (qaLog.length < 400) qaLog.push({ t: +(w.tick / 30).toFixed(1), e: 'render-error ' + String((err as Error)?.message || err) }); console.error(err); }
 }
 function frame(now: number) {
