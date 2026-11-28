@@ -26,4 +26,15 @@
 | `crystal_spire` + `ruin_arch_shrine` DES-004 ขั้น 2 **ตัวเลือก A** (ผลึกยอดแหลมสูง ~7.9 m ปลายหักเป็นเหลี่ยม + ผลึกข้าง 3 / ศาลซุ้มโค้งสมบูรณ์ บันได 3 ขั้น วงแหวนทองในซุ้มพร้อมคานยึด ผลึกลอยกลางวง) spire 219 / shrine 930 tris | `public/assets/models/synes_kit.glb` (เฉพาะ branch `exp/stage1-spire-shrine`) · `tools/blender/build_kit.py` `SYNES_SPIRE_VARIANT=A` (ค่าเริ่มต้น) · ทีม Synes (Claude Opus 5.5, สคริปต์ ไม่ใช้ asset ภายนอก) · เป็นของโปรเจกต์ | แทนผลึก icosahedron ใหญ่ 4 ก้อนและศาลกล่องใน `src/render/arena.ts` (`?spire=0` = แบบเดิม) | **placeholder ต้นแบบ ยังไม่ APPROVED** รอทีม A ตรวจ + เจ้าของเลือก A/B · หลักฐาน `docs/qa/spire-shrine-v01/` · verify ผ่าน 0 คำเตือน |
 | `crystal_spire` + `ruin_arch_shrine` DES-004 ขั้น 2 **ตัวเลือก B** (ยอดแฝดเอียง + ปลายที่หักลอยเหนือรอยหัก ~9.1 m / ศาลพังด้านขวา เสาสั้น ซุ้มหัก ก้อนหินหล่น บันได 4 ขั้น วงแหวนใหญ่เอียงทะลุซุ้ม ผลึกลอยใหญ่ขึ้น + เศษผลึกโคจร 4) spire 256 / shrine 1,062 tris | `public/assets/models/spire_shrine_B.glb` (54.7 KB, side-car โหลดเฉพาะ `?spire=B`) · ทั้งชุด `docs/qa/spire-shrine-v01/synes_kit_spireB.glb` (638.1 KB, ไฟล์เทียบ/verify) · `SYNES_SPIRE_VARIANT=B` · ทีม Synes (Claude Opus 5.5) · เป็นของโปรเจกต์ | ตัวเลือกเทียบกับ A | **placeholder ต้นแบบ ยังไม่ APPROVED** · verify ผ่าน 0 คำเตือน |
 
-ยังไม่มีการดาวน์โหลด asset หรือ plugin จากภายนอก จึงยังไม่มี plugin ที่ต้องตรวจโค้ด
+## สกิลของ agent จากภายนอก (เครื่องมือของทีม ไม่ได้อยู่ในเกมและไม่ได้แจกจ่าย)
+เจ้าของสั่งติดตั้ง 2026-11-28 ("ก่อนทำติดตั้งเดฟสกิลก่อน") · ทีม B อ่าน SKILL.md และ references ครบทุกไฟล์ก่อนติดตั้ง
+
+| รายการ | ที่ติดตั้ง | ที่มา | license | ผลตรวจ |
+|---|---|---|---|---|
+| `game-feel`, `shader-programming`, `performance-optimization`, `threejs-gltf-loading`, `threejs-materials-lighting`, `threejs-scene-setup` (6 จาก 79 สกิล) | ระดับผู้ใช้บนเครื่อง Windows ของเจ้าของ `~/.claude/skills/<ชื่อ>/` (ไม่อยู่ใน repo) พร้อม `LICENSE`, `NOTICE`, `SOURCE.txt` | https://github.com/gamedev-skills/awesome-gamedev-agent-skills ล็อก commit `c6ca6c4` (2026-11-12) ไฟล์ไม่ได้แก้ | Apache-2.0 | เป็นไฟล์ Markdown ล้วน (SKILL.md + references 1 ไฟล์ต่อสกิล) ไม่มีสคริปต์ ไม่มี hook ไม่มีคำสั่งให้ดาวน์โหลดหรือส่งข้อมูลออก มีแค่คำแนะนำให้รัน `npx @gltf-transform/cli` และ `npx playwright install` ซึ่ง**ยังไม่ได้รัน** และต้องถามเจ้าของก่อนตามข้อ 6 |
+
+- **ไม่ติดตั้ง:** `create-game-assets` (มีสคริปต์ Python + `pip install` และ Claude ไม่สร้างงานศิลป์ตามข้อ 5.2), `game-ui-ux` / `camera-systems` / `level-design` (งานออกแบบเป็นของทีม A ตาม ADR-007), สกิลของเอนจินและแนวเกมอื่น (Godot, Unity, Unreal, Roblox ฯลฯ), ตัว router
+- **ขอบเขตการใช้:** เป็นความรู้เทคนิคสำหรับงานโค้ดของทีม B เท่านั้น ตัวเลขและรูปแบบเอฟเฟกต์ยังต้องมาจากดีไซน์ของทีม A
+- ฝั่ง Codex (ทีม A) ยังไม่ได้ติดตั้ง
+
+ยังไม่มี plugin อื่นจากภายนอกที่ต้องตรวจโค้ดใน branch นี้
