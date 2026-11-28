@@ -80,6 +80,13 @@ function swingTo(out: THREE.Vector3, axis: THREE.Vector3, d: THREE.Vector3): THR
 const finiteV = (v: THREE.Vector3) => Number.isFinite(v.x) && Number.isFinite(v.y) && Number.isFinite(v.z);
 const finiteQ = (q: THREE.Quaternion) => Number.isFinite(q.x) && Number.isFinite(q.y) && Number.isFinite(q.z) && Number.isFinite(q.w);
 const finiteNode = (o: THREE.Object3D) => finiteV(o.position) && finiteQ(o.quaternion) && finiteV(o.scale);
+/** the unit `p` turned toward the unit `q` by `ang` along the great circle between them (any way round when they are opposite) */
+function toward(out: THREE.Vector3, p: THREE.Vector3, q: THREE.Vector3, ang: number): THREE.Vector3 {
+  out.copy(q).addScaledVector(p, -p.dot(q));
+  let l = out.length();
+  if (l < 1e-12) { out.set(1, 0, 0).addScaledVector(p, -p.x); if ((l = out.length()) < 1e-6) { out.set(0, 1, 0).addScaledVector(p, -p.y); l = out.length(); } }
+  return out.multiplyScalar(Math.sin(ang) / l).addScaledVector(p, Math.cos(ang));
+}
 function closestOnSeg(out: THREE.Vector3, p: THREE.Vector3, a: THREE.Vector3, b: THREE.Vector3): THREE.Vector3 {
   _ab.subVectors(b, a);
   const l2 = _ab.lengthSq(), t = l2 > 0 ? Math.min(1, Math.max(0, _ap.subVectors(p, a).dot(_ab) / l2)) : 0;
@@ -109,7 +116,7 @@ export class ClothSolver {
   // scratch, one per use (helpers never share one)
   private t = { aEff: V(), pr: Q(), jp: V(), frame: Q(), inv: Q(), d: V(), w: V(), tau: V(), qs: Q(), rot: Q(), ap: V(), v: V(), dv: V(),
     cq: Q(), cqs: Q(), cdir: V(), cpt: V(), cc: V(), cwant: V(), cb: V(), cn: V(), sp: V(), ss: V(), sq: Q(), st: V(), sd: V(), sqs: Q(),
-    hn: V(), hp: V(), hf: V(), sjp: V(), sfr: Q(), sinv: Q(), srot: Q(), rp: V(), kp: V(), kd: V(), cw: V(), cp0: Q(), cp1: Q(), cpi: Q(), down: new THREE.Vector3(0, -1, 0) };
+    hn: V(), hp: V(), hf: V(), sjp: V(), sfr: Q(), sinv: Q(), srot: Q(), rp: V(), kp: V(), kd: V(), cw: V(), cp0: Q(), cp1: Q(), cpi: Q(), px: V(), pa: V(), py: V(), pn: V(), down: new THREE.Vector3(0, -1, 0) };
   private static emptyFrame(blend: number) { return { substeps: 0, resets: 0, maxSnapDeg: 0, blend, badPose: false, conflicts: { proxy: 0, sideways: 0, ground: 0, snap: 0 } }; }
 
   constructor(root: THREE.Object3D, quality: ClothQuality = 'medium') {
@@ -398,10 +405,31 @@ export class ClothSolver {
     if (pl > 0) { push.divideScalar(pl); const into = om.dot(push); if (into < 0) om.addScaledVector(push, -into); }
   }
 
+  /** the swing `th` set to the direction nearest the one it points along that is both inside its cone (around the rest direction
+   *  in `frame`) and at most `cap` from `from`. Both are caps on the sphere of directions: the nearest point of their overlap is
+   *  the direction itself, its nearest point on one cap when that lies in the other, or else the nearer of the two points where
+   *  their edges cross. When they do not overlap the cone wins (a hard limit) as near `from` as it lets, and the snap is counted */
+  private capCone(j: Joint, th: THREE.Vector3, frame: THREE.Quaternion, inv: THREE.Quaternion, from: THREE.Vector3, cap: number) {
+    const T = this.t, x = T.px.copy(this.dirOf(j, frame, th)), a = T.pa.copy(j.axis).applyQuaternion(frame), y = T.py;
+    const ca = Math.cos(j.cone), cb = Math.cos(cap), inA = x.dot(a) >= ca, inB = x.dot(from) >= cb;
+    if (inA && inB) return;
+    if (!inB && toward(y, from, x, cap).dot(a) >= ca) { /* the cap's nearest point is inside the cone */ }
+    else if (!inA && toward(y, a, x, j.cone).dot(from) >= cb) { /* the cone's nearest point is inside the cap */ }
+    else {
+      const c = a.dot(from), s2 = 1 - c * c;
+      const u = (ca - c * cb) / s2, v = (cb - c * ca) / s2, w2 = (1 - u * u - v * v - 2 * u * v * c) / s2;
+      if (s2 > 1e-12 && w2 >= 0) {
+        const n = T.pn.crossVectors(a, from);
+        y.copy(a).multiplyScalar(u).addScaledVector(from, v).addScaledVector(n, (n.dot(x) >= 0 ? 1 : -1) * Math.sqrt(w2));
+      } else toward(y, a, from, j.cone);
+    }
+    swingTo(th, j.axis, y.normalize().applyQuaternion(inv));
+  }
+
   /** bones from the state: Low shows between the last two states, Medium the latest; after a reset it blends in from rest. On
-   *  screen a bone turns at most 600°/s from where it was shown (team A: 10° a frame at 60 FPS, DES-009 §10.10), then the pose
-   *  gets the same pushes and cones as the state (a blend or an interpolation of two good poses can cut into the body), and
-   *  whatever it still breaks is counted */
+   *  screen a bone turns at most 600°/s from where it was shown (team A: 10° a frame at 60 FPS, DES-009 §10.10) inside its cone,
+   *  then the pose gets the same pushes as the state (a blend or an interpolation of two good poses can cut into the body), then
+   *  the cap and the cone once more so the final pose keeps both (DES-009 §10.11), and whatever it still breaks is counted */
   private show(f: number, blend: number, reset: boolean, ground: number, dt: number) {
     const T = this.t, C = this.frame.conflicts, tol = CLOTH_LIMITS.conflictM;
     const cap = MAX_RATE * dt, judgeSnap = !reset && blend === 1 && this.blendBefore === 1;
@@ -419,16 +447,12 @@ export class ClothSolver {
         const want = T.d.copy(j.prevDir).applyQuaternion(carryPrev).lerp(T.cw.copy(j.dir).applyQuaternion(carry), f);
         if (want.lengthSq() < 1e-18) want.copy(j.dir);
         const th = swingTo(T.st, j.axis, want.normalize().applyQuaternion(inv)).multiplyScalar(blend);
-        if (!reset) { // at most 600°/s on screen: turn from the direction shown last frame toward this one by no more than the cap
-          const d0 = this.dirOf(j, frame, th), a = d0.angleTo(j.shownDir);
-          if (a > cap) {
-            T.cq.setFromUnitVectors(j.shownDir, d0); T.cpi.identity().slerp(T.cq, cap / a);
-            swingTo(th, j.axis, T.cw.copy(j.shownDir).applyQuaternion(T.cpi).applyQuaternion(inv));
-          }
-        }
-        this.cone(j, th, null);
+        // at most 600°/s on screen (from the direction shown last frame) inside the cone, then the pushes, then the cap and the cone
+        // again on the final pose: the pushes must not carry a bone past either (team A, DES-009 §10.11)
+        if (!reset) this.capCone(j, th, frame, inv, j.shownDir, cap); else this.cone(j, th, null);
         for (let pass = 0; pass < CLOTH_BODY.passes; pass++) this.collide(ch, ji, th, null, frame, inv, jointPos, ground);
         this.cone(j, th, null);
+        if (!reset) { this.capCone(j, th, frame, inv, j.shownDir, cap); this.cone(j, th, null); }
         j.bone.quaternion.copy(j.rest).multiply(swing(T.sqs, th));
         parentRot.multiply(j.bone.quaternion);
         const d = T.sd.copy(j.axis).applyQuaternion(parentRot);

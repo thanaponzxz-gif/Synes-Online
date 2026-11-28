@@ -236,6 +236,17 @@ describe('team A limits (DES-009 §10.9)', () => {
     run(s, root, dodges, 2, 144, 0.2, () => { const st = s.stats(); if (st.blend === 1 && blendBefore === 1) worst = Math.max(worst, st.maxSnapDeg); blendBefore = st.blend; });
     expect(worst).toBeLessThanOrEqual((CLOTH_LIMITS.snapDegAt60 * 60) / 144 + 1e-9);
   });
+  it('the cap holds on the final pose together with the cones (team A, DES-009 §10.11: Medium, 144 FPS, 29 frames, then 900°/s)', () => {
+    const { root } = rig(), s = new ClothSolver(root);
+    const t0 = run(s, root, () => ({}), 29 / 144, 144);
+    let worst = 0, counted = 0;
+    run(s, root, (u) => ({ yaw: Math.min(1, Math.max(0, (u - t0) / 0.1)) * (Math.PI / 2) }), 0.5, 144, t0, () => {
+      const st = s.stats(); worst = Math.max(worst, st.maxSnapDeg); counted += st.conflicts.snap;
+      const a = s.angles('shown'); let i = 0;
+      for (const c of CLOTH_CHAINS) for (const cone of c.coneDeg) expect(a[i++]).toBeLessThanOrEqual(cone * DEG + 1e-9);
+    });
+    expect(worst).toBeLessThanOrEqual((CLOTH_LIMITS.snapDegAt60 * 60) / 144 + 1e-9); expect(counted).toBe(0);
+  });
   it('a pose that is not finite above the cloth (an anchor, an ancestor) is a problem when built and a rest-pose frame when it happens later; no NaN reaches the cloth', () => {
     for (const bad of ['anchor_scarf_l', 'chest', 'pelvis']) {
       const { root, get } = rig();
