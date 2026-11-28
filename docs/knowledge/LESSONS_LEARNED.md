@@ -7,12 +7,14 @@
 ## A. Gameplay / sim
 - **L-001** (2026-11-20) กำหนดเวลาในเกมเป็นจำนวน tick ไม่ใช่วินาที ค่า 0.87 s ใน sim จริงกลายเป็น 27 tick ไม่ใช่ 26 ตามที่ดีไซน์ต้องการ — `c3a52f2`
 - **L-007** (2026-11-20) บอททดสอบความถูกต้องได้ แต่ตัดสินเรื่อง "ความรู้สึก" ไม่ได้ (คูลดาวน์หลบ 17/26 tick บอทชนะ 100% ทั้งคู่) ต้องให้คนเล่นจริง — `docs/qa/dodge-cd-compare.md`
+- **L-028** (2026-11-28) ruleset ใหม่: เก็บ golden replay ของ ruleset เก่า**ก่อน**แตะ `shared/` และทำสำเนาด่าน/ศัตรูคงที่ให้ ruleset ใหม่ (ตรึง fingerprint) · ค่าขอบในเทสต์ระยะอย่าตั้งตรงขอบพอดี (`-76-2.45-(-76)` = `-2.450000000000003`) · sim ที่ยังเป็น dev-only ให้ `import()` ใต้ `import.meta.env.DEV` ไม่งั้นเข้า bundle production (930 → 915 kB) และอย่าตรวจ `constructor.name` ในบิลด์ที่ถูก minify — DES-009 §10, `tests/rulesetGolden.test.ts`
 
 ## B. QA / เพลย์เทสต์
 - **L-008** (2026-11-20) ก่อนสรุปว่าเกมไม่ยุติธรรม ให้ตรวจชุดทดสอบก่อน ชุดทดสอบเคยส่งปุ่มช้า 0.57–1.07 s และเล่น replay จาก seed + input log ทุกครั้ง — `3389f98`
 - **L-012** (2026-11-20) รายงานของ agent เป็นข้อมูล ต้องตรวจซ้ำ "การโดนที่ดูไม่ยุติธรรม" 2 ครั้งในรอบ 3 เล่นซ้ำแล้วพบว่าโดนจริง — `docs/qa/playtest-agent-round3.md`
 - **L-013** (2026-11-20) container คลาวด์เปิด `github.io` และหน้า claude.ai ที่ต้องล็อกอินไม่ได้ จึงยืนยันหน้าเว็บที่โฮสต์แล้วเองไม่ได้ ต้องให้เจ้าของเปิดบนเครื่องจริง — `docs/HANDOFF.md` (GitHub Pages)
 - **L-018** (2026-11-20) ตัวเลข perf ทั้งหมดมาจาก Chromium + GPU ซอฟต์แวร์ ห้ามรายงานเป็นตัวเลขของมือถือจริง — `docs/qa/baseline-2b.md`
+- **L-027** (2026-11-28) เครื่องเจ้าของ (Windows) ไม่มี Playwright ใน repo: ใช้ตัวที่มากับ Codex runtime ด้วย `export NODE_PATH="$(cygpath -w "$USERPROFILE/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules")"` + Edge ที่ติดเครื่อง (ไม่ดาวน์โหลดเพิ่ม) · ถ้าพอร์ต 8080 ถูกใช้ ให้รัน server ด้วย `PORT=8081` อย่าปิดโปรเซสที่ไม่รู้ว่าของใคร — `tools/qa/ninja-placeholder.mjs`
 
 ## C. Asset / ภาพ
 - **L-009** (2026-11-20) repo เป็น Public ห้ามเก็บภาพอ้างอิงจากเกมอื่นใน repo ให้บันทึกเป็นตารางฟังก์ชันแทน — `docs/design/REQ-001-skills-auto.md`

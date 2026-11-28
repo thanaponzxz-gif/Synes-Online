@@ -487,6 +487,9 @@ export class View {
     this.actors.set(a.id, { a, root, model, parts, px: a.x, pz: a.z, cx: a.x, cz: a.z, shadow, stars, flash: 0, deathT: 0, hopH: a.kind === 'prismback' ? 4.2 : a.kind === 'puffcap' ? 1.2 : 1.2, bodyMeshes });
   }
 
+  /** DES-009 P1 pose viewer: the player's model group (it can show its own mesh there). null before buildLevel. */
+  playerModel(world: World): Object3D | null { return this.actors.get(world.player.id)?.model ?? null; }
+
   /** Call right before each sim step to keep previous positions for interpolation. */
   beforeTick() { for (const v of this.actors.values()) { v.px = v.a.x; v.pz = v.a.z; } }
 

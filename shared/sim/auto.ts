@@ -104,6 +104,8 @@ export class AutoState {
   paused = false;
   /** buttons Auto sent last tick: a button is only sent when it was not sent the tick before, so the sim always sees a rising edge */
   lastB = 0;
+  /** centre distance minus the target radius at which Auto presses attack (the ninja uses her combo-1 range) */
+  protected attackReach: number = ATTACK_EXTRA;
 
   /** Apply a settings snapshot (from the input log). Turning it on saves the position as the centre. */
   apply(w: World, c: AutoCmd) {
@@ -136,15 +138,16 @@ export class AutoState {
   }
 
   // ---------------------------------------------------------------- target selection
-  private kindOk(e: Actor): boolean { const bit = kindBit(e.kind); return bit !== 0 && (this.s.kinds === 0 || (this.s.kinds & bit) !== 0); }
-  private inArea(w: World, e: Actor): boolean {
+  protected kindOk(e: Actor): boolean { const bit = kindBit(e.kind); return bit !== 0 && (this.s.kinds === 0 || (this.s.kinds & bit) !== 0); }
+  protected inArea(w: World, e: Actor): boolean {
     if (!(zonesAt(w, e.x, e.z) & this.zones)) return false;
     return this.s.hall || dist(e.x, e.z, this.cx, this.cz) <= this.s.radius;
   }
   /** straight line from (x0,z0) to (x1,z1) stays inside the centre's zones on open ground */
   private pathOk(w: World, x0: number, z0: number, x1: number, z1: number): boolean {
     // free roam: a straight line through a solid obstacle is not a path (no obstacles in the path-only level: unchanged)
-    for (const o of w.level.obstacles) if (segDist2(x0, z0, x1, z1, o.x, o.z) < (o.r + PLAYER.radius) * (o.r + PLAYER.radius)) return false;
+    const pr = w.player.r; // the body of this ruleset's hero (Wayfarer: PLAYER.radius; ninja: NINJA.radius)
+    for (const o of w.level.obstacles) if (segDist2(x0, z0, x1, z1, o.x, o.z) < (o.r + pr) * (o.r + pr)) return false;
     const d = dist(x0, z0, x1, z1), n = Math.max(1, Math.ceil(d / PATH_STEP));
     for (let k = 1; k <= n; k++) {
       const t = k / n;
@@ -200,14 +203,14 @@ export class AutoState {
     let want = 0;
     const free = !ps.cast && ps.castT <= 0 && ps.dodgeT <= 0 && ps.drinkT <= 0;
     if (free && (this.s.skills[0] || this.s.skills[1] || this.s.skills[2])) want = this.skillChoice(w, fx, fz);
-    if (!want && d <= e.r + ATTACK_EXTRA) want = BTN.ATTACK;
+    if (!want && d <= e.r + this.attackReach) want = BTN.ATTACK;
     q.b = want & ~this.lastB;
     this.lastB = q.b;
     return q;
   }
 
   /** DES-001 §4 fixed rule order. Returns a BTN bit or 0. */
-  private skillChoice(w: World, fx: number, fz: number): number {
+  protected skillChoice(w: World, fx: number, fz: number): number {
     const p = w.player, ps = w.ps, sk = this.s.skills;
     const foes = w.actors.filter((e) => e.kind !== 'player' && e.alive && this.kindOk(e) && this.inArea(w, e));
     if (sk[0] && ps.skillCd <= 0) {

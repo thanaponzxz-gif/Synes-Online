@@ -1,5 +1,6 @@
 // Server-side authoritative replay. The client submits only its input log; the server re-simulates.
-import { World } from '../sim/world.ts';
+import type { World } from '../sim/world.ts';
+import { createWorld } from '../sim/createWorld.ts';
 import { InputLog, isV2Log, LOG_OP } from '../sim/input.ts';
 import { unpackAuto } from '../sim/auto.ts';
 import { type RunVariant, DEFAULT_VARIANT } from '../sim/variant.ts';
@@ -33,7 +34,7 @@ export function replayRun(seed: number, log: unknown, realElapsedMs?: number, va
   const total = shape.ticks;
   if (total > MAX_RUN_TICKS) return { ok: false, reason: 'too-long' };
   if (realElapsedMs !== undefined && realElapsedMs + 3000 < total * TICK * 1000 * 0.95) return { ok: false, reason: 'faster-than-real-time' };
-  const w = new World(seed, variant, ruleset);
+  const w = createWorld(seed, variant, ruleset); // the ruleset decides which sim replays it (ninja-roam-1 = NinjaWorld)
   for (const inp of InputLog.iterate(log as number[])) { w.step(inp); if (w.finished) break; }
   return { ok: true, summary: w.summary() };
 }

@@ -15,8 +15,10 @@ import type { FKind } from './ui/floatCore.ts';
 import { ButtonFade } from './ui/buttonFade.ts';
 import { Sfx } from './audio.ts';
 import { Net } from './net.ts';
+import { rewardHtml } from './rewardText.ts';
 import { variantFromQuery } from '../shared/sim/variant.ts';
-import { rulesetFromQuery } from '../shared/sim/ruleset.ts';
+import { rulesetFromQuery, isNinja, NINJA_RULESET } from '../shared/sim/ruleset.ts';
+import { ninjaQaAllowed } from './seyrin/gate.ts';
 import { Bot } from '../tests/bot.ts';
 import { AutoBar, AutoPanel } from './ui/autoPanel.ts';
 import { AUTO_KINDS, autoAllowedHere, defaultAuto, packAuto, type AutoSettings } from '../shared/sim/auto.ts';
@@ -26,7 +28,8 @@ import { numberClockInput } from './ui/numberClock.ts';
 // flags: ?debug / ?bot etc. locally; artifact hosting only passes a plain #name, so mirror a few as hashes
 declare const __BUILD__: string;
 const Q = new URLSearchParams(location.search);
-const ruleset = rulesetFromQuery(Q); // ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A)
+// ?combo=A|B|C, ?combo=1 = old combat-1 (default combat-2 = owner pick A); ?ruleset=ninja-roam-1 = dev server on this machine only
+const ruleset = import.meta.env.DEV && ninjaQaAllowed(true, location.hostname, Q) ? NINJA_RULESET : rulesetFromQuery(Q);
 const variant = variantFromQuery(Q); // ?dodgecd=0.87 &start=boss ; invalid -> default
 for (const h of ['debug', 'offline']) if (location.hash === '#' + h) Q.set(h, '1');
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector(s) as T;
@@ -127,6 +130,11 @@ const qaLog: { t: number; e: string }[] = [];
     await runStudy(view, hud, Q.get('study')!, toneById(Q.get('tone')));
     return;
   }
+  if (import.meta.env.DEV && Q.get('seyrin') === 'preview') { // DES-009 P1: pose viewer, dev server on this machine only
+    const { startSeyrinPreview } = await import('./seyrin/previewMode.ts');
+    if (await startSeyrinPreview(view, location.hostname, Q)) return;
+  }
+  if (import.meta.env.DEV && isNinja(ruleset)) (await import('./seyrin/ninjaQa.ts')).attachNinjaQa(input, $('#btn-ult')); // placeholder playtest
   if (Q.has('bot') || Q.has('autostart')) startGame();
 })();
 
@@ -148,7 +156,8 @@ async function startGame() {
 async function newRun() {
   ticket = await net.start(variant, ruleset);
   const seed = ticket?.seed ?? (Q.has('seed') ? +Q.get('seed')! : (Math.random() * 2 ** 32) >>> 0);
-  world = new World(seed, variant, ruleset);
+  // ninja-roam-1 (dev playtest only) loads its own sim lazily, so a published bundle never carries it
+  world = import.meta.env.DEV && isNinja(ruleset) ? (await import('../shared/sim/createWorld.ts')).createWorld(seed, variant, ruleset) : new World(seed, variant, ruleset);
   log = new InputLog();
   input.autoPending = null; autoSet.enabled = false;
   view.buildLevel(world, 7);
@@ -250,13 +259,7 @@ async function onVictory() {
     return;
   }
   const res = await net.finish(ticket.runId, log.data);
-  const show = () => {
-    if (res.verified) {
-      const r = res.reward;
-      hud.setReward(`✅ บันทึกผลแล้ว: อันดับ <b>${r.rank}</b><br>💰 ${r.gold} ทอง · ✨ ${r.exp} EXP${r.drop ? `<br>ได้รับ <span class="${r.drop.rarity}">${r.drop.nameTh}</span>` : ''}`);
-    } else hud.setReward(`⚠ บันทึกผลไม่สำเร็จ จึงยังไม่ได้รับรางวัล <small>(${res.error})</small>`);
-  };
-  setTimeout(show, 1500);
+  setTimeout(() => hud.setReward(rewardHtml(res)), 1500);
 }
 
 // ------------------------------------------------------------------ menus & lifecycle

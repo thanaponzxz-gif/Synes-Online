@@ -1,19 +1,29 @@
 // Synes Online — deterministic gameplay simulation (runs identically on client and server).
 // Rules: no engine/DOM imports, no Math.random/Date, no trig. Fixed tick = 1/30 s.
-import { PLAYER, ENEMIES, TICK, SKILLS, CONE_INNER_R, type AttackDef, type EnemyKind } from '../data/tuning.ts';
+import { PLAYER, TICK, SKILLS, CONE_INNER_R, type AttackDef, type EnemyKind, type EnemyTable } from '../data/tuning.ts';
 import { type LevelDef, type Shape } from '../data/level.ts';
 import { Rng } from './rng.ts';
 import { BTN, AXIS, type TickInput } from './input.ts';
 import { DEFAULT_VARIANT, dodgeCdSeconds, type RunVariant } from './variant.ts';
 import { len, norm, dist, dist2, turnToward, DIRS16 } from './math.ts';
 import { AutoState } from './auto.ts';
-import { DEFAULT_RULESET, comboFor, levelFor, type Ruleset, type TickCombo } from './ruleset.ts';
+import { DEFAULT_RULESET, comboFor, levelFor, enemiesFor, isNinja, type Ruleset, type TickCombo } from './ruleset.ts';
 
 export interface DefeatCause { enemyTh: string; attackTh: string; tipTh: string; attackId: string; }
 
+/** `ninja-roam-1` actions (DES-007 §3) */
+export type NinjaActionKind = 'attack' | 'dodge' | 'potion' | 'echo_needle' | 'shadow_thread' | 'resonant_knot' | 'lumen_loom';
+
+/** What a `ninja-roam-1` hit came from (DES-007 §8.3): the renderer picks sparks / camera from these, never from the pose. */
+export interface HitSource {
+  sourceActionId: number; sourceActionKind: NinjaActionKind; pulseIndex: number;
+  counterApplied: boolean; targetStunnedAtHit: boolean; markConsumed: boolean;
+}
+
 export type SimEvent =
-  | { t: 'hit'; target: number; amount: number; x: number; z: number; crit: boolean; byPlayer: boolean }
-  | { t: 'perfect'; x: number; z: number }
+  | ({ t: 'hit'; target: number; amount: number; x: number; z: number; crit: boolean; byPlayer: boolean } & Partial<HitSource>)
+  /** dodgeId: ninja-roam-1 only */
+  | { t: 'perfect'; x: number; z: number; dodgeId?: number }
   | { t: 'telegraph'; id: number }
   | { t: 'death'; id: number }
   | { t: 'hint'; id: string }
@@ -21,7 +31,9 @@ export type SimEvent =
   | { t: 'boss-start' } | { t: 'boss-phase' } | { t: 'boss-roar' }
   | { t: 'stun'; id: number; long: boolean }
   | { t: 'pillar-break'; i: number } | { t: 'pillars-regrow' }
-  | { t: 'swing'; step: number } | { t: 'dodge' } | { t: 'skill' } | { t: 'potion' }
+  | { t: 'swing'; step: number } | { t: 'skill' } | { t: 'potion' }
+  /** ninja-roam-1 adds the dodge's action id, the facing kept during it (hold-start) and the dash direction the sim moves along */
+  | { t: 'dodge'; id?: number; preFx?: number; preFz?: number; dashX?: number; dashZ?: number }
   | { t: 'skill-start'; slot: 1 | 2 | 3; x: number; z: number; dx: number; dz: number }
   | { t: 'skill-hit'; slot: 1 | 2 | 3; x: number; z: number; dx: number; dz: number; hits: number }
   | { t: 'skill-cancel'; slot: 1 | 2 | 3 }
@@ -31,7 +43,20 @@ export type SimEvent =
   | { t: 'player-down'; cause: DefeatCause } | { t: 'respawn'; at: string }
   /** Auto attack turned itself off: the player entered the boss area ('boss') or was defeated without keep-after-respawn ('down') */
   | { t: 'auto-off'; reason: 'boss' | 'down' }
-  | { t: 'checkpoint'; id: string } | { t: 'victory' };
+  | { t: 'checkpoint'; id: string } | { t: 'victory' }
+  // ---- ninja-roam-1 (DES-007 §8.3): payloads are sim values; ticks are the sim tick the thing happened on
+  | { t: 'action-start'; id: number; kind: NinjaActionKind; step: number; startTick: number; x: number; z: number; fx: number; fz: number }
+  | { t: 'action-cancel'; id: number; kind: NinjaActionKind; tick: number }
+  /** a damage moment of an action, sent even when it hits nothing (x,z = origin; shadow_thread: the walked segment x,z -> ex,ez) */
+  | { t: 'attack-pulse'; actionId: number; kind: NinjaActionKind; pulseIndex: number; tick: number; x: number; z: number; fx: number; fz: number; ex?: number; ez?: number }
+  | { t: 'needle-spawn'; id: number; actionId: number; tick: number; x: number; z: number; dx: number; dz: number }
+  | { t: 'needle-move'; id: number; x: number; z: number }
+  | { t: 'needle-hit'; id: number; target: number; x: number; z: number }
+  | { t: 'needle-despawn'; id: number; reason: 'hit' | 'scene' | 'range' | 'respawn' }
+  | { t: 'mark-set'; target: number; tick: number; refresh: boolean }
+  | { t: 'mark-consume'; target: number; tick: number; actionId: number }
+  | { t: 'mark-expire'; target: number; tick: number; reason: 'time' | 'moved' | 'target-death' | 'player-death' }
+  | { t: 'meter-change'; value: number };
 
 export interface Telegraph {
   id: number; owner: number; atk: AttackDef; enemyTh: string;
@@ -70,7 +95,7 @@ export class World {
   phase = 1;
   /** forced next boss move (phase 2: charge after every shard rain) */
   bossNext: string | null = null;
-  private p2Moves = 0;
+  protected p2Moves = 0;
   clearingTriggered = false;
   checkpoint: { id: string; x: number; z: number };
   finished = false;
@@ -89,12 +114,12 @@ export class World {
     cdT: [0, 0, 0] as number[],
   };
   /** attack instances (telegraph ids) that were telegraphed/active when the current dodge started: for the 'dodge-early' event */
-  private seenAtk = new Set<number>();
+  protected seenAtk = new Set<number>();
   /** latest non-area attack instance (telegraph id) per owner actor: lets rush/charge hits be traced to their telegraph */
-  private atkToken = new Map<number, number>();
-  private prevB = 0;
-  private nextId = 1;
-  private hints = new Set<string>();
+  protected atkToken = new Map<number, number>();
+  protected prevB = 0;
+  protected nextId = 1;
+  protected hints = new Set<string>();
 
   /** Auto attack (DES-001 §4): settings + controller state. Off by default, so runs that never enable it are unchanged. */
   auto = new AutoState();
@@ -102,10 +127,13 @@ export class World {
   variant: RunVariant;
   ruleset: Ruleset;
   /** integer-tick combo (rulesets combo-A/B/C) or null = legacy `combat-1` */
-  private tc: TickCombo | null;
+  protected tc: TickCombo | null;
+  /** the enemy numbers this run plays with (the ruleset decides; ninja-roam-1 has its own snapshot) */
+  protected readonly E: EnemyTable;
   constructor(seed: number, variant: RunVariant = DEFAULT_VARIANT, ruleset: Ruleset = DEFAULT_RULESET) {
+    if (isNinja(ruleset) && new.target === World) throw new Error(`ruleset ${ruleset} has its own sim: make the world with createWorld()`);
     this.seed = seed;
-    this.ruleset = ruleset; this.tc = comboFor(ruleset);
+    this.ruleset = ruleset; this.tc = comboFor(ruleset); this.E = enemiesFor(ruleset);
     const LEVEL = (this.level = levelFor(ruleset));
     this.pillars = LEVEL.pillars.map((p) => ({ ...p, alive: true }));
     this.checkpoint = { id: 'camp', x: LEVEL.start.x, z: LEVEL.start.z };
@@ -114,8 +142,8 @@ export class World {
     for (const g of LEVEL.gates) this.gates[g.id] = g.startsOpen;
     this.player = this.mkActor('player', LEVEL.start.x, LEVEL.start.z, P.radius, P.maxHp, 'player');
     this.player.fz = -1;
-    for (const s of LEVEL.spawns) { const d = ENEMIES[s.kind]; this.mkActor(s.kind, s.x, s.z, d.radius, d.maxHp, s.group); }
-    const b = ENEMIES.prismback;
+    for (const s of LEVEL.spawns) { const d = this.E[s.kind]; this.mkActor(s.kind, s.x, s.z, d.radius, d.maxHp, s.group); }
+    const b = this.E.prismback;
     this.boss = this.mkActor('prismback', LEVEL.boss.x, LEVEL.boss.z, b.radius, b.maxHp, 'boss');
     this.boss.fz = 1;
     if (variant.start === 'boss') this.startAtBoss();
@@ -124,7 +152,7 @@ export class World {
 
   /** 'boss' variant: the state a player is in when respawning at the spring checkpoint after clearing the trail and clearing
    *  (the real pre-boss checkpoint; same mechanism as respawn()). Earlier enemies are dead, the clearing exit gate is open. */
-  private startAtBoss() {
+  protected startAtBoss() {
     for (const e of this.actors) if (e.kind !== 'player' && e.kind !== 'prismback') { e.alive = false; e.hp = 0; }
     this.clearingTriggered = true;
     this.gates.clearingExit = true;
@@ -133,14 +161,14 @@ export class World {
     this.player.x = this.checkpoint.x; this.player.z = this.checkpoint.z; this.player.fx = 0; this.player.fz = -1;
   }
 
-  private mkActor(kind: Actor['kind'], x: number, z: number, r: number, hp: number, group: string): Actor {
+  protected mkActor(kind: Actor['kind'], x: number, z: number, r: number, hp: number, group: string): Actor {
     const a: Actor = { id: this.nextId++, kind, x, z, fx: 0, fz: 1, r, hp, maxHp: hp, alive: true, active: false, state: 'idle', st: 0,
       group, sx: x, sz: z, tx: x, tz: z, ox: x, oz: z, dx: 0, dz: 1, travel: 0, hitDone: false, atk: '', lastAtk: '', repeat: 0, flinch: 0, deadT: 0 };
     this.actors.push(a);
     return a;
   }
 
-  private hint(id: string) { if (!this.hints.has(id)) { this.hints.add(id); this.events.push({ t: 'hint', id }); } }
+  protected hint(id: string) { if (!this.hints.has(id)) { this.hints.add(id); this.events.push({ t: 'hint', id }); } }
 
   /** Advance one fixed tick. Returns events produced in this tick. */
   step(inp: TickInput): SimEvent[] {
@@ -174,7 +202,7 @@ export class World {
   }
 
   // ---------------------------------------------------------------- player
-  private updatePlayer(inp: TickInput, edges: number) {
+  protected updatePlayer(inp: TickInput, edges: number) {
     const ps = this.ps, p = this.player;
     let mx = inp.mx / AXIS, mz = inp.mz / AXIS;
     const ml = len(mx, mz);
@@ -307,14 +335,14 @@ export class World {
     }
   }
 
-  private beginCast(slot: 1 | 2 | 3, dx: number, dz: number) {
+  protected beginCast(slot: 1 | 2 | 3, dx: number, dz: number) {
     const D = SKILLS[slot - 1], p = this.player;
     this.ps.cast = { slot, tick: 0, hitTick: D.hitTick, endTick: D.endTick, x: p.x, z: p.z, dx, dz };
     this.events.push({ t: 'skill-start', slot, x: p.x, z: p.z, dx, dz });
   }
 
   /** Hit tick of slot 2/3: targets come from the real state now; at most one hit per target. */
-  private resolveCast(c: Cast) {
+  protected resolveCast(c: Cast) {
     const ps = this.ps, D = SKILLS[c.slot - 1];
     let hits = 0;
     const ax = c.slot === 3 ? c.x + c.dx * (D.ahead ?? 0) : c.x, az = c.slot === 3 ? c.z + c.dz * (D.ahead ?? 0) : c.z;
@@ -338,7 +366,7 @@ export class World {
     return { remaining: this.ps.cdT[slot - 1] * TICK, total: n * TICK };
   }
 
-  private nearestEnemy(x: number, z: number, range: number): Actor | null {
+  protected nearestEnemy(x: number, z: number, range: number): Actor | null {
     let best: Actor | null = null, bd = 1e9;
     for (const e of this.actors) {
       if (e.kind === 'player' || !e.alive || !e.active) continue;
@@ -348,9 +376,9 @@ export class World {
     return best;
   }
 
-  private damageEnemy(e: Actor, base: number, empowered: boolean) {
+  protected damageEnemy(e: Actor, base: number, empowered: boolean) {
     let mul = empowered ? P.perfect.critMul : 1;
-    if (e.kind === 'prismback' && e.state === 'stunned') mul *= ENEMIES.prismback.stunDmgMul;
+    if (e.kind === 'prismback' && e.state === 'stunned') mul *= this.E.prismback.stunDmgMul;
     const amount = Math.round(base * mul);
     e.hp -= amount; e.flinch = 0.15;
     this.stats.hitsLanded++;
@@ -359,25 +387,25 @@ export class World {
     if (e.hp <= 0) this.kill(e);
   }
 
-  private kill(e: Actor) {
+  protected kill(e: Actor) {
     e.hp = 0; e.alive = false; e.deadT = 0; e.state = 'dead';
     this.tele = this.tele.filter((t) => t.owner !== e.id);
     this.events.push({ t: 'death', id: e.id });
     if (e.kind === 'prismback') { this.victory = true; this.finished = true; this.events.push({ t: 'victory' }); }
   }
 
-  private interrupt(e: Actor) {
+  protected interrupt(e: Actor) {
     this.tele = this.tele.filter((t) => t.owner !== e.id);
     e.state = 'recover'; e.st = 0.8;
     this.events.push({ t: 'interrupt', id: e.id });
   }
 
-  private knock(e: Actor, dx: number, dz: number, d: number) {
+  protected knock(e: Actor, dx: number, dz: number, d: number) {
     if (e.state === 'rush' || e.state === 'hop') return;
     e.x += dx * d; e.z += dz * d;
   }
 
-  private hurtPlayer(dmg: number, enemyTh: string, atk: AttackDef, token: number | null = null) {
+  protected hurtPlayer(dmg: number, enemyTh: string, atk: AttackDef, token: number | null = null) {
     const ps = this.ps, p = this.player;
     if (ps.down) return;
     if (ps.iframes > 0) {
@@ -400,7 +428,7 @@ export class World {
     }
   }
 
-  private respawn() {
+  protected respawn() {
     const ps = this.ps, p = this.player;
     ps.down = false; p.hp = p.maxHp; ps.potions = P.potion.charges;
     ps.swingT = 0; ps.dodgeT = 0; ps.castT = 0; ps.drinkT = 0; ps.skillCd = 0; ps.dodgeCd = 0; ps.empowered = false;
@@ -422,7 +450,7 @@ export class World {
   }
 
   // ---------------------------------------------------------------- enemies
-  private addTele(owner: Actor, enemyTh: string, atk: AttackDef, x: number, z: number, dx: number, dz: number, total: number, area: boolean): Telegraph {
+  protected addTele(owner: Actor, enemyTh: string, atk: AttackDef, x: number, z: number, dx: number, dz: number, total: number, area: boolean): Telegraph {
     const t: Telegraph = { id: this.nextId++, owner: owner.id, atk, enemyTh, shape: atk.shape, x, z, dx, dz, r: atk.r, w: atk.w ?? 0,
       cos: atk.shape === 'cone' ? (atk.w ?? 0.5) : 0, t: total, total, area };
     this.tele.push(t);
@@ -432,14 +460,14 @@ export class World {
     return t;
   }
 
-  private chase(a: Actor, speed: number, stopAt: number) {
+  protected chase(a: Actor, speed: number, stopAt: number) {
     const p = this.player, dx = p.x - a.x, dz = p.z - a.z, d = len(dx, dz);
     if (d > 1e-6) { [a.fx, a.fz] = turnToward(a.fx, a.fz, dx / d, dz / d, 0.25); }
     if (d > stopAt) { a.x += (dx / d) * speed * TICK; a.z += (dz / d) * speed * TICK; }
     return d;
   }
 
-  private aggroCheck(a: Actor, range: number) {
+  protected aggroCheck(a: Actor, range: number) {
     if (a.active) return true;
     if (dist(a.x, a.z, this.player.x, this.player.z) < range && (a.group !== 'clearing' || this.clearingTriggered)) {
       a.active = true; a.state = 'approach'; a.st = 0; this.hint('attack');
@@ -447,8 +475,8 @@ export class World {
     return a.active;
   }
 
-  private puffcap(a: Actor) {
-    const D = ENEMIES.puffcap, atk = D.attacks.hop;
+  protected puffcap(a: Actor) {
+    const D = this.E.puffcap, atk = D.attacks.hop;
     if (a.state === 'idle') { this.aggroCheck(a, D.aggro); return; }
     a.st -= TICK;
     if (a.state === 'approach') {
@@ -469,8 +497,8 @@ export class World {
     }
   }
 
-  private thornling(a: Actor) {
-    const D = ENEMIES.thornling, atk = D.attacks.rush;
+  protected thornling(a: Actor) {
+    const D = this.E.thornling, atk = D.attacks.rush;
     if (a.state === 'idle') { this.aggroCheck(a, D.aggro); return; }
     a.st -= TICK;
     if (a.state === 'approach') {
@@ -488,15 +516,15 @@ export class World {
       const [cx, cz] = this.clampWalk(nx, nz, a.r);
       a.x = cx; a.z = cz;
       const blocked = this.pushFromObstacles(a); // free roam: a rush into a tree/rock ends there
-      if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
+      if (!a.hitDone && dist(a.x, a.z, this.player.x, this.player.z) < a.r + this.player.r) { a.hitDone = true; this.hurtPlayer(atk.dmg, D.nameTh, atk, this.atkToken.get(a.id) ?? null); }
       if (a.st <= 0 || blocked || dist2(cx, cz, nx, nz) > 0.01) { a.state = 'recover'; a.st = D.recover; this.atkToken.delete(a.id); this.hint('counter'); }
     } else if (a.state === 'recover') {
       if (a.st <= 0) a.state = 'approach';
     }
   }
 
-  private prismback(a: Actor) {
-    const D = ENEMIES.prismback, A = D.attacks;
+  protected prismback(a: Actor) {
+    const D = this.E.prismback, A = D.attacks;
     if (!this.bossStarted) return;
     const mul = this.phase === 2 ? D.windupMulP2 : 1;
     a.st -= TICK;
@@ -528,7 +556,7 @@ export class World {
       case 'charge': {
         const step = D.chargeSpeed * TICK;
         a.x += a.dx * step; a.z += a.dz * step; a.travel += step;
-        if (!a.hitDone && dist(a.x, a.z, p.x, p.z) < a.r + P.radius) { a.hitDone = true; this.hurtPlayer(A.charge.dmg, D.nameTh, A.charge, this.atkToken.get(a.id) ?? null); }
+        if (!a.hitDone && dist(a.x, a.z, p.x, p.z) < a.r + this.player.r) { a.hitDone = true; this.hurtPlayer(A.charge.dmg, D.nameTh, A.charge, this.atkToken.get(a.id) ?? null); }
         for (let i = 0; i < this.pillars.length; i++) {
           const pl = this.pillars[i];
           if (pl.alive && dist(a.x, a.z, pl.x, pl.z) < a.r + pl.r) {
@@ -559,8 +587,8 @@ export class World {
     }
   }
 
-  private bossChoose(a: Actor, d: number, mul: number) {
-    const D = ENEMIES.prismback, A = D.attacks, p = this.player;
+  protected bossChoose(a: Actor, d: number, mul: number) {
+    const D = this.E.prismback, A = D.attacks, p = this.player;
     const opts: [string, number][] = [];
     if (d < 5.2) { opts.push(['sweep', 3], ['slam', 2]); if (this.phase === 2) opts.push(['shard', 1]); }
     else { opts.push(['charge', d > 7 ? 3 : 1]); if (this.phase === 2) opts.push(['shard', 2]); if (d < 7.5) opts.push(['slam', 1]); }
@@ -597,7 +625,7 @@ export class World {
   }
 
   // ---------------------------------------------------------------- telegraphs
-  private updateTelegraphs() {
+  protected updateTelegraphs() {
     const p = this.player, keep: Telegraph[] = [];
     for (const t of this.tele) {
       t.t -= TICK;
@@ -624,7 +652,7 @@ export class World {
   }
 
   // ---------------------------------------------------------------- world geometry
-  private shapeOpen(s: Shape) { return !s.gate || this.gates[s.gate]; }
+  protected shapeOpen(s: Shape) { return !s.gate || this.gates[s.gate]; }
 
   clampWalk(x: number, z: number, r: number): [number, number] {
     let bx = x, bz = z, bd = 1e18;
@@ -646,14 +674,14 @@ export class World {
     return [bx, bz];
   }
 
-  private clampArena(x: number, z: number, r: number): [number, number] {
+  protected clampArena(x: number, z: number, r: number): [number, number] {
     const A = this.level.walkable.find((s) => s.id === 'arena')!;
     if (A.type !== 'circle') return [x, z];
     const dx = x - A.x, dz = z - A.z, d = len(dx, dz), R = A.r - r;
     return d <= R ? [x, z] : [A.x + (dx / d) * R, A.z + (dz / d) * R];
   }
 
-  private resolveCollisions() {
+  protected resolveCollisions() {
     const p = this.player;
     for (const e of this.actors) {
       if (e.kind === 'player' || !e.alive || e.state === 'hop') continue;
@@ -691,7 +719,7 @@ export class World {
     return moved;
   }
 
-  private pushFromPillars(a: Actor) {
+  protected pushFromPillars(a: Actor) {
     if (a.kind === 'prismback' && a.state === 'charge') return;
     for (const pl of this.pillars) {
       if (!pl.alive) continue;
@@ -700,7 +728,10 @@ export class World {
     }
   }
 
-  private triggers() {
+  /** the spring refills the potions */
+  protected refillAtSpring() { this.ps.potions = P.potion.charges; }
+
+  protected triggers() {
     const p = this.player, L = this.level;
     if (!this.clearingTriggered && dist(p.x, p.z, L.clearingTrigger.x, L.clearingTrigger.z) < L.clearingTrigger.r) {
       this.clearingTriggered = true;
@@ -713,7 +744,7 @@ export class World {
     if (dist(p.x, p.z, L.spring.x, L.spring.z) < L.spring.r) {
       if (this.checkpoint.id !== 'spring') { this.checkpoint = { id: 'spring', x: L.spring.x, z: L.spring.z + 1.2 }; this.events.push({ t: 'checkpoint', id: 'spring' }); this.hint('spring'); }
       if (p.hp < p.maxHp) { const h = Math.min(2, p.maxHp - p.hp); p.hp += h; }
-      this.ps.potions = P.potion.charges;
+      this.refillAtSpring();
     }
     const bt = L.boss.trigger;
     if (!this.bossStarted && this.boss.alive && dist(p.x, p.z, bt.x, bt.z) < bt.r) {
